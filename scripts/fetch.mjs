@@ -4,16 +4,22 @@
 //   node scripts/fetch.mjs          echte Daten (braucht BLIZZARD_CLIENT_ID und BLIZZARD_CLIENT_SECRET)
 //   node scripts/fetch.mjs --demo   Beispieldaten ohne API, zum lokalen Testen der Seite
 //   node scripts/fetch.mjs --config andere.json   andere Konfiguration nutzen
+//   node scripts/fetch.mjs --forever   Forever-Einstellungen schon vor dem Start nutzen (zum Testen)
 //
 // Optional: PREVIOUS_DATA_URL zeigt auf die zuletzt veröffentlichte data.json.
 // Schlägt ein Charakter fehl, bleibt dann sein letzter bekannter Stand erhalten.
 //
 // Jeder echte Abruf schreibt außerdem einen Tageswert je Charakter nach data/history.json
-// (Level, Itemlevel, epische Items) und erkennt gemeinsame Sessions für data/sessions.json.
+// (Level, Itemlevel, epische Items), erkennt gemeinsame Sessions für data/sessions.json und
+// hält Änderungen wie Level-Ups und neue Items in data/feed.json fest.
 // Das passiert nur in der GitHub Action.
+//
+// Ab dem Starttag (config.launch) gelten die Werte aus config.forever. Wechselt dabei die Spielversion
+// (era), wandern Verlauf, Sessions und Feed nach data/archive/ und beginnen neu.
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
+import { resolveConfig } from './config.mjs';
 
 const root = new URL('../', import.meta.url);
 const outFile = new URL('site/data.json', root);
@@ -22,8 +28,9 @@ loadDotEnv(new URL('.env', root));
 
 const configArg = process.argv.indexOf('--config');
 const configFile = configArg > -1 ? process.argv[configArg + 1] : 'config.json';
-const config = JSON.parse(await readFile(new URL(configFile, root), 'utf8'));
+const config = resolveConfig(JSON.parse(await readFile(new URL(configFile, root), 'utf8')), process.argv.includes('--forever'));
 const demo = process.argv.includes('--demo');
+const era = config.era ?? 'classic';
 
 const data = demo ? buildDemo() : await buildLive();
 await mkdir(new URL('site/', root), { recursive: true });
@@ -32,9 +39,11 @@ const history = demo ? {} : await updateHistory(data);
 await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\n');
 const sessions = demo ? {} : await updateSessions(data);
 await writeFile(new URL('site/sessions.json', root), JSON.stringify(sessions) + '\n');
+const feed = demo ? demoFeed(data) : await updateFeed(data, sessions);
+await writeFile(new URL('site/feed.json', root), JSON.stringify({ era: feed.era, events: feed.events }) + '\n');
 
 const failed = data.characters.filter((c) => c.error).length;
-console.log(`data.json geschrieben: ${data.characters.length} Charaktere, ${failed} mit Fehler.`);
+console.log(`data.json geschrieben (${data.era}): ${data.characters.length} Charaktere, ${failed} mit Fehler.`);
 
 // ---------------------------------------------------------------------------
 
@@ -67,7 +76,7 @@ async function buildLive() {
     generatedAt: new Date().toISOString(),
     title: config.title,
     launch: config.launch ?? null,
-    era: config.era ?? 'classic',
+    era,
     modelEnv: config.modelEnv ?? 'classic',
     wowhead: config.wowhead,
     maxLevel: config.maxLevel,
@@ -130,6 +139,7 @@ async function fetchCharacter(api, entry, caches) {
     render: asset('main-raw') ?? asset('main') ?? asset('inset'),
     stats: pickStats(stats),
     professions: pickProfessions(profs),
+    talents: pickTalents(specs, summary),
     model: await modelData(api, appearance, caches.displays),
     items,
   };
@@ -196,6 +206,52 @@ function classicRole(classId, tree) {
   if ((classId === 1 || classId === 2) && /schutz|protection/.test(t)) return 'TANK';
   if (/heilig|holy|disziplin|discipline|wiederherstellung|restoration/.test(t)) return 'HEALER';
   return 'DAMAGE';
+}
+
+// Talente. Retail liefert den Import-Code des aktiven Loadouts, den der Wowhead-Rechner direkt öffnet.
+// Classic liefert je Baum die verteilten Punkte und die gewählten Talente, aber nicht ihre Position im Baum.
+// Ohne Position lässt sich kein Rechner-Link mit Build bauen, der Link öffnet dort den Rechner der Klasse.
+
+function pickTalents(specs, summary) {
+  const CLASS_SLUGS = { 1: 'warrior', 2: 'paladin', 3: 'hunter', 4: 'rogue', 5: 'priest', 6: 'death-knight', 7: 'shaman', 8: 'mage', 9: 'warlock', 10: 'monk', 11: 'druid', 12: 'demon-hunter', 13: 'evoker' };
+  if (!specs) return null;
+  const site = `https://www.wowhead.com${config.wowhead ? `/${config.wowhead}` : ''}`;
+  const pick = (t, tree = null) => ({
+    name: t.tooltip?.talent?.name ?? t.spell_tooltip?.spell?.name ?? t.talent?.name ?? null,
+    spell: t.tooltip?.spell_tooltip?.spell?.id ?? t.spell_tooltip?.spell?.id ?? null,
+    rank: t.rank ?? t.talent_rank ?? 1,
+    tree,
+  });
+
+  const retail = specs.specializations?.find((s) => s.specialization?.id === summary.active_spec?.id);
+  if (retail) {
+    const lo = retail.loadouts?.find((l) => l.is_active) ?? retail.loadouts?.[0];
+    if (!lo) return null;
+    const hero = lo.selected_hero_talent_tree?.name ?? null;
+    return {
+      trees: [],
+      hero,
+      picks: [
+        ...(lo.selected_spec_talents ?? []).map((t) => pick(t, retail.specialization?.name ?? null)),
+        ...(lo.selected_hero_talents ?? []).map((t) => pick(t, hero)),
+      ].filter((t) => t.name),
+      total: (lo.selected_class_talents?.length ?? 0) + (lo.selected_spec_talents?.length ?? 0) + (lo.selected_hero_talents?.length ?? 0),
+      calc: lo.talent_loadout_code ? `${site}/talent-calc/blizzard/${lo.talent_loadout_code}` : null,
+    };
+  }
+
+  const group = specs.specialization_groups?.find((g) => g.is_active) ?? specs.specialization_groups?.[0];
+  if (!group) return null;
+  const trees = (group.specializations ?? []).map((s) => ({ name: s.specialization_name ?? null, points: s.spent_points ?? 0 }));
+  const picks = (group.specializations ?? []).flatMap((s) => (s.talents ?? []).map((t) => pick(t, s.specialization_name ?? null))).filter((t) => t.name);
+  const cls = CLASS_SLUGS[summary.character_class?.id];
+  return {
+    trees,
+    hero: null,
+    picks,
+    total: trees.reduce((a, t) => a + t.points, 0),
+    calc: cls ? `https://www.wowhead.com/${config.wowhead || 'classic'}/talent-calc/${cls}` : null,
+  };
 }
 
 function pickStats(s) {
@@ -287,6 +343,8 @@ async function loadPrevious() {
     const prev = url
       ? await fetch(url, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null))
       : existsSync(outFile) ? JSON.parse(await readFile(outFile, 'utf8')) : null;
+    // Nach dem Wechsel der Spielversion passt der alte Stand nicht mehr, auch bei gleichem Namen.
+    if ((prev?.era ?? era) !== era) return map;
     for (const c of prev?.characters ?? []) if (c.key && !c.demo) map.set(c.key, c);
   } catch {
     // Kein alter Stand vorhanden, das ist beim ersten Lauf normal.
@@ -294,10 +352,31 @@ async function loadPrevious() {
   return map;
 }
 
+// Verlauf, Sessions und Feed liegen in data/ und gehören zu einer Spielversion (era).
+// Wechselt sie, wandert die alte Datei nach data/archive/<era>-<name>.json und die neue beginnt leer.
+// Dateien ohne era stammen aus der Zeit vor dieser Kennzeichnung und gehören zur aktuellen Version.
+async function loadState(name, empty) {
+  const file = new URL(`data/${name}.json`, root);
+  const raw = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
+  if (!raw) return { era, ...empty() };
+  const state = raw.era ? raw : { era, ...(name === 'history' ? { chars: raw } : raw) };
+  if (state.era === era) return state;
+  if (process.env.GITHUB_ACTIONS) {
+    await mkdir(new URL('data/archive/', root), { recursive: true });
+    await writeFile(new URL(`data/archive/${state.era}-${name}.json`, root), JSON.stringify(state, null, 1) + '\n');
+    console.log(`${name}: Spielversion ${state.era} → ${era}, alter Stand archiviert.`);
+  }
+  return { era, ...empty() };
+}
+
+async function saveState(name, state) {
+  await mkdir(new URL('data/', root), { recursive: true });
+  await writeFile(new URL(`data/${name}.json`, root), JSON.stringify(state, null, 1) + '\n');
+}
+
 // Ein Eintrag je Charakter und Tag. Mehrere Abrufe am selben Tag überschreiben den Tageswert.
 async function updateHistory(data) {
-  const file = new URL('data/history.json', root);
-  const history = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : {};
+  const history = await loadState('history', () => ({ chars: {} }));
   // Nur die GitHub Action schreibt den Verlauf, lokale Testläufe lesen ihn nur.
   if (!process.env.GITHUB_ACTIONS) return history;
   const day = new Date().toISOString().slice(0, 10);
@@ -309,42 +388,107 @@ async function updateHistory(data) {
       ilvl: c.equippedIlvl,
       epics: c.items.filter((i) => ['EPIC', 'LEGENDARY'].includes(i.quality)).length,
     };
-    const list = (history[c.key] ??= []);
+    const list = (history.chars[c.key] ??= []);
     if (list.at(-1)?.d === day) list[list.length - 1] = point;
     else list.push(point);
   }
-  await mkdir(new URL('data/', root), { recursive: true });
-  await writeFile(file, JSON.stringify(history, null, 1) + '\n');
+  await saveState('history', history);
   return history;
 }
 
 // Gemeinsame Sessions: Die API kennt keine Spielzeit, nur den letzten Logout je Charakter.
-// Haben sich alle Charaktere innerhalb von 3 Stunden ausgeloggt und liegt das nach der letzten
-// erkannten Session, zählt das als neue gemeinsame Session. Der Level-Zuwachs seit dem letzten
-// Stand ist ihr Ergebnis (die Gruppe spielt nur zusammen).
+// Haben sich seit der letzten erkannten Session mindestens 4 Charaktere (bei kleinerer Gruppe alle)
+// innerhalb von 3 Stunden ausgeloggt, zählt das als gemeinsame Session. Erkannt wird sie erst, wenn
+// seit dem letzten Logout eine Stunde vergangen ist, damit Nachzügler noch dazukommen.
+// Der durchschnittliche Level-Zuwachs der Beteiligten seit dem letzten Stand ist ihr Ergebnis.
 async function updateSessions(data) {
   const SESSION_WINDOW = 3 * 3600 * 1000;
-  const file = new URL('data/sessions.json', root);
-  const state = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : { lastEnd: 0, levels: {}, list: [] };
+  const QUIET = 3600 * 1000;
+  const state = await loadState('sessions', () => ({ lastEnd: 0, levels: {}, list: [] }));
   if (!process.env.GITHUB_ACTIONS) return state;
 
   const chars = data.characters.filter((c) => c.level && !c.error);
-  const logins = chars.map((c) => c.lastLogin).filter(Boolean);
+  const minPlayers = Math.max(2, Math.min(4, chars.length));
   const levels = Object.fromEntries(chars.map((c) => [c.key, c.level]));
-  const together = chars.length > 1 && logins.length === chars.length && Math.max(...logins) - Math.min(...logins) <= SESSION_WINDOW;
 
   if (!Object.keys(state.levels).length) {
     state.levels = levels;
-    state.lastEnd = Math.max(0, ...logins);
-  } else if (together && Math.min(...logins) > state.lastEnd) {
-    const gains = chars.filter((c) => state.levels[c.key] != null).map((c) => c.level - state.levels[c.key]);
-    if (gains.length) state.list.push({ end: Math.max(...logins), gain: gains.reduce((a, b) => a + b, 0) / gains.length });
-    state.levels = levels;
-    state.lastEnd = Math.max(...logins);
+    state.lastEnd = Math.max(0, ...chars.map((c) => c.lastLogin ?? 0));
+  } else {
+    const fresh = chars.filter((c) => c.lastLogin > state.lastEnd);
+    const end = Math.max(0, ...fresh.map((c) => c.lastLogin));
+    const players = fresh.filter((c) => end - c.lastLogin <= SESSION_WINDOW);
+    if (players.length >= minPlayers && Date.now() - end >= QUIET) {
+      const gains = players.filter((c) => state.levels[c.key] != null).map((c) => c.level - state.levels[c.key]);
+      if (gains.length) {
+        state.list.push({
+          start: Math.min(...players.map((c) => c.lastLogin)),
+          end,
+          gain: gains.reduce((a, b) => a + b, 0) / gains.length,
+          players: players.map((c) => c.key),
+        });
+      }
+      // Auch Level aus Solo-Spiel der übrigen gelten damit als verbucht.
+      state.levels = levels;
+      state.lastEnd = end;
+    }
   }
-  await mkdir(new URL('data/', root), { recursive: true });
-  await writeFile(file, JSON.stringify(state, null, 1) + '\n');
+  await saveState('sessions', state);
   return state;
+}
+
+// Aktivitäts-Feed: Jeder Abruf wird mit dem letzten Stand je Charakter verglichen (snapshot),
+// Änderungen werden Ereignisse. Sie bekommen den Zeitpunkt des Logouts, in dem sie passiert sind,
+// sonst den des Abrufs. Level-Ups sind damit auf die Stunde genau.
+async function updateFeed(data, sessions) {
+  const FEED_LIMIT = 500;
+  const FEED_QUALITIES = ['RARE', 'EPIC', 'LEGENDARY', 'ARTIFACT'];
+  const feed = await loadState('feed', () => ({ snapshot: {}, events: [] }));
+  if (!process.env.GITHUB_ACTIONS) return feed;
+  const now = Date.now();
+  const add = (e) => feed.events.push(e);
+
+  for (const c of data.characters) {
+    if (c.error || !c.level) continue;
+    const snap = {
+      level: c.level,
+      lastLogin: c.lastLogin ?? null,
+      guild: c.guild ?? null,
+      items: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.id])),
+      profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
+    };
+    const old = feed.snapshot[c.key];
+    feed.snapshot[c.key] = snap;
+    if (!old) continue;
+
+    const t = c.lastLogin && c.lastLogin > (old.lastLogin ?? 0) ? c.lastLogin : now;
+    const base = { t, key: c.key };
+    if (c.level > old.level) add({ ...base, type: 'level', from: old.level, to: c.level, max: c.level >= config.maxLevel });
+    for (const it of c.items) {
+      if (!it.id || old.items[it.slot] === it.id || !FEED_QUALITIES.includes(it.quality)) continue;
+      // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz.
+      if (Object.values(old.items).includes(it.id)) continue;
+      add({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot });
+    }
+    for (const p of c.professions ?? []) {
+      const before = old.profs[p.name];
+      const skill = p.skill ?? 0;
+      // Meilensteine alle 75 Punkte (Classic-Stufen) und beim Erreichen des Maximums.
+      if (before == null) add({ ...base, type: 'prof', name: p.name, skill, learned: true });
+      else if (Math.floor(skill / 75) > Math.floor(before / 75) || (p.max && skill >= p.max && before < p.max)) add({ ...base, type: 'prof', name: p.name, skill });
+    }
+    if ((c.guild ?? null) !== (old.guild ?? null)) add({ ...base, type: 'guild', guild: c.guild ?? null, from: old.guild ?? null });
+  }
+
+  const last = sessions.list?.at(-1);
+  if (last && !feed.events.some((e) => e.type === 'session' && e.t === last.end)) {
+    add({ t: last.end, type: 'session', start: last.start, gain: last.gain, players: last.players ?? [] });
+  }
+
+  feed.events.sort((a, b) => a.t - b.t);
+  feed.events = feed.events.slice(-FEED_LIMIT);
+  await saveState('feed', feed);
+  return feed;
 }
 
 // Blizzard-Slugs: klein, ohne Akzente und Apostrophe, Leerzeichen als Bindestrich.
@@ -402,11 +546,30 @@ function buildDemo() {
     ['Schattenfell', 33, 4, 'Schurke', 'Mensch', 'ALLIANCE', null, ['UNCOMMON', 'COMMON']],
   ];
 
+  const trees = {
+    1: ['Waffen', 'Furor', 'Schutz'], 8: ['Arkan', 'Feuer', 'Frost'], 3: ['Tierherrschaft', 'Treffsicherheit', 'Überleben'],
+    2: ['Heilig', 'Schutz', 'Vergeltung'], 4: ['Meucheln', 'Kampf', 'Täuschung'],
+  };
+  const talents = (classId, level) => {
+    const points = Math.max(0, level - 9);
+    const split = [Math.ceil(points * 0.6), Math.floor(points * 0.4), 0];
+    return {
+      trees: trees[classId].map((name, i) => ({ name, points: split[i] })),
+      hero: null,
+      picks: [[12294, 'Tödlicher Stoß'], [12328, 'Todeswunsch'], [12296, 'Wutanfall']].map(([spell, name], i) => ({ name, spell, rank: i + 1, tree: trees[classId][0] })),
+      total: points,
+      calc: `https://www.wowhead.com/classic/talent-calc/${{ 1: 'warrior', 8: 'mage', 3: 'hunter', 2: 'paladin', 4: 'rogue' }[classId]}`,
+    };
+  };
+
   return {
     generatedAt: new Date().toISOString(),
     title: config.title,
-    wowhead: config.wowhead,
-    maxLevel: config.maxLevel,
+    launch: config.launch ?? null,
+    era: 'classic',
+    modelEnv: 'classic',
+    wowhead: 'classic',
+    maxLevel: 60,
     characters: chars.map(([name, level, classId, className, race, faction, guild, q], i) => ({
       key: `demo/${name.toLowerCase()}`,
       demo: true,
@@ -415,6 +578,27 @@ function buildDemo() {
       lastLogin: Date.now() - i * 5 * 3600 * 1000,
       avatar: null,
       items: gear(q).slice(0, 15 - i),
+      professions: [{ name: 'Mining', kind: 'primary', skill: 150 + i * 20, max: 225 }, { name: 'Cooking', kind: 'secondary', skill: 75, max: 150 }],
+      talents: talents(classId, level),
     })),
   };
+}
+
+// Beispiel-Feed für die Demo: ein paar Tage mit Level-Ups, Items, Berufen und einer Session.
+function demoFeed(data) {
+  const chars = data.characters;
+  const h = 3600 * 1000;
+  const start = Date.now() - 4 * 24 * h;
+  const events = [];
+  chars.forEach((c, i) => {
+    for (let lv = Math.max(1, c.level - 6); lv < c.level; lv++) {
+      events.push({ t: start + (lv - c.level + 6) * 14 * h + i * 900e3, key: c.key, type: 'level', from: lv, to: lv + 1, max: lv + 1 >= 60 });
+    }
+    const it = c.items.find((x) => x.quality === 'EPIC' || x.quality === 'RARE');
+    if (it) events.push({ t: start + 50 * h + i * h, key: c.key, type: 'item', id: 1, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName });
+  });
+  events.push({ t: start + 30 * h, key: chars[1].key, type: 'prof', name: 'Mining', skill: 150 });
+  events.push({ t: start + 31 * h, key: chars[4].key, type: 'guild', guild: 'Die Unbeugsamen', from: null });
+  events.push({ t: start + 70 * h, type: 'session', start: start + 66 * h, gain: 2.5, players: chars.slice(0, 4).map((c) => c.key) });
+  return { era: 'classic', events: events.sort((a, b) => a.t - b.t) };
 }

@@ -11,6 +11,17 @@
     "static": "static-eu"
   },
   "wowhead": "",
+  "forever": {
+    "namespaces": {
+      "profile": "profile-classic1x-eu",
+      "static": "static-classic1x-eu"
+    },
+    "maxLevel": 60,
+    "era": "classic",
+    "wowhead": "classic",
+    "modelEnv": "classic",
+    "characters": []
+  },
   "characters": [
     {
       "realm": "Blackmoore",

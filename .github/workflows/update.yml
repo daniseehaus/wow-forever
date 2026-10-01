@@ -36,14 +36,26 @@ jobs:
           BLIZZARD_CLIENT_SECRET: ${{ secrets.BLIZZARD_CLIENT_SECRET }}
           PREVIOUS_DATA_URL: ${{ steps.pages.outputs.base_url }}/data.json
 
+      # Der 3D-Stand (Aussehen, Items, Animationen) ändert sich selten. Bleibt er gleich,
+      # kommen die Dateien aus dem Cache und Browser-Installation und Spiegelung entfallen.
+      - name: 3D-Stand prüfen
+        id: models
+        run: echo "hash=$(node scripts/mirror-models.mjs --hash)" >> "$GITHUB_OUTPUT"
+
       - name: 3D-Cache laden
         uses: actions/cache@v4
         with:
           path: .model-cache
-          key: models-${{ github.run_id }}
+          key: models-${{ steps.models.outputs.hash }}
           restore-keys: models-
 
+      - name: 3D-Dateien aus dem Cache übernehmen
+        id: restore
+        continue-on-error: true
+        run: node scripts/mirror-models.mjs --restore
+
       - name: 3D-Modelle spiegeln
+        if: steps.restore.outputs.restored != 'true'
         continue-on-error: true   # ohne 3D zeigt die Seite die 2D-Renders
         run: |
           npm ci
@@ -54,7 +66,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history.json data/sessions.json
+          git add data/
           git diff --cached --quiet || (git commit -m "Verlauf aktualisieren" && git push)
 
       - uses: actions/upload-pages-artifact@v3
