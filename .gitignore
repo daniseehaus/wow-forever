@@ -6,3 +6,4 @@ site/history.json
 node_modules/
 .model-cache/
 site/modelviewer/
+site/sessions.json

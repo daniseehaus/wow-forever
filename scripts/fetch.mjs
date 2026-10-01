@@ -9,7 +9,8 @@
 // Schlägt ein Charakter fehl, bleibt dann sein letzter bekannter Stand erhalten.
 //
 // Jeder echte Abruf schreibt außerdem einen Tageswert je Charakter nach data/history.json
-// (Level, Itemlevel, epische Items, Erfolgspunkte). Das passiert nur in der GitHub Action.
+// (Level, Itemlevel, epische Items) und erkennt gemeinsame Sessions für data/sessions.json.
+// Das passiert nur in der GitHub Action.
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
@@ -29,6 +30,8 @@ await mkdir(new URL('site/', root), { recursive: true });
 await writeFile(outFile, JSON.stringify(data, null, 2) + '\n');
 const history = demo ? {} : await updateHistory(data);
 await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\n');
+const sessions = demo ? {} : await updateSessions(data);
+await writeFile(new URL('site/sessions.json', root), JSON.stringify(sessions) + '\n');
 
 const failed = data.characters.filter((c) => c.error).length;
 console.log(`data.json geschrieben: ${data.characters.length} Charaktere, ${failed} mit Fehler.`);
@@ -118,7 +121,6 @@ async function fetchCharacter(api, entry, caches) {
     faction: summary.faction?.type,
     guild: summary.guild?.name ?? null,
     title: summary.active_title?.display_string?.replace('{name}', summary.name) ?? null,
-    achievementPoints: summary.achievement_points ?? null,
     avgIlvl: summary.average_item_level ?? null,
     equippedIlvl: summary.equipped_item_level ?? null,
     lastLogin: summary.last_login_timestamp ?? null,
@@ -306,7 +308,6 @@ async function updateHistory(data) {
       level: c.level,
       ilvl: c.equippedIlvl,
       epics: c.items.filter((i) => ['EPIC', 'LEGENDARY'].includes(i.quality)).length,
-      ach: c.achievementPoints,
     };
     const list = (history[c.key] ??= []);
     if (list.at(-1)?.d === day) list[list.length - 1] = point;
@@ -315,6 +316,36 @@ async function updateHistory(data) {
   await mkdir(new URL('data/', root), { recursive: true });
   await writeFile(file, JSON.stringify(history, null, 1) + '\n');
   return history;
+}
+
+// Gemeinsame Sessions: Die API kennt keine Spielzeit, nur den letzten Logout je Charakter.
+// Haben sich alle Charaktere innerhalb von 3 Stunden ausgeloggt und liegt das nach der letzten
+// erkannten Session, zählt das als neue gemeinsame Session. Der Level-Zuwachs seit dem letzten
+// Stand ist ihr Ergebnis (die Gruppe spielt nur zusammen).
+const SESSION_WINDOW = 3 * 3600 * 1000;
+
+async function updateSessions(data) {
+  const file = new URL('data/sessions.json', root);
+  const state = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : { lastEnd: 0, levels: {}, list: [] };
+  if (!process.env.GITHUB_ACTIONS) return state;
+
+  const chars = data.characters.filter((c) => c.level && !c.error);
+  const logins = chars.map((c) => c.lastLogin).filter(Boolean);
+  const levels = Object.fromEntries(chars.map((c) => [c.key, c.level]));
+  const together = chars.length > 1 && logins.length === chars.length && Math.max(...logins) - Math.min(...logins) <= SESSION_WINDOW;
+
+  if (!Object.keys(state.levels).length) {
+    state.levels = levels;
+    state.lastEnd = Math.max(0, ...logins);
+  } else if (together && Math.min(...logins) > state.lastEnd) {
+    const gains = chars.filter((c) => state.levels[c.key] != null).map((c) => c.level - state.levels[c.key]);
+    if (gains.length) state.list.push({ end: Math.max(...logins), gain: gains.reduce((a, b) => a + b, 0) / gains.length });
+    state.levels = levels;
+    state.lastEnd = Math.max(...logins);
+  }
+  await mkdir(new URL('data/', root), { recursive: true });
+  await writeFile(file, JSON.stringify(state, null, 1) + '\n');
+  return state;
 }
 
 // Blizzard-Slugs: klein, ohne Akzente und Apostrophe, Leerzeichen als Bindestrich.

@@ -12,8 +12,9 @@ Eine GitHub Action holt die Daten stündlich von der Battle.net API und veröffe
 | `scripts/mirror-models.mjs` | Spiegelt die 3D-Modelldateien von Wowhead nach `site/modelviewer/` |
 | `scripts/model-proxy.mjs` | Lokaler Proxy für 3D-Tests ohne Spiegelung |
 | `site/` | Die Seite (HTML, CSS, JS ohne Build-Schritt) |
-| `site/meta.js` | Spielwissen: Buffs, Werkzeuge, Berufe, Zonen, Dungeons |
+| `site/meta.js` | Spielwissen für Forever: Buffs, Tools, Berufe, Zonen, Dungeons, Raids, Stunden bis 60 |
 | `data/history.json` | Tageswerte je Charakter, schreibt nur die Action |
+| `data/sessions.json` | Erkannte gemeinsame Sessions mit Level-Zuwachs, schreibt nur die Action |
 | `.github/workflows/update.yml` | Stündlicher Abruf, 3D-Spiegelung und Deployment |
 
 ## Charaktere eintragen
@@ -35,7 +36,7 @@ Zum Start von Forever in `config.json` anpassen:
 - `namespaces.profile` und `namespaces.static` auf den Forever-Namespace (Classic Era wäre `profile-classic1x-eu` und `static-classic1x-eu`)
 - `maxLevel` auf 60
 - `wowhead` auf das passende Wowhead-Präfix (Retail leer, Classic Era `classic`)
-- `era` auf `classic` (Buffs, Berufe und Leveling-Route nach Classic-Regeln)
+- `era` auf `classic` (Leveling-Route mit Markern, Verlauf nach Level, Zeit bis 60 ab dem niedrigsten Level)
 - `modelEnv` auf `classic`, falls Wowhead die Modelle unter `modelviewer/classic/` führt
 - `characters` auf die neuen Charaktere
 

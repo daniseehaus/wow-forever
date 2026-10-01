@@ -4,7 +4,7 @@ const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
 
-const state = { data: null, history: {}, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
+const state = { data: null, history: {}, sessions: {}, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
 
 try {
   state.selected = localStorage.getItem('selected');
@@ -17,12 +17,15 @@ init();
 
 async function init() {
   try {
-    const [data, history] = await Promise.all([
+    const optional = (f) => fetch(`${f}?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+    const [data, history, sessions] = await Promise.all([
       fetch(`data.json?t=${Date.now()}`).then((r) => r.json()),
-      fetch(`history.json?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
+      optional('history.json'),
+      optional('sessions.json'),
     ]);
     state.data = data;
     state.history = history;
+    state.sessions = sessions;
   } catch (err) {
     document.getElementById('sync').textContent = 'Daten fehlen';
     return;
@@ -87,13 +90,13 @@ function renderKpis() {
   const ok = state.chars.filter((c) => c.level);
   const levels = ok.map((c) => c.level);
   const lo = Math.min(...levels), hi = Math.max(...levels);
-  const dungeon = nextDungeon(ok);
 
   document.getElementById('kpis').innerHTML = [
     countdownKpi(),
     kpi(`${ok.filter((c) => c.lastLogin && Date.now() - c.lastLogin < 864e5).length}/${ok.length}`, 'Heute aktiv'),
     kpi(lo === hi ? lo : `${lo}-${hi}`, 'Level-Spanne'),
-    kpi(esc(dungeon), 'Nächster Dungeon', 'txt'),
+    hoursKpi(ok),
+    tempoKpi(),
   ].join('');
 }
 
@@ -105,15 +108,31 @@ function countdownKpi() {
   return days > 0 ? kpi(days, days === 1 ? 'Tag bis Forever' : 'Tage bis Forever', 'hot') : kpi(`Tag ${1 - days}`, 'seit Forever-Start', 'hot');
 }
 
-// Dungeon, der für alle passt und am frühesten herauswächst. Ohne Treffer: der nächste über dem höchsten Level.
-function nextDungeon(chars) {
-  if (state.data.era === 'retail' || !chars.length) return 'ab Forever-Start';
-  const factions = new Set(chars.map((c) => (c.faction === 'HORDE' ? 'H' : 'A')));
-  const list = M.DUNGEONS.filter((d) => d.f === 'N' || factions.has(d.f));
-  const fits = list.filter((d) => chars.every((c) => c.level >= d.min - 2 && c.level <= d.max)).sort((a, b) => a.max - b.max);
-  if (fits.length) return fits[0].name;
-  const hi = Math.max(...chars.map((c) => c.level));
-  return list.find((d) => d.min > hi)?.name ?? 'Raids';
+// Spielstunden bis Level 60 laut Referenzkurve. Die Gruppe spielt zusammen, also zählt der niedrigste Charakter.
+// Vor dem Start (Retail-Charaktere über 60) zeigt die Zahl die volle Strecke ab Level 1.
+function hoursKpi(chars) {
+  const preStart = state.data.era === 'retail';
+  const level = preStart ? 1 : Math.min(...chars.map((c) => c.level));
+  const left = Math.max(0, hoursAt(60) - hoursAt(level));
+  if (!preStart && left === 0) return kpi('60', 'Alle auf Max-Level');
+  return kpi(`~${Math.round(left)} h`, preStart ? 'Spielzeit bis 60' : 'Noch bis Level 60');
+}
+
+// Tempo: durchschnittlicher Level-Zuwachs je gemeinsamer Session (letzte 10 Sessions).
+function tempoKpi() {
+  const list = (state.sessions.list ?? []).slice(-10);
+  if (!list.length) return kpi('neu', 'Level pro Session', 'txt');
+  const avg = list.reduce((s, x) => s + x.gain, 0) / list.length;
+  return kpi(fmtDec(avg), `Level pro Session · ${list.length}×`);
+}
+
+function hoursAt(level) {
+  const pts = M.LEVEL_HOURS;
+  if (level >= pts.at(-1)[0]) return pts.at(-1)[1];
+  const i = pts.findIndex(([l]) => l > level);
+  const [l0, h0] = pts[i - 1];
+  const [l1, h1] = pts[i];
+  return h0 + ((level - l0) / (l1 - l0)) * (h1 - h0);
 }
 
 function kpi(value, label, cls = '') {
@@ -142,7 +161,7 @@ function tileHtml(c, i) {
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;
   return `<button type="button" class="tile ${c.key === state.selected ? 'selected' : ''}" data-key="${esc(c.key)}" style="--cls:${color};animation-delay:${i * 70}ms" aria-label="${esc(c.name)} auswählen">
     <span class="sweep"></span>
-    <span class="top"><span class="role" style="background:${role.color}">${role.label.toUpperCase()}</span><span class="ago">${c.lastLogin ? ago(c.lastLogin) : ''}</span></span>
+    <span class="top"><span class="role">${role.label.toUpperCase()}</span><span class="ago">${c.lastLogin ? ago(c.lastLogin) : ''}</span></span>
     <span class="stage" data-stage="${esc(c.key)}">${c.render ? `<img class="render" src="${esc(c.render)}" alt="">` : ''}</span>
     <span class="info">
       <span class="name">${esc(c.name)}</span>
@@ -189,11 +208,10 @@ function select(key) {
 // Buffs und Werkzeuge
 
 function renderBuffs() {
-  const era = state.data.era === 'retail' ? 'retail' : 'classic';
   const ok = state.chars.filter((c) => c.level);
   const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
 
-  const buffs = M.BUFFS[era];
+  const buffs = M.BUFFS;
   let active = 0;
   document.getElementById('buffs').innerHTML = buffs.map((b) => {
     const who = providers(b.classes);
@@ -205,7 +223,7 @@ function renderBuffs() {
   }).join('');
   document.getElementById('buff-count').textContent = `${active} / ${buffs.length} AKTIV`;
 
-  document.getElementById('tools').innerHTML = M.TOOLS[era].map((t) => {
+  document.getElementById('tools').innerHTML = M.TOOLS.map((t) => {
     const who = providers(t.classes);
     const classes = t.classes.map((id) => M.CLASSES[id]?.name).join(', ');
     return who.length
@@ -238,11 +256,10 @@ function renderLoadout() {
         <p>${c.title ? `${esc(c.title)} · ` : ''}${esc(c.race || '')} · ${esc(c.spec || '')} ${esc(c.className || '')}${c.guild ? ` · &lt;${esc(c.guild)}&gt;` : ''} · ${esc(c.realmName || '')}</p>
       </div>
       <div class="chips">
-        <span class="chip" style="color:${role.color}">${role.label}</span>
+        <span class="chip role-chip">${role.label}</span>
         <span class="chip">Level ${c.level}</span>
         <span class="chip epic">iLvl ${c.equippedIlvl ?? '?'}</span>
         ${sets ? `<span class="chip ok">Set ${sets.count} Teile</span>` : ''}
-        ${c.achievementPoints ? `<span class="chip">${c.achievementPoints.toLocaleString('de-DE')} Erfolgspunkte</span>` : ''}
         ${c.lastLogin ? `<span class="chip">Aktiv ${ago(c.lastLogin)}</span>` : ''}
       </div>
     </div>
@@ -326,8 +343,7 @@ function countSets(items) {
 // Berufe
 
 function renderProfessions() {
-  const era = state.data.era === 'retail' ? 'retail' : 'classic';
-  const cols = M.PRIMARY_PROFESSIONS[era];
+  const cols = M.PRIMARY_PROFESSIONS;
   const ok = state.chars.filter((c) => c.level);
   const skill = (c, prof) => c.professions?.find((p) => profName(p.name) === prof);
   const short = (p) => p.slice(0, 5);

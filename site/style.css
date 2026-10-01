@@ -6,11 +6,11 @@
   --text: #e6edf3;
   --muted: #8b97a5;
   --dim: #5b6673;
-  --accent: #00e6c3;
+  --accent: #ff2d95;
   --warn: #ff3a5e;
   --radius: 18px;
   --radius-sm: 12px;
-  --cls: #00e6c3;
+  --cls: #ff2d95;
   --q-poor: #9d9d9d;
   --q-common: #ffffff;
   --q-uncommon: #1eff00;
@@ -99,7 +99,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .kpi b { font: 800 clamp(36px, 4vw, 56px)/1 var(--display); }
 .kpi > span { font-size: 11px; letter-spacing: .15em; color: var(--dim); text-transform: uppercase; }
 .kpi.hot b { color: var(--accent); }
-.kpi.txt b { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; max-width: 220px; }
+.kpi.txt b { color: var(--dim); }
 .kpi.warn b { color: var(--warn); }
 
 /* Charakter-Kacheln */
@@ -119,7 +119,8 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile:hover, .tile.selected { border-color: var(--cls); box-shadow: 0 0 40px color-mix(in srgb, var(--cls) 35%, transparent); }
 .tile .sweep { position: absolute; inset: 0 auto 0 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.06), transparent); animation: sweep 6s ease-in-out infinite; pointer-events: none; }
 .tile .top { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 3; }
-.role { font: 700 11px var(--mono); letter-spacing: .12em; padding: 4px 9px; border-radius: 8px; color: var(--bg); }
+.role { font: 700 11px var(--mono); letter-spacing: .12em; padding: 4px 9px; border-radius: 8px; color: var(--bg); background: var(--accent); }
+.chip.role-chip { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
 .tile .ago { font: 500 11px var(--mono); color: var(--muted); }
 .tile .stage { position: absolute; left: 0; right: 0; top: 40px; bottom: 112px; z-index: 2; }
 .tile .stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.7); filter: drop-shadow(0 12px 24px rgba(0,0,0,.9)); }

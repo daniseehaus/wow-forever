@@ -1,8 +1,11 @@
-// Spielwissen für die abgeleiteten Ansichten (Buffs, Werkzeuge, Berufe, Zonen, Dungeons).
-// "era" in config.json wählt den passenden Satz. Neue Forever-Zonen und -Dungeons
-// nach der Bekanntgabe unten in ZONES und DUNGEONS ergänzen.
+// Spielwissen für die abgeleiteten Ansichten (Buffs, Tools, Berufe, Zonen, Dungeons).
+// Alles bezieht sich auf WoW Forever: 9 Klassen (Krieger, Paladin, Jäger, Schurke, Priester, Schamane,
+// Magier, Hexenmeister, Druide), Level 60. Paladin und Schamane gibt es in beiden Fraktionen.
+// Neue Forever-Zonen und -Dungeons nach der Bekanntgabe unten in ZONES und DUNGEONS ergänzen.
 
 window.META = (() => {
+  // Todesritter, Mönch, Dämonenjäger und Rufer gibt es in Forever nicht. Sie bleiben nur für die
+  // Farben der aktuellen Retail-Testcharaktere in der Liste.
   const CLASSES = {
     1: { name: 'Krieger', color: '#C69B6D' },
     2: { name: 'Paladin', color: '#F48CBA' },
@@ -19,49 +22,31 @@ window.META = (() => {
     13: { name: 'Rufer', color: '#33937F' },
   };
 
-  const BUFFS = {
-    retail: [
-      { name: 'Machtwort: Seelenstärke', effect: 'Ausdauer', classes: [5] },
-      { name: 'Schlachtruf', effect: 'Angriffskraft', classes: [1] },
-      { name: 'Arkane Intelligenz', effect: 'Intelligenz', classes: [8] },
-      { name: 'Mal der Wildnis', effect: 'Vielseitigkeit', classes: [11] },
-      { name: 'Aura der Hingabe', effect: 'Schadensreduktion', classes: [2] },
-      { name: 'Mal des Jägers', effect: 'Schaden am Ziel', classes: [3] },
-      { name: 'Mystische Berührung', effect: 'Körperlicher Schaden', classes: [10] },
-      { name: 'Chaosbrandmal', effect: 'Magischer Schaden', classes: [12] },
-      { name: 'Segen der Bronze', effect: 'Bewegung', classes: [13] },
-      { name: 'Himmelszorn', effect: 'Meisterschaft', classes: [7] },
-    ],
-    classic: [
-      { name: 'Machtwort: Seelenstärke', effect: 'Ausdauer', classes: [5] },
-      { name: 'Arkane Intelligenz', effect: 'Intelligenz', classes: [8] },
-      { name: 'Mal der Wildnis', effect: 'Alle Werte, Rüstung', classes: [11] },
-      { name: 'Segen der Macht', effect: 'Angriffskraft', classes: [2] },
-      { name: 'Segen der Könige', effect: 'Alle Werte +10 %', classes: [2] },
-      { name: 'Schlachtruf', effect: 'Angriffskraft', classes: [1] },
-      { name: 'Totem der Stärke der Erde', effect: 'Stärke', classes: [7] },
-      { name: 'Göttlicher Willen', effect: 'Willenskraft', classes: [5] },
-    ],
-  };
+  const BUFFS = [
+    { name: 'Machtwort: Seelenstärke', effect: 'Ausdauer', classes: [5] },
+    { name: 'Arkane Intelligenz', effect: 'Intelligenz', classes: [8] },
+    { name: 'Mal der Wildnis', effect: 'Alle Werte, Rüstung', classes: [11] },
+    { name: 'Segen der Macht', effect: 'Angriffskraft', classes: [2] },
+    { name: 'Segen der Könige', effect: 'Alle Werte +10 %', classes: [2] },
+    { name: 'Schlachtruf', effect: 'Angriffskraft', classes: [1] },
+    { name: 'Totem der Stärke der Erde', effect: 'Stärke', classes: [7] },
+    { name: 'Totem der Anmut der Luft', effect: 'Beweglichkeit', classes: [7] },
+    { name: 'Göttlicher Willen', effect: 'Willenskraft', classes: [5] },
+    { name: 'Blutpakt', effect: 'Ausdauer', classes: [9] },
+  ];
 
-  const TOOLS = {
-    retail: [
-      { name: 'Kampfwiederbelebung', classes: [6, 11, 9, 2] },
-      { name: 'Kampfrausch', classes: [7, 8, 3, 13] },
-      { name: 'Portale', classes: [8] },
-      { name: 'Gesundheitsstein', classes: [9] },
-    ],
-    classic: [
-      { name: 'Wiederbelebung', classes: [5, 2, 7] },
-      { name: 'Wiedergeburt im Kampf', classes: [11] },
-      { name: 'Seelenstein', classes: [9] },
-      { name: 'Beschwören', classes: [9] },
-      { name: 'Portale', classes: [8] },
-      { name: 'Essen und Wasser', classes: [8] },
-      { name: 'Gift heilen', classes: [11, 7] },
-      { name: 'Fluch aufheben', classes: [8, 11] },
-    ],
-  };
+  const TOOLS = [
+    { name: 'Wiederbelebung', classes: [5, 2, 7] },
+    { name: 'Wiedergeburt im Kampf', classes: [11] },
+    { name: 'Seelenstein', classes: [9] },
+    { name: 'Beschwören', classes: [9] },
+    { name: 'Portale', classes: [8] },
+    { name: 'Essen und Wasser', classes: [8] },
+    { name: 'Gift heilen', classes: [11, 7] },
+    { name: 'Fluch aufheben', classes: [8, 11] },
+    { name: 'Krankheit heilen', classes: [5, 2, 7] },
+    { name: 'Massenkontrolle', classes: [8, 4, 3, 9] },
+  ];
 
   const PROFESSIONS = {
     Alchemy: 'Alchemie', Blacksmithing: 'Schmiedekunst', Enchanting: 'Verzauberkunst', Engineering: 'Ingenieurskunst',
@@ -70,10 +55,7 @@ window.META = (() => {
     Archaeology: 'Archäologie', 'First Aid': 'Erste Hilfe',
   };
 
-  const PRIMARY_PROFESSIONS = {
-    retail: ['Alchemie', 'Schmiedekunst', 'Verzauberkunst', 'Ingenieurskunst', 'Kräuterkunde', 'Inschriftenkunde', 'Juwelierskunst', 'Lederverarbeitung', 'Bergbau', 'Kürschnerei', 'Schneiderei'],
-    classic: ['Alchemie', 'Schmiedekunst', 'Verzauberkunst', 'Ingenieurskunst', 'Kräuterkunde', 'Lederverarbeitung', 'Bergbau', 'Kürschnerei', 'Schneiderei'],
-  };
+  const PRIMARY_PROFESSIONS = ['Alchemie', 'Schmiedekunst', 'Verzauberkunst', 'Ingenieurskunst', 'Kräuterkunde', 'Lederverarbeitung', 'Bergbau', 'Kürschnerei', 'Schneiderei'];
 
   // Fraktion: A = Allianz, H = Horde, N = beide.
   const ZONES = [
@@ -119,11 +101,16 @@ window.META = (() => {
     { name: 'Naxxramas', id: 3456, size: 40 },
   ];
 
+  // Erfahrungswerte Classic: Spielstunden vom Start bis zum jeweiligen Level (durchschnittlicher Spieler,
+  // Gruppenspiel). Zwischenwerte rechnet die Seite linear aus. Nach dem Forever-Start bei Bedarf nachjustieren.
+  const LEVEL_HOURS = [[1, 0], [10, 5], [20, 18], [30, 38], [40, 65], [50, 100], [60, 150]];
+
+  // Rollen erscheinen einheitlich in der Highlight-Farbe der Seite.
   const ROLES = {
-    TANK: { label: 'Tank', order: 0, color: '#5ec8ff' },
-    HEALER: { label: 'Heal', order: 1, color: '#3aff9b' },
-    DAMAGE: { label: 'DD', order: 2, color: '#ff7a3a' },
+    TANK: { label: 'Tank', order: 0 },
+    HEALER: { label: 'Heal', order: 1 },
+    DAMAGE: { label: 'DD', order: 2 },
   };
 
-  return { CLASSES, BUFFS, TOOLS, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, ROLES };
+  return { CLASSES, BUFFS, TOOLS, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES };
 })();
