@@ -4,7 +4,7 @@ const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
 
-const state = { data: null, history: {}, sessions: {}, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
+const state = { data: null, history: {}, sessions: {}, feed: { events: [] }, feedShown: 30, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
 
 try {
   state.selected = localStorage.getItem('selected');
@@ -18,14 +18,17 @@ init();
 async function init() {
   try {
     const optional = (f) => fetch(`${f}?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
-    const [data, history, sessions] = await Promise.all([
+    const [data, history, sessions, feed] = await Promise.all([
       fetch(`data.json?t=${Date.now()}`).then((r) => r.json()),
       optional('history.json'),
       optional('sessions.json'),
+      optional('feed.json'),
     ]);
     state.data = data;
-    state.history = history;
+    // Ältere Verlaufsdateien enthalten die Charaktere direkt, neuere unter chars.
+    state.history = history.chars ?? history;
     state.sessions = sessions;
+    state.feed = { events: feed.events ?? [] };
   } catch (err) {
     document.getElementById('sync').textContent = 'Daten fehlen';
     return;
@@ -52,6 +55,7 @@ async function init() {
   renderLoadout();
   renderProfessions();
   renderRoute();
+  renderFeed();
   renderHistory();
 }
 
@@ -64,7 +68,11 @@ function setupNav() {
   const onScroll = () => {
     let idx = 0;
     targets.forEach((t, i) => { if (t && !t.hidden && t.getBoundingClientRect().top < 140) idx = i; });
+    if (links[idx].classList.contains('active')) return;
     links.forEach((a, i) => a.classList.toggle('active', i === idx));
+    // Auf schmalen Bildschirmen scrollt die Navigation seitlich. Der aktive Punkt bleibt sichtbar.
+    const bar = links[idx].parentElement;
+    if (bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: links[idx].offsetLeft - bar.clientWidth / 2 + links[idx].offsetWidth / 2, behavior: 'smooth' });
   };
   addEventListener('scroll', onScroll, { passive: true });
 }
@@ -306,7 +314,8 @@ function renderLoadout() {
       </div>
       <div class="gear-col right">${SLOTS_RIGHT.filter(([s]) => s !== 'RANGED' || items.has(s)).map(([s, l]) => gearHtml(items.get(s), l)).join('')}</div>
     </div>
-    ${detailsHtml(c)}`;
+    ${detailsHtml(c)}
+    ${talentsHtml(c)}`;
 
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
@@ -361,6 +370,28 @@ function detailsHtml(c) {
     ['Berufe', (c.professions ?? []).map((p) => cell(profName(p.name), `${p.skill ?? '?'}/${p.max ?? '?'}`, p.max ? (p.skill / p.max) * 100 : null))],
   ].filter(([, cells]) => cells.length);
   return `<div class="details">${groups.map(([label, cells]) => `<div class="drow" style="--n:${cells.length}"><span class="dlabel">${label}</span>${cells.join('')}</div>`).join('')}</div>`;
+}
+
+// Talente: Classic zeigt die Punkte je Baum, Retail die Spezialisierung und Heldentalente.
+// Der Rechner-Link öffnet in Retail den genauen Build, in Classic den Rechner der Klasse.
+function talentsHtml(c) {
+  const t = c.talents;
+  if (!t) return '';
+  const max = Math.max(1, (state.data.maxLevel ?? 60) - 9);
+  const cells = t.trees?.length
+    ? t.trees.map((tr) => cell(tr.name ?? '?', tr.points, (tr.points / max) * 100))
+    : [cell('Spezialisierung', esc(c.spec ?? '?')), t.hero ? cell('Heldentalente', esc(t.hero)) : '', cell('Talente gewählt', t.total ?? t.picks.length)].filter(Boolean);
+  const split = t.trees?.length ? `<b class="split">${t.trees.map((tr) => tr.points).join(' / ')}</b>` : '';
+  const domain = state.data.wowhead ? `/${state.data.wowhead}` : '';
+  const picks = (t.picks ?? []).map((p) => {
+    const name = `${esc(p.name)}${p.rank > 1 ? ` <em>${p.rank}</em>` : ''}`;
+    return p.spell ? `<a href="https://www.wowhead.com${domain}/spell=${p.spell}" target="_blank" rel="noopener">${name}</a>` : `<span>${name}</span>`;
+  }).join('');
+  return `<div class="talents">
+    <div class="drow" style="--n:${cells.length + (t.calc ? 1 : 0)}"><span class="dlabel">Talente ${split}</span>${cells.join('')}
+      ${t.calc ? `<a class="dcell calc" href="${esc(t.calc)}" target="_blank" rel="noopener"><span>${t.trees?.length ? 'Rechner der Klasse' : 'Build im Rechner'}</span><b>Wowhead ↗</b></a>` : ''}</div>
+    ${picks ? `<div class="talent-list">${picks}</div>` : ''}
+  </div>`;
 }
 
 function cell(label, value, pct = null) {
@@ -447,49 +478,134 @@ function renderRoute() {
 }
 
 // ---------------------------------------------------------------------------
+// Aktivität: Level-Ups, neue Items, Berufe, Gilde und gemeinsame Sessions, neueste zuerst
+
+function renderFeed() {
+  const events = [...state.feed.events].sort((a, b) => b.t - a.t);
+  document.getElementById('aktivitaet').hidden = !events.length;
+  document.getElementById('nav-aktivitaet').hidden = !events.length;
+  if (!events.length) return;
+
+  const shown = events.slice(0, state.feedShown);
+  const days = new Map();
+  for (const e of shown) {
+    const day = new Date(e.t).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit' });
+    if (!days.has(day)) days.set(day, []);
+    days.get(day).push(e);
+  }
+  const week = events.filter((e) => e.type === 'level' && Date.now() - e.t < 7 * 864e5).reduce((n, e) => n + (e.to - e.from), 0);
+  document.getElementById('feed-note').textContent = week ? `${week} LEVEL IN 7 TAGEN` : `${events.length} EREIGNISSE`;
+
+  const el = document.getElementById('feed');
+  el.innerHTML = [...days].map(([day, list]) => `<div class="feed-day"><h3>${day}</h3><ul>${list.map(feedItemHtml).join('')}</ul></div>`).join('')
+    + (events.length > shown.length ? `<button type="button" class="chip-btn feed-more">Ältere anzeigen (${events.length - shown.length})</button>` : '');
+  el.querySelectorAll('img').forEach(imgFallback);
+  el.querySelector('.feed-more')?.addEventListener('click', () => { state.feedShown += 30; renderFeed(); });
+  window.$WowheadPower?.refreshLinks?.();
+}
+
+function feedItemHtml(e) {
+  const time = new Date(e.t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  const c = state.data.characters.find((x) => x.key === e.key);
+  const name = (key) => esc(state.data.characters.find((x) => x.key === key)?.name ?? key.split('/').pop());
+  const who = c ? `<b class="who" style="--cls:${classColor(c)}">${esc(c.name)}</b>` : e.key ? `<b class="who">${name(e.key)}</b>` : '';
+  const row = (cls, icon, text) => `<li class="ev ${cls}"${c ? ` style="--cls:${classColor(c)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
+
+  switch (e.type) {
+    case 'level':
+      if (e.max) return row('ev-max', '★', `erreicht <strong>Level ${e.to}</strong>, Max-Level!`);
+      return row('ev-level', '▲', e.to - e.from > 1 ? `steigt von ${e.from} auf <strong>Level ${e.to}</strong>` : `erreicht <strong>Level ${e.to}</strong>`);
+    case 'item': {
+      const q = (e.quality || 'COMMON').toLowerCase();
+      const img = `<img class="ico sm b-${q}" src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy">`;
+      return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}${e.slot ? ` <em>${esc(e.slot)}</em>` : ''}`);
+    }
+    case 'prof':
+      return row('ev-prof', '⚒', e.learned ? `lernt <strong>${esc(profName(e.name))}</strong>` : `${esc(profName(e.name))} auf <strong>${e.skill}</strong>`);
+    case 'guild':
+      return row('ev-guild', '⚑', e.guild ? `tritt <strong>&lt;${esc(e.guild)}&gt;</strong> bei` : `verlässt <strong>&lt;${esc(e.from ?? '')}&gt;</strong>`);
+    case 'session': {
+      const hours = e.start ? Math.max(0, (e.t - e.start) / 36e5) : null;
+      return row('ev-session', '◆', `<strong>Gemeinsame Session</strong> · ${(e.players ?? []).map(name).join(', ')} · Ø ${e.gain > 0 ? '+' : ''}${fmtDec(e.gain)} Level${hours >= 0.5 ? ` · Logouts über ${fmtDec(hours)} Std.` : ''}`);
+    }
+    default:
+      return '';
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Verlauf
+
+// Punkte je Charakter auf einer Zeitachse. Der Tageswert zählt zum Ende seines Tages.
+// Für das Level kommen die Level-Ups aus dem Feed dazu, die auf die Stunde genau sind.
+function seriesPoints(c, metric) {
+  const end = Date.parse(state.data.generatedAt) || Date.now();
+  const pts = (state.history[c.key] ?? []).map((p) => ({ t: Math.min(Date.parse(p.d) + 864e5 - 1, end), v: p[metric] ?? 0 }));
+  if (metric === 'level') {
+    for (const e of state.feed.events) {
+      if (e.key !== c.key || e.type !== 'level') continue;
+      pts.push({ t: e.t - 1, v: e.from }, { t: e.t, v: e.to });
+    }
+    if (pts.length && c.level) pts.push({ t: end, v: c.level });
+  }
+  pts.sort((a, b) => a.t - b.t);
+  // Ein Level-Up-Ereignis kann vor einem Tageswert desselben Tages liegen, der schon das neue Level zeigt.
+  // Die Kurve fällt deshalb nie unter einen früheren Wert, solange es um Level geht.
+  if (metric === 'level') for (let i = 1; i < pts.length; i++) pts[i].v = Math.max(pts[i].v, pts[i - 1].v);
+  return pts.filter((p, i) => i === 0 || i === pts.length - 1 || p.v !== pts[i - 1].v || p.v !== pts[i + 1].v);
+}
 
 function renderHistory() {
   const el = document.getElementById('history');
-  const series = state.chars.filter((c) => state.history[c.key]?.length).map((c) => ({ c, pts: state.history[c.key] }));
-  const days = [...new Set(series.flatMap((s) => s.pts.map((p) => p.d)))].sort();
-  const first = days[0];
+  const metric = state.data.era === 'retail' ? 'ilvl' : 'level';
+  const series = state.chars.map((c) => ({ c, pts: seriesPoints(c, metric) })).filter((s) => s.pts.length);
+  const times = series.flatMap((s) => s.pts.map((p) => p.t));
+  const t0 = Math.min(...times), t1 = Math.max(...times);
 
-  // Ohne mindestens zwei Tage gibt es keine Kurve. Dann bleibt der Bereich samt Navigationspunkt ausgeblendet.
-  const hasData = days.length >= 2;
+  // Ohne zwei Zeitpunkte gibt es keine Kurve. Dann bleibt der Bereich samt Navigationspunkt ausgeblendet.
+  const hasData = series.some((s) => s.pts.length >= 2) && t1 - t0 >= 36e5;
   document.getElementById('verlauf').hidden = !hasData;
   document.getElementById('nav-verlauf').hidden = !hasData;
   if (!hasData) return;
 
   // Die Kurve zeigt den Zuwachs seit dem ersten Wert, damit unterschiedliche Startwerte vergleichbar bleiben.
-  const metric = state.data.era === 'retail' ? 'ilvl' : 'level';
-  const delta = (pts, p) => (p[metric] ?? 0) - (pts[0][metric] ?? 0);
+  const delta = (pts, p) => p.v - pts[0].v;
   const vals = series.flatMap((s) => s.pts.map((p) => delta(s.pts, p)));
   const min = Math.min(...vals), max = Math.max(...vals);
   const W = 800, H = 260, P = 28;
-  const x = (d) => P + (days.indexOf(d) / (days.length - 1)) * (W - 2 * P);
+  const x = (t) => P + ((t - t0) / (t1 - t0)) * (W - 2 * P);
   const y = (v) => H - P - ((v - min) / Math.max(max - min, 1)) * (H - 2 * P);
   const lines = series.map(({ c, pts }) => {
     const color = classColor(c);
-    const path = pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.d).toFixed(1)},${y(delta(pts, p)).toFixed(1)}`).join(' ');
+    // Level steigen in Stufen, Itemlevel als Linie.
+    const path = pts.map((p, i) => {
+      const px = x(p.t).toFixed(1), py = y(delta(pts, p)).toFixed(1);
+      if (!i) return `M${px},${py}`;
+      return metric === 'level' ? `H${px} V${py}` : `L${px},${py}`;
+    }).join(' ');
     const last = pts.at(-1);
-    return `<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px ${color})"/>
-      <circle cx="${x(last.d)}" cy="${y(delta(pts, last))}" r="4" fill="${color}"/>`;
+    return `<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 6px ${color})"/>
+      <circle cx="${x(last.t)}" cy="${y(delta(pts, last))}" r="4" fill="${color}"/>`;
   }).join('');
 
-  const since = days.find((d) => (Date.parse(days.at(-1)) - Date.parse(d)) / 864e5 <= 7) ?? first;
-  const recap = series.map(({ c, pts }) => {
-    const a = pts.find((p) => p.d >= since) ?? pts[0];
-    const b = pts.at(-1);
+  const days = [...new Set(series.flatMap((s) => (state.history[s.c.key] ?? []).map((p) => p.d)))].sort();
+  const since = days.find((d) => (Date.parse(days.at(-1)) - Date.parse(d)) / 864e5 <= 7) ?? days[0];
+  const recap = series.map(({ c }) => {
+    const hist = state.history[c.key] ?? [];
+    const a = hist.find((p) => p.d >= since) ?? hist[0];
+    const b = hist.at(-1);
     const parts = [];
-    if (b.level - a.level) parts.push(`${signed(b.level - a.level)} Level`);
-    if ((b.ilvl ?? 0) - (a.ilvl ?? 0)) parts.push(`${signed(b.ilvl - a.ilvl)} iLvl`);
-    if ((b.epics ?? 0) - (a.epics ?? 0)) parts.push(`${signed(b.epics - a.epics)} episch`);
+    if (a && b) {
+      if (b.level - a.level) parts.push(`${signed(b.level - a.level)} Level`);
+      if ((b.ilvl ?? 0) - (a.ilvl ?? 0)) parts.push(`${signed(b.ilvl - a.ilvl)} iLvl`);
+      if ((b.epics ?? 0) - (a.epics ?? 0)) parts.push(`${signed(b.epics - a.epics)} episch`);
+    }
     return `<div style="--cls:${classColor(c)}"><b>${esc(c.name)}</b><span>${parts.join(' · ') || 'keine Änderung'}</span></div>`;
   }).join('');
 
-  document.getElementById('history-note').textContent = `${metric === 'ilvl' ? 'ITEMLEVEL' : 'LEVEL'}-ZUWACHS · SEIT ${fmtDay(first)}`;
+  document.getElementById('history-note').textContent = `${metric === 'ilvl' ? 'ITEMLEVEL' : 'LEVEL'}-ZUWACHS · SEIT ${fmtDay(t0)}`;
   el.innerHTML = `<div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Verlauf">${lines}</svg>
+    <div class="axis"><span>${fmtStamp(t0)}</span><span>${fmtStamp(t1)}</span></div>
     <div class="legend">${series.map(({ c }) => `<span style="--cls:${classColor(c)}"><i></i>${esc(c.name)}</span>`).join('')}</div></div>
     <div class="recap"><h3>Letzte 7 Tage</h3>${recap}</div>`;
 }
@@ -501,6 +617,7 @@ function classColor(c) { return M.CLASSES[c.classId]?.color ?? '#c9c2b3'; }
 function profName(n) { return M.PROFESSIONS[n] ?? n; }
 function signed(n) { return n > 0 ? `+${n}` : String(n); }
 function fmtDec(n) { return Number(n).toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+function fmtStamp(t) { return new Date(t).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); }
 function fmtDay(d) { return new Date(d).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
 
 function ago(ts) {

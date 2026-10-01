@@ -5,12 +5,18 @@
 // und speichert jede Datei, die der Viewer dabei anfordert. Die Live-Seite lädt danach
 // alles von GitHub Pages.
 //
-// Aufruf: node scripts/mirror-models.mjs   (nach scripts/fetch.mjs)
+// Aufruf:
+//   node scripts/mirror-models.mjs            spiegeln (nach scripts/fetch.mjs)
+//   node scripts/mirror-models.mjs --hash     Kennung des aktuellen 3D-Stands ausgeben
+//   node scripts/mirror-models.mjs --restore  Dateien ohne Browser aus .model-cache/ übernehmen,
+//                                             wenn sich am 3D-Stand nichts geändert hat
+//
 // Bereits geladene Dateien liegen in .model-cache/ und werden nicht erneut geholt.
+// .model-cache/manifest.json merkt sich, welche Dateien zu welchem 3D-Stand gehören.
 
-import { chromium } from 'playwright';
 import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
+import { existsSync, appendFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -26,13 +32,29 @@ const HEADERS = {
 };
 // Diese Animationen bietet die Seite an. Der Viewer lädt manche davon erst beim Abspielen.
 const ANIMATIONS = ['Stand', 'EmoteWave', 'EmoteCheer', 'EmoteDance', 'EmoteLaugh', 'EmoteRoar', 'Run'];
+const MANIFEST = new URL('.model-cache/manifest.json', root);
 
 const models = data.characters.filter((c) => c.model).map((c) => ({ key: c.key, ...c.model }));
+const hash = stateHash();
+
+if (process.argv.includes('--hash')) {
+  console.log(hash);
+  process.exit(0);
+}
+
+if (process.argv.includes('--restore')) {
+  const restored = await restore();
+  if (process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `restored=${restored}\n`);
+  process.exit(0);
+}
+
 if (!models.length) {
   console.log('Keine 3D-Daten vorhanden, nichts zu spiegeln.');
   process.exit(0);
 }
 
+const { chromium } = await import('playwright');
+const files = new Set();
 let saved = 0;
 let fetched = 0;
 let failed = 0;
@@ -65,9 +87,48 @@ for (const m of models) {
 }
 
 await browser.close();
+await mkdir(new URL('.model-cache/', root), { recursive: true });
+await writeFile(MANIFEST, JSON.stringify({ hash, created: Date.now(), failed, files: [...files].sort() }, null, 1) + '\n');
 console.log(`Spiegelung fertig: ${saved} Dateien gespeichert (${fetched} neu geladen, ${failed} nicht gefunden).`);
 
 // ---------------------------------------------------------------------------
+
+// Kennung des 3D-Stands: ändert sich, sobald ein Charakter anders aussieht, andere Items trägt
+// oder die Seite andere Animationen anbietet.
+function stateHash() {
+  const state = { env, animations: ANIMATIONS, models: [...models].sort((a, b) => a.key.localeCompare(b.key)) };
+  return createHash('sha256').update(JSON.stringify(state)).digest('hex').slice(0, 16);
+}
+
+// Übernimmt die Dateien des letzten Spiegelns, wenn der 3D-Stand gleich geblieben ist.
+async function restore() {
+  if (!models.length) {
+    console.log('Keine 3D-Daten vorhanden, nichts zu übernehmen.');
+    return true;
+  }
+  const manifest = existsSync(MANIFEST) ? JSON.parse(await readFile(MANIFEST, 'utf8')) : null;
+  if (manifest?.hash !== hash) {
+    console.log('3D-Stand hat sich geändert, neu spiegeln.');
+    return false;
+  }
+  // Fehlten beim letzten Spiegeln Dateien, gibt es alle 6 Stunden einen neuen Versuch.
+  if (manifest.failed && Date.now() - (manifest.created ?? 0) > 6 * 3600 * 1000) {
+    console.log(`Beim letzten Spiegeln fehlten ${manifest.failed} Dateien, neuer Versuch.`);
+    return false;
+  }
+  const missing = manifest.files.filter((p) => !existsSync(new URL(`.model-cache${p}`, root)));
+  if (missing.length || !manifest.files.length) {
+    console.log(`${missing.length} Dateien fehlen im Cache, neu spiegeln.`);
+    return false;
+  }
+  for (const p of manifest.files) {
+    const out = new URL(`site${p}`, root);
+    await mkdir(dirname(fileURLToPath(out)), { recursive: true });
+    await copyFile(new URL(`.model-cache${p}`, root), out);
+  }
+  console.log(`3D-Stand unverändert, ${manifest.files.length} Dateien aus dem Cache übernommen.`);
+  return true;
+}
 
 // Wartet, bis der Viewer eine Weile keine Datei mehr anfordert.
 async function settle(quiet = 3000) {
@@ -89,6 +150,7 @@ async function mirrorFile(path) {
     await writeFile(cacheFile, Buffer.from(await res.arrayBuffer()));
     fetched++;
   }
+  files.add(path);
   if (!existsSync(outFile)) {
     await mkdir(dirname(fileURLToPath(outFile)), { recursive: true });
     await copyFile(cacheFile, outFile);
