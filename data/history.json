@@ -4,8 +4,7 @@
    "d": "2026-10-01",
    "level": 90,
    "ilvl": 289,
-   "epics": 15,
-   "ach": 10970
+   "epics": 15
   }
  ],
  "blackmoore/lizli": [
@@ -13,8 +12,7 @@
    "d": "2026-10-01",
    "level": 90,
    "ilvl": 312,
-   "epics": 16,
-   "ach": 25350
+   "epics": 16
   }
  ],
  "blackmoore/muhrice": [
@@ -22,8 +20,7 @@
    "d": "2026-10-01",
    "level": 80,
    "ilvl": 609,
-   "epics": 16,
-   "ach": 4630
+   "epics": 16
   }
  ],
  "thrall/donbratzo": [
@@ -31,8 +28,7 @@
    "d": "2026-10-01",
    "level": 90,
    "ilvl": 284,
-   "epics": 15,
-   "ach": 23735
+   "epics": 15
   }
  ],
  "tarren-mill/meeresdk": [
@@ -40,8 +36,7 @@
    "d": "2026-10-01",
    "level": 90,
    "ilvl": 326,
-   "epics": 16,
-   "ach": 50920
+   "epics": 16
   }
  ]
 }
