@@ -1,0 +1,151 @@
+{
+ "era": "retail",
+ "snapshot": {
+  "blackmoore/schmou": {
+   "level": 90,
+   "lastLogin": 1781364178000,
+   "guild": null,
+   "items": {
+    "HEAD": 151333,
+    "NECK": 240950,
+    "SHOULDER": 249959,
+    "CHEST": 249964,
+    "WAIST": 151327,
+    "LEGS": 249960,
+    "FEET": 249963,
+    "WRIST": 151328,
+    "HANDS": 249962,
+    "FINGER_1": 251217,
+    "FINGER_2": 193708,
+    "TRINKET_1": 193701,
+    "TRINKET_2": 252420,
+    "BACK": 239656,
+    "MAIN_HAND": 237846
+   },
+   "profs": {
+    "Herbalism": 6,
+    "Mining": 68,
+    "Archaeology": 1,
+    "Cooking": 88,
+    "Fishing": 6
+   }
+  },
+  "blackmoore/lizli": {
+   "level": 90,
+   "lastLogin": 1790882836000,
+   "guild": null,
+   "items": {
+    "HEAD": 271555,
+    "NECK": 272229,
+    "SHOULDER": 271553,
+    "CHEST": 271558,
+    "WAIST": 239664,
+    "LEGS": 271554,
+    "FEET": 272232,
+    "WRIST": 272238,
+    "HANDS": 271556,
+    "FINGER_1": 275527,
+    "FINGER_2": 272149,
+    "TRINKET_1": 248583,
+    "TRINKET_2": 251792,
+    "BACK": 272230,
+    "MAIN_HAND": 272270,
+    "OFF_HAND": 245769
+   },
+   "profs": {
+    "Herbalism": 100,
+    "Alchemy": 100,
+    "Archaeology": 1,
+    "Cooking": 100,
+    "Fishing": 22
+   }
+  },
+  "blackmoore/muhrice": {
+   "level": 80,
+   "lastLogin": 1730238650000,
+   "guild": null,
+   "items": {
+    "HEAD": 211984,
+    "NECK": 219217,
+    "SHOULDER": 219153,
+    "CHEST": 211987,
+    "WAIST": 219152,
+    "LEGS": 221173,
+    "FEET": 219157,
+    "WRIST": 219151,
+    "HANDS": 211032,
+    "FINGER_1": 159461,
+    "FINGER_2": 225751,
+    "TRINKET_1": 225638,
+    "TRINKET_2": 219315,
+    "BACK": 219186,
+    "MAIN_HAND": 178730,
+    "OFF_HAND": 222432
+   },
+   "profs": {
+    "Blacksmithing": 55,
+    "Mining": 100,
+    "Archaeology": 32,
+    "Cooking": 1
+   }
+  },
+  "thrall/donbratzo": {
+   "level": 90,
+   "lastLogin": 1785349832000,
+   "guild": null,
+   "items": {
+    "HEAD": 249988,
+    "NECK": 50228,
+    "SHOULDER": 151323,
+    "CHEST": 249991,
+    "WAIST": 244611,
+    "LEGS": 249987,
+    "FEET": 244610,
+    "WRIST": 151321,
+    "HANDS": 249989,
+    "FINGER_1": 193708,
+    "FINGER_2": 151308,
+    "TRINKET_1": 252420,
+    "TRINKET_2": 193701,
+    "BACK": 258575,
+    "MAIN_HAND": 258412
+   },
+   "profs": {
+    "Herbalism": 10,
+    "Alchemy": 1,
+    "Cooking": 1,
+    "Fishing": 4
+   }
+  },
+  "tarren-mill/meeresdk": {
+   "level": 90,
+   "lastLogin": 1790882092000,
+   "guild": "Echo",
+   "items": {
+    "HEAD": 271474,
+    "NECK": 268265,
+    "SHOULDER": 271472,
+    "CHEST": 271477,
+    "WAIST": 268259,
+    "LEGS": 271473,
+    "FEET": 268260,
+    "WRIST": 237834,
+    "HANDS": 271475,
+    "FINGER_1": 275527,
+    "FINGER_2": 268266,
+    "TRINKET_1": 270173,
+    "TRINKET_2": 270163,
+    "BACK": 272230,
+    "MAIN_HAND": 268214,
+    "TABARD": 69210
+   },
+   "profs": {
+    "Engineering": 42,
+    "Alchemy": 100,
+    "Cooking": 1,
+    "Fishing": 1
+   }
+  }
+ },
+ "events": []
+}
