@@ -6,11 +6,11 @@
   --text: #e6edf3;
   --muted: #8b97a5;
   --dim: #5b6673;
-  --accent: #ff2d95;
+  --accent: #00e6c3;
   --warn: #ff3a5e;
   --radius: 18px;
   --radius-sm: 12px;
-  --cls: #ff2d95;
+  --cls: #00e6c3;
   --q-poor: #9d9d9d;
   --q-common: #ffffff;
   --q-uncommon: #1eff00;
@@ -154,6 +154,9 @@ main, footer, nav { position: relative; z-index: 1; }
   padding: 14px 16px; border-radius: var(--radius-sm); background: rgba(255,255,255,.035); border: 1px solid var(--line); overflow: hidden;
 }
 .buff::after { content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: var(--c, var(--line)); box-shadow: 0 0 12px var(--c, transparent); }
+.buff { text-align: left; font: inherit; color: inherit; cursor: pointer; transition: border-color .2s, background .2s; }
+.buff:hover, .buff.open { border-color: color-mix(in srgb, var(--c, var(--accent)) 55%, var(--line)); background: rgba(255,255,255,.06); }
+.buff.off:hover, .buff.off.open { opacity: .85; }
 .buff b { font-size: 14px; line-height: 1.2; }
 .buff small { font: 500 10px var(--mono); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
 .buff .who { color: var(--text); }
@@ -289,3 +292,21 @@ main, footer, nav { position: relative; z-index: 1; }
 }
 
 [hidden] { display: none !important; }
+
+.popover {
+  position: absolute; z-index: 20; padding: 16px 18px; border-radius: var(--radius-sm);
+  background: rgba(14,18,23,.97); border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  box-shadow: 0 18px 50px rgba(0,0,0,.6), 0 0 30px color-mix(in srgb, var(--accent) 12%, transparent);
+  backdrop-filter: blur(12px); animation: rise .18s both; font-size: 13px;
+}
+.popover .pop-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.popover .pop-head b { font-size: 15px; }
+.popover .pop-head span { font: 500 10px var(--mono); color: var(--accent); text-transform: uppercase; letter-spacing: .08em; text-align: right; }
+.popover p { margin: 8px 0 12px; color: #c4ccd4; line-height: 1.5; }
+.popover .pop-row { padding-top: 10px; margin-top: 10px; border-top: 1px solid var(--line); line-height: 1.6; }
+.popover .pop-row small { display: block; font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px; }
+.popover .pop-row span { font-weight: 700; }
+.popover .pop-row .miss { color: var(--muted); font-weight: 500; }
+.popover a { color: var(--accent); font-weight: 600; }
+.popover a:hover { text-decoration: underline; }
+.popover em { font-style: normal; font: 500 11px var(--mono); color: var(--dim); }

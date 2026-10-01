@@ -93,7 +93,6 @@ function renderKpis() {
 
   document.getElementById('kpis').innerHTML = [
     countdownKpi(),
-    kpi(`${ok.filter((c) => c.lastLogin && Date.now() - c.lastLogin < 864e5).length}/${ok.length}`, 'Heute aktiv'),
     kpi(lo === hi ? lo : `${lo}-${hi}`, 'Level-Spanne'),
     hoursKpi(ok),
     tempoKpi(),
@@ -210,27 +209,63 @@ function select(key) {
 function renderBuffs() {
   const ok = state.chars.filter((c) => c.level);
   const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
-
-  const buffs = M.BUFFS;
-  let active = 0;
-  document.getElementById('buffs').innerHTML = buffs.map((b) => {
-    const who = providers(b.classes);
-    if (who.length) active++;
-    const classes = b.classes.map((id) => M.CLASSES[id]?.name).join(', ');
+  const card = (entry, kind, i, withEffect) => {
+    const who = providers(entry.classes);
+    const classes = entry.classes.map((id) => M.CLASSES[id]?.name).join(', ');
+    const attrs = `type="button" data-kind="${kind}" data-idx="${i}" aria-haspopup="dialog"`;
     return who.length
-      ? `<div class="buff" style="--c:${classColor(who[0])}"><b>${esc(b.name)}</b><small>${esc(b.effect)} · <span class="who">${who.map((c) => esc(c.name)).join(', ')}</span></small></div>`
-      : `<div class="buff off"><b>${esc(b.name)}</b><small>fehlt · ${esc(classes)}</small></div>`;
-  }).join('');
-  document.getElementById('buff-count').textContent = `${active} / ${buffs.length} AKTIV`;
+      ? `<button ${attrs} class="buff" style="--c:${classColor(who[0])}"><b>${esc(entry.name)}</b><small>${withEffect ? `${esc(entry.effect)} · ` : ''}<span class="who">${who.map((c) => esc(c.name)).join(', ')}</span></small></button>`
+      : `<button ${attrs} class="buff off"><b>${esc(entry.name)}</b><small>fehlt · ${esc(classes)}</small></button>`;
+  };
 
-  document.getElementById('tools').innerHTML = M.TOOLS.map((t) => {
-    const who = providers(t.classes);
-    const classes = t.classes.map((id) => M.CLASSES[id]?.name).join(', ');
-    return who.length
-      ? `<div class="buff" style="--c:${classColor(who[0])}"><b>${esc(t.name)}</b><small><span class="who">${who.map((c) => esc(c.name)).join(', ')}</span></small></div>`
-      : `<div class="buff off"><b>${esc(t.name)}</b><small>fehlt · ${esc(classes)}</small></div>`;
-  }).join('');
+  document.getElementById('buffs').innerHTML = M.BUFFS.map((b, i) => card(b, 'buff', i, true)).join('');
+  document.getElementById('tools').innerHTML = M.TOOLS.map((t, i) => card(t, 'tool', i, false)).join('');
+  const active = M.BUFFS.filter((b) => providers(b.classes).length).length;
+  document.getElementById('buff-count').textContent = `${active} / ${M.BUFFS.length} AKTIV`;
+
+  document.querySelectorAll('#gruppe .buff').forEach((el) => el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const entry = (el.dataset.kind === 'buff' ? M.BUFFS : M.TOOLS)[el.dataset.idx];
+    togglePopover(el, popoverHtml(entry, providers(entry.classes)));
+  }));
 }
+
+// Tooltip zu Buffs und Tools: öffnet per Klick unter der Karte, schließt per Klick daneben oder Escape.
+function popoverHtml(entry, who) {
+  const classes = entry.classes.map((id) => M.CLASSES[id]?.name).join(', ');
+  return `<div class="pop-head"><b>${esc(entry.name)}</b>${entry.effect ? `<span>${esc(entry.effect)}</span>` : ''}</div>
+    <p>${esc(entry.desc)}</p>
+    <div class="pop-row"><small>In der Gruppe</small>${who.length ? who.map((c) => `<span style="color:${classColor(c)}">${esc(c.name)}</span>`).join(', ') : `<span class="miss">niemand · möglich mit ${esc(classes)}</span>`}</div>
+    <div class="pop-row"><small>Zauber</small>${entry.spells.map(([id, name, cls]) => `<a href="https://de.wowhead.com/classic/spell=${id}" target="_blank" rel="noopener">${esc(name)}</a> <em>${esc(M.CLASSES[cls]?.name ?? '')}</em>`).join('<br>')}</div>`;
+}
+
+let popover = null;
+function togglePopover(anchor, html) {
+  if (popover?.anchor === anchor) return closePopover();
+  closePopover();
+  const el = document.createElement('div');
+  el.className = 'popover';
+  el.setAttribute('role', 'dialog');
+  el.innerHTML = html;
+  document.body.append(el);
+  const r = anchor.getBoundingClientRect();
+  const w = Math.min(340, innerWidth - 24);
+  el.style.width = `${w}px`;
+  el.style.left = `${Math.max(12, Math.min(r.left, innerWidth - w - 12)) + scrollX}px`;
+  el.style.top = `${r.bottom + 8 + scrollY}px`;
+  anchor.classList.add('open');
+  popover = { el, anchor };
+  window.$WowheadPower?.refreshLinks?.();
+}
+
+function closePopover() {
+  if (!popover) return;
+  popover.el.remove();
+  popover.anchor.classList.remove('open');
+  popover = null;
+}
+document.addEventListener('click', (e) => { if (popover && !popover.el.contains(e.target)) closePopover(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopover(); });
 
 // ---------------------------------------------------------------------------
 // Loadout des gewählten Charakters
