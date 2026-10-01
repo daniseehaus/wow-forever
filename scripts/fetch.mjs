@@ -322,9 +322,8 @@ async function updateHistory(data) {
 // Haben sich alle Charaktere innerhalb von 3 Stunden ausgeloggt und liegt das nach der letzten
 // erkannten Session, zählt das als neue gemeinsame Session. Der Level-Zuwachs seit dem letzten
 // Stand ist ihr Ergebnis (die Gruppe spielt nur zusammen).
-const SESSION_WINDOW = 3 * 3600 * 1000;
-
 async function updateSessions(data) {
+  const SESSION_WINDOW = 3 * 3600 * 1000;
   const file = new URL('data/sessions.json', root);
   const state = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : { lastEnd: 0, levels: {}, list: [] };
   if (!process.env.GITHUB_ACTIONS) return state;
