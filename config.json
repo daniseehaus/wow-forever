@@ -1,18 +1,35 @@
 {
-  "title": "WoW Forever · Unsere Gruppe",
+  "title": "Geilbleiber",
   "region": "eu",
   "locale": "de_DE",
   "maxLevel": 90,
+  "era": "retail",
+  "modelEnv": "live",
   "namespaces": {
     "profile": "profile-eu",
     "static": "static-eu"
   },
   "wowhead": "",
   "characters": [
-    { "realm": "Blackmoore", "name": "Schmou" },
-    { "realm": "Blackmoore", "name": "Lizli" },
-    { "realm": "Blackmoore", "name": "Muhrice" },
-    { "realm": "Thrall", "name": "Donbratzo" },
-    { "realm": "Tarren Mill", "name": "Meeresdk" }
+    {
+      "realm": "Blackmoore",
+      "name": "Schmou"
+    },
+    {
+      "realm": "Blackmoore",
+      "name": "Lizli"
+    },
+    {
+      "realm": "Blackmoore",
+      "name": "Muhrice"
+    },
+    {
+      "realm": "Thrall",
+      "name": "Donbratzo"
+    },
+    {
+      "realm": "Tarren Mill",
+      "name": "Meeresdk"
+    }
   ]
 }

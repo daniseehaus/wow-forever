@@ -1,0 +1,13 @@
+{
+  "name": "wow-forever",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch.mjs",
+    "mirror": "node scripts/mirror-models.mjs",
+    "proxy": "node scripts/model-proxy.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

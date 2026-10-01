@@ -2,3 +2,7 @@
 site/data.json
 .DS_Store
 .claude/
+site/history.json
+node_modules/
+.model-cache/
+site/modelviewer/
