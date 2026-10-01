@@ -19,15 +19,14 @@
   <nav class="nav">
     <div class="wrap nav-in">
       <a class="brand" href="#top">
-        <span class="brand-mark">G</span>
         <span class="brand-text"><b id="brand">GEILBLEIBER</b><small id="brand-sub">EU</small></span>
       </a>
       <div class="nav-links">
         <a href="#top" class="active">Übersicht</a>
-        <a href="#gruppe">Gruppe</a>
         <a href="#loadout">Loadout</a>
+        <a href="#gruppe">Gruppe</a>
         <a href="#leveling">Leveling</a>
-        <a href="#verlauf">Verlauf</a>
+        <a href="#verlauf" id="nav-verlauf">Verlauf</a>
       </div>
       <div class="nav-right">
         <button id="toggle-3d" class="chip-btn" type="button" aria-pressed="true">3D an</button>
@@ -47,22 +46,23 @@
 
     <section class="tiles" id="tiles" aria-label="Charaktere"></section>
 
+
+    <section class="loadout" id="loadout"></section>
+
     <section class="panel buffs" id="gruppe">
       <div class="panel-head">
-        <h2>Buff-Abdeckung</h2>
+        <h2>Buffs</h2>
         <span class="mono" id="buff-count"></span>
       </div>
       <div class="buff-grid" id="buffs"></div>
       <div class="panel-head sub">
-        <h3>Werkzeuge</h3>
+        <h2>Tools</h2>
       </div>
-      <div class="tool-row" id="tools"></div>
+      <div class="buff-grid" id="tools"></div>
     </section>
 
-    <section class="loadout" id="loadout"></section>
-
     <section class="panel">
-      <div class="panel-head"><h2>Berufe-Matrix</h2><span class="mono" id="prof-note"></span></div>
+      <div class="panel-head"><h2>Berufe</h2></div>
       <div class="prof-matrix" id="profs"></div>
     </section>
 

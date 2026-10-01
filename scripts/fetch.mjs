@@ -63,6 +63,7 @@ async function buildLive() {
   return {
     generatedAt: new Date().toISOString(),
     title: config.title,
+    launch: config.launch ?? null,
     era: config.era ?? 'classic',
     modelEnv: config.modelEnv ?? 'classic',
     wowhead: config.wowhead,
