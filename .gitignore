@@ -1,0 +1,4 @@
+.env
+site/data.json
+.DS_Store
+.claude/

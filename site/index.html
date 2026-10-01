@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WoW Forever · Gruppe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>const whTooltips = { colorLinks: false, iconizeLinks: false, renameLinks: false };</script>
+  <script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1 id="title">WoW Forever</h1>
+      <p class="meta" id="meta">Lade Daten …</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <div class="seg" role="tablist" aria-label="Ansicht">
+        <button data-view="cards" class="active">Charaktere</button>
+        <button data-view="matrix">Ausrüstung</button>
+      </div>
+      <label class="sort">Sortieren
+        <select id="sort">
+          <option value="level">Level</option>
+          <option value="ilvl">Itemlevel</option>
+          <option value="name">Name</option>
+          <option value="class">Klasse</option>
+        </select>
+      </label>
+    </div>
+
+    <section id="stats" class="stats"></section>
+    <section id="view"></section>
+  </main>
+
+  <footer class="wrap foot">Daten: Battle.net API · Tooltips: Wowhead · Aktualisierung stündlich</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
