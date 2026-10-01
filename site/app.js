@@ -85,14 +85,13 @@ function setup3dToggle() {
 
 function renderKpis() {
   const ok = state.chars.filter((c) => c.level);
-  const avg = (list, f) => (list.length ? list.reduce((s, c) => s + (f(c) || 0), 0) / list.length : 0);
   const levels = ok.map((c) => c.level);
   const lo = Math.min(...levels), hi = Math.max(...levels);
   const dungeon = nextDungeon(ok);
 
   document.getElementById('kpis').innerHTML = [
     countdownKpi(),
-    kpi(fmtDec(avg(ok, (c) => c.level)), 'Ø Level'),
+    kpi(`${ok.filter((c) => c.lastLogin && Date.now() - c.lastLogin < 864e5).length}/${ok.length}`, 'Heute aktiv'),
     kpi(lo === hi ? lo : `${lo}-${hi}`, 'Level-Spanne'),
     kpi(esc(dungeon), 'Nächster Dungeon', 'txt'),
   ].join('');
