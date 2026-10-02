@@ -295,9 +295,9 @@ main, footer, nav { position: relative; z-index: 1; }
 .talent-list em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); margin-left: 2px; }
 
 /* Classic-Talentbäume: Raster mit 4 Spalten und 7 Reihen wie im Spiel. Teilweise = grün, Maximalrang = gold. */
-.talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.talents-head .dlabel { display: inline-flex; align-items: center; gap: 10px; }
-.talents-head .dlabel .split { display: block; margin: 0; font-size: 16px; line-height: 1; }
+.talents-head { display: flex; align-items: baseline; gap: 4px 16px; flex-wrap: wrap; }
+.talents-head .dlabel { display: inline-flex; align-items: baseline; gap: 10px; font-size: 13px; letter-spacing: .06em; }
+.talents-head .dlabel .split { display: block; margin: 0; font: 700 13px/1 var(--mono); letter-spacing: .06em; }
 .tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; transition: .2s; }
 .tcalc:hover { color: var(--accent-text); }
 .ttrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
@@ -441,7 +441,6 @@ main, footer, nav { position: relative; z-index: 1; }
 @media (max-width: 600px) {
   .ttrees { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .ttree { scroll-snap-align: start; padding: 12px 12px 14px; }
-  .tcalc { margin-left: 0; }
   body { font-size: 14px; }
   html { scroll-padding-top: 108px; }
   .nav-in { padding-top: 8px; padding-bottom: 8px; }
@@ -500,6 +499,11 @@ main, footer, nav { position: relative; z-index: 1; }
   .recap-row { padding: 10px 12px; }
   .ev { grid-template-columns: 40px 26px minmax(0, 1fr); gap: 8px; }
   .foot { flex-direction: column; }
+}
+/* Sehr schmale Handys: Talente und Rechner-Link bleiben in einer Zeile. */
+@media (max-width: 400px) {
+  .talents-head .dlabel, .talents-head .dlabel .split, .talents-head .tcalc { letter-spacing: 0; }
+  .talents-head .dlabel { gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
