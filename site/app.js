@@ -185,7 +185,7 @@ function renderTiles() {
   state.tileViewers = [];
   const el = document.getElementById('tiles');
   el.innerHTML = state.chars.map((c, i) => tileHtml(c, i)).join('');
-  el.querySelectorAll('.tile[data-key]').forEach((t) => t.addEventListener('click', () => select(t.dataset.key)));
+  el.querySelectorAll('.tile[data-key]').forEach((t) => t.addEventListener('click', () => { workerVoice(t.dataset.key); select(t.dataset.key); }));
   el.querySelectorAll('img').forEach(imgFallback);
   if (state.use3d) mountTiles();
 }
@@ -377,6 +377,31 @@ function setupReveal() {
     io.unobserve(en.target);
   }), { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('main > .loadout, main > .panel').forEach((el) => { el.classList.add('reveal'); io.observe(el); });
+}
+
+// ---------------------------------------------------------------------------
+// Arbeiter-Stimmen aus Warcraft III, deutsche Fassung (Peon, Acolyte, Peasant). Klick auf eine Kachel spielt eine zufällige Antwort.
+// Wer dieselbe Kachel schnell hintereinander anklickt, macht den Arbeiter wütend.
+
+const VOICE = {
+  what: [['peon', 4], ['acolyte', 5], ['peasant', 4]].flatMap(([w, n]) => Array.from({ length: n }, (_, i) => `${w}-what${i + 1}`)),
+  pissed: [['peon', 4], ['acolyte', 8], ['peasant', 5]].flatMap(([w, n]) => Array.from({ length: n }, (_, i) => `${w}-pissed${i + 1}`)),
+  audio: null, key: null, clicks: 0, last: 0, prev: null,
+};
+
+function workerVoice(key) {
+  const now = Date.now();
+  VOICE.clicks = key === VOICE.key && now - VOICE.last < 1500 ? VOICE.clicks + 1 : 1;
+  VOICE.key = key;
+  VOICE.last = now;
+  const pool = VOICE.clicks >= 4 ? VOICE.pissed : VOICE.what;
+  let name;
+  do name = pool[Math.floor(Math.random() * pool.length)]; while (name === VOICE.prev);
+  VOICE.prev = name;
+  VOICE.audio?.pause();
+  VOICE.audio = new Audio(`sounds/workers/${name}.mp3`);
+  VOICE.audio.volume = 0.7;
+  VOICE.audio.play().catch(() => {});
 }
 
 // ---------------------------------------------------------------------------
