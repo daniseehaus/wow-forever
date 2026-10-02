@@ -301,7 +301,7 @@ function renderGroup() {
     return `<div class="gcol"><div class="gsec"><span>${title}</span><b class="gcount" tabindex="0" data-tip="${esc(tip)}" data-tip-plain>${count}</b></div>${rows.join('')}</div>`;
   };
 
-  document.getElementById('group-count').textContent = `${buffs.length} / ${M.BUFFS.length} BUFFS · ${tools.length} / ${M.TOOLS.length} TOOLS · ${primaryHave} / ${M.PRIMARY_PROFESSIONS.length} BERUFE`;
+  document.getElementById('group-count').textContent = `${buffs.length + tools.length + primaryHave} / ${M.BUFFS.length + M.TOOLS.length + M.PRIMARY_PROFESSIONS.length} abgedeckt`;
   const el = document.getElementById('group');
   el.innerHTML = `<div class="g3">
       ${col('Buffs', buffs, `${buffs.length} / ${M.BUFFS.length}`, buffs.miss)}
@@ -491,7 +491,7 @@ function talentTreesHtml(c, t, layout) {
   return `<div class="talents">
     <div class="talents-head">
       <span class="dlabel">Talente <b class="split">${points.join(' / ')}</b></span>
-      <span class="tpoints">${total} von ${avail} Punkten verteilt</span>
+      <span class="tpoints">${total} / ${avail} Punkte${avail > total ? ` · <em>${avail - total} frei</em>` : ''}</span>
       ${calc ? `<a class="tcalc" href="${esc(calc)}" target="_blank" rel="noopener">Build im Rechner ↗</a>` : ''}
     </div>
     <div class="ttrees">${trees}</div>
@@ -656,7 +656,7 @@ function renderPrep() {
   const total = tasks.reduce((a, [, t]) => a + t.length, 0);
   el.hidden = !last;
   if (!last) return;
-  document.getElementById('prep-count').textContent = total ? `${total} offene ${total === 1 ? 'Punkt' : 'Punkte'}` : 'alles erledigt';
+  document.getElementById('prep-count').textContent = total ? `${total} offen` : 'alles erledigt';
   document.getElementById('prep').style.setProperty('--n', tasks.length);
   document.getElementById('prep').innerHTML = tasks.map(([c, list]) => `<div class="prep-col" style="--cls:${classColor(c)}">
     <b>${esc(c.name)}</b>
@@ -693,7 +693,10 @@ function renderRoute() {
   const bands = [[1, 10], [10, 20], [20, 30], [30, 40], [40, 50], [50, 60]];
   const inBand = (c, a, b) => c.level >= a && (c.level < b || (b === 60 && c.level <= 60));
 
-  document.getElementById('route-note').textContent = classicLevels ? 'PASSEND ZUM LEVEL' : 'AB FOREVER-START · VORSCHAU';
+  const lvs = ok.map((c) => c.level);
+  const lo = Math.min(...lvs), hi = Math.max(...lvs);
+  document.getElementById('route-note').textContent = !classicLevels ? 'AB FOREVER-START · VORSCHAU'
+    : !lvs.length ? '' : lo === hi ? `Gruppe LV ${lo}` : `Gruppe LV ${lo} bis ${hi}`;
 
   const place = (x, range) => `<a class="place" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener">
     <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span><span class="rg">${range}</span></a>`;

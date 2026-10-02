@@ -288,8 +288,10 @@ main, footer, nav { position: relative; z-index: 1; }
 .talent-list em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); margin-left: 2px; }
 
 /* Classic-Talentbäume: Raster mit 4 Spalten und 7 Reihen wie im Spiel. Teilweise = grün, Maximalrang = gold. */
-.talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.talents-head .dlabel { min-width: 100px; }
+.talents-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.talents-head .dlabel { align-self: baseline; }
+.talents-head .dlabel .split { display: inline; margin: 0 0 0 10px; font-size: 16px; }
+.tpoints em { font-style: normal; color: var(--accent-text); }
 .tpoints { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .06em; }
 .tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; transition: .2s; }
 .tcalc:hover { color: var(--accent-text); }
