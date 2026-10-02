@@ -264,8 +264,8 @@ function tileHtml(c, i) {
   </button>`;
 }
 
-// Model3D lädt die Modelle nacheinander. Alle Kacheln zeigen sofort Loading über dem 2D-Render.
-// Das fertige 3D-Modell ersetzt beides. Schlägt der Aufbau fehl, bleibt der 2D-Render stehen.
+// Model3D lädt die Modelle nacheinander. Alle Kacheln zeigen sofort Loading und erst danach ihr fertiges 3D-Modell.
+// Schlägt ein Modell fehl, erscheint stattdessen sein 2D-Render.
 // Alle Modelle zeichnen höchstens 60 Bilder pro Sekunde, auch auf 120-Hz-Displays (pace in model3d.js).
 async function mountTiles() {
   const env = state.data.modelEnv || 'classic';
@@ -300,7 +300,7 @@ async function mountTiles() {
   }
 }
 
-// Schräger Balken über dem 2D-Render, solange das 3D-Modell lädt.
+// Schräger Balken statt des 2D-Renders, solange das 3D-Modell lädt.
 function loadingBand(el) {
   const band = document.createElement('span');
   band.className = 'loading-band';
