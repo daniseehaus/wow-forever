@@ -94,7 +94,7 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 - **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`). Als Ladebalken läuft es als Welle
   durch die Kacheln: Es erscheint nur auf der Kachel, deren 3D-Modell gerade aufbaut.
 - **Forever-Start:** Zum Start und einmal am Starttag läuft „Forever ist live“ über die Seite. `?live` zeigt das Band vorab.
-- **Charakterwechsel:** Ein Klick auf eine Kachel scrollt zum Loadout. Dort zieht der Name als Band in Klassenfarbe durch.
+- **Charakterwechsel:** Ein Klick auf eine Kachel scrollt zum Loadout. Dabei zieht der Name als Band in Klassenfarbe über den ganzen Bildschirm.
   Das neue 3D-Modell baut erst danach auf, sonst ruckelt das Band.
 - **Einblenden:** Die Abschnitte gleiten beim Scrollen ins Bild. Zahlen stehen sofort fest, ohne Hochzählen.
 - **Bloodlust:** Ein Klick auf das Logo startet 15 Sekunden Bloodlust mit Sound, rotem Lauf-Rahmen um die Seite und pulsierenden Kacheln. Danach gilt 60 Sekunden „Gesättigt“.

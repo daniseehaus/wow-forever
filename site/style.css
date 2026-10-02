@@ -202,7 +202,7 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Solange das Band läuft, reagiert das Loadout nicht auf die Maus: kein Hover, keine Tooltips. */
 .loadout.swapping { pointer-events: none; }
 body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
-.loadout.swap .lo-head, .loadout.swap .lo-body, .loadout.swap .talents { animation: rise .5s .45s both; }
+.loadout.swap .lo-head, .loadout.swap .board-kpis, .loadout.swap .board, .loadout.swap .talents { animation: rise .5s .45s both; }
 
 /* Panels */
 .panel {
@@ -253,20 +253,29 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-weight: 700; font-size: 13px; }
 .chip.ok { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 30%, transparent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
-.lo-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 420px) minmax(0, 1fr); gap: 18px; align-items: center; }
-.gear-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.gear-col > a { display: block; min-width: 0; }
-.gear {
-  display: flex; align-items: center; gap: 12px; padding: 7px 10px; border-radius: var(--radius-sm);
-  background: rgba(255,255,255,.025); border: 1px solid transparent; transition: .2s; min-width: 0;
+/* Gear-Board: Kennzahlen oben, alle Slots als Karten. Rand links in Qualitätsfarbe, Balken für das iLvl. */
+.board-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
+.bk { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(255,255,255,.025); }
+.bk b { font: 800 30px/1 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bk span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bk.weak b { color: var(--accent-text); }
+.board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.board > a { display: block; min-width: 0; }
+.card {
+  --q: #555; display: flex; align-items: center; gap: 12px; min-width: 0; height: 100%; padding: 10px 12px;
+  border: 1px solid var(--line); border-left: 3px solid var(--q); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(255,255,255,.025); transition: background .15s, border-color .15s;
 }
-.gear:hover { background: rgba(255,255,255,.05); }
-.gear-col.left .gear { flex-direction: row-reverse; text-align: right; }
-.gear .txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.gear .nm { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gear .meta { font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.gear .meta .en { color: #7be07b; }
-.gear.empty { opacity: .35; }
+.card:hover { background: rgba(255,255,255,.05); border-color: var(--q); }
+.card .txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.card .nm { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .meta { font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .en { font: 500 10px var(--mono); color: #7be07b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card .bar { display: block; height: 3px; margin-top: 6px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
+.card .bar i { display: block; height: 100%; border-radius: 99px; background: var(--q); }
+.card.empty { opacity: .4; border-left-style: dashed; }
+.card.c-poor { --q: var(--q-poor); } .card.c-common { --q: #8a8a8a; } .card.c-uncommon { --q: var(--q-uncommon); } .card.c-rare { --q: #0070dd; }
+.card.c-epic { --q: #a335ee; } .card.c-legendary { --q: var(--q-legendary); } .card.c-artifact { --q: var(--q-artifact); } .card.c-heirloom { --q: var(--q-heirloom); }
 .ico { width: 44px; height: 44px; flex: none; border-radius: 10px; border: 2px solid #555; background: #000; object-fit: cover; }
 .ico.sm { width: 26px; height: 26px; border-radius: 7px; border-width: 1.5px; }
 .b-poor { border-color: var(--q-poor); } .b-common { border-color: #8a8a8a; } .b-uncommon { border-color: var(--q-uncommon); }
@@ -274,15 +283,6 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .b-legendary { border-color: var(--q-legendary); box-shadow: 0 0 14px rgba(255,128,0,.35); } .b-artifact { border-color: var(--q-artifact); } .b-heirloom { border-color: var(--q-heirloom); }
 .q-poor { color: var(--q-poor); } .q-common { color: var(--q-common); } .q-uncommon { color: var(--q-uncommon); } .q-rare { color: var(--q-rare); }
 .q-epic { color: var(--q-epic); } .q-legendary { color: var(--q-legendary); } .q-artifact { color: var(--q-artifact); } .q-heirloom { color: var(--q-heirloom); }
-
-.lo-stage { position: relative; height: 560px; }
-.lo-stage .ring { position: absolute; left: 50%; bottom: 22px; width: 320px; height: 72px; transform: translateX(-50%); border-radius: 50%; border: 2px solid var(--cls); box-shadow: 0 0 40px color-mix(in srgb, var(--cls) 60%, transparent), inset 0 0 30px color-mix(in srgb, var(--cls) 40%, transparent); }
-.lo-stage .beam { position: absolute; left: 50%; bottom: 58px; width: 2px; height: 440px; transform: translateX(-50%); background: linear-gradient(0deg, color-mix(in srgb, var(--cls) 70%, transparent), transparent); }
-.lo-stage .model { position: absolute; inset: 0 0 30px; }
-.lo-stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.5); filter: drop-shadow(0 0 30px color-mix(in srgb, var(--cls) 45%, transparent)); }
-.anims { display: flex; flex-wrap: nowrap; justify-content: center; gap: 6px; margin-top: 8px; overflow-x: auto; scrollbar-width: none; }
-.anims button { white-space: nowrap; border: 1px solid var(--line); background: rgba(255,255,255,.04); border-radius: 9px; padding: 6px 11px; font-size: 12px; font-weight: 600; cursor: pointer; transition: .2s; }
-.anims button:hover, .anims button.active { border-color: var(--accent-text); color: var(--accent-text); }
 
 .drow { display: grid; grid-template-columns: 100px repeat(var(--n, 6), minmax(0, 1fr)); gap: 10px; align-items: stretch; }
 .dlabel { align-self: center; font: 500 10px var(--mono); color: var(--dim); letter-spacing: .14em; text-transform: uppercase; }
@@ -453,7 +453,7 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .ev-session { border-radius: 6px; }
 .ev-session::before { left: -10px; }
 
-.recap-row:hover, .recap-row:focus-visible, .gear:hover {
+.recap-row:hover, .recap-row:focus-visible {
   border-color: var(--hl); box-shadow: 0 0 28px color-mix(in srgb, var(--hl) 30%, transparent); outline: none;
 }
 
@@ -469,10 +469,7 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .hero, .kpis { flex-wrap: wrap; }
   /* Unter dem Titel stehen die Kennzahlen wieder linksbündig. */
   .kpi { align-items: flex-start; text-align: left; }
-  .lo-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .lo-body > div:nth-child(2) { order: -1; grid-column: 1 / -1; }
-  .lo-stage { height: 460px; }
-  .gear-col.left .gear { flex-direction: row; text-align: left; }
+  .board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .drow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .dlabel { grid-column: 1 / -1; }
   .talent-list { padding-left: 0; }
@@ -542,13 +539,12 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .lo-head h2 { font-size: 44px; }
   .lo-head p { font-size: 13px; }
   .chip { padding: 5px 9px; font-size: 12px; }
-  .lo-body { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .lo-stage { height: 340px; }
-  .lo-stage .ring { width: 220px; height: 52px; }
-  .lo-stage .beam { height: 260px; }
-  .gear-col { gap: 4px; }
-  .gear { padding: 5px 8px; gap: 10px; }
-  .gear .ico { width: 36px; height: 36px; border-radius: 8px; }
+  .board-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .bk { padding: 10px 12px; }
+  .bk b { font-size: 24px; }
+  .board { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .card { padding: 7px 10px; gap: 10px; }
+  .card .ico { width: 36px; height: 36px; border-radius: 8px; }
   .drow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .dcell { padding: 10px 12px; }
   .dcell b { font-size: 20px; }
@@ -610,7 +606,7 @@ body.lust .tile { transition-duration: .12s; }
 .fx-lust::after { content: ''; position: absolute; inset: 6px; border-radius: 22px; box-shadow: inset 0 0 60px rgba(255,42,61,.45); }
 body.lust .lust-ring > i { animation: lust-spin 8s linear infinite; }
 @keyframes lust-spin { to { transform: rotate(1turn); } }
-/* Kacheln, Loadout-Ring und Logo schlagen im Takt mit. Der Puls hängt hinter rise an.
+/* Kacheln und Logo schlagen im Takt mit. Der Puls hängt hinter rise an.
    So startet rise am Ende nicht neu und die Kacheln blenden nicht noch einmal ein.
    Die Kachel pulsiert per transform, das Glühen per opacity einer eigenen Ebene. */
 body.lust .tile {
@@ -621,14 +617,10 @@ body.lust .tile::after {
   content: ''; position: absolute; inset: 0; z-index: 4; border-radius: inherit; pointer-events: none;
   box-shadow: inset 0 0 46px rgba(255,42,61,.7); animation: lust-glow .95s calc(var(--i, 0) * 120ms) ease-in-out infinite;
 }
-.lo-stage .ring::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid #ffd0d5; box-shadow: 0 0 70px rgba(255,42,61,.95); opacity: 0; }
-body.lust .lo-stage .ring { border-color: #ff2a3d; box-shadow: 0 0 30px rgba(255,42,61,.5); animation: lust-ring .55s ease-in-out infinite; }
-body.lust .lo-stage .ring::after { animation: lust-glow .55s ease-in-out infinite; }
 /* Der Schein am Logo steht fest. Ein animierter filter liefe auf dem Hauptthread (gemessen: 21 % auf einem Mittelklasse-Handy). */
 body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-logo .55s ease-in-out infinite; }
 @keyframes lust-tile { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.025); } }
 @keyframes lust-glow { 0%, 100% { opacity: .2; } 30% { opacity: 1; } }
-@keyframes lust-ring { 0%, 100% { transform: translateX(-50%) scale(1); } 30% { transform: translateX(-50%) scale(1.08); } }
 @keyframes lust-logo { 30% { transform: scale(1.18) rotate(-8deg); } }
 
 @keyframes lust-shake {
