@@ -91,11 +91,11 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 
 ## Effekte
 
-- **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`). Als Ladebalken läuft es als Welle
-  durch die Kacheln: Es erscheint nur auf der Kachel, deren 3D-Modell gerade aufbaut.
+- **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`). Beim Start zeigen alle
+  3D-Kacheln sofort „Loading“. Das fertige Modell ersetzt den Balken. Schlägt der Aufbau fehl, erscheint der 2D-Render.
 - **Forever-Start:** Zum Start und einmal am Starttag läuft „Forever ist live“ über die Seite. `?live` zeigt das Band vorab.
-- **Charakterwechsel:** Ein Klick auf eine Kachel scrollt zum Loadout. Dabei zieht der Name als Band in Klassenfarbe über den ganzen Bildschirm.
-  Das neue 3D-Modell baut erst danach auf, sonst ruckelt das Band.
+- **Charakterwechsel:** Ein Klick auf eine Kachel startet sofort das Namensband und scrollt zum Loadout. Das Loadout baut während
+  des Bands neu auf und wird sichtbar, wenn das Band ausläuft.
 - **Einblenden:** Die Abschnitte gleiten beim Scrollen ins Bild. Zahlen stehen sofort fest, ohne Hochzählen.
 - **Bloodlust:** Ein Klick auf das Logo startet 15 Sekunden Bloodlust mit Sound, rotem Lauf-Rahmen um die Seite und pulsierenden Kacheln. Danach gilt 60 Sekunden „Gesättigt“.
 - **Sync:** Der Punkt neben der Uhrzeit ist grün, solange der stündliche Abruf läuft, und rot ab 2 Stunden Rückstand. Ältere Stände zeigen das Datum.
@@ -113,9 +113,9 @@ und überspringt Browser-Installation und Spiegelung (`mirror-models.mjs --hash`
 die Seite immer die 2D-Renders, auf Handys gibt es den Schalter „3D an/aus“ nicht. Tablets (Touch) und „Daten sparen“ starten mit 2D,
 der Schalter schaltet 3D dort ein. Sonst gilt die letzte Wahl am Schalter.
 
-Jeder Viewer zeichnet in einer eigenen Schleife. Damit sechs Modelle den Hauptthread nicht füllen, begrenzt `pace()` in `model3d.js`
+Jeder Viewer zeichnet in einer eigenen Schleife. Damit fünf Modelle den Hauptthread nicht füllen, begrenzt `pace()` in `model3d.js`
 die Bildrate auf 60 Bilder pro Sekunde (auch auf 120-Hz-Displays) und lässt Modelle aus, die weit außerhalb des Bildes liegen.
-Sichtbare Modelle bewegen sich immer. Ein Rand von 200 px startet ein Modell, bevor es ins Bild scrollt.
+Sichtbare Modelle bewegen sich immer. Ein Rand von 200 px aktiviert das Zeichnen kurz vor dem Scrollen.
 
 GitHub Pages erlaubt nur 10 Minuten Cache. Der Service Worker (`sw.js`) hält Modelldateien und Renders darum dauerhaft vor.
 Ab dem zweiten Besuch lädt die Seite keine Modelldaten mehr. Wechselt die Modell-Umgebung (Vorschau, dann Forever), löscht er den alten Cache.
