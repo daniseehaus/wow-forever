@@ -414,18 +414,21 @@ async function updateHistory(data) {
 // innerhalb von 3 Stunden ausgeloggt, zählt das als gemeinsame Session. Erkannt wird sie erst, wenn
 // seit dem letzten Logout eine Stunde vergangen ist, damit Nachzügler noch dazukommen.
 // Der durchschnittliche Level-Zuwachs der Beteiligten seit dem letzten Stand ist ihr Ergebnis.
+// Für den Abend-Rückblick hält jede Session je Spieler Level, Itemlevel, Berufspunkte, Logout und Umskillen fest.
 async function updateSessions(data) {
   const SESSION_WINDOW = 3 * 3600 * 1000;
   const QUIET = 3600 * 1000;
-  const state = await loadState('sessions', () => ({ lastEnd: 0, levels: {}, list: [] }));
+  const state = await loadState('sessions', () => ({ lastEnd: 0, levels: {}, base: {}, list: [] }));
   if (!process.env.GITHUB_ACTIONS) return state;
 
   const chars = data.characters.filter((c) => c.level && !c.error);
   const minPlayers = Math.max(2, Math.min(4, chars.length));
   const levels = Object.fromEntries(chars.map((c) => [c.key, c.level]));
+  const base = Object.fromEntries(chars.map((c) => [c.key, sessionBase(c)]));
 
   if (!Object.keys(state.levels).length) {
     state.levels = levels;
+    state.base = base;
     state.lastEnd = Math.max(0, ...chars.map((c) => c.lastLogin ?? 0));
   } else {
     const fresh = chars.filter((c) => c.lastLogin > state.lastEnd);
@@ -439,10 +442,12 @@ async function updateSessions(data) {
           end,
           gain: gains.reduce((a, b) => a + b, 0) / gains.length,
           players: players.map((c) => c.key),
+          stats: Object.fromEntries(players.map((c) => [c.key, sessionStats(state.base?.[c.key], base[c.key], state.levels[c.key], c)])),
         });
       }
       // Auch Level aus Solo-Spiel der übrigen gelten damit als verbucht.
       state.levels = levels;
+      state.base = base;
       state.lastEnd = end;
     }
   }
@@ -450,12 +455,29 @@ async function updateSessions(data) {
   return state;
 }
 
+// Stand je Charakter zum Ende einer Session: Itemlevel, Berufspunkte und Talentränge.
+function sessionBase(c) {
+  return {
+    ilvl: c.equippedIlvl ?? null,
+    profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
+    talents: Object.fromEntries((c.talents?.picks ?? []).filter((p) => p.id ?? p.spell).map((p) => [p.id ?? p.spell, p.rank ?? 1])),
+  };
+}
+
+// Werte eines Spielers für eine Session. Umskillen heißt: Ein Talent hat danach weniger Ränge als vorher.
+function sessionStats(before, now, levelBefore, c) {
+  const profGain = Object.entries(now.profs).reduce((a, [n, v]) => a + Math.max(0, v - (before?.profs?.[n] ?? v)), 0);
+  const respec = Object.entries(before?.talents ?? {}).some(([id, r]) => (now.talents[id] ?? 0) < r);
+  return { level: [levelBefore ?? c.level, c.level], ilvl: [before?.ilvl ?? now.ilvl, now.ilvl], prof: profGain, logout: c.lastLogin, respec };
+}
+
 // Aktivitäts-Feed: Jeder Abruf wird mit dem letzten Stand je Charakter verglichen (snapshot),
 // Änderungen werden Ereignisse. Sie bekommen den Zeitpunkt des Logouts, in dem sie passiert sind,
 // sonst den des Abrufs. Level-Ups sind damit auf die Stunde genau.
 async function updateFeed(data, sessions) {
-  const FEED_LIMIT = 500;
-  const FEED_QUALITIES = ['RARE', 'EPIC', 'LEGENDARY', 'ARTIFACT'];
+  const FEED_LIMIT = 1500;
+  // Grüne Items zählen nur für den Abend-Rückblick. Die Aktivität zeigt sie nicht.
+  const FEED_QUALITIES = ['UNCOMMON', 'RARE', 'EPIC', 'LEGENDARY', 'ARTIFACT'];
   const feed = await loadState('feed', () => ({ snapshot: {}, events: [] }));
   if (!process.env.GITHUB_ACTIONS) return feed;
   const now = Date.now();
@@ -468,6 +490,7 @@ async function updateFeed(data, sessions) {
       lastLogin: c.lastLogin ?? null,
       guild: c.guild ?? null,
       items: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.id])),
+      ilvls: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.ilvl ?? null])),
       profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
     };
     const old = feed.snapshot[c.key];
@@ -481,7 +504,7 @@ async function updateFeed(data, sessions) {
       if (!it.id || old.items[it.slot] === it.id || !FEED_QUALITIES.includes(it.quality)) continue;
       // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz.
       if (Object.values(old.items).includes(it.id)) continue;
-      add({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot });
+      add({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null, prev: old.ilvls?.[it.slot] ?? null });
     }
     for (const p of c.professions ?? []) {
       const before = old.profs[p.name];

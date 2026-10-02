@@ -39,6 +39,7 @@
       <div class="nav-links">
         <a href="#top" class="active">Übersicht</a>
         <a href="#loadout">Loadout</a>
+        <a href="#rueckblick" id="nav-rueckblick">Session</a>
         <a href="#gruppe">Gruppe</a>
         <a href="#leveling">Leveling</a>
         <a href="#aktivitaet" id="nav-aktivitaet">Aktivität</a>
@@ -62,6 +63,19 @@
     <section class="tiles" id="tiles" aria-label="Charaktere"></section>
 
     <section class="loadout" id="loadout"></section>
+
+    <section class="panel" id="rueckblick" hidden>
+      <div class="panel-head">
+        <h2>Letzte Session</h2>
+        <a class="share" id="recap-share" href="#" target="_blank" rel="noopener">In WhatsApp teilen ↗</a>
+      </div>
+      <div class="recap" id="recap"></div>
+    </section>
+
+    <section class="panel" id="vorbereitung" hidden>
+      <div class="panel-head"><h2>Vor dem nächsten Abend</h2><span class="mono" id="prep-count"></span></div>
+      <div class="prep" id="prep"></div>
+    </section>
 
     <section class="panel buffs" id="gruppe">
       <div class="panel-head">

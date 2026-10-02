@@ -73,7 +73,12 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 - **Sessions:** Die API kennt keine Spielzeit, nur den letzten Logout. Loggen sich mindestens 4 Charaktere (bei kleinerer Gruppe alle)
   innerhalb von 3 Stunden aus, zählt das als gemeinsame Session. Erkannt wird sie eine Stunde nach dem letzten Logout.
 - **Aktivität:** Jeder stündliche Abruf wird mit dem vorigen verglichen. Level-Ups bekommen den Zeitpunkt des Logouts, in dem sie
-  passiert sind. Neue Items erscheinen ab Qualität „selten“.
+  passiert sind. Neue Items erscheinen ab Qualität „selten“. Grüne Items zählen nur in „Letzte Session“.
+- **Letzte Session:** Je Session eine Karte mit neuen Items (ab grün), Fortschritt auf dem Weg bis 60, Berufspunkten und Level pro Char.
+  Dazu bis zu vier Auszeichnungen (z. B. Größtes Upgrade, Loot-Goblin, Licht aus). Die Werte je Spieler hält die Session in `stats` fest.
+  Der Knopf „In WhatsApp teilen“ öffnet WhatsApp mit fertigem Text und Link.
+- **Vor dem nächsten Abend:** Offene Punkte je Charakter: Klassenquests und Reiten (`CLASS_TASKS` in `meta.js`), nächste Berufsstufe
+  (`PROF_RANKS`), Lehrer bei geraden Leveln und freie Talentpunkte.
 - **Talente:** Retail verlinkt den genauen Build im Wowhead-Rechner. Classic liefert die Punkte je Baum und die gewählten Talente,
   aber nicht ihre Position im Baum. Die Positionen, Ränge und Icons stehen deshalb in `site/talents.json`. Die Seite zeigt damit
   die drei Bäume wie im Spiel und verlinkt den genauen Build im Wowhead-Rechner. Die Datei baut `npm run build-talents`
