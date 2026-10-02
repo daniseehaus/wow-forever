@@ -171,14 +171,15 @@ main, footer, nav { position: relative; z-index: 1; }
 .panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 12px; margin-bottom: 18px; }
 .panel-head h2 { white-space: nowrap; }
 .panel-head.sub { margin: 22px 0 12px; }
+.panel-head .mono { text-transform: uppercase; }
 .panel h2 { margin: 0; font-weight: 700; font-size: 17px; letter-spacing: .12em; text-transform: uppercase; }
 .panel h3 { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
 /* Gruppe: Buffs, Tools und Berufe in einer Kachel, gleiche Zeile für alles */
 .g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
 .gsec { display: flex; justify-content: space-between; padding: 0 2px 8px; border-bottom: 1px solid var(--line); font: 500 10px var(--mono); color: var(--dim); letter-spacing: .14em; text-transform: uppercase; }
-.gsec b { color: var(--accent-text); font-weight: 500; }
-.gcount { cursor: default; border-bottom: 1px dotted color-mix(in srgb, var(--accent-text) 50%, transparent); outline: none; }
+.gsec b { color: var(--dim); font-weight: 500; }
+.gcount { cursor: default; border-bottom: 1px dotted color-mix(in srgb, var(--dim) 60%, transparent); outline: none; }
 .gcount:hover, .gcount:focus-visible { border-bottom-style: solid; }
 .grow { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-bottom: 1px solid rgba(255,255,255,.03); border-radius: 6px; }
 .grow:hover, .grow:focus-visible { background: rgba(255,255,255,.04); outline: none; }
@@ -282,7 +283,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .talent-list { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 110px; }
 .talent-list > * { padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--text); transition: .15s; }
 .talent-list a:hover { border-color: var(--cls); color: var(--cls); }
-.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: none; color: var(--dim); font: 500 11px var(--mono); }
+.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: none; color: var(--dim); font: 500 13px var(--mono); }
 .talent-list > .tcalc:hover { color: var(--accent-text); border-color: currentColor; }
 .talent-list em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); margin-left: 2px; }
 
@@ -290,7 +291,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .talents-head .dlabel { min-width: 100px; }
 .tpoints { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .06em; }
-.tcalc { margin-left: auto; font: 500 11px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
+.tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
 .tcalc:hover { color: var(--accent-text); border-color: currentColor; }
 .ttrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .ttree { padding: 14px 18px 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, var(--cls) 7%, transparent), rgba(255,255,255,.015) 60%); }
@@ -313,7 +314,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .tal:hover img { filter: none; transform: scale(1.06); }
 
 /* Abend-Rückblick */
-.share { font: 500 11px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
+.share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; border-bottom: 1px solid transparent; transition: .2s; }
 .share:hover { color: var(--accent-text); border-color: currentColor; }
 .recap { display: flex; flex-direction: column; gap: 8px; }
 .recap-card { padding: 20px 22px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); border-top: 2px solid var(--accent); animation: rise .3s both; }
