@@ -3,16 +3,31 @@ const FALLBACK_ICON = 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_qu
 const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'], ['BACK', 'Rücken'], ['CHEST', 'Brust'], ['WRIST', 'Handgelenke'], ['MAIN_HAND', 'Waffenhand'], ['OFF_HAND', 'Schildhand']];
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
+// Laufende Streifen des Bands als eigene Ebene. Sie bewegt sich per transform, das kostet keinen Hauptthread.
+const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
+// Dauer des Namensbands beim Charakterwechsel. Erst danach baut das neue 3D-Modell auf.
+const SWAP_MS = 1300;
 
 const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
 
+const narrow = matchMedia('(max-width: 760px)');
+let pref3d = null;
 try {
   state.selected = localStorage.getItem('selected');
-  const pref = localStorage.getItem('use3d');
-  state.use3d = pref ? pref === '1' : true;
+  pref3d = localStorage.getItem('use3d');
 } catch {}
+state.use3d = want3d();
+
+// Modelldateien und Renders ändern sich nie. Der Service Worker hält sie über den Besuch hinaus vor (sw.js).
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+
 // Auf Handys bleibt es bei den 2D-Renders, der Schalter ist dort ausgeblendet (siehe style.css).
-if (!window.Model3D.supported() || matchMedia('(max-width: 760px)').matches) state.use3d = false;
+// Tablets und „Daten sparen“ starten mit 2D, dort schaltet der Schalter 3D ein. Sonst gilt die letzte Wahl.
+function want3d() {
+  if (!window.Model3D.supported() || narrow.matches) return false;
+  if (pref3d) return pref3d === '1';
+  return !matchMedia('(pointer: coarse)').matches && !navigator.connection?.saveData;
+}
 
 init();
 
@@ -31,6 +46,7 @@ async function init() {
     state.feed = { events: feed.events ?? [] };
   } catch (err) {
     document.getElementById('sync').textContent = 'Daten fehlen';
+    document.querySelector('.sync').classList.add('stale');
     return;
   }
 
@@ -41,13 +57,12 @@ async function init() {
   const d = state.data;
   if (d.title) {
     document.title = `${d.title} · WoW Forever`;
-    document.getElementById('title').textContent = d.title;
+    document.querySelectorAll('.title-text').forEach((el) => { el.textContent = d.title; });
     document.getElementById('brand').textContent = d.title.toUpperCase();
   }
   document.getElementById('brand-sub').textContent = `${d.simulated ? 'VORSCHAU' : d.era === 'retail' ? 'RETAIL' : 'FOREVER'} · EU · ${state.chars.length} SPIELER`;
-  const time = new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
-  document.getElementById('sync').textContent = `SYNC ${time}`;
-  document.getElementById('foot-stamp').textContent = `Stand ${time}`;
+  renderSync();
+  setInterval(renderSync, 60000);
 
   setupNav();
   setup3dToggle();
@@ -62,40 +77,71 @@ async function init() {
 
   setupReveal();
   countIn(document.querySelector('main'));
+  // Erst jetzt wird der Inhalt sichtbar. So springt beim Laden nichts (siehe style.css, body.ready).
+  document.body.classList.add('ready');
   startCountdown();
   setupBloodlust();
+}
+
+// Stand der Daten. Der Punkt ist grün, solange der stündliche Abruf läuft, und rot ab 2 Stunden Rückstand.
+// Ältere Stände zeigen das Datum, damit sie nicht aktuell wirken.
+function renderSync() {
+  const t = new Date(state.data.generatedAt);
+  const today = t.toDateString() === new Date().toDateString();
+  const stamp = today ? fmtTime(t) : `${t.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })} ${fmtTime(t)}`;
+  const box = document.querySelector('.sync');
+  box.classList.toggle('stale', Date.now() - t > 2 * 36e5);
+  box.title = `Stand ${fmtDay(t)}, ${fmtTime(t)} (${ago(t.getTime())})`;
+  document.getElementById('sync').textContent = `SYNC ${stamp}`;
+  document.getElementById('foot-stamp').textContent = `Stand ${fmtDay(t)}, ${fmtTime(t)}`;
 }
 
 // ---------------------------------------------------------------------------
 // Navigation und 3D-Schalter
 
+// Der aktive Punkt folgt dem Abschnitt unter der Navigation. Die Positionen stehen im Speicher und
+// werden nur neu gemessen, wenn sich die Höhe der Seite ändert. Beim Scrollen liest die Seite kein Layout.
 function setupNav() {
   const links = [...document.querySelectorAll('.nav-links a')];
   const targets = links.map((a) => document.querySelector(a.getAttribute('href')));
+  let tops = [];
   const onScroll = () => {
     let idx = 0;
-    targets.forEach((t, i) => { if (t && !t.hidden && t.getBoundingClientRect().top < 140) idx = i; });
+    tops.forEach((top, i) => { if (top < scrollY + 140) idx = i; });
     if (links[idx].classList.contains('active')) return;
     links.forEach((a, i) => a.classList.toggle('active', i === idx));
     // Auf schmalen Bildschirmen scrollt die Navigation seitlich. Der aktive Punkt bleibt sichtbar.
     const bar = links[idx].parentElement;
     if (bar.scrollWidth > bar.clientWidth) bar.scrollTo({ left: links[idx].offsetLeft - bar.clientWidth / 2 + links[idx].offsetWidth / 2, behavior: 'smooth' });
   };
+  // offsetTop statt getBoundingClientRect: Die Einblende-Animation verschiebt Abschnitte kurz nach unten.
+  const pageTop = (el) => { let y = 0; for (let n = el; n; n = n.offsetParent) y += n.offsetTop; return y; };
+  new ResizeObserver(() => {
+    tops = targets.map((t) => (t && !t.hidden ? pageTop(t) : Infinity));
+    onScroll();
+  }).observe(document.querySelector('main'));
   addEventListener('scroll', onScroll, { passive: true });
 }
 
 function setup3dToggle() {
   const btn = document.getElementById('toggle-3d');
   const sync = () => { btn.textContent = state.use3d ? '3D an' : '3D aus'; btn.setAttribute('aria-pressed', String(state.use3d)); };
-  sync();
-  if (!window.Model3D.supported()) { btn.disabled = true; btn.title = 'Dein Browser unterstützt kein WebGL.'; return; }
-  btn.addEventListener('click', () => {
-    state.use3d = !state.use3d;
-    try { localStorage.setItem('use3d', state.use3d ? '1' : '0'); } catch {}
+  const apply = (on) => {
+    if (on === state.use3d) return;
+    state.use3d = on;
     sync();
     renderTiles();
     renderLoadout();
+  };
+  sync();
+  if (!window.Model3D.supported()) { btn.disabled = true; btn.title = 'Dein Browser unterstützt kein WebGL.'; return; }
+  btn.addEventListener('click', () => {
+    pref3d = state.use3d ? '0' : '1';
+    try { localStorage.setItem('use3d', pref3d); } catch {}
+    apply(pref3d === '1');
   });
+  // Wird das Fenster schmal oder wieder breit, gilt dieselbe Regel wie beim Laden.
+  narrow.addEventListener('change', () => apply(want3d()));
 }
 
 // ---------------------------------------------------------------------------
@@ -192,15 +238,16 @@ function renderTiles() {
 
 function tileHtml(c, i) {
   const color = classColor(c);
+  // --i staffelt Einblenden und Bloodlust-Puls (siehe style.css).
   if (!c.level) {
-    return `<div class="tile error" style="--cls:${color};animation-delay:${i * 70}ms">
+    return `<div class="tile error" style="--cls:${color};--i:${i}">
       <div class="info"><span class="name">${esc(c.name)}</span><span class="spec">${esc(c.error || 'Keine Daten')}</span></div></div>`;
   }
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;
-  return `<button type="button" class="tile ${c.key === state.selected ? 'selected' : ''}" data-key="${esc(c.key)}" style="--cls:${color};animation-delay:${i * 70}ms" aria-label="${esc(c.name)} auswählen">
+  return `<button type="button" class="tile ${c.key === state.selected ? 'selected' : ''}" data-key="${esc(c.key)}" style="--cls:${color};--i:${i}" aria-label="${esc(c.name)} auswählen">
     <span class="sweep"></span>
     <span class="top"><span class="role">${role.label.toUpperCase()}</span><span class="ago">${c.lastLogin ? ago(c.lastLogin) : ''}</span></span>
-    <span class="stage" data-stage="${esc(c.key)}">${c.render ? `<img class="render" src="${esc(c.render)}" alt="">` : ''}</span>
+    <span class="stage" data-stage="${esc(c.key)}">${c.render ? `<img class="render" src="${esc(c.render)}" alt="" fetchpriority="high">` : ''}</span>
     <span class="info">
       <span class="name">${esc(c.name)}</span>
       <span class="spec">${esc(c.spec || '')} ${esc(c.className || '')}${c.stale ? ' · alter Stand' : ''}</span>
@@ -210,20 +257,23 @@ function tileHtml(c, i) {
 }
 
 // Model3D lädt die Modelle nacheinander. Der 2D-Render bleibt stehen, bis das Modell fertig ist.
+// Das Ladeband erscheint erst, wenn das Modell der Kachel wirklich aufbaut. So läuft es als Welle durch die Kacheln.
+// Alle Modelle zeichnen höchstens 60 Bilder pro Sekunde, auch auf 120-Hz-Displays (pace in model3d.js).
 async function mountTiles() {
   const env = state.data.modelEnv || 'classic';
   const jobs = [];
   for (const c of state.chars) {
     if (!state.use3d || !c.model) continue;
     const stage = document.querySelector(`[data-stage="${CSS.escape(c.key)}"]`);
-    if (stage) jobs.push({ c, stage, band: loadingBand(stage) });
+    if (stage) jobs.push({ c, stage });
   }
-  for (const { c, stage, band } of jobs) {
+  for (const { c, stage } of jobs) {
     const box = document.createElement('div');
     box.className = 'stage-3d';
     stage.append(box);
+    let band = null;
     try {
-      const v = await window.Model3D.mount(box, c.model, env);
+      const v = await window.Model3D.mount(box, c.model, env, { onStart: () => { band = loadingBand(stage); } });
       if (!document.body.contains(box)) { window.Model3D.destroy(v); return; }
       v.charKey = c.key;
       state.tileViewers.push(v);
@@ -232,23 +282,24 @@ async function mountTiles() {
       hideBand(band);
     } catch (err) {
       box.remove();
-      jobs.forEach((j) => hideBand(j.band));
+      hideBand(band);
       console.warn('3D nicht verfügbar:', err.message);
       return;
     }
   }
 }
 
-// Schräger Balken über dem 2D-Render, solange das 3D-Modell wartet oder lädt.
+// Schräger Balken über dem 2D-Render, solange das 3D-Modell lädt.
 function loadingBand(el) {
   const band = document.createElement('span');
   band.className = 'loading-band';
-  band.innerHTML = '<span class="band-strip">Loading</span>';
+  band.innerHTML = `<span class="band-strip">${BAND_TEX}<span>Loading</span></span>`;
   el.append(band);
   return band;
 }
 
 function hideBand(band) {
+  if (!band) return;
   band.classList.add('done');
   setTimeout(() => band.remove(), 400);
 }
@@ -260,7 +311,8 @@ function select(key) {
   state.selected = key;
   try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
-  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout(); swapBand(); } };
+  // Das neue 3D-Modell baut erst nach dem Band auf. Sein Aufbau blockiert den Hauptthread und würde das Band ruckeln lassen.
+  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout({ after: SWAP_MS }); swapBand(); } };
   const top = el.getBoundingClientRect().top;
   if (Math.abs(top - 90) < 40) { swap(); return; }
   // Ende des Scrollens: Position steht drei Bilder lang still (Safari kennt kein scrollend). Spätestens nach 1,5 s.
@@ -292,13 +344,13 @@ function swapBand() {
   void el.offsetWidth;
   el.classList.add('swap', 'swapping');
   clearTimeout(state.swapTimer);
-  state.swapTimer = setTimeout(() => el.classList.remove('swapping'), 1300);
+  state.swapTimer = setTimeout(() => el.classList.remove('swapping'), SWAP_MS);
   // Das Band läuft auf Höhe der Modell-Bühne quer über den Charakter, nicht über die Talente.
   // offsetTop statt getBoundingClientRect: Die Einblende-Animation verschiebt die Bühne gerade noch um einige Pixel.
   const stage = el.querySelector('.lo-stage');
   let y = stage ? stage.offsetHeight / 2 : null;
   for (let n = stage; n && n !== el; n = n.offsetParent) y += n.offsetTop;
-  burst(c.name, { into: el, color: classColor(c), dur: 1300, y });
+  burst(c.name, { into: el, color: classColor(c), dur: SWAP_MS, y });
 }
 
 // ---------------------------------------------------------------------------
@@ -319,7 +371,7 @@ function burst(text, { into = null, color = null, dur = 2600, icon = null, y = n
     strip.style.setProperty('--band-ink', dark ? '#07090c' : '#fff');
     strip.classList.toggle('dark', dark);
   }
-  strip.innerHTML = `${icon ? `<img src="${esc(icon)}" alt="">` : ''}<span>${esc(text)}</span>`;
+  strip.innerHTML = `${BAND_TEX}${icon ? `<img src="${esc(icon)}" alt="">` : ''}<span>${esc(text)}</span>`;
   box.append(strip);
   (into ?? document.body).append(box);
   into?.querySelectorAll(':scope > .burst').forEach((b) => b !== box && b.remove());
@@ -337,7 +389,7 @@ function isLight(hex) {
 // Zahlen zählen beim ersten Sichtbarwerden von 0 hoch. Text davor und danach bleibt stehen (z. B. „LV 90“, „~150 h“).
 const COUNT_SEL = [
   '.kpi b', '.tile .nums span', '.rstat b', '.lo-head .chip.lv', '.lo-head .chip.il', '.gear .num', '.dcell b', '.split', '.ttree-head b',
-  '.route-tips b', '.gcount', '.wi b', '#group-count', '#prep-count', '#feed-note',
+  '.gcount', '.wi b', '#group-count', '#prep-count', '#feed-note',
 ].join(', ');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -353,12 +405,16 @@ function countIn(root) {
 }
 
 // Alle Zahlen im Text zählen gleichzeitig hoch (z. B. „13 / 29 abgedeckt“). Am Ende blitzt der Wert kurz auf.
+// Die Ziffern sind verschieden breit. Damit nichts wackelt, hält das Element beim Zählen die Breite des Endwerts.
 function countUp(el, dur = 2000) {
   const full = el.dataset.countTo;
   const parts = full.split(/(\d+(?:,\d+)?)/);
   const nums = parts.map((x, i) => (i % 2 ? { v: Number(x.replace(',', '.')), d: x.includes(',') ? x.split(',')[1].length : 0 } : null));
   let last = null;
   let elapsed = 0;
+  el.textContent = full;
+  if (getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
+  el.style.minWidth = `${el.getBoundingClientRect().width}px`;
   el.dataset.counting = '1';
   const step = (t) => {
     if (!el.isConnected) return;
@@ -372,6 +428,8 @@ function countUp(el, dur = 2000) {
       : x)).join('');
     if (p < 1) { requestAnimationFrame(step); return; }
     el.textContent = full;
+    el.style.minWidth = '';
+    el.style.display = '';
     delete el.dataset.counting;
     el.dataset.counted = '1';
     el.classList.add('count-flash');
@@ -380,12 +438,14 @@ function countUp(el, dur = 2000) {
   requestAnimationFrame(step);
 }
 
-// Panels gleiten beim Scrollen ins Bild.
+// Panels gleiten beim Scrollen ins Bild, ihre Zeilen folgen gestaffelt.
+// Danach gilt der Abschnitt als ruhig (settled): Baut er neu auf („Ganze Route zeigen“), blenden die Zeilen nicht noch einmal ein.
 function setupReveal() {
   if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver((entries) => entries.forEach((en) => {
     if (!en.isIntersecting) return;
     en.target.classList.add('in');
+    setTimeout(() => en.target.classList.add('settled'), 1200);
     io.unobserve(en.target);
   }), { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('main > .loadout, main > .panel').forEach((el) => { el.classList.add('reveal'); io.observe(el); });
@@ -441,12 +501,24 @@ function bloodlust() {
   burst('Bloodlust', { color: '#c41e3a', icon: 'icons/bloodlust.jpg', dur: 2400 });
   document.body.classList.add('lust', 'lust-hit');
   setTimeout(() => document.body.classList.remove('lust-hit'), 600);
+  lustTempo(true);
   [...state.tileViewers, state.loViewer].filter(Boolean).forEach(fight);
   clearTimeout(LUST.timer);
   LUST.timer = setTimeout(() => {
     document.body.classList.remove('lust');
+    lustTempo(false);
     [...state.tileViewers, state.loViewer].filter(Boolean).forEach(calm);
   }, LUST.dur);
+}
+
+// Im Rausch laufen Scan-Linie, Titel-Glanz, Kachel-Schimmer und Sync-Punkt schneller.
+// Das Tempo ändert sich über die Web Animations API. Eine neue animation-duration würde die Animationen springen lassen.
+const LUST_TEMPO = { scan: 5, 'shine-win': 5.7, 'shine-txt': 5.7, sweep: 5, blink: 4 };
+function lustTempo(on) {
+  for (const a of document.getAnimations()) {
+    const rate = LUST_TEMPO[a.animationName];
+    if (rate) a.updatePlaybackRate(on ? rate : 1);
+  }
 }
 
 // Kampfhaltung und Angriff passend zur Waffe. Die API nennt keinen Waffentyp, darum zählen Klasse und Schildhand.
@@ -606,7 +678,8 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideTip();
 // ---------------------------------------------------------------------------
 // Loadout des gewählten Charakters
 
-function renderLoadout() {
+// after: Wartezeit in ms, bevor das 3D-Modell aufbaut (Charakterwechsel mit Band). Bis dahin steht der 2D-Render.
+function renderLoadout({ after = 0 } = {}) {
   const el = document.getElementById('loadout');
   const c = state.chars.find((x) => x.key === state.selected);
   window.Model3D.destroy(state.loViewer);
@@ -647,19 +720,21 @@ function renderLoadout() {
 
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
-  if (state.use3d && c.model) mountLoadout(c);
+  if (state.use3d && c.model) mountLoadout(c, after);
   countIn(el);
 }
 
-async function mountLoadout(c) {
+async function mountLoadout(c, after) {
   const token = state.loToken;
   const box = document.getElementById('lo-model');
   const holder = document.createElement('div');
   holder.className = 'stage-3d';
   box.append(holder);
-  const band = loadingBand(box);
+  let band = null;
+  if (after) await new Promise((r) => setTimeout(r, after));
+  if (token !== state.loToken) return;
   try {
-    const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic', { priority: true });
+    const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic', { priority: true, onStart: () => { band = loadingBand(box); } });
     if (token !== state.loToken) { window.Model3D.destroy(v); return; }
     state.loViewer = v;
     v.charKey = c.key;
@@ -915,6 +990,7 @@ function renderPrep() {
   const tasks = chars.map((c) => [c, prepTasks(c, last?.stats?.[c.key]?.level)]);
   const total = tasks.reduce((a, [, t]) => a + t.length, 0);
   el.hidden = !last;
+  document.getElementById('nav-vorbereitung').hidden = !last;
   if (!last) return;
   document.getElementById('prep-count').textContent = total ? `${total} offen` : 'alles erledigt';
   document.getElementById('prep').style.setProperty('--n', tasks.length);

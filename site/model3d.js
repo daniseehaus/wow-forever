@@ -5,12 +5,20 @@
 // Die Viewer bauen nacheinander auf: Ein Modell braucht 10 bis 30 MB Dateien und viel Rechenzeit.
 // Laufen alle gleichzeitig, teilen sie sich die Leitung und alle Modelle ruckeln, bis das letzte fertig ist.
 // Ein Viewer bleibt unsichtbar, bis sein Modell vollständig geladen ist.
+//
+// Jeder Viewer zeichnet in einer eigenen Schleife, auch außerhalb des Bildes. Sechs Viewer belegen so den
+// halben Hauptthread. pace() begrenzt deshalb die Bildrate und lässt Viewer außerhalb des Bildes aus.
 
 window.Model3D = (() => {
   let ready = null;
+  let gl = null;
   const queue = [];
   let busy = false;
   let lastFile = 0;
+  // Ein Rand von 200 px: Der Viewer läuft schon, bevor er ins Bild scrollt. Man sieht ihn nie stehen.
+  const io = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => entries.forEach((e) => { e.target.inView = e.isIntersecting; }), { rootMargin: '200px 0px' })
+    : null;
 
   function load(env) {
     if (ready) return ready;
@@ -48,20 +56,26 @@ window.Model3D = (() => {
     });
   }
 
+  // Einmal prüfen und den Test-Kontext gleich wieder freigeben. Der Browser erlaubt nur wenige WebGL-Kontexte.
   function supported() {
+    if (gl != null) return gl;
     try {
-      return !!document.createElement('canvas').getContext('webgl');
+      const ctx = document.createElement('canvas').getContext('webgl');
+      gl = !!ctx;
+      ctx?.getExtension('WEBGL_lose_context')?.loseContext();
     } catch {
-      return false;
+      gl = false;
     }
+    return gl;
   }
 
   // container braucht beim Aufruf eine feste Größe in Pixeln.
   // Das Versprechen erfüllt sich erst, wenn das Modell fertig geladen ist.
   // priority stellt den Viewer an den Anfang der Warteschlange (Loadout vor den Kacheln).
-  function mount(container, model, env, { priority = false } = {}) {
+  // fps begrenzt die Bildrate nach dem Laden. onStart meldet, wann der Aufbau wirklich beginnt.
+  function mount(container, model, env, { priority = false, fps = 60, onStart = null } = {}) {
     return new Promise((resolve, reject) => {
-      const job = { container, model, env, resolve, reject };
+      const job = { container, model, env, fps, onStart, resolve, reject };
       if (priority) queue.unshift(job);
       else queue.push(job);
       // Erst nach dem aktuellen Aufbau der Seite starten, damit ein Loadout im selben Durchlauf vorne steht.
@@ -76,8 +90,10 @@ window.Model3D = (() => {
     try {
       // Inzwischen aus der Seite entfernt (anderer Charakter gewählt, 3D aus): nicht mehr laden.
       if (!document.body.contains(job.container)) throw new Error('Viewer nicht mehr benötigt.');
+      job.onStart?.();
       const viewer = await create(job.container, job.model, job.env);
       await loaded(viewer);
+      pace(viewer, job.container, job.fps);
       job.container.classList.add('ready');
       job.resolve(viewer);
     } catch (err) {
@@ -118,6 +134,29 @@ window.Model3D = (() => {
     }
   }
 
+  // Der Viewer ruft draw(t) in jedem Bild auf. Hier zeichnet er höchstens fps-mal pro Sekunde
+  // und gar nicht, solange seine Bühne weit außerhalb des Bildes liegt.
+  // draw(t) rechnet mit dem Abstand zum letzten Bild. Ausgelassene Bilder ändern das Tempo der Animation nicht.
+  function pace(viewer, box, fps) {
+    const r = viewer.renderer;
+    if (typeof r?.draw !== 'function') return;
+    const draw = r.draw.bind(r);
+    const frame = 1000 / fps;
+    let last = 0;
+    let paused = false;
+    io?.observe(box);
+    viewer.box = box;
+    r.draw = (t) => {
+      if (box.inView === false) { paused = true; return; }
+      // 2 ms Spielraum: Die Zeitstempel der Bilder schwanken leicht.
+      if (t - last < frame - 2) return;
+      // Nach einer Pause läuft die Animation dort weiter, wo sie stand.
+      if (paused) { r.time = t - frame; paused = false; }
+      last = t;
+      draw(t);
+    };
+  }
+
   function play(viewer, animation) {
     try {
       viewer.renderer.actors[0].setAnimation(animation);
@@ -127,6 +166,7 @@ window.Model3D = (() => {
   }
 
   function destroy(viewer) {
+    if (viewer?.box) io?.unobserve(viewer.box);
     try {
       viewer?.destroy();
     } catch {
