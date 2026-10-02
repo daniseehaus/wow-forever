@@ -76,7 +76,6 @@ async function init() {
   renderFeed();
 
   setupReveal();
-  countIn(document.querySelector('main'));
   // Erst jetzt wird der Inhalt sichtbar. So springt beim Laden nichts (siehe style.css, body.ready).
   document.body.classList.add('ready');
   startCountdown();
@@ -386,57 +385,7 @@ function isLight(hex) {
   return 0.299 * r + 0.587 * g + 0.114 * b > 165;
 }
 
-// Zahlen zählen beim ersten Sichtbarwerden von 0 hoch. Text davor und danach bleibt stehen (z. B. „LV 90“, „~150 h“).
-const COUNT_SEL = [
-  '.kpi b', '.tile .nums span', '.rstat b', '.lo-head .chip.lv', '.lo-head .chip.il', '.gear .num', '.dcell b', '.split', '.ttree-head b',
-  '.gcount', '.wi b', '#group-count', '#prep-count', '#feed-note',
-].join(', ');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-
-function countIn(root) {
-  if (!root || reducedMotion.matches || !('IntersectionObserver' in window)) return;
-  const els = [...root.querySelectorAll(COUNT_SEL)].filter((el) => !el.children.length && !el.dataset.countTo && /\d/.test(el.textContent));
-  // Was gleichzeitig ins Bild kommt, startet leicht versetzt. So läuft die Welle von oben nach unten.
-  const io = new IntersectionObserver((entries) => entries.filter((en) => en.isIntersecting).forEach((en, k) => {
-    io.unobserve(en.target);
-    setTimeout(() => countUp(en.target), Math.min(k, 16) * 45);
-  }), { threshold: 0.4 });
-  els.forEach((el) => { el.dataset.countTo = el.textContent; el.textContent = el.textContent.replace(/\d+(?:,\d+)?/g, '0'); io.observe(el); });
-}
-
-// Alle Zahlen im Text zählen gleichzeitig hoch (z. B. „13 / 29 abgedeckt“). Am Ende blitzt der Wert kurz auf.
-// Die Ziffern sind verschieden breit. Damit nichts wackelt, hält das Element beim Zählen die Breite des Endwerts.
-function countUp(el, dur = 2000) {
-  const full = el.dataset.countTo;
-  const parts = full.split(/(\d+(?:,\d+)?)/);
-  const nums = parts.map((x, i) => (i % 2 ? { v: Number(x.replace(',', '.')), d: x.includes(',') ? x.split(',')[1].length : 0 } : null));
-  let last = null;
-  let elapsed = 0;
-  el.textContent = full;
-  if (getComputedStyle(el).display === 'inline') el.style.display = 'inline-block';
-  el.style.minWidth = `${el.getBoundingClientRect().width}px`;
-  el.dataset.counting = '1';
-  const step = (t) => {
-    if (!el.isConnected) return;
-    // Je Bild höchstens 34 ms Fortschritt. Ruckelt die Seite (z. B. beim Laden eines 3D-Modells), springt die Zahl nicht.
-    if (last != null) elapsed += Math.min(34, Math.max(0, t - last));
-    last = t;
-    const p = Math.min(1, elapsed / dur);
-    const ease = p < 0.5 ? 2 * p * p : 1 - (2 - 2 * p) ** 2 / 2;
-    el.textContent = parts.map((x, i) => (nums[i]
-      ? (nums[i].v * ease).toLocaleString('de-DE', { minimumFractionDigits: nums[i].d, maximumFractionDigits: nums[i].d, useGrouping: false })
-      : x)).join('');
-    if (p < 1) { requestAnimationFrame(step); return; }
-    el.textContent = full;
-    el.style.minWidth = '';
-    el.style.display = '';
-    delete el.dataset.counting;
-    el.dataset.counted = '1';
-    el.classList.add('count-flash');
-    setTimeout(() => el.classList.remove('count-flash'), 700);
-  };
-  requestAnimationFrame(step);
-}
 
 // Panels gleiten beim Scrollen ins Bild, ihre Zeilen folgen gestaffelt.
 // Danach gilt der Abschnitt als ruhig (settled): Baut er neu auf („Ganze Route zeigen“), blenden die Zeilen nicht noch einmal ein.
@@ -513,7 +462,7 @@ function bloodlust() {
 
 // Im Rausch laufen Scan-Linie, Titel-Glanz, Kachel-Schimmer und Sync-Punkt schneller.
 // Das Tempo ändert sich über die Web Animations API. Eine neue animation-duration würde die Animationen springen lassen.
-const LUST_TEMPO = { scan: 5, 'shine-win': 5.7, 'shine-txt': 5.7, sweep: 5, blink: 4 };
+const LUST_TEMPO = { scan: 5, shimmer: 5.7, sweep: 5, blink: 4 };
 function lustTempo(on) {
   for (const a of document.getAnimations()) {
     const rate = LUST_TEMPO[a.animationName];
@@ -721,7 +670,6 @@ function renderLoadout({ after = 0 } = {}) {
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
   if (state.use3d && c.model) mountLoadout(c, after);
-  countIn(el);
 }
 
 async function mountLoadout(c, after) {
@@ -878,7 +826,6 @@ function renderRecap() {
   const share = document.getElementById('recap-share');
   share.href = `https://wa.me/?text=${encodeURIComponent(shareText(s, list))}`;
   document.querySelectorAll('#recap .recap-row').forEach((b) => b.addEventListener('click', () => { state.recapIdx = Number(b.dataset.idx); renderRecap(); }));
-  countIn(document.getElementById('recap'));
   document.querySelectorAll('#recap img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
 }

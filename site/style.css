@@ -96,18 +96,12 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Kopf */
 .hero { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding: 40px 0 28px; }
 .eyebrow { font: 700 17px var(--ui); color: var(--text); letter-spacing: .12em; text-transform: uppercase; }
-.hero h1 { position: relative; margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em; color: #fff; }
-/* Glanz über dem Titel: Ein Fenster mit weichen Kanten zieht von rechts nach links, der rosa Text darin läuft gleich schnell zurück.
-   So steht der Text still und nur der Glanz wandert. Beides läuft per transform, der Browser zeichnet dafür nichts neu. */
-.hero h1 .shine { position: absolute; inset: -.25em 0; overflow: hidden; pointer-events: none; }
-.hero h1 .shine-win {
-  position: absolute; top: 0; bottom: 0; left: 0; width: 50%; overflow: hidden;
-  -webkit-mask: linear-gradient(100deg, transparent 10%, #000 50%, transparent 90%); mask: linear-gradient(100deg, transparent 10%, #000 50%, transparent 90%);
-  animation: shine-win 4s linear infinite;
+.hero h1 {
+  margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em;
+  background: linear-gradient(100deg, #fff 30%, var(--accent-text) 50%, #fff 70%); background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 8s linear infinite;
 }
-.hero h1 .shine-txt { position: absolute; top: .25em; left: 0; width: 200%; color: var(--accent-text); animation: shine-txt 4s linear infinite; }
-@keyframes shine-win { from { transform: translateX(200%); } to { transform: translateX(-100%); } }
-@keyframes shine-txt { from { transform: translateX(-100%); } to { transform: translateX(50%); } }
+@keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
 .kpis { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: clamp(18px, 2.6vw, 40px); padding-bottom: 8px; }
 /* Neben dem Titel: Zahlen rechtsbündig über dem Text, der Block endet bündig mit der rechten Kante der Seite. */
 .kpi { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
@@ -637,9 +631,6 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 @keyframes lust-ring { 0%, 100% { transform: translateX(-50%) scale(1); } 30% { transform: translateX(-50%) scale(1.08); } }
 @keyframes lust-logo { 30% { transform: scale(1.18) rotate(-8deg); } }
 
-/* Hochgezählte Zahl blitzt am Ende kurz auf. */
-.count-flash { animation: count-flash .7s ease-out; }
-@keyframes count-flash { 0% { text-shadow: 0 0 18px currentColor, 0 0 4px currentColor; } 100% { text-shadow: none; } }
 @keyframes lust-shake {
   10%, 90% { transform: translate(-2px, 1px); }
   20%, 80% { transform: translate(4px, -2px); }
@@ -654,7 +645,6 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
-  .hero h1 .shine { display: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
