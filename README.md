@@ -96,7 +96,7 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 - **Forever-Start:** Zum Start und einmal am Starttag läuft „Forever ist live“ über die Seite. `?live` zeigt das Band vorab.
 - **Charakterwechsel:** Ein Klick auf eine Kachel scrollt zum Loadout. Dort zieht der Name als Band in Klassenfarbe durch.
   Das neue 3D-Modell baut erst danach auf, sonst ruckelt das Band.
-- **Hochzählen und Einblenden:** Zahlen zählen beim ersten Sichtbarwerden von 0 hoch und blitzen am Ende kurz auf (`COUNT_SEL` in `app.js`). Die Abschnitte gleiten beim Scrollen ins Bild.
+- **Einblenden:** Die Abschnitte gleiten beim Scrollen ins Bild. Zahlen stehen sofort fest, ohne Hochzählen.
 - **Bloodlust:** Ein Klick auf das Logo startet 15 Sekunden Bloodlust mit Sound, rotem Lauf-Rahmen um die Seite und pulsierenden Kacheln. Danach gilt 60 Sekunden „Gesättigt“.
 - **Sync:** Der Punkt neben der Uhrzeit ist grün, solange der stündliche Abruf läuft, und rot ab 2 Stunden Rückstand. Ältere Stände zeigen das Datum.
 - Bei „Bewegung reduzieren“ im System bleiben alle Effekte aus.
