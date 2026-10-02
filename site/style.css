@@ -283,15 +283,9 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 /* Leveling */
 /* Fortschritt als Balken am unteren Rand in Klassenfarbe, voller Balken mit Haken */
 
-.route-next { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 24px; margin-bottom: 16px; padding: 12px 18px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
-.next-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 4px 24px; min-width: 0; }
-.next-list .place { font-size: 14px; font-weight: 700; }
-.next-list .place .nm { flex: 0 1 auto; }
-.next-list .place .rg { white-space: nowrap; }
-.next-note { font: 500 11px var(--mono); color: var(--dim); white-space: nowrap; }
-.route-next small, .route-head span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+.route-head span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
 .route { display: flex; flex-direction: column; }
-.route-head, .route-row { display: grid; grid-template-columns: 70px minmax(0, 1.5fr) minmax(0, 1fr) 170px; gap: 24px; }
+.route-head, .route-row { display: grid; grid-template-columns: 70px minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px; }
 .route-head { padding: 0 16px 8px; border-bottom: 1px solid var(--line); }
 .route-row { padding: 16px; border-bottom: 1px solid var(--line); align-items: start; }
 .route-row:last-child { border-bottom: 0; }
@@ -306,10 +300,11 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .place .fd { width: 6px; height: 6px; flex: none; align-self: center; border-radius: 50%; background: var(--dim); }
 .place .fd.a { background: #4d8bff; }
 .place .fd.h { background: #ff4d4d; }
+.place.next { margin: 0 -8px; padding: 3px 8px; border-radius: 6px; color: var(--accent-text); background: color-mix(in srgb, var(--accent) 12%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent); }
+.place.next em { flex: none; font: 600 9px var(--mono); font-style: normal; letter-spacing: .1em; text-transform: uppercase; color: var(--accent-text); }
+.place.next .rg { color: color-mix(in srgb, var(--accent-text) 70%, var(--dim)); }
 .place-list.single { grid-template-columns: minmax(0, 1fr); }
 .route-row .none { font: 500 11px var(--mono); color: var(--dim); }
-.route-who { display: flex; flex-direction: column; gap: 4px; }
-.route-who span { font: 700 12px var(--mono); color: var(--cls); }
 
 /* Talente */
 .talents { display: flex; flex-direction: column; gap: 10px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
@@ -476,11 +471,9 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .grow { break-inside: avoid; }
   .route-row { grid-template-columns: 70px minmax(0, 1fr); gap: 10px 16px; }
   .route-row > :not(.lv) { grid-column: 2; }
-  /* Ohne Kopfzeile: Spieler als Chips neben der Stufe, Zonen und Dungeons mit eigener Beschriftung. */
-  .route-row .lv { order: -2; white-space: nowrap; }
-  .route-row .route-who { order: -1; flex-direction: row; flex-wrap: wrap; gap: 4px; }
-  .route-who span { padding: 2px 7px; border-radius: 6px; background: color-mix(in srgb, var(--cls) 12%, transparent); font-size: 11px; white-space: nowrap; }
-  .route-row .route-nobody, .route-row .route-raids { display: none; }
+  /* Ohne Kopfzeile: Zonen und Dungeons mit eigener Beschriftung. */
+  .route-row .lv { white-space: nowrap; }
+  .route-row .route-raids { display: none; }
   .place-list[data-label]::before { content: attr(data-label); grid-column: 1 / -1; font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
   .place-list[data-label="Dungeons"] { margin-top: 6px; }
   .prep { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -547,7 +540,7 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .route-row { padding: 12px 4px 12px 12px; grid-template-columns: 44px minmax(0, 1fr); gap: 8px 12px; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }
-  .route-next { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 12px 14px; }
+  .place.next em { display: none; }
   .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
   .prep { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .recap-card { padding: 16px; }

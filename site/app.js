@@ -958,52 +958,47 @@ function renderRoute() {
   document.getElementById('route-note').textContent = !classicLevels ? 'AB FOREVER-START · VORSCHAU'
     : !lvs.length ? '' : lo === hi ? `Gruppe LV ${lo}` : `Gruppe LV ${lo} bis ${hi}`;
 
-  const place = (x, range) => `<a class="place" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener">
-    <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span><span class="rg">${range}</span></a>`;
-  const who = (list) => (list.length
-    ? `<div class="route-who">${list.map((c) => `<span style="--cls:${classColor(c)}">${esc(c.name)} · ${c.level}</span>`).join('')}</div>`
-    : '');
+  // Tipp: je Spalte der beste Ort für die ganze Gruppe. Bewertet nach Spielern im Levelbereich,
+  // bei Gleichstand nach dem Abstand der Mitten. Spieler dürfen 2 Level unter dem Minimum liegen.
+  const forAll = (x) => allowed(x) && ok.every((c) => c.level >= x.min - 2 && c.level <= x.max);
+  const inside = (x) => ok.filter((c) => c.level >= x.min && c.level <= x.max).length;
+  const gap = (x) => Math.abs((x.min + x.max) / 2 - (lo + hi) / 2);
+  const best = (list) => list.filter(forAll).sort((x, y) => inside(y) - inside(x) || gap(x) - gap(y))[0];
+  const tips = new Set(classicLevels && ok.length ? [best(M.ZONES), best(M.DUNGEONS)].filter(Boolean) : []);
+
+  const place = (x, range, mark = false) => {
+    const next = mark && tips.has(x) ? ` data-tip="${esc(`Als Nächstes\n${inside(x) === ok.length ? `passt für alle ${ok.length}` : `${ok.length - inside(x)} knapp drunter`}`)}" data-tip-plain` : '';
+    return `<a class="place${next ? ' next' : ''}" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener"${next}>
+    <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? '<em>Als Nächstes</em>' : ''}<span class="rg">${range}</span></a>`;
+  };
 
   const rows = bands.map(([a, b]) => {
-    const zones = M.ZONES.filter((z) => allowed(z) && z.min >= a - 5 && z.min < b && z.max > a);
-    const dungeons = M.DUNGEONS.filter((d) => allowed(d) && d.min >= a && d.min < b);
-    const here = classicLevels ? ok.filter((c) => inBand(c, a, b)) : [];
-    return `<div class="route-row ${here.length ? 'now' : ''}">
+    const here = classicLevels && ok.some((c) => inBand(c, a, b));
+    // Markiert wird nur in der Stufe der Gruppe, dort steht der Tipp vorne in seiner Liste.
+    const tipFirst = (x, y) => (here ? tips.has(y) - tips.has(x) : 0);
+    const zones = M.ZONES.filter((z) => allowed(z) && z.min >= a - 5 && z.min < b && z.max > a).sort(tipFirst);
+    const dungeons = M.DUNGEONS.filter((d) => allowed(d) && d.min >= a && d.min < b).sort(tipFirst);
+    return `<div class="route-row ${here ? 'now' : ''}">
       <span class="lv">${a}-${b}</span>
-      <div class="place-list" data-label="Zonen">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
-      <div class="place-list single" data-label="Dungeons">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
-      ${who(here)}
+      <div class="place-list" data-label="Zonen">${zones.map((z) => place(z, `${z.min}-${z.max}`, here)).join('')}</div>
+      <div class="place-list single" data-label="Dungeons">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`, here)).join('') : '<span class="none">keine</span>'}</div>
     </div>`;
   });
-  const at60 = classicLevels ? ok.filter((c) => c.level >= 60) : [];
-  rows.push(`<div class="route-row ${at60.length ? 'now' : ''}">
+  const at60 = classicLevels && ok.some((c) => c.level >= 60);
+  rows.push(`<div class="route-row ${at60 ? 'now' : ''}">
     <span class="lv">60</span>
     <div class="place-list" data-label="Raids">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
     <span class="none route-raids">Raids</span>
-    ${who(at60)}
   </div>`);
 
-  let tip = '';
-  if (classicLevels && ok.length) {
-    // Nächster Ort: Dungeons für alle, sonst Zonen für alle. Die Leiste nutzt die ganze Breite.
-    const forAll = (x) => allowed(x) && ok.every((c) => c.level >= x.min - 2 && c.level <= x.max);
-    const dungeons = M.DUNGEONS.filter(forAll);
-    const fits = dungeons.length ? dungeons : M.ZONES.filter(forAll);
-    tip = `<div class="route-next">
-      <small>Nächster Ort</small>
-      <div class="next-list">${fits.length ? fits.map((x) => place(x, `${x.min}-${x.max}`)).join('') : '<span class="none">kein Ort für alle, der Abstand ist zu groß</span>'}</div>
-      <span class="next-note">${fits.length ? `${dungeons.length ? 'Dungeon' : 'Zone'} · passt für alle ${ok.length}` : ''}</span>
-    </div>`;
-  }
-  // Eingeklappt zeigt die Route nur die Stufen der Gruppe und die nächste Stufe.
+  // Eingeklappt zeigt die Route die Stufen der Gruppe in der Mitte, dazu die Stufe davor und danach.
   const now = rows.map((r, i) => (r.includes('route-row now') ? i : -1)).filter((i) => i >= 0);
-  const [from, to] = now.length ? [now[0], Math.min(rows.length - 1, now.at(-1) + 1)] : [0, rows.length - 1];
+  const [from, to] = now.length ? [Math.max(0, now[0] - 1), Math.min(rows.length - 1, now.at(-1) + 1)] : [0, rows.length - 1];
   const hidden = rows.length - (to - from + 1);
   const visible = state.routeAll ? rows : rows.slice(from, to + 1);
   const el = document.getElementById('route');
-  el.innerHTML = `${tip}
-    <div class="route">
-      <div class="route-head"><span>Level</span><span>Zonen</span><span>Dungeons</span><span>Hier</span></div>
+  el.innerHTML = `<div class="route">
+      <div class="route-head"><span>Level</span><span>Zonen</span><span>Dungeons</span></div>
       ${visible.join('')}
     </div>
     ${hidden ? `<button type="button" class="chip-btn route-more">${state.routeAll ? 'Nur aktuelle Stufen zeigen' : `Ganze Route zeigen · ${hidden} weitere Stufen`}</button>` : ''}`;
