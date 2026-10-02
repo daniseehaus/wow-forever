@@ -23,6 +23,8 @@
 
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { resolveConfig } from './config.mjs';
 import { simulateClassic } from './preview.mjs';
 
@@ -41,6 +43,7 @@ const live = demo ? null : await buildLive();
 const preview = live && config.simulate ? simulateClassic(live, config.simulate, classicRole) : null;
 const data = demo ? buildDemo() : preview?.data ?? live;
 await mkdir(new URL('site/', root), { recursive: true });
+if (!demo) await localRenders(data);
 await writeFile(outFile, JSON.stringify(data, null, 2) + '\n');
 const history = demo ? {} : await updateHistory(data);
 await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\n');
@@ -55,6 +58,40 @@ const failed = data.characters.filter((c) => c.error).length;
 console.log(`data.json geschrieben (${data.era}): ${data.characters.length} Charaktere, ${failed} mit Fehler.`);
 
 // ---------------------------------------------------------------------------
+
+// Blizzard liefert die 2D-Renders als PNG mit 1600 × 1200 px, zusammen fast 3 MB. Sie sind das größte Bild beim Laden.
+// Die Seite bekommt sie als WebP in gleicher Größe (je etwa 45 KB) unter site/renders/.
+// Der Name enthält einen Hash der Quelle: Ändert sich das Aussehen, ändert sich der Name, und kein Cache zeigt das alte Bild.
+// renderSrc merkt sich die Quelle. Übernimmt der nächste Lauf einen alten Stand (Abruf fehlgeschlagen), baut er das Bild daraus neu.
+// Ohne sharp (lokal ohne npm install) oder bei einem Fehler bleibt der Link zu Blizzard.
+async function localRenders(data) {
+  let sharp;
+  try {
+    sharp = (await import('sharp')).default;
+  } catch {
+    console.warn('sharp fehlt (npm install), die Renders bleiben bei Blizzard.');
+    return;
+  }
+  const dir = new URL('site/renders/', root);
+  await mkdir(dir, { recursive: true });
+  for (const c of data.characters) {
+    const src = c.renderSrc ?? (/^https?:/.test(c.render ?? '') ? c.render : null);
+    if (!src) continue;
+    const file = `${c.key.replace(/[^a-z0-9]+/gi, '-')}-${createHash('sha1').update(src).digest('hex').slice(0, 8)}.webp`;
+    try {
+      if (!existsSync(new URL(file, dir))) {
+        const res = await fetch(src);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        await sharp(Buffer.from(await res.arrayBuffer())).webp({ quality: 80, effort: 6 }).toFile(fileURLToPath(new URL(file, dir)));
+      }
+      c.renderSrc = src;
+      c.render = `renders/${file}`;
+    } catch (err) {
+      console.warn(`Render ${c.key} bleibt bei Blizzard: ${err.message}`);
+      c.render = src;
+    }
+  }
+}
 
 async function buildLive() {
   const { BLIZZARD_CLIENT_ID: id, BLIZZARD_CLIENT_SECRET: secret } = process.env;

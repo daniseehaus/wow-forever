@@ -8,7 +8,7 @@ Eine GitHub Action holt die Daten stündlich von der Battle.net API und veröffe
 | Datei | Zweck |
 |---|---|
 | `config.json` | Region, Sprache, Namespaces, Charakterliste, Forever-Einstellungen (`forever`) |
-| `scripts/fetch.mjs` | Abruf der API, schreibt `site/data.json`, Verlauf, Sessions und Aktivitäts-Feed |
+| `scripts/fetch.mjs` | Abruf der API, schreibt `site/data.json`, Verlauf, Sessions und Aktivitäts-Feed, wandelt die 2D-Renders in WebP um |
 | `scripts/config.mjs` | Wählt ab dem Starttag die Forever-Einstellungen |
 | `scripts/switch-forever.mjs` | Übernimmt die Forever-Einstellungen fest in `config.json` (`npm run switch-forever`) |
 | `scripts/preview.mjs` | Vorschau bis zum Start: simulierte Classic-Werte und Showcase-Verlauf |
@@ -16,6 +16,8 @@ Eine GitHub Action holt die Daten stündlich von der Battle.net API und veröffe
 | `scripts/mirror-models.mjs` | Spiegelt die 3D-Modelldateien von Wowhead nach `site/modelviewer/` |
 | `scripts/model-proxy.mjs` | Lokaler Proxy für 3D-Tests ohne Spiegelung |
 | `site/` | Die Seite (HTML, CSS, JS ohne Build-Schritt) |
+| `site/renders/` | 2D-Renders der Charaktere als WebP, schreibt `fetch.mjs` (mit `sharp`, nicht im Repo) |
+| `site/sw.js` | Service Worker: hält 3D-Modelldateien und Renders dauerhaft im Browser |
 | `site/sounds/` | Bloodlust-Sound des Schamanen (Wowhead, Datei 568812, als MP3) |
 | `site/sounds/workers/` | Arbeiter-Stimmen aus Warcraft III, deutsch: Peon, Acolyte und Peasant (aus [Old German Voice Lines](https://www.hiveworkshop.com/threads/old-german-voice-lines-alte-deutsche-voice-lines.371972/), als MP3) |
 | `site/meta.js` | Spielwissen für Forever: Buffs, Tools, Berufe, Zonen, Dungeons, Raids, Stunden bis 60 |
@@ -89,12 +91,17 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 
 ## Effekte
 
-- **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`).
+- **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`). Als Ladebalken läuft es als Welle
+  durch die Kacheln: Es erscheint nur auf der Kachel, deren 3D-Modell gerade aufbaut.
 - **Forever-Start:** Zum Start und einmal am Starttag läuft „Forever ist live“ über die Seite. `?live` zeigt das Band vorab.
 - **Charakterwechsel:** Ein Klick auf eine Kachel scrollt zum Loadout. Dort zieht der Name als Band in Klassenfarbe durch.
+  Das neue 3D-Modell baut erst danach auf, sonst ruckelt das Band.
 - **Hochzählen und Einblenden:** Zahlen zählen beim ersten Sichtbarwerden von 0 hoch und blitzen am Ende kurz auf (`COUNT_SEL` in `app.js`). Die Abschnitte gleiten beim Scrollen ins Bild.
 - **Bloodlust:** Ein Klick auf das Logo startet 15 Sekunden Bloodlust mit Sound, rotem Lauf-Rahmen um die Seite und pulsierenden Kacheln. Danach gilt 60 Sekunden „Gesättigt“.
+- **Sync:** Der Punkt neben der Uhrzeit ist grün, solange der stündliche Abruf läuft, und rot ab 2 Stunden Rückstand. Ältere Stände zeigen das Datum.
 - Bei „Bewegung reduzieren“ im System bleiben alle Effekte aus.
+- Dauer-Animationen laufen nur über `transform` und `opacity`. So rechnet sie die Grafikkarte, nicht der Hauptthread.
+  Das Tempo im Bloodlust ändert `lustTempo()` über die Web Animations API, eine neue `animation-duration` ließe die Animationen springen.
 
 ## 3D-Modelle
 
@@ -103,7 +110,15 @@ Aussehen und Transmog über `/appearance`, die Display-IDs über `/item-appearan
 Wowhead erlaubt keinen direkten Abruf aus fremden Seiten. Die Action spiegelt deshalb alle benötigten
 Dateien (etwa 70 MB für 5 Charaktere) nach GitHub Pages. Ändert sich am Aussehen nichts, übernimmt sie die Dateien aus dem Cache
 und überspringt Browser-Installation und Spiegelung (`mirror-models.mjs --hash` und `--restore`). Auf schmalen Bildschirmen und ohne WebGL zeigt
-die Seite immer die 2D-Renders, auf Handys gibt es den Schalter „3D an/aus“ nicht. Auf größeren Bildschirmen schaltet er 3D ab.
+die Seite immer die 2D-Renders, auf Handys gibt es den Schalter „3D an/aus“ nicht. Tablets (Touch) und „Daten sparen“ starten mit 2D,
+der Schalter schaltet 3D dort ein. Sonst gilt die letzte Wahl am Schalter.
+
+Jeder Viewer zeichnet in einer eigenen Schleife. Damit sechs Modelle den Hauptthread nicht füllen, begrenzt `pace()` in `model3d.js`
+die Bildrate auf 60 Bilder pro Sekunde (auch auf 120-Hz-Displays) und lässt Modelle aus, die weit außerhalb des Bildes liegen.
+Sichtbare Modelle bewegen sich immer. Ein Rand von 200 px startet ein Modell, bevor es ins Bild scrollt.
+
+GitHub Pages erlaubt nur 10 Minuten Cache. Der Service Worker (`sw.js`) hält Modelldateien und Renders darum dauerhaft vor.
+Ab dem zweiten Besuch lädt die Seite keine Modelldaten mehr. Wechselt die Modell-Umgebung (Vorschau, dann Forever), löscht er den alten Cache.
 
 Der Wowhead-Viewer ist inoffiziell. Ändert Wowhead ihn, kann 3D ausfallen. Die Seite fällt dann auf die Renders zurück.
 

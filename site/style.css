@@ -10,6 +10,7 @@
   --accent-text: #ff6b84;   /* hellere Stufe für Text auf dunklem Grund */
   --accent-ink: #ffffff;    /* Schrift auf Flächen in Highlight-Farbe */
   --warn: #ff3a5e;
+  --ok: #3ddc84;           /* Sync-Punkt bei frischen Daten */
   --radius: 18px;
   --radius-sm: 12px;
   --cls: #ff6b84;
@@ -43,7 +44,6 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; }
 .wrap { max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 56px); }
 .mono { font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; }
-.accent { color: var(--accent-text); }
 
 /* Effekte */
 .fx-scan {
@@ -59,7 +59,6 @@ button { font: inherit; color: inherit; }
 @keyframes blink { 50% { opacity: .25; } }
 @keyframes sweep { from { transform: translateX(-150%) skewX(-20deg); } to { transform: translateX(350%) skewX(-20deg); } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-@keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
 
 main, footer, nav { position: relative; z-index: 1; }
 
@@ -70,7 +69,8 @@ main, footer, nav { position: relative; z-index: 1; }
   border-bottom: 1px solid var(--line);
 }
 .nav-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 72px; }
-.brand { display: flex; align-items: center; gap: 12px; }
+/* Marke und rechter Block teilen sich den Platz gleich. So bleiben die Links in der Mitte stehen, wenn Untertitel oder Sync-Text wachsen. */
+.brand { flex: 1 1 0; display: flex; align-items: center; gap: 12px; }
 .brand-logo { width: 38px; height: 38px; filter: drop-shadow(0 0 8px rgba(255,58,94,.45)); }
 .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
 .brand-text b { font-size: 17px; letter-spacing: .12em; }
@@ -79,9 +79,13 @@ main, footer, nav { position: relative; z-index: 1; }
 .nav-links a { padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); transition: .2s; }
 .nav-links a:hover { color: var(--text); }
 .nav-links a.active { background: var(--accent); color: var(--accent-ink); }
-.nav-right { display: flex; align-items: center; gap: 14px; }
+.nav-right { flex: 1 1 0; display: flex; justify-content: flex-end; align-items: center; gap: 14px; }
 .sync { display: flex; align-items: center; gap: 8px; font: 500 12px var(--mono); color: var(--muted); white-space: nowrap; }
-.sync i { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); box-shadow: 0 0 10px var(--warn); animation: blink 1.4s infinite; }
+#sync { display: inline-block; min-width: 10ch; text-align: right; }
+.sync i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 10px var(--ok); animation: blink 1.4s infinite; }
+/* Rot ab 2 Stunden ohne neuen Abruf (renderSync in app.js). */
+.sync.stale { color: var(--accent-text); }
+.sync.stale i { background: var(--warn); box-shadow: 0 0 10px var(--warn); }
 .chip-btn {
   border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 7px 12px;
   font: 500 12px var(--mono); color: var(--muted); cursor: pointer; transition: .2s;
@@ -92,11 +96,18 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Kopf */
 .hero { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding: 40px 0 28px; }
 .eyebrow { font: 700 17px var(--ui); color: var(--text); letter-spacing: .12em; text-transform: uppercase; }
-.hero h1 {
-  margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em;
-  background: linear-gradient(100deg, #fff 30%, var(--accent-text) 50%, #fff 70%); background-size: 200% 100%;
-  -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 8s linear infinite;
+.hero h1 { position: relative; margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em; color: #fff; }
+/* Glanz über dem Titel: Ein Fenster mit weichen Kanten zieht von rechts nach links, der rosa Text darin läuft gleich schnell zurück.
+   So steht der Text still und nur der Glanz wandert. Beides läuft per transform, der Browser zeichnet dafür nichts neu. */
+.hero h1 .shine { position: absolute; inset: -.25em 0; overflow: hidden; pointer-events: none; }
+.hero h1 .shine-win {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 50%; overflow: hidden;
+  -webkit-mask: linear-gradient(100deg, transparent 10%, #000 50%, transparent 90%); mask: linear-gradient(100deg, transparent 10%, #000 50%, transparent 90%);
+  animation: shine-win 4s linear infinite;
 }
+.hero h1 .shine-txt { position: absolute; top: .25em; left: 0; width: 200%; color: var(--accent-text); animation: shine-txt 4s linear infinite; }
+@keyframes shine-win { from { transform: translateX(200%); } to { transform: translateX(-100%); } }
+@keyframes shine-txt { from { transform: translateX(-100%); } to { transform: translateX(50%); } }
 .kpis { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: clamp(18px, 2.6vw, 40px); padding-bottom: 8px; }
 /* Neben dem Titel: Zahlen rechtsbündig über dem Text, der Block endet bündig mit der rechten Kante der Seite. */
 .kpi { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
@@ -104,7 +115,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .kpi > span { font-size: 11px; letter-spacing: .15em; color: var(--dim); text-transform: uppercase; }
 .kpi.hot b { color: var(--accent-text); }
 .kpi.txt b { color: var(--dim); }
-.kpi.warn b { color: var(--warn); }
 
 /* Charakter-Kacheln */
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
@@ -115,7 +125,8 @@ main, footer, nav { position: relative; z-index: 1; }
   box-shadow: 0 -10px 24px -14px var(--cls);
   background: radial-gradient(ellipse at 50% 62%, color-mix(in srgb, var(--cls) 26%, transparent) 0%, transparent 62%), linear-gradient(180deg, var(--panel-2), #0a0d11);
   transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .2s, box-shadow .2s;
-  animation: rise .6s both;
+  /* backwards: Nach dem Einblenden gilt wieder das normale CSS. Mit both hielte die Animation transform fest und der Hover hebt die Kachel nicht. */
+  animation: rise .6s calc(var(--i, 0) * 70ms) backwards;
 }
 /* Der farbige Balken oben ist die Oberkante des Rahmens. So bleibt der Rahmen ringsum gleich dick. */
 .tile:hover { transform: translateY(-4px); }
@@ -150,21 +161,30 @@ main, footer, nav { position: relative; z-index: 1; }
   --band: var(--accent); --band-ink: var(--accent-ink);
   display: flex; justify-content: center; align-items: center; gap: .5em; padding: 9px 0; text-align: center; white-space: nowrap;
   font: 800 22px/1 var(--display); letter-spacing: .32em; text-transform: uppercase; color: var(--band-ink);
-  text-shadow: 0 1px 6px rgba(0,0,0,.5);
-  background:
-    linear-gradient(45deg, rgba(255,255,255,.16) 25%, transparent 25% 50%, rgba(255,255,255,.16) 50% 75%, transparent 75%) 0 0 / 36px 36px,
-    var(--band);
+  position: relative; text-shadow: 0 1px 6px rgba(0,0,0,.5);
+  background: var(--band);
   border-block: 1px solid color-mix(in srgb, var(--band-ink) 35%, transparent);
-  animation: band-stripes .9s linear infinite, band-glow 1.8s ease-in-out infinite;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--band) 45%, transparent);
 }
+/* Streifen und Glühen sind eigene Ebenen und laufen per transform und opacity.
+   So zeichnet der Browser das Band nicht in jedem Bild neu (vorher: background-position und box-shadow). */
+.band-tex { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.band-tex::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: -36px; right: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,.16) 25%, transparent 25% 50%, rgba(255,255,255,.16) 50% 75%, transparent 75%) 0 0 / 36px 36px;
+  animation: band-stripes .9s linear infinite;
+}
+.band-strip::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  box-shadow: 0 0 42px color-mix(in srgb, var(--band) 85%, transparent);
+  animation: band-glow 1.8s ease-in-out infinite;
+}
+.band-strip > :not(.band-tex) { position: relative; }
 .band-strip.dark { text-shadow: none; }
 .band-strip img { height: .72em; width: .72em; border-radius: 6px; box-shadow: 0 0 0 2px var(--band-ink); }
 .loading-band .band-strip { width: 150%; transform: rotate(-14deg); }
-@keyframes band-stripes { to { background-position: 36px 0, 0 0; } }
-@keyframes band-glow {
-  0%, 100% { box-shadow: 0 0 18px color-mix(in srgb, var(--band) 45%, transparent); }
-  50% { box-shadow: 0 0 42px color-mix(in srgb, var(--band) 85%, transparent); }
-}
+@keyframes band-stripes { to { transform: translateX(36px); } }
+@keyframes band-glow { 50% { opacity: 1; } }
 
 /* Band als Durchzug: fährt schräg von links ein, hält kurz und fährt rechts wieder raus. */
 .burst { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow: hidden; pointer-events: none; }
@@ -172,7 +192,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .burst .band-strip {
   --tilt: -8deg; width: 170%; padding: 18px 0; font-size: clamp(40px, 8vw, 104px); letter-spacing: .22em;
   transform: rotate(var(--tilt)) translateX(-110%);
-  animation: band-stripes .9s linear infinite, band-glow 1.8s ease-in-out infinite, burst-pass var(--dur, 2.6s) cubic-bezier(.75,0,.25,1) forwards;
+  animation: burst-pass var(--dur, 2.6s) cubic-bezier(.75,0,.25,1) forwards;
 }
 .burst.local .band-strip { --tilt: -10deg; padding: 12px 0; font-size: clamp(30px, 5vw, 56px); }
 /* Mit --y sitzt das Band auf einer festen Höhe (Mitte der Modell-Bühne) statt in der Mitte des Loadouts. */
@@ -189,7 +209,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .loadout.swapping { pointer-events: none; }
 body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .loadout.swap .lo-head, .loadout.swap .lo-body, .loadout.swap .talents { animation: rise .5s .45s both; }
-.loading-dot { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--cls); box-shadow: 0 0 20px var(--cls); animation: blink 1s infinite; }
 
 /* Panels */
 .panel {
@@ -199,7 +218,6 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 }
 .panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 12px; margin-bottom: 18px; }
 .panel-head h2 { white-space: nowrap; }
-.panel-head.sub { margin: 22px 0 12px; }
 .panel-head .mono { text-transform: uppercase; }
 .panel h2 { margin: 0; font-weight: 700; font-size: 17px; letter-spacing: .12em; text-transform: uppercase; }
 .panel h3 { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
@@ -448,6 +466,10 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--dim); font: 500 11px var(--mono); padding-top: 40px; padding-bottom: 40px; }
 
+/* Zwischen 1100 und 1320 px passt die Navigation nur mit engeren Links in eine Zeile. */
+@media (min-width: 1101px) and (max-width: 1320px) {
+  .nav-links a { padding: 8px 11px; letter-spacing: .07em; }
+}
 @media (max-width: 1100px) {
   html { scroll-padding-top: 116px; }
   .hero, .kpis { flex-wrap: wrap; }
@@ -479,6 +501,8 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .prep { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   /* Navigation als zweite Zeile, die seitlich scrollt. */
   .nav-in { flex-wrap: wrap; height: auto; padding-top: 10px; padding-bottom: 10px; row-gap: 8px; }
+  /* Die Links stehen in eigener Zeile, die Marke darf wieder so breit werden, wie sie braucht. */
+  .brand, .nav-right { flex: 0 1 auto; }
   .nav-links { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .nav-links::-webkit-scrollbar { display: none; }
   .nav-links a { flex: none; padding: 7px 12px; font-size: 12px; }
@@ -495,16 +519,16 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .nav-in { padding-top: 8px; padding-bottom: 8px; }
   .brand-text b { font-size: 15px; }
   .brand-logo { width: 32px; height: 32px; }
-  .sync span { display: none; }
+  .sync span, .sync #sync { display: none; }
   .chip-btn { padding: 6px 10px; }
 
   .hero { padding: 22px 0 18px; gap: 18px; }
   .hero h1 { font-size: clamp(40px, 12.5vw, 64px); }
-  .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; padding: 0; align-items: stretch; }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; width: 100%; padding: 0; align-items: stretch; }
   .kpi { justify-content: flex-end; }
-  .kpi { padding: 10px 12px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
-  .kpi b { font-size: 30px; }
-  .kpi > span { font-size: 10px; letter-spacing: .1em; }
+  .kpi { padding: 10px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
+  .kpi b { font-size: 28px; }
+  .kpi > span { font-size: 10px; letter-spacing: .08em; }
 
   /* Kacheln als Reihe zum Wischen statt einer langen Liste. */
   .tiles {
@@ -560,6 +584,10 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(5) { animation-delay: .2s; }
 .reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(6) { animation-delay: .25s; }
 .reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(n+7) { animation-delay: .3s; }
+/* Nach dem ersten Einblenden (settled, app.js) erscheinen neu aufgebaute Zeilen ohne Animation. Sonst blinken beim Aufklappen auch die alten. */
+.reveal.in.settled :is(.route-row, .ev, .grow, .recap-row, .prep-col) { animation: none; }
+/* Bis die Daten da sind, bleibt alles unter dem Kopf unsichtbar (body.ready, app.js). Was man schon sieht, springt dann nicht mehr. */
+body:not(.ready) main > :not(.hero), body:not(.ready) .foot { visibility: hidden; }
 
 /* Bloodlust: Klick auf das Logo. Rote Vignette im Herzschlag, alles läuft schneller. */
 .brand-logo { cursor: pointer; transition: transform .2s; }
@@ -570,39 +598,44 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 }
 body.lust .fx-lust { opacity: 1; animation: lust-beat .55s ease-in-out infinite; }
 body.lust-hit main { animation: lust-shake .55s cubic-bezier(.36,.07,.19,.97) both; }
-body.lust .hero h1 { animation-duration: 1.4s; }
-body.lust .tile .sweep { animation-duration: 1.2s; }
-body.lust .fx-scan { animation-duration: 2s; }
-body.lust .sync i { animation-duration: .35s; }
+/* Das Tempo von Scan-Linie, Titel-Glanz, Schimmer und Sync-Punkt steigt per Web Animations API (lustTempo in app.js). */
 body.lust .tile { transition-duration: .12s; }
 @keyframes lust-beat { 0%, 100% { opacity: .65; } 30% { opacity: 1; } }
-/* Roter Rahmen um die ganze Seite, ein Lichtband läuft ringsum. */
-@property --lust-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
-.fx-lust::before {
-  content: ''; position: absolute; inset: 6px; padding: 4px; border-radius: 22px;
-  background: conic-gradient(from var(--lust-a), rgba(255,42,61,.25) 0 12%, #ff2a3d 22%, #ffd0d5 25%, #ff2a3d 28%, rgba(255,42,61,.25) 38% 62%, #ff2a3d 72%, #ffd0d5 75%, #ff2a3d 78%, rgba(255,42,61,.25) 88%);
+/* Roter Rahmen um die ganze Seite, ein Lichtband läuft ringsum.
+   Die Maske schneidet den Rahmen aus, darin dreht sich ein großer Farbkreis per transform. Der Browser zeichnet dafür nichts neu. */
+.lust-ring {
+  position: absolute; inset: 6px; padding: 4px; border-radius: 22px; overflow: hidden;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
   filter: drop-shadow(0 0 8px #ff2a3d) blur(.6px);
 }
+.lust-ring > i {
+  position: absolute; left: 50%; top: 50%; width: 150vmax; height: 150vmax; margin: -75vmax 0 0 -75vmax;
+  background: conic-gradient(rgba(255,42,61,.25) 0 12%, #ff2a3d 22%, #ffd0d5 25%, #ff2a3d 28%, rgba(255,42,61,.25) 38% 62%, #ff2a3d 72%, #ffd0d5 75%, #ff2a3d 78%, rgba(255,42,61,.25) 88%);
+}
 .fx-lust::after { content: ''; position: absolute; inset: 6px; border-radius: 22px; box-shadow: inset 0 0 60px rgba(255,42,61,.45); }
-body.lust .fx-lust::before { animation: lust-spin 8s linear infinite; }
-@keyframes lust-spin { to { --lust-a: 360deg; } }
-/* Kacheln, Loadout-Ring und Logo schlagen im Takt mit. */
-body.lust .tile { animation: lust-tile .95s ease-in-out infinite; border-color: #ff2a3d; }
-body.lust .tile:nth-child(2n) { animation-delay: .12s; }
-body.lust .tile:nth-child(3n) { animation-delay: .24s; }
-body.lust .lo-stage .ring { animation: lust-ring .55s ease-in-out infinite; }
-body.lust .brand-logo { animation: lust-logo .55s ease-in-out infinite; }
-@keyframes lust-tile {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(255,42,61,.35); }
-  30% { transform: scale(1.025); box-shadow: 0 0 46px rgba(255,42,61,.8); }
+body.lust .lust-ring > i { animation: lust-spin 8s linear infinite; }
+@keyframes lust-spin { to { transform: rotate(1turn); } }
+/* Kacheln, Loadout-Ring und Logo schlagen im Takt mit. Der Puls hängt hinter rise an.
+   So startet rise am Ende nicht neu und die Kacheln blenden nicht noch einmal ein.
+   Die Kachel pulsiert per transform, das Glühen per opacity einer eigenen Ebene. */
+body.lust .tile {
+  animation: rise .6s calc(var(--i, 0) * 70ms) backwards, lust-tile .95s calc(var(--i, 0) * 120ms) ease-in-out infinite;
+  border-color: #ff2a3d; box-shadow: 0 0 30px rgba(255,42,61,.55);
 }
-@keyframes lust-ring {
-  0%, 100% { border-color: #ff2a3d; box-shadow: 0 0 30px rgba(255,42,61,.5); transform: translateX(-50%) scale(1); }
-  30% { border-color: #ffd0d5; box-shadow: 0 0 70px rgba(255,42,61,.95); transform: translateX(-50%) scale(1.08); }
+body.lust .tile::after {
+  content: ''; position: absolute; inset: 0; z-index: 4; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 46px rgba(255,42,61,.7); animation: lust-glow .95s calc(var(--i, 0) * 120ms) ease-in-out infinite;
 }
-@keyframes lust-logo { 30% { transform: scale(1.18) rotate(-8deg); filter: drop-shadow(0 0 14px #ff2a3d); } }
+.lo-stage .ring::after { content: ''; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid #ffd0d5; box-shadow: 0 0 70px rgba(255,42,61,.95); opacity: 0; }
+body.lust .lo-stage .ring { border-color: #ff2a3d; box-shadow: 0 0 30px rgba(255,42,61,.5); animation: lust-ring .55s ease-in-out infinite; }
+body.lust .lo-stage .ring::after { animation: lust-glow .55s ease-in-out infinite; }
+/* Der Schein am Logo steht fest. Ein animierter filter liefe auf dem Hauptthread (gemessen: 21 % auf einem Mittelklasse-Handy). */
+body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-logo .55s ease-in-out infinite; }
+@keyframes lust-tile { 0%, 100% { transform: scale(1); } 30% { transform: scale(1.025); } }
+@keyframes lust-glow { 0%, 100% { opacity: .2; } 30% { opacity: 1; } }
+@keyframes lust-ring { 0%, 100% { transform: translateX(-50%) scale(1); } 30% { transform: translateX(-50%) scale(1.08); } }
+@keyframes lust-logo { 30% { transform: scale(1.18) rotate(-8deg); } }
 
 /* Hochgezählte Zahl blitzt am Ende kurz auf. */
 .count-flash { animation: count-flash .7s ease-out; }
@@ -621,6 +654,7 @@ body.lust .brand-logo { animation: lust-logo .55s ease-in-out infinite; }
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; }
+  .hero h1 .shine { display: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 

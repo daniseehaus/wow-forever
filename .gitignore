@@ -6,5 +6,6 @@ site/history.json
 node_modules/
 .model-cache/
 site/modelviewer/
+site/renders/
 site/sessions.json
 site/feed.json
