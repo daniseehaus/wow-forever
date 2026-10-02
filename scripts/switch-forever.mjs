@@ -20,5 +20,7 @@ if (!base.forever.characters?.length) {
 }
 
 const next = resolveConfig(base, true);
+// Die Vorschau (simulate) endet mit dem Start.
+delete next.simulate;
 await writeFile(file, JSON.stringify(next, null, 2) + '\n');
 console.log(`config.json umgestellt: era ${base.era} → ${next.era}, Namespace ${next.namespaces.profile}, Max-Level ${next.maxLevel}.`);

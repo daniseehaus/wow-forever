@@ -6,6 +6,10 @@
 //   node scripts/fetch.mjs --config andere.json   andere Konfiguration nutzen
 //   node scripts/fetch.mjs --forever   Forever-Einstellungen schon vor dem Start nutzen (zum Testen)
 //
+// Vorschau: Mit config.simulate wandelt der Abruf die echten Retail-Charaktere in Classic-Charaktere um
+// (Level, Talentbäume, Berufe, Werte, Itemlevel) und ergänzt einen Showcase-Verlauf für Aktivität und Sessions.
+// So zeigt die Seite bis zum Start ein Bild wie in Forever. Details in preview.mjs.
+//
 // Optional: PREVIOUS_DATA_URL zeigt auf die zuletzt veröffentlichte data.json.
 // Schlägt ein Charakter fehl, bleibt dann sein letzter bekannter Stand erhalten.
 //
@@ -20,6 +24,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolveConfig } from './config.mjs';
+import { simulateClassic } from './preview.mjs';
 
 const root = new URL('../', import.meta.url);
 const outFile = new URL('site/data.json', root);
@@ -32,15 +37,19 @@ const config = resolveConfig(JSON.parse(await readFile(new URL(configFile, root)
 const demo = process.argv.includes('--demo');
 const era = config.era ?? 'classic';
 
-const data = demo ? buildDemo() : await buildLive();
+const live = demo ? null : await buildLive();
+const preview = live && config.simulate ? simulateClassic(live, config.simulate, classicRole) : null;
+const data = demo ? buildDemo() : preview?.data ?? live;
 await mkdir(new URL('site/', root), { recursive: true });
 await writeFile(outFile, JSON.stringify(data, null, 2) + '\n');
 const history = demo ? {} : await updateHistory(data);
 await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\n');
-const sessions = demo ? {} : await updateSessions(data);
+// In der Vorschau stammen die Sessions nur aus dem Showcase, der Feed aus Showcase und echten Änderungen.
+const sessions = demo ? {} : preview ? { list: preview.showcase.sessions } : await updateSessions(data);
 await writeFile(new URL('site/sessions.json', root), JSON.stringify(sessions) + '\n');
-const feed = demo ? demoFeed(data) : await updateFeed(data, sessions);
-await writeFile(new URL('site/feed.json', root), JSON.stringify({ era: feed.era, events: feed.events }) + '\n');
+const feed = demo ? demoFeed(data) : await updateFeed(data, preview ? {} : sessions);
+const events = preview ? [...preview.showcase.events, ...feed.events].sort((a, b) => a.t - b.t) : feed.events;
+await writeFile(new URL('site/feed.json', root), JSON.stringify({ era: feed.era, events }) + '\n');
 
 const failed = data.characters.filter((c) => c.error).length;
 console.log(`data.json geschrieben (${data.era}): ${data.characters.length} Charaktere, ${failed} mit Fehler.`);
@@ -210,13 +219,17 @@ function classicRole(classId, tree) {
 
 // Talente. Retail liefert den Import-Code des aktiven Loadouts, den der Wowhead-Rechner direkt öffnet.
 // Classic liefert je Baum die verteilten Punkte und die gewählten Talente, aber nicht ihre Position im Baum.
-// Ohne Position lässt sich kein Rechner-Link mit Build bauen, der Link öffnet dort den Rechner der Klasse.
+// Die Position kommt aus site/talents.json (build-talents.mjs). Die Seite baut daraus Baum und Rechner-Link.
+
+function classSlug(id) {
+  return { 1: 'warrior', 2: 'paladin', 3: 'hunter', 4: 'rogue', 5: 'priest', 6: 'death-knight', 7: 'shaman', 8: 'mage', 9: 'warlock', 10: 'monk', 11: 'druid', 12: 'demon-hunter', 13: 'evoker' }[id];
+}
 
 function pickTalents(specs, summary) {
-  const CLASS_SLUGS = { 1: 'warrior', 2: 'paladin', 3: 'hunter', 4: 'rogue', 5: 'priest', 6: 'death-knight', 7: 'shaman', 8: 'mage', 9: 'warlock', 10: 'monk', 11: 'druid', 12: 'demon-hunter', 13: 'evoker' };
   if (!specs) return null;
   const site = `https://www.wowhead.com${config.wowhead ? `/${config.wowhead}` : ''}`;
   const pick = (t, tree = null) => ({
+    id: t.talent?.id ?? null,
     name: t.tooltip?.talent?.name ?? t.spell_tooltip?.spell?.name ?? t.talent?.name ?? null,
     spell: t.tooltip?.spell_tooltip?.spell?.id ?? t.spell_tooltip?.spell?.id ?? null,
     rank: t.rank ?? t.talent_rank ?? 1,
@@ -244,7 +257,7 @@ function pickTalents(specs, summary) {
   if (!group) return null;
   const trees = (group.specializations ?? []).map((s) => ({ name: s.specialization_name ?? null, points: s.spent_points ?? 0 }));
   const picks = (group.specializations ?? []).flatMap((s) => (s.talents ?? []).map((t) => pick(t, s.specialization_name ?? null))).filter((t) => t.name);
-  const cls = CLASS_SLUGS[summary.character_class?.id];
+  const cls = classSlug(summary.character_class?.id);
   return {
     trees,
     hero: null,
@@ -546,20 +559,24 @@ function buildDemo() {
     ['Schattenfell', 33, 4, 'Schurke', 'Mensch', 'ALLIANCE', null, ['UNCOMMON', 'COMMON']],
   ];
 
-  const trees = {
-    1: ['Waffen', 'Furor', 'Schutz'], 8: ['Arkan', 'Feuer', 'Frost'], 3: ['Tierherrschaft', 'Treffsicherheit', 'Überleben'],
-    2: ['Heilig', 'Schutz', 'Vergeltung'], 4: ['Meucheln', 'Kampf', 'Täuschung'],
-  };
+  // Verteilt die Punkte von oben nach unten auf die echten Bäume, damit die Demo einen vollständigen Baum zeigt.
+  const layout = JSON.parse(readFileSync(new URL('../site/talents.json', import.meta.url), 'utf8')).classes;
   const talents = (classId, level) => {
     const points = Math.max(0, level - 9);
     const split = [Math.ceil(points * 0.6), Math.floor(points * 0.4), 0];
-    return {
-      trees: trees[classId].map((name, i) => ({ name, points: split[i] })),
-      hero: null,
-      picks: [[12294, 'Tödlicher Stoß'], [12328, 'Todeswunsch'], [12296, 'Wutanfall']].map(([spell, name], i) => ({ name, spell, rank: i + 1, tree: trees[classId][0] })),
-      total: points,
-      calc: `https://www.wowhead.com/classic/talent-calc/${{ 1: 'warrior', 8: 'mage', 3: 'hunter', 2: 'paladin', 4: 'rogue' }[classId]}`,
-    };
+    const picks = [];
+    const trees = layout[classId].map((tree, i) => {
+      let left = split[i], spent = 0;
+      for (const t of tree.talents) {
+        if (!left || t.tier * 5 > spent) continue;
+        const rank = Math.min(t.ranks.length, left);
+        picks.push({ id: t.id, name: t.name, spell: t.ranks[rank - 1], rank, tree: tree.name });
+        left -= rank;
+        spent += rank;
+      }
+      return { name: tree.name, points: spent };
+    });
+    return { trees, hero: null, picks, total: points, calc: `https://www.wowhead.com/classic/talent-calc/${{ 1: 'warrior', 8: 'mage', 3: 'hunter', 2: 'paladin', 4: 'rogue' }[classId]}` };
   };
 
   return {

@@ -226,9 +226,12 @@ main, footer, nav { position: relative; z-index: 1; }
 .prof-matrix { overflow-x: auto; }
 .prof-matrix table { border-collapse: separate; border-spacing: 4px; width: 100%; font-size: 12px; }
 .prof-matrix th { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .08em; text-transform: uppercase; padding: 0 2px 4px; text-align: center; white-space: nowrap; }
-.prof-matrix td { height: 32px; text-align: center; border-radius: 8px; font: 500 11px var(--mono); background: rgba(255,255,255,.02); color: #2a323c; }
-.prof-matrix td.has { background: rgba(255,255,255,.07); color: var(--text); }
-.prof-matrix td.max { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent-text); }
+.prof-matrix td { position: relative; overflow: hidden; height: 32px; text-align: center; border-radius: 8px; font: 500 11px var(--mono); background: rgba(255,255,255,.02); color: #2a323c; }
+.prof-matrix td.has, .prof-matrix td.max { background: rgba(255,255,255,.07); color: var(--text); }
+/* Fortschritt als Balken am unteren Rand in Klassenfarbe, voller Balken mit Haken */
+.prof-matrix td .pbar { position: absolute; left: 0; bottom: 0; height: 3px; width: var(--p); background: var(--cls); }
+.prof-matrix td.max .pbar { box-shadow: 0 0 8px var(--cls); }
+.prof-matrix td.max::before { content: '✓'; margin-right: 5px; color: var(--cls); }
 .prof-matrix td.name { text-align: left; background: none; font: 700 13px var(--ui); color: var(--text); padding-right: 8px; white-space: nowrap; }
 
 .route-tips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
@@ -255,26 +258,41 @@ main, footer, nav { position: relative; z-index: 1; }
 .route-who { display: flex; flex-direction: column; gap: 4px; }
 .route-who span { font: 700 12px var(--mono); color: var(--cls); }
 
-/* Verlauf */
-.history { display: grid; grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); gap: 20px; }
-.history svg { width: 100%; height: 260px; display: block; }
-.recap { display: flex; flex-direction: column; gap: 8px; }
-.recap div { display: flex; justify-content: space-between; gap: 8px; padding: 10px 12px; border-radius: 10px; background: rgba(255,255,255,.03); font-size: 13px; }
-.recap b { color: var(--cls); }
-.recap span { font-family: var(--mono); color: var(--accent-text); }
-.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; font: 500 11px var(--mono); color: var(--muted); }
-.legend i { display: inline-block; width: 10px; height: 3px; margin-right: 6px; vertical-align: middle; background: var(--cls); }
-
 /* Talente */
 .talents { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .talents .dlabel .split { display: block; margin-top: 4px; font: 800 18px/1 var(--display); color: var(--cls); letter-spacing: .02em; }
-.dcell.calc { justify-content: space-between; border-color: color-mix(in srgb, var(--cls) 35%, var(--line)); transition: .2s; }
-.dcell.calc b { color: var(--cls); font-size: 20px; }
-.dcell.calc:hover { background: color-mix(in srgb, var(--cls) 10%, transparent); }
 .talent-list { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 110px; }
 .talent-list > * { padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--text); transition: .15s; }
 .talent-list a:hover { border-color: var(--cls); color: var(--cls); }
+.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: none; color: var(--dim); font: 500 11px var(--mono); }
+.talent-list > .tcalc:hover { color: var(--cls); border-color: currentColor; }
 .talent-list em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); margin-left: 2px; }
+
+/* Classic-Talentbäume: Raster mit 4 Spalten und 7 Reihen wie im Spiel. Teilweise = grün, Maximalrang = gold. */
+.talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.talents-head .dlabel { min-width: 100px; }
+.tpoints { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .06em; }
+.tcalc { margin-left: auto; font: 500 11px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
+.tcalc:hover { color: var(--cls); border-color: currentColor; }
+.ttrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.ttree { padding: 14px 18px 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, var(--cls) 7%, transparent), rgba(255,255,255,.015) 60%); }
+.ttree.empty { background: rgba(255,255,255,.015); }
+.ttree-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+.ttree-head span { font-size: 13px; font-weight: 600; color: var(--text); }
+.ttree-head b { font: 800 24px/1 var(--display); color: var(--cls); }
+.ttree.empty .ttree-head b { color: var(--dim); }
+.ttree-grid { position: relative; width: 100%; max-width: 280px; margin: 0 auto; aspect-ratio: 4 / 7; }
+.ttree-grid svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ttree-grid path { fill: none; stroke: rgba(255,255,255,.1); stroke-width: 3; vector-effect: non-scaling-stroke; }
+.ttree-grid path.on { stroke: var(--q-artifact); opacity: .7; }
+.tal { position: absolute; left: calc(var(--x) * 25%); top: calc(var(--y) * 100% / 7); width: 25%; height: calc(100% / 7); display: grid; place-items: center; }
+.tal img { width: 72%; aspect-ratio: 1; border-radius: 8px; border: 2px solid #2a323c; filter: grayscale(1) brightness(.45); transition: .15s; }
+.tal i { position: absolute; right: 4%; bottom: 6%; padding: 0 4px; border-radius: 5px; background: var(--bg); border: 1px solid #2a323c; font: 500 10px/14px var(--mono); font-style: normal; color: var(--dim); }
+.tal.part img { filter: none; border-color: var(--q-uncommon); }
+.tal.part i { color: var(--q-uncommon); border-color: color-mix(in srgb, var(--q-uncommon) 50%, transparent); }
+.tal.full img { filter: none; border-color: var(--q-artifact); box-shadow: 0 0 12px color-mix(in srgb, var(--q-artifact) 35%, transparent); }
+.tal.full i { color: var(--q-artifact); border-color: color-mix(in srgb, var(--q-artifact) 50%, transparent); }
+.tal:hover img { filter: none; transform: scale(1.06); }
 
 /* Aktivität */
 .feed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 6px 28px; align-items: start; }
@@ -295,7 +313,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .ev-session { --cls: var(--accent-text); }
 .feed-more { grid-column: 1 / -1; justify-self: center; }
 
-.axis { display: flex; justify-content: space-between; font: 500 10px var(--mono); color: var(--dim); padding: 0 28px; margin-top: -18px; }
 
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--dim); font: 500 11px var(--mono); padding-top: 40px; padding-bottom: 40px; }
 
@@ -306,7 +323,6 @@ main, footer, nav { position: relative; z-index: 1; }
   .lo-body > div:nth-child(2) { order: -1; grid-column: 1 / -1; }
   .lo-stage { height: 460px; }
   .gear-col.left .gear { flex-direction: row; text-align: left; }
-  .history { grid-template-columns: minmax(0, 1fr); }
   .drow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .dlabel { grid-column: 1 / -1; }
   .talent-list { padding-left: 0; }
@@ -325,6 +341,9 @@ main, footer, nav { position: relative; z-index: 1; }
   #toggle-3d { display: none; }
 }
 @media (max-width: 600px) {
+  .ttrees { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .ttree { scroll-snap-align: start; padding: 12px 12px 14px; }
+  .tcalc { margin-left: 0; }
   body { font-size: 14px; }
   html { scroll-padding-top: 108px; }
   .nav-in { padding-top: 8px; padding-bottom: 8px; }
@@ -375,7 +394,6 @@ main, footer, nav { position: relative; z-index: 1; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }
   .route-tips div { flex-basis: 100%; }
-  .history svg { height: 200px; }
   .ev { grid-template-columns: 40px 26px minmax(0, 1fr); gap: 8px; }
   .foot { flex-direction: column; }
 }
