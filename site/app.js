@@ -2,13 +2,12 @@ const M = window.META;
 const FALLBACK_ICON = 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg';
 const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'], ['BACK', 'Rücken'], ['CHEST', 'Brust'], ['WRIST', 'Handgelenke'], ['MAIN_HAND', 'Waffenhand'], ['OFF_HAND', 'Schildhand']];
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
-const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
 // Laufende Streifen des Bands als eigene Ebene. Sie bewegt sich per transform, das kostet keinen Hauptthread.
 const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
 // Dauer des Namensbands beim Charakterwechsel. Erst danach baut das neue 3D-Modell auf.
 const SWAP_MS = 1300;
 
-const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
+const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
 const narrow = matchMedia('(max-width: 760px)');
 let pref3d = null;
@@ -310,8 +309,7 @@ function select(key) {
   state.selected = key;
   try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
-  // Das neue 3D-Modell baut erst nach dem Band auf. Sein Aufbau blockiert den Hauptthread und würde das Band ruckeln lassen.
-  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout({ after: SWAP_MS }); swapBand(); } };
+  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout(); swapBand(); } };
   const top = el.getBoundingClientRect().top;
   if (Math.abs(top - 90) < 40) { swap(); return; }
   // Ende des Scrollens: Position steht drei Bilder lang still (Safari kennt kein scrollend). Spätestens nach 1,5 s.
@@ -334,7 +332,7 @@ function releaseHover(el) {
   [...el.querySelectorAll(':hover')].pop()?.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body }));
 }
 
-// Beim Wechsel zieht der Name als Band in Klassenfarbe durch das Loadout.
+// Beim Wechsel zieht der Name als Band in Klassenfarbe über den Bildschirm.
 function swapBand() {
   const el = document.getElementById('loadout');
   const c = state.chars.find((x) => x.key === state.selected);
@@ -344,12 +342,10 @@ function swapBand() {
   el.classList.add('swap', 'swapping');
   clearTimeout(state.swapTimer);
   state.swapTimer = setTimeout(() => el.classList.remove('swapping'), SWAP_MS);
-  // Das Band läuft auf Höhe der Modell-Bühne quer über den Charakter, nicht über die Talente.
-  // offsetTop statt getBoundingClientRect: Die Einblende-Animation verschiebt die Bühne gerade noch um einige Pixel.
-  const stage = el.querySelector('.lo-stage');
-  let y = stage ? stage.offsetHeight / 2 : null;
-  for (let n = stage; n && n !== el; n = n.offsetParent) y += n.offsetTop;
-  burst(c.name, { into: el, color: classColor(c), dur: SWAP_MS, y });
+  // Das Band läuft über den ganzen Bildschirm. So ist es auch auf dem Handy sichtbar, wo das Loadout länger als der Bildschirm ist.
+  // Bei schnellem Klicken ersetzt das neue Band das alte.
+  state.swapBurst?.remove();
+  state.swapBurst = burst(c.name, { color: classColor(c), dur: SWAP_MS });
 }
 
 // ---------------------------------------------------------------------------
@@ -451,12 +447,12 @@ function bloodlust() {
   document.body.classList.add('lust', 'lust-hit');
   setTimeout(() => document.body.classList.remove('lust-hit'), 600);
   lustTempo(true);
-  [...state.tileViewers, state.loViewer].filter(Boolean).forEach(fight);
+  state.tileViewers.forEach(fight);
   clearTimeout(LUST.timer);
   LUST.timer = setTimeout(() => {
     document.body.classList.remove('lust');
     lustTempo(false);
-    [...state.tileViewers, state.loViewer].filter(Boolean).forEach(calm);
+    state.tileViewers.forEach(calm);
   }, LUST.dur);
 }
 
@@ -501,7 +497,7 @@ function fight(v) {
 
 function calm(v) {
   clearTimeout(v.fightTimer);
-  window.Model3D.play(v, v === state.loViewer ? document.querySelector('#lo-anims .active')?.dataset.anim ?? 'Stand' : 'Stand');
+  window.Model3D.play(v, 'Stand');
 }
 
 
@@ -627,22 +623,23 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideTip();
 // ---------------------------------------------------------------------------
 // Loadout des gewählten Charakters
 
-// after: Wartezeit in ms, bevor das 3D-Modell aufbaut (Charakterwechsel mit Band). Bis dahin steht der 2D-Render.
-function renderLoadout({ after = 0 } = {}) {
+// Loadout als Gear-Board: keine Figur (die zeigt die Kachel), oben Kennzahlen, darunter alle Slots als Karten.
+// Ohne eigenes 3D-Modell spart das Loadout Speicher, und der Charakterwechsel baut nichts neu auf.
+const ENCHANT_SLOTS = ['HEAD', 'SHOULDER', 'BACK', 'CHEST', 'WRIST', 'HANDS', 'LEGS', 'FEET', 'MAIN_HAND', 'OFF_HAND'];
+
+function renderLoadout() {
   const el = document.getElementById('loadout');
   const c = state.chars.find((x) => x.key === state.selected);
-  window.Model3D.destroy(state.loViewer);
-  state.loViewer = null;
-  state.loToken++;
   if (!c) { el.innerHTML = ''; return; }
 
   const items = new Map((c.items || []).map((i) => [i.slot, i]));
   const sets = countSets(c.items || []);
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;
   el.style.setProperty('--cls', classColor(c));
+  const slots = [...SLOTS_LEFT, ...SLOTS_RIGHT].filter(([s]) => s !== 'RANGED' || items.has(s));
+  const maxIlvl = Math.max(1, ...(c.items ?? []).map((i) => i.ilvl ?? 0));
 
   el.innerHTML = `
-
     <div class="lo-head">
       <div>
         <span class="eyebrow">// LOADOUT</span>
@@ -652,62 +649,46 @@ function renderLoadout({ after = 0 } = {}) {
       <div class="chips">
         <span class="chip role-chip">${role.label}</span>
         <span class="chip lv">Level ${c.level}</span>
-        <span class="chip il">iLvl ${c.equippedIlvl ?? '?'}</span>
-        ${sets ? `<span class="chip ok">Set ${sets.count} Teile</span>` : ''}
         ${c.lastLogin ? `<span class="chip">Aktiv ${ago(c.lastLogin)}</span>` : ''}
       </div>
     </div>
-    <div class="lo-body">
-      <div class="gear-col left">${SLOTS_LEFT.map(([s, l]) => gearHtml(items.get(s), l)).join('')}</div>
-      <div>
-        <div class="lo-stage"><div class="ring"></div><div class="beam"></div><div class="model" id="lo-model">${c.render ? `<img class="render" src="${esc(c.render)}" alt="${esc(c.name)}">` : ''}</div></div>
-        <div class="anims" id="lo-anims" hidden>${ANIMATIONS.map(([a, l], i) => `<button type="button" data-anim="${a}" class="${i === 0 ? 'active' : ''}">${l}</button>`).join('')}</div>
-      </div>
-      <div class="gear-col right">${SLOTS_RIGHT.filter(([s]) => s !== 'RANGED' || items.has(s)).map(([s, l]) => gearHtml(items.get(s), l)).join('')}</div>
-    </div>
+    ${boardKpis(c, items, sets)}
+    <div class="board">${slots.map(([s, l]) => cardHtml(items.get(s), l, maxIlvl)).join('')}</div>
     ${talentsHtml(c)}`;
 
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
-  if (state.use3d && c.model) mountLoadout(c, after);
 }
 
-async function mountLoadout(c, after) {
-  const token = state.loToken;
-  const box = document.getElementById('lo-model');
-  const holder = document.createElement('div');
-  holder.className = 'stage-3d';
-  box.append(holder);
-  let band = null;
-  if (after) await new Promise((r) => setTimeout(r, after));
-  if (token !== state.loToken) return;
-  try {
-    const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic', { priority: true, onStart: () => { band = loadingBand(box); } });
-    if (token !== state.loToken) { window.Model3D.destroy(v); return; }
-    state.loViewer = v;
-    v.charKey = c.key;
-    if (document.body.classList.contains('lust')) fight(v);
-    box.querySelector('img.render')?.remove();
-    hideBand(band);
-    const anims = document.getElementById('lo-anims');
-    anims.hidden = false;
-    anims.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
-      window.Model3D.play(state.loViewer, b.dataset.anim);
-      anims.querySelectorAll('button').forEach((x) => x.classList.toggle('active', x === b));
-    }));
-  } catch {
-    holder.remove();
-    hideBand(band);
-  }
+// Kennzahlen über den Karten: Itemlevel, Set-Teile, verzauberte Slots und der schwächste Slot (leer oder niedrigstes iLvl).
+function boardKpis(c, items, sets) {
+  const enchantable = ENCHANT_SLOTS.filter((s) => items.has(s));
+  const enchanted = enchantable.filter((s) => items.get(s).enchants?.length).length;
+  const all = [...SLOTS_LEFT, ...SLOTS_RIGHT].filter(([s]) => s !== 'RANGED');
+  // Leere Schildhand zählt nicht: Zweihandwaffen und Jäger lassen sie frei.
+  const empty = all.find(([s]) => s !== 'OFF_HAND' && !items.has(s));
+  const weakest = [...items.values()].filter((i) => i.ilvl != null && i.slot !== 'RANGED').sort((a, b) => a.ilvl - b.ilvl)[0];
+  // Haben alle Items dasselbe iLvl, gibt es keinen schwächsten Slot.
+  const even = weakest && [...items.values()].every((i) => i.slot === 'RANGED' || i.ilvl === weakest.ilvl);
+  const weakLabel = empty ? empty[1] : even ? 'keiner' : weakest ? all.find(([s]) => s === weakest.slot)?.[1] ?? weakest.slot : '?';
+  const kpis = [
+    [c.equippedIlvl ?? '?', 'Itemlevel'],
+    [sets ? `${sets.count} Teile` : 'keins', 'Set'],
+    [`${enchanted} / ${enchantable.length}`, 'Verzaubert'],
+    [weakLabel, empty ? 'Leerer Slot' : even ? 'Schwächster Slot' : `Schwächster · iLvl ${weakest?.ilvl ?? '?'}`],
+  ];
+  return `<div class="board-kpis">${kpis.map(([v, l], i) => `<div class="bk${i === 3 && !even ? ' weak' : ''}"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>`;
 }
 
-function gearHtml(it, label) {
-  if (!it) return `<div class="gear empty"><span class="ico"></span><span class="txt"><span class="nm">${label}</span><span class="meta">leer</span></span></div>`;
+// Karte je Slot: Rand in Qualitätsfarbe, Balken zeigt das iLvl im Verhältnis zum besten Item des Charakters.
+function cardHtml(it, label, maxIlvl) {
+  if (!it) return `<div class="card empty"><span class="ico"></span><span class="txt"><span class="nm">${label}</span><span class="meta">leer</span></span></div>`;
   const q = (it.quality || 'COMMON').toLowerCase();
-  const meta = [label, it.ilvl ? `iLvl <span class="num">${it.ilvl}</span>` : null].filter(Boolean).join(' · ');
-  const ench = it.enchants?.length ? ` · <span class="en">${esc(it.enchants[0].replace(/^Verzaubert: /, ''))}</span>` : '';
-  return link(it, `<div class="gear"><img class="ico b-${q}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">
-    <span class="txt"><span class="nm q-${q}">${esc(it.name)}</span><span class="meta">${meta}${ench}</span></span></div>`);
+  const meta = [label, it.ilvl ? `iLvl ${it.ilvl}` : null].filter(Boolean).join(' · ');
+  const ench = it.enchants?.length ? `<span class="en">${esc(it.enchants[0].replace(/^Verzaubert: /, ''))}</span>` : '';
+  const pct = it.ilvl ? Math.round((it.ilvl / maxIlvl) * 100) : 0;
+  return link(it, `<div class="card c-${q}"><img class="ico b-${q}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">
+    <span class="txt"><span class="nm q-${q}">${esc(it.name)}</span><span class="meta">${meta}</span>${ench}<i class="bar"><i style="width:${pct}%"></i></i></span></div>`);
 }
 
 // Talente: Classic zeigt die drei Bäume im Raster des Spiels (4 Spalten, 7 Reihen), Retail die Spezialisierung und Heldentalente.
