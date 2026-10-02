@@ -4,7 +4,7 @@ const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
 
-const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedShown: 30, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
+const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
 
 try {
   state.selected = localStorage.getItem('selected');
@@ -51,11 +51,10 @@ async function init() {
   setup3dToggle();
   renderKpis();
   renderTiles();
-  renderBuffs();
+  renderGroup();
   renderLoadout();
   renderRecap();
   renderPrep();
-  renderProfessions();
   renderRoute();
   renderFeed();
 }
@@ -231,68 +230,120 @@ function select(key) {
 }
 
 // ---------------------------------------------------------------------------
-// Buffs und Werkzeuge
+// Gruppe: Buffs, Tools und Berufe
 
-function renderBuffs() {
+// Buffs, Tools und Berufe in einer Kachel: je Eintrag eine Zeile, rechts die Charaktere als Tags.
+const GATHERING = ['Kräuterkunde', 'Bergbau', 'Kürschnerei'];
+const SECONDARY = ['Kochkunst', 'Angeln', 'Erste Hilfe'];
+const PROF_RANK_NAMES = { 75: 'Lehrling', 150: 'Geselle', 225: 'Experte', 300: 'Fachmann' };
+
+function renderGroup() {
   const ok = state.chars.filter((c) => c.level);
   const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
-  const card = (entry, kind, i, withEffect) => {
-    const who = providers(entry.classes);
-    const classes = entry.classes.map((id) => M.CLASSES[id]?.name).join(', ');
-    const attrs = `type="button" data-kind="${kind}" data-idx="${i}" aria-haspopup="dialog"`;
-    return who.length
-      ? `<button ${attrs} class="buff" style="--c:${classColor(who[0])}"><b>${esc(entry.name)}</b><small>${withEffect ? `${esc(entry.effect)} · ` : ''}<span class="who">${who.map((c) => esc(c.name)).join(', ')}</span></small></button>`
-      : `<button ${attrs} class="buff off"><b>${esc(entry.name)}</b><small>fehlt · ${esc(classes)}</small></button>`;
+  const classNames = (ids) => ids.map((id) => M.CLASSES[id]?.name).join(', ');
+  const tag = (c, tip) => `<span class="tag" style="--cls:${classColor(c)}" tabindex="0" data-tip="${esc(tip)}">${esc(c.name)}</span>`;
+  const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--c:${classColor(who[0])}">
+    <i class="dot"></i><span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
+
+  // Buffs und Tools: Tag-Tooltip nennt Klasse und Zauber des Charakters.
+  const spellTip = (entry, c) => {
+    const spells = entry.spells.filter(([, , cls]) => cls === c.classId).map(([, n]) => n);
+    return `${c.name} · ${M.CLASSES[c.classId]?.name ?? ''}\n${spells.length ? spells.join(', ') : entry.name}`;
+  };
+  // Was niemand mitbringt, nennt der Tooltip am Zähler der Spalte, gruppiert nach der Klasse, die es mitbringt.
+  const entries = (list, sub) => {
+    const rows = [];
+    const miss = new Map();
+    list.forEach((entry) => {
+      const who = providers(entry.classes);
+      if (!who.length) {
+        const key = classNames(entry.classes);
+        miss.set(key, [...(miss.get(key) ?? []), entry.name]);
+        return;
+      }
+      const spells = [...new Set(entry.spells.map(([, n]) => n))].join(', ');
+      rows.push(row(entry.name, sub(entry), who, who.map((c) => tag(c, spellTip(entry, c))).join(''), ' tabindex="0"', `${entry.name}\n${entry.desc}${spells !== entry.name ? `\n${spells}` : ''}`));
+    });
+    rows.miss = [...miss].map(([cls, names]) => `${cls}: ${names.join(', ')}`);
+    return rows;
+  };
+  const buffs = entries(M.BUFFS, (e) => e.effect);
+  const tools = entries(M.TOOLS, (e) => classNames(e.classes));
+
+  // Berufe: der Tooltip am Tag zeigt Punkte, Stufe und nächsten Schritt.
+  const profTip = (c, p, name) => {
+    const rank = PROF_RANK_NAMES[p.max];
+    const next = M.PROF_RANKS[p.max];
+    const step = p.skill < p.max ? `noch ${p.max - p.skill} Punkte bis ${p.max}`
+      : next ? `Stufe voll · ${next[0]} ab Level ${next[1]}` : 'Maximum erreicht';
+    return `${c.name} · ${name}\n${p.skill} / ${p.max}${rank ? ` · ${rank}` : ''}\n${step}`;
+  };
+  const profList = [...new Set([...M.PRIMARY_PROFESSIONS, ...ok.flatMap((c) => (c.professions ?? []).map((p) => profName(p.name)))])];
+  const profRows = [];
+  const missProfs = [];
+  for (const name of profList) {
+    const has = ok.map((c) => [c, c.professions?.find((p) => profName(p.name) === name)]).filter(([, p]) => p)
+      .sort((x, y) => (y[1].skill ?? 0) - (x[1].skill ?? 0));
+    if (!has.length) {
+      if (M.PRIMARY_PROFESSIONS.includes(name)) missProfs.push(name);
+      continue;
+    }
+    const kind = SECONDARY.includes(name) ? 'Sekundär' : GATHERING.includes(name) ? 'Sammeln' : 'Herstellen';
+    profRows.push([kind === 'Sekundär' ? 2 : kind === 'Sammeln' ? 0 : 1, row(name, kind, has.map(([c]) => c),
+      has.map(([c, p]) => tag(c, profTip(c, p, name))).join(''), '',
+      `${name} · ${kind}\n${has.map(([c, p]) => `${c.name} ${p.skill} / ${p.max}`).join('\n')}`)]);
+  }
+  profRows.sort((x, y) => x[0] - y[0]);
+  const primaryHave = M.PRIMARY_PROFESSIONS.length - missProfs.length;
+
+  const col = (title, rows, count, miss) => {
+    const tip = miss.length ? `Fehlt in der Gruppe\n${miss.join('\n')}` : 'Alles da';
+    return `<div class="gcol"><div class="gsec"><span>${title}</span><b class="gcount" tabindex="0" data-tip="${esc(tip)}" data-tip-plain>${count}</b></div>${rows.join('')}</div>`;
   };
 
-  document.getElementById('buffs').innerHTML = M.BUFFS.map((b, i) => card(b, 'buff', i, true)).join('');
-  document.getElementById('tools').innerHTML = M.TOOLS.map((t, i) => card(t, 'tool', i, false)).join('');
-  const active = M.BUFFS.filter((b) => providers(b.classes).length).length;
-  document.getElementById('buff-count').textContent = `${active} / ${M.BUFFS.length} AKTIV`;
-
-  document.querySelectorAll('#gruppe .buff').forEach((el) => el.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const entry = (el.dataset.kind === 'buff' ? M.BUFFS : M.TOOLS)[el.dataset.idx];
-    togglePopover(el, popoverHtml(entry, providers(entry.classes)));
-  }));
+  document.getElementById('group-count').textContent = `${buffs.length} / ${M.BUFFS.length} BUFFS · ${tools.length} / ${M.TOOLS.length} TOOLS · ${primaryHave} / ${M.PRIMARY_PROFESSIONS.length} BERUFE`;
+  const el = document.getElementById('group');
+  el.innerHTML = `<div class="g3">
+      ${col('Buffs', buffs, `${buffs.length} / ${M.BUFFS.length}`, buffs.miss)}
+      ${col('Tools', tools, `${tools.length} / ${M.TOOLS.length}`, tools.miss)}
+      ${col('Berufe', profRows.map(([, r]) => r), `${primaryHave} / ${M.PRIMARY_PROFESSIONS.length}`, missProfs)}
+    </div>`;
 }
 
-// Tooltip zu Buffs und Tools: öffnet per Klick unter der Karte, schließt per Klick daneben oder Escape.
-function popoverHtml(entry, who) {
-  const classes = entry.classes.map((id) => M.CLASSES[id]?.name).join(', ');
-  return `<div class="pop-head"><b>${esc(entry.name)}</b>${entry.effect ? `<span>${esc(entry.effect)}</span>` : ''}</div>
-    <p>${esc(entry.desc)}</p>
-    <div class="pop-row"><small>In der Gruppe</small>${who.length ? who.map((c) => `<span style="color:${classColor(c)}">${esc(c.name)}</span>`).join(', ') : `<span class="miss">niemand · möglich mit ${esc(classes)}</span>`}</div>
-    <div class="pop-row"><small>Zauber</small>${entry.spells.map(([id, name, cls]) => `<a href="https://de.wowhead.com/classic/spell=${id}" target="_blank" rel="noopener">${esc(name)}</a> <em>${esc(M.CLASSES[cls]?.name ?? '')}</em>`).join('<br>')}</div>`;
-}
-
-let popover = null;
-function togglePopover(anchor, html) {
-  if (popover?.anchor === anchor) return closePopover();
-  closePopover();
-  const el = document.createElement('div');
-  el.className = 'popover';
-  el.setAttribute('role', 'dialog');
-  el.innerHTML = html;
-  document.body.append(el);
+// Hover-Tooltip für alles mit data-tip: Maus zeigt beim Überfahren, Touch und Tastatur per Tippen bzw. Fokus.
+let tipEl = null;
+function showTip(anchor) {
+  hideTip();
+  const [head, ...rest] = anchor.dataset.tip.split('\n');
+  tipEl = document.createElement('div');
+  tipEl.className = 'tip';
+  tipEl.setAttribute('role', 'tooltip');
+  // Bei mehreren Zeilen ist die letzte der Hinweis (Zauber, nächster Schritt) und steht farbig.
+  tipEl.innerHTML = `<b>${esc(head)}</b>${rest.map((l, i) => `<span${rest.length > 1 && i === rest.length - 1 && !anchor.hasAttribute('data-tip-plain') ? ' class="tip-foot"' : ''}>${esc(l)}</span>`).join('')}`;
+  document.body.append(tipEl);
   const r = anchor.getBoundingClientRect();
-  const w = Math.min(340, innerWidth - 24);
-  el.style.width = `${w}px`;
-  el.style.left = `${Math.max(12, Math.min(r.left, innerWidth - w - 12)) + scrollX}px`;
-  el.style.top = `${r.bottom + 8 + scrollY}px`;
-  anchor.classList.add('open');
-  popover = { el, anchor };
-  window.$WowheadPower?.refreshLinks?.();
+  const w = tipEl.offsetWidth;
+  tipEl.style.left = `${Math.max(8, Math.min(r.left + r.width / 2 - w / 2, innerWidth - w - 8)) + scrollX}px`;
+  const above = r.top - tipEl.offsetHeight - 8;
+  tipEl.style.top = `${(above > 60 ? above : r.bottom + 8) + scrollY}px`;
+  tipEl.anchor = anchor;
 }
+function hideTip() { tipEl?.remove(); tipEl = null; }
+document.addEventListener('pointerover', (e) => { const a = e.target.closest?.('[data-tip]'); if (a && e.pointerType === 'mouse' && tipEl?.anchor !== a) showTip(a); });
+document.addEventListener('pointerout', (e) => { const a = e.target.closest?.('[data-tip]'); if (a && e.pointerType === 'mouse' && !a.contains(e.relatedTarget)) hideTip(); });
+document.addEventListener('focusin', (e) => { if (e.target.dataset?.tip && e.target.matches(':focus-visible')) showTip(e.target); });
+document.addEventListener('focusout', (e) => { if (e.target.dataset?.tip) hideTip(); });
+// Auf Touch zeigt ein Tippen den Tooltip, ein Tippen daneben schließt ihn.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('[data-tip]');
+  if (!a) return hideTip();
+  e.stopPropagation();
+  if (e.pointerType === 'mouse') return;
+  if (tipEl?.anchor === a) hideTip(); else showTip(a);
+}, true);
+addEventListener('scroll', hideTip, { passive: true });
 
-function closePopover() {
-  if (!popover) return;
-  popover.el.remove();
-  popover.anchor.classList.remove('open');
-  popover = null;
-}
-document.addEventListener('click', (e) => { if (popover && !popover.el.contains(e.target)) closePopover(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePopover(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideTip(); });
 
 // ---------------------------------------------------------------------------
 // Loadout des gewählten Charakters
@@ -333,7 +384,6 @@ function renderLoadout() {
       </div>
       <div class="gear-col right">${SLOTS_RIGHT.filter(([s]) => s !== 'RANGED' || items.has(s)).map(([s, l]) => gearHtml(items.get(s), l)).join('')}</div>
     </div>
-    ${detailsHtml(c)}
     ${talentsHtml(c)}`;
 
   el.querySelectorAll('img').forEach(imgFallback);
@@ -375,25 +425,6 @@ function gearHtml(it, label) {
     <span class="txt"><span class="nm q-${q}">${esc(it.name)}</span><span class="meta">${meta}${ench}</span></span></div>`);
 }
 
-// Werte und Berufe unter dem Loadout: gleiche Zellen in einem Raster, eine Zeile je Gruppe.
-// Einen Balken bekommt nur, was einen festen Maximalwert hat (Prozentwerte, Berufsstufen).
-const PCT_STATS = [['crit', 'Kritisch'], ['haste', 'Tempo'], ['mastery', 'Meisterschaft'], ['versatility', 'Vielseitigkeit']];
-const MAIN_STATS = [['strength', 'Stärke'], ['agility', 'Beweglichkeit'], ['intellect', 'Intelligenz']];
-
-function detailsHtml(c) {
-  const s = c.stats ?? {};
-  const main = MAIN_STATS.map(([k, l]) => ({ l, v: s[k] ?? 0 })).sort((a, b) => b.v - a.v)[0];
-  const num = (v) => Math.round(v).toLocaleString('de-DE');
-  const groups = [
-    ['Basis', [
-      ['Leben', s.health], [s.powerType || 'Ressource', s.power], [main.l, main.v || null], ['Ausdauer', s.stamina], ['Rüstung', s.armor],
-    ].filter(([, v]) => v != null).map(([l, v]) => cell(l, num(v)))],
-    ['Sekundär', PCT_STATS.filter(([k]) => s[k] != null).map(([k, l]) => cell(l, `${fmtDec(s[k])} %`, Math.min(100, s[k])))],
-    ['Berufe', (c.professions ?? []).map((p) => cell(profName(p.name), `${p.skill ?? '?'}/${p.max ?? '?'}`, p.max ? (p.skill / p.max) * 100 : null))],
-  ].filter(([, cells]) => cells.length);
-  return `<div class="details">${groups.map(([label, cells]) => `<div class="drow" style="--n:${cells.length}"><span class="dlabel">${label}</span>${cells.join('')}</div>`).join('')}</div>`;
-}
-
 // Talente: Classic zeigt die drei Bäume im Raster des Spiels (4 Spalten, 7 Reihen), Retail die Spezialisierung und Heldentalente.
 // Die Position der Talente kommt aus talents.json, die API nennt nur die gewählten Talente.
 function talentsHtml(c) {
@@ -406,14 +437,13 @@ function talentsHtml(c) {
     ? t.trees.map((tr) => cell(tr.name ?? '?', tr.points, (tr.points / max) * 100))
     : [cell('Spezialisierung', esc(c.spec ?? '?')), t.hero ? cell('Heldentalente', esc(t.hero)) : '', cell('Talente gewählt', t.total ?? t.picks.length)].filter(Boolean);
   const split = t.trees?.length ? `<b class="split">${t.trees.map((tr) => tr.points).join(' / ')}</b>` : '';
-  const domain = state.data.wowhead ? `/${state.data.wowhead}` : '';
   const picks = (t.picks ?? []).map((p) => {
     const name = `${esc(p.name)}${p.rank > 1 ? ` <em>${p.rank}</em>` : ''}`;
-    return p.spell ? `<a href="https://www.wowhead.com${domain}/spell=${p.spell}" target="_blank" rel="noopener">${name}</a>` : `<span>${name}</span>`;
+    return p.spell ? `<a href="${wh(state.data.wowhead, `spell=${p.spell}`)}" target="_blank" rel="noopener">${name}</a>` : `<span>${name}</span>`;
   }).join('');
   return `<div class="talents">
     <div class="drow" style="--n:${cells.length}"><span class="dlabel">Talente ${split}</span>${cells.join('')}</div>
-    ${picks || t.calc ? `<div class="talent-list">${picks}${t.calc ? `<a class="tcalc" href="${esc(t.calc)}" target="_blank" rel="noopener">${t.trees?.length ? 'Rechner der Klasse' : 'Build im Rechner'} ↗</a>` : ''}</div>` : ''}
+    ${picks || t.calc ? `<div class="talent-list">${picks}${t.calc ? `<a class="tcalc" href="${esc(whDe(t.calc))}" target="_blank" rel="noopener">${t.trees?.length ? 'Rechner der Klasse' : 'Build im Rechner'} ↗</a>` : ''}</div>` : ''}
   </div>`;
 }
 
@@ -432,7 +462,7 @@ function talentTreesHtml(c, t, layout) {
 
   // Rechner-Link mit Build: je Baum die Ränge in Reihenfolge Reihe, Spalte, ohne Nullen am Ende.
   const build = layout.map((tree) => tree.talents.map((x) => ranks.get(x.id) ?? 0).join('').replace(/0+$/, '')).join('-').replace(/-+$/, '');
-  const calc = t.calc ? `${t.calc}${build ? `/${build}` : ''}` : null;
+  const calc = t.calc ? `${whDe(t.calc)}${build ? `/${build}` : ''}` : null;
 
   const trees = layout.map((tree, ti) => {
     const pos = new Map(tree.talents.map((x) => [x.id, x]));
@@ -449,7 +479,7 @@ function talentTreesHtml(c, t, layout) {
       const r = ranks.get(x.id) ?? 0;
       const cls = r >= x.ranks.length ? 'full' : r ? 'part' : '';
       const spell = x.ranks[Math.max(0, r - 1)];
-      return `<a class="tal ${cls}" style="--x:${x.col};--y:${x.tier}" href="https://www.wowhead.com/${domain}/spell=${spell}" target="_blank" rel="noopener" aria-label="${esc(x.name)} ${r}/${x.ranks.length}">
+      return `<a class="tal ${cls}" style="--x:${x.col};--y:${x.tier}" href="${wh(domain, `spell=${spell}`)}" target="_blank" rel="noopener" aria-label="${esc(x.name)} ${r}/${x.ranks.length}">
         <img src="https://wow.zamimg.com/images/wow/icons/medium/${esc(x.icon)}.jpg" alt="" loading="lazy"><i>${r}/${x.ranks.length}</i></a>`;
     }).join('');
     return `<div class="ttree${points[ti] ? '' : ' empty'}">
@@ -503,18 +533,19 @@ function renderRecap() {
   const idx = state.recapIdx ?? list.length - 1;
   const s = list[idx];
   const older = list.filter((x) => x !== s).reverse().slice(0, 4);
-  document.getElementById('recap').innerHTML = recapCardHtml(s, list) + older.map((x) => {
+  document.getElementById('recap').innerHTML = recapCardHtml(s, list) + (older.length ? `<div class="recap-older">${older.map((x) => {
     const aw = awards(x, list)[0];
     return `<button type="button" class="recap-row" data-idx="${x.nr - 1}">
-      <b>Session ${x.nr}</b><span class="mono">${fmtDay(x.end)}</span>
+      <span class="recap-row-top"><b>Session ${x.nr}</b><span class="mono">${fmtDay(x.end)}</span></span>
       <span class="mono recap-sum">${x.items.length} Items${aw ? ` · ${aw.title} ${esc(aw.who.map(charName).join(', '))}` : ''}</span>
     </button>`;
-  }).join('');
+  }).join('')}</div>` : '');
 
   const share = document.getElementById('recap-share');
   share.href = `https://wa.me/?text=${encodeURIComponent(shareText(s, list))}`;
   document.querySelectorAll('#recap .recap-row').forEach((b) => b.addEventListener('click', () => { state.recapIdx = Number(b.dataset.idx); renderRecap(); }));
   document.querySelectorAll('#recap img').forEach(imgFallback);
+  window.$WowheadPower?.refreshLinks?.();
 }
 
 function recapCardHtml(s, list) {
@@ -531,18 +562,32 @@ function recapCardHtml(s, list) {
     [s.items.length, 'Neue Items', byQ.map(([k, n]) => `${k} ${n}`).join(' · ') || 'keine', 'items'],
     lvlTo ? [`+${Math.round(progress(lvlTo) - progress(lvlFrom ?? lvlTo))} %`, 'Weg bis 60', `jetzt ${Math.round(progress(lvlTo))} % geschafft`] : null,
     [`+${prof}`, 'Berufspunkte', profNames.size ? `${profNames.size} ${profNames.size === 1 ? 'Beruf' : 'Berufe'}` : ''],
-    [fmtGain(s.gain), 'Level pro Char', lvlTo ? `jetzt Ø ${Math.round(lvlTo)}` : ''],
+    [fmtGain(s.gain), 'Level', lvlTo ? `jetzt Level ${Math.round(lvlTo)}` : ''],
   ].filter(Boolean);
 
   const unlocks = recapUnlocks(s);
   const aw = awards(s, list).slice(0, 4);
+  // Beute rechts in der Karte: beste Qualität und höchstes Itemlevel zuerst.
+  const qOrder = ['LEGENDARY', 'EPIC', 'RARE', 'UNCOMMON', 'COMMON'];
+  const loot = [...s.items].sort((a, b) => qOrder.indexOf(a.quality) - qOrder.indexOf(b.quality) || (b.ilvl ?? 0) - (a.ilvl ?? 0));
+  const lootShown = loot.slice(0, 6);
+  const lootHtml = loot.length ? `<div class="recap-loot"><div class="recap-label">Beute</div><ul>${lootShown.map((e) => {
+    const q = (e.quality || 'COMMON').toLowerCase();
+    const c = charByKey(e.key);
+    const up = e.ilvl != null && e.prev != null && e.ilvl > e.prev ? ` · +${e.ilvl - e.prev} iLvl` : '';
+    return `<li>${link(e, `<img class="ico sm b-${q}" src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy">`)}
+      <span class="loot-txt">${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}<small><span style="color:${classColor(c)}">${esc(charName(e.key))}</span>${e.slot ? ` · ${esc(e.slot)}` : ''}${up}</small></span></li>`;
+  }).join('')}</ul>${loot.length > lootShown.length ? `<span class="mono loot-more">+${loot.length - lootShown.length} weitere</span>` : ''}</div>` : '';
+
   return `<article class="recap-card">
     <div class="recap-top"><h3>Session ${s.nr}</h3><span class="mono">${fmtDay(end)} · Schluss ${fmtTime(end)}</span></div>
+    <div class="recap-body${loot.length ? '' : ' solo'}"><div class="recap-main">
     <div class="recap-stats">${tiles.map(([v, l, sub, cls]) => `<div class="rstat ${cls ?? ''}"><b>${v}</b><span>${l}</span><small>${esc(sub)}</small></div>`).join('')}</div>
     ${unlocks.length ? `<div class="recap-unlock">${unlocks.map((u) => `<span>${u}</span>`).join('')}</div>` : ''}
     ${aw.length ? `<div class="recap-label">Auszeichnungen</div>
     <div class="awards">${aw.map((a) => `<div class="award"><span class="aw-title">${a.title}</span>
       <b>${a.who.map((k) => `<span style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>`).join(', ')}</b><small>${esc(a.detail)}</small></div>`).join('')}</div>` : ''}
+    </div>${lootHtml}</div>
   </article>`;
 }
 
@@ -596,7 +641,7 @@ function awards(s, list) {
 function shareText(s, list) {
   const aw = awards(s, list).slice(0, 3).map((a) => `${a.title}: ${a.who.map(charName).join(', ')}`);
   const url = `${location.origin}${location.pathname}#rueckblick`;
-  return [`Session ${s.nr} im Kasten: ${s.items.length} neue Items, ${fmtGain(s.gain)} Level pro Char.`, ...aw, url].join('\n');
+  return [`Session ${s.nr} im Kasten: ${s.items.length} neue Items, ${fmtGain(s.gain)} Level.`, ...aw, url].join('\n');
 }
 
 // ---------------------------------------------------------------------------
@@ -638,24 +683,6 @@ function prepTasks(c, range) {
 }
 
 // ---------------------------------------------------------------------------
-// Berufe
-
-function renderProfessions() {
-  const cols = M.PRIMARY_PROFESSIONS;
-  const ok = state.chars.filter((c) => c.level);
-  const skill = (c, prof) => c.professions?.find((p) => profName(p.name) === prof);
-  const short = (p) => p.slice(0, 5);
-
-  document.getElementById('profs').innerHTML = `<table>
-    <thead><tr><th></th>${cols.map((p) => `<th title="${p}">${short(p)}</th>`).join('')}</tr></thead>
-    <tbody>${ok.map((c) => `<tr style="--cls:${classColor(c)}"><td class="name">${esc(c.name)}</td>${cols.map((p) => {
-      const s = skill(c, p);
-      if (s) return `<td class="${s.skill >= s.max ? 'max' : 'has'}" title="${p}">${s.skill}/${s.max}<i class="pbar" style="--p:${s.max ? Math.min(100, (s.skill / s.max) * 100) : 0}%"></i></td>`;
-      return '<td>·</td>';
-    }).join('')}</tr>`).join('')}</tbody></table>`;
-}
-
-// ---------------------------------------------------------------------------
 // Leveling-Route (Classic-Zonen, aktiv ab Forever-Start)
 
 function renderRoute() {
@@ -668,7 +695,7 @@ function renderRoute() {
 
   document.getElementById('route-note').textContent = classicLevels ? 'PASSEND ZUM LEVEL' : 'AB FOREVER-START · VORSCHAU';
 
-  const place = (x, range) => `<a class="place" href="https://de.wowhead.com/classic/zone=${x.id}" target="_blank" rel="noopener">
+  const place = (x, range) => `<a class="place" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener">
     <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span><span class="rg">${range}</span></a>`;
   const who = (list) => (list.length
     ? `<div class="route-who">${list.map((c) => `<span style="--cls:${classColor(c)}">${esc(c.name)} · ${c.level}</span>`).join('')}</div>`
@@ -702,11 +729,19 @@ function renderRoute() {
       <div><small>Level-Abstand</small><b>${Math.max(...levels) - Math.min(...levels)} Level</b></div>
     </div>`;
   }
-  document.getElementById('route').innerHTML = `${tip}
+  // Eingeklappt zeigt die Route nur die Stufen der Gruppe und die nächste Stufe.
+  const now = rows.map((r, i) => (r.includes('route-row now') ? i : -1)).filter((i) => i >= 0);
+  const [from, to] = now.length ? [now[0], Math.min(rows.length - 1, now.at(-1) + 1)] : [0, rows.length - 1];
+  const hidden = rows.length - (to - from + 1);
+  const visible = state.routeAll ? rows : rows.slice(from, to + 1);
+  const el = document.getElementById('route');
+  el.innerHTML = `${tip}
     <div class="route">
       <div class="route-head"><span>Level</span><span>Zonen</span><span>Dungeons</span><span>Hier</span></div>
-      ${rows.join('')}
-    </div>`;
+      ${visible.join('')}
+    </div>
+    ${hidden ? `<button type="button" class="chip-btn route-more">${state.routeAll ? 'Nur aktuelle Stufen zeigen' : `Ganze Route zeigen · ${hidden} weitere Stufen`}</button>` : ''}`;
+  el.querySelector('.route-more')?.addEventListener('click', () => { state.routeAll = !state.routeAll; renderRoute(); });
 }
 
 // ---------------------------------------------------------------------------
@@ -719,22 +754,37 @@ function renderFeed() {
   document.getElementById('nav-aktivitaet').hidden = !events.length;
   if (!events.length) return;
 
-  const shown = events.slice(0, state.feedShown);
+  // Gezeigt wird der neueste Tag, ältere Tage kommen per Knopf dazu.
   const days = new Map();
-  for (const e of shown) {
+  for (const e of events) {
     const day = new Date(e.t).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit' });
     if (!days.has(day)) days.set(day, []);
     days.get(day).push(e);
   }
+  const shown = [...days].slice(0, state.feedDays);
+  const rest = days.size - shown.length;
   const week = events.filter((e) => e.type === 'level' && Date.now() - e.t < 7 * 864e5).reduce((n, e) => n + (e.to - e.from), 0);
   document.getElementById('feed-note').textContent = week ? `${week} LEVEL IN 7 TAGEN` : `${events.length} EREIGNISSE`;
 
   const el = document.getElementById('feed');
-  el.innerHTML = [...days].map(([day, list]) => `<div class="feed-day"><h3>${day}</h3><ul>${list.map(feedItemHtml).join('')}</ul></div>`).join('')
-    + (events.length > shown.length ? `<button type="button" class="chip-btn feed-more">Ältere anzeigen (${events.length - shown.length})</button>` : '');
+  el.innerHTML = shown.map(([day, list]) => `<div class="feed-day"><h3>${day}<span>${list.length} Ereignisse</span></h3><ul>${list.map(feedItemHtml).join('')}</ul></div>`).join('')
+    + (rest ? `<button type="button" class="chip-btn feed-more">Vorherigen Tag zeigen · noch ${rest}</button>` : '');
   el.querySelectorAll('img').forEach(imgFallback);
-  el.querySelector('.feed-more')?.addEventListener('click', () => { state.feedShown += 30; renderFeed(); });
+  el.querySelector('.feed-more')?.addEventListener('click', () => { state.feedDays++; renderFeed(); });
   window.$WowheadPower?.refreshLinks?.();
+}
+
+// Spiel-Icons für die Aktivität. Level-Ups tragen die neue Stufe als Badge.
+const FEED_ICONS = {
+  level: 'spell_holy_surgeoflight', max: 'achievement_level_60', session: 'inv_misc_groupneedmore', guild: 'inv_shirt_guildtabard_01',
+  prof: {
+    Alchemie: 'trade_alchemy', Schmiedekunst: 'trade_blacksmithing', Verzauberkunst: 'trade_engraving', Ingenieurskunst: 'trade_engineering',
+    Kräuterkunde: 'trade_herbalism', Lederverarbeitung: 'trade_leatherworking', Bergbau: 'trade_mining', Kürschnerei: 'inv_misc_pelt_wolf_01',
+    Schneiderei: 'trade_tailoring', Kochkunst: 'inv_misc_food_15', Angeln: 'trade_fishing', 'Erste Hilfe': 'spell_holy_sealofsacrifice',
+  },
+};
+function feedIcon(name, badge = '') {
+  return `<span class="wi"><img src="https://wow.zamimg.com/images/wow/icons/medium/${name}.jpg" alt="" loading="lazy">${badge !== '' ? `<b>${badge}</b>` : ''}</span>`;
 }
 
 function feedItemHtml(e) {
@@ -742,24 +792,28 @@ function feedItemHtml(e) {
   const c = state.data.characters.find((x) => x.key === e.key);
   const name = (key) => esc(state.data.characters.find((x) => x.key === key)?.name ?? key.split('/').pop());
   const who = c ? `<b class="who" style="--cls:${classColor(c)}">${esc(c.name)}</b>` : e.key ? `<b class="who">${name(e.key)}</b>` : '';
-  const row = (cls, icon, text) => `<li class="ev ${cls}"${c ? ` style="--cls:${classColor(c)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
+  // Jeder Eintrag ist eine Zeile. Was nicht passt, kürzt die Seite ab, Details zeigt der Tooltip.
+  const row = (cls, icon, text, tip = '') => `<li class="ev ${cls}"${c ? ` style="--cls:${classColor(c)}"` : ''}${tip ? ` data-tip="${esc(tip)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
 
   switch (e.type) {
     case 'level':
-      if (e.max) return row('ev-max', '★', `erreicht <strong>Level ${e.to}</strong>, Max-Level!`);
-      return row('ev-level', '▲', e.to - e.from > 1 ? `steigt von ${e.from} auf <strong>Level ${e.to}</strong>` : `erreicht <strong>Level ${e.to}</strong>`);
+      if (e.max) return row('ev-max', feedIcon(FEED_ICONS.max, e.to), `erreicht <strong>Level ${e.to}</strong>, Max-Level!`);
+      return row('ev-level', feedIcon(FEED_ICONS.level, e.to), e.to - e.from > 1 ? `steigt von ${e.from} auf <strong>Level ${e.to}</strong>` : `erreicht <strong>Level ${e.to}</strong>`);
     case 'item': {
       const q = (e.quality || 'COMMON').toLowerCase();
       const img = `<img class="ico sm b-${q}" src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy">`;
       return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}${e.slot ? ` <em>${esc(e.slot)}</em>` : ''}`);
     }
     case 'prof':
-      return row('ev-prof', '⚒', e.learned ? `lernt <strong>${esc(profName(e.name))}</strong>` : `${esc(profName(e.name))} auf <strong>${e.skill}</strong>`);
+      return row('ev-prof', feedIcon(FEED_ICONS.prof[profName(e.name)] ?? 'inv_misc_note_01'), e.learned ? `lernt <strong>${esc(profName(e.name))}</strong>` : `${esc(profName(e.name))} auf <strong>${e.skill}</strong>`);
     case 'guild':
-      return row('ev-guild', '⚑', e.guild ? `tritt <strong>&lt;${esc(e.guild)}&gt;</strong> bei` : `verlässt <strong>&lt;${esc(e.from ?? '')}&gt;</strong>`);
+      return row('ev-guild', feedIcon(FEED_ICONS.guild), e.guild ? `tritt <strong>&lt;${esc(e.guild)}&gt;</strong> bei` : `verlässt <strong>&lt;${esc(e.from ?? '')}&gt;</strong>`);
     case 'session': {
       const hours = e.start ? Math.max(0, (e.t - e.start) / 36e5) : null;
-      return row('ev-session', '◆', `<strong>Gemeinsame Session</strong> · ${(e.players ?? []).map(name).join(', ')} · Ø ${e.gain > 0 ? '+' : ''}${fmtDec(e.gain)} Level${hours >= 0.5 ? ` · Logouts über ${fmtDec(hours)} Std.` : ''}`);
+      const players = (e.players ?? []).map((k) => charByKey(k).name ?? k.split('/').pop());
+      const lv = Math.round(e.gain ?? 0) ? ` · ${fmtGain(e.gain)} Level` : '';
+      return row('ev-session', feedIcon(FEED_ICONS.session), `<strong>Gemeinsame Session</strong> · ${players.length} Spieler${lv}`,
+        `Gemeinsame Session\n${players.join(', ')}${hours >= 0.5 ? `\nLogouts über ${fmtDec(hours)} Std.` : ''}`);
     }
     default:
       return '';
@@ -771,7 +825,8 @@ function feedItemHtml(e) {
 
 function charByKey(k) { return state.data.characters.find((x) => x.key === k) ?? {}; }
 function charName(k) { return charByKey(k).name ?? k.split('/').pop(); }
-function fmtGain(n) { return `${n > 0 ? '+' : ''}${fmtDec(n)}`; }
+// Die Gruppe levelt gemeinsam, der Zuwachs zählt darum in ganzen Leveln.
+function fmtGain(n) { const r = Math.round(n ?? 0); return `${r > 0 ? '+' : ''}${r}`; }
 function fmtDay(t) { return new Date(t).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }); }
 function fmtTime(t) { return new Date(t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
 function classColor(c) { return M.CLASSES[c.classId]?.color ?? '#c9c2b3'; }
@@ -788,9 +843,12 @@ function ago(ts) {
 
 function link(it, inner) {
   if (!it.id) return inner;
-  const domain = state.data.wowhead ?? 'classic';
-  return `<a href="https://www.wowhead.com${domain ? `/${domain}` : ''}/item=${it.id}" target="_blank" rel="noopener">${inner}</a>`;
+  return `<a href="${wh(state.data.wowhead ?? 'classic', `item=${it.id}`)}" target="_blank" rel="noopener">${inner}</a>`;
 }
+
+// Wowhead auf Deutsch: Classic unter /classic/de/, Retail unter /de/. Die Tooltips folgen der Sprache des Links.
+function wh(env, path) { return `https://www.wowhead.com/${env ? `${env}/` : ''}de/${path}`; }
+function whDe(url) { return url.replace(/^(https:\/\/www\.wowhead\.com\/(?:classic\/)?)(?!de\/)/, '$1de/'); }
 
 function imgFallback(img) {
   img.addEventListener('error', () => { if (img.classList.contains('ico')) img.src = FALLBACK_ICON; else img.remove(); }, { once: true });

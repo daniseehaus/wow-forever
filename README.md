@@ -76,7 +76,7 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   passiert sind. Neue Items erscheinen ab Qualität „selten“. Grüne Items zählen nur in „Letzte Session“.
 - **Letzte Session:** Je Session eine Karte mit neuen Items (ab grün), Fortschritt auf dem Weg bis 60, Berufspunkten und Level pro Char.
   Dazu bis zu vier Auszeichnungen (z. B. Größtes Upgrade, Loot-Goblin, Licht aus). Die Werte je Spieler hält die Session in `stats` fest.
-  Der Knopf „In WhatsApp teilen“ öffnet WhatsApp mit fertigem Text und Link.
+  Der Knopf „Teilen“ öffnet WhatsApp mit fertigem Text und Link.
 - **Vor dem nächsten Abend:** Offene Punkte je Charakter: Klassenquests und Reiten (`CLASS_TASKS` in `meta.js`), nächste Berufsstufe
   (`PROF_RANKS`), Lehrer bei geraden Leveln und freie Talentpunkte.
 - **Talente:** Retail verlinkt den genauen Build im Wowhead-Rechner. Classic liefert die Punkte je Baum und die gewählten Talente,
