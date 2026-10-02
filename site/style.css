@@ -185,6 +185,9 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Beim Wechsel taucht der neue Charakter hinter dem Band auf. */
 /* Während das Band läuft, bleibt der Ladebalken des Modells verborgen und blendet erst danach ein. */
 .loadout.swapping .loading-band { opacity: 0; transition: none; }
+/* Solange das Band läuft, reagiert das Loadout nicht auf die Maus: kein Hover, keine Tooltips. */
+.loadout.swapping { pointer-events: none; }
+body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .loadout.swap .lo-head, .loadout.swap .lo-body, .loadout.swap .talents { animation: rise .5s .45s both; }
 .loading-dot { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--cls); box-shadow: 0 0 20px var(--cls); animation: blink 1s infinite; }
 

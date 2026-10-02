@@ -260,7 +260,7 @@ function select(key) {
   state.selected = key;
   try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
-  const swap = () => { if (state.selected === key) { renderLoadout(); swapBand(); } };
+  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout(); swapBand(); } };
   const top = el.getBoundingClientRect().top;
   if (Math.abs(top - 90) < 40) { swap(); return; }
   // Ende des Scrollens: Position steht drei Bilder lang still (Safari kennt kein scrollend). Spätestens nach 1,5 s.
@@ -275,6 +275,12 @@ function select(key) {
     else requestAnimationFrame(wait);
   };
   requestAnimationFrame(wait);
+}
+
+// Vor dem Wechsel offene Tooltips schließen. Der Wowhead-Tooltip schließt erst mit einem mouseout auf seinem Link.
+function releaseHover(el) {
+  hideTip();
+  [...el.querySelectorAll(':hover')].pop()?.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body }));
 }
 
 // Beim Wechsel zieht der Name als Band in Klassenfarbe durch das Loadout.
