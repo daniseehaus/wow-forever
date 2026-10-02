@@ -45,7 +45,9 @@ async function init() {
     document.getElementById('brand').textContent = d.title.toUpperCase();
   }
   document.getElementById('brand-sub').textContent = `${d.simulated ? 'VORSCHAU' : d.era === 'retail' ? 'RETAIL' : 'FOREVER'} · EU · ${state.chars.length} SPIELER`;
-  document.getElementById('sync').textContent = `SYNC ${new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
+  const time = new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('sync').textContent = `SYNC ${time}`;
+  document.getElementById('foot-stamp').textContent = `Stand ${time}`;
 
   setupNav();
   setup3dToggle();
@@ -202,7 +204,7 @@ function tileHtml(c, i) {
     <span class="info">
       <span class="name">${esc(c.name)}</span>
       <span class="spec">${esc(c.spec || '')} ${esc(c.className || '')}${c.stale ? ' · alter Stand' : ''}</span>
-      <span class="nums"><span>LV ${c.level}</span><span class="il">${c.equippedIlvl ?? '?'}</span></span>
+      <span class="nums"><span>LV ${c.level}</span><span class="il">iLvl ${c.equippedIlvl ?? '?'}</span></span>
     </span>
   </button>`;
 }
@@ -322,7 +324,7 @@ function isLight(hex) {
 
 // Zahlen zählen beim ersten Sichtbarwerden von 0 hoch. Text davor und danach bleibt stehen (z. B. „LV 90“, „~150 h“).
 const COUNT_SEL = [
-  '.kpi b', '.tile .nums span', '.rstat b', '.lo-head .chip.lv', '.lo-head .chip.epic', '.gear .num', '.dcell b', '.split', '.ttree-head b',
+  '.kpi b', '.tile .nums span', '.rstat b', '.lo-head .chip.lv', '.lo-head .chip.il', '.gear .num', '.dcell b', '.split', '.ttree-head b',
   '.route-tips b', '.gcount', '.wi b', '#group-count', '#prep-count', '#feed-note',
 ].join(', ');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -458,8 +460,8 @@ function renderGroup() {
   const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
   const classNames = (ids) => ids.map((id) => M.CLASSES[id]?.name).join(', ');
   const tag = (c, tip) => `<span class="tag" style="--cls:${classColor(c)}" tabindex="0" data-tip="${esc(tip)}">${esc(c.name)}</span>`;
-  const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--c:${classColor(who[0])}">
-    <i class="dot"></i><span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
+  const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--hl:${classColor(who[0])}">
+    <span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
 
   // Buffs und Tools: Tag-Tooltip nennt Klasse und Zauber des Charakters.
   const spellTip = (entry, c) => {
@@ -550,11 +552,14 @@ document.addEventListener('pointerout', (e) => { const a = e.target.closest?.('[
 document.addEventListener('focusin', (e) => { if (e.target.dataset?.tip && e.target.matches(':focus-visible')) showTip(e.target); });
 document.addEventListener('focusout', (e) => { if (e.target.dataset?.tip) hideTip(); });
 // Auf Touch zeigt ein Tippen den Tooltip, ein Tippen daneben schließt ihn.
+// Die Zeigerart kommt vom pointerdown, weil Safari sie am click nicht verlässlich mitgibt.
+let lastPointer = '';
+document.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; }, true);
 document.addEventListener('click', (e) => {
   const a = e.target.closest?.('[data-tip]');
   if (!a) return hideTip();
   e.stopPropagation();
-  if (e.pointerType === 'mouse') return;
+  if (lastPointer === 'mouse') return;
   if (tipEl?.anchor === a) hideTip(); else showTip(a);
 }, true);
 addEventListener('scroll', hideTip, { passive: true });
@@ -588,7 +593,7 @@ function renderLoadout() {
       <div class="chips">
         <span class="chip role-chip">${role.label}</span>
         <span class="chip lv">Level ${c.level}</span>
-        <span class="chip epic">iLvl ${c.equippedIlvl ?? '?'}</span>
+        <span class="chip il">iLvl ${c.equippedIlvl ?? '?'}</span>
         ${sets ? `<span class="chip ok">Set ${sets.count} Teile</span>` : ''}
         ${c.lastLogin ? `<span class="chip">Aktiv ${ago(c.lastLogin)}</span>` : ''}
       </div>
@@ -677,8 +682,6 @@ function talentTreesHtml(c, t, layout) {
   }
   const domain = state.data.wowhead || 'classic';
   const points = layout.map((tree) => tree.talents.reduce((a, x) => a + (ranks.get(x.id) ?? 0), 0));
-  const total = points.reduce((a, b) => a + b, 0);
-  const avail = Math.max(0, (c.level ?? 0) - 9);
 
   // Rechner-Link mit Build: je Baum die Ränge in Reihenfolge Reihe, Spalte, ohne Nullen am Ende.
   const build = layout.map((tree) => tree.talents.map((x) => ranks.get(x.id) ?? 0).join('').replace(/0+$/, '')).join('-').replace(/-+$/, '');
@@ -711,7 +714,6 @@ function talentTreesHtml(c, t, layout) {
   return `<div class="talents">
     <div class="talents-head">
       <span class="dlabel">Talente <b class="split">${points.join(' / ')}</b></span>
-      <span class="tpoints">${total} / ${avail} Punkte${avail > total ? ` · <em>${avail - total} frei</em>` : ''}</span>
       ${calc ? `<a class="tcalc" href="${esc(calc)}" target="_blank" rel="noopener">Build im Rechner ↗</a>` : ''}
     </div>
     <div class="ttrees">${trees}</div>
@@ -931,26 +933,29 @@ function renderRoute() {
     const here = classicLevels ? ok.filter((c) => inBand(c, a, b)) : [];
     return `<div class="route-row ${here.length ? 'now' : ''}">
       <span class="lv">${a}-${b}</span>
-      <div class="place-list">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
-      <div class="place-list single">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
+      <div class="place-list" data-label="Zonen">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
+      <div class="place-list single" data-label="Dungeons">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
       ${who(here)}
     </div>`;
   });
   const at60 = classicLevels ? ok.filter((c) => c.level >= 60) : [];
   rows.push(`<div class="route-row ${at60.length ? 'now' : ''}">
     <span class="lv">60</span>
-    <div class="place-list">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
-    <span class="none">Raids</span>
+    <div class="place-list" data-label="Raids">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
+    <span class="none route-raids">Raids</span>
     ${who(at60)}
   </div>`);
 
   let tip = '';
   if (classicLevels && ok.length) {
-    const fits = M.DUNGEONS.filter((d) => allowed(d) && ok.every((c) => c.level >= d.min - 2 && c.level <= d.max));
-    const levels = ok.map((c) => c.level);
-    tip = `<div class="route-tips">
-      <div><small>Passt für alle</small><b>${fits.length ? fits.map((d) => d.name).join(', ') : 'kein Dungeon, der Abstand ist zu groß'}</b></div>
-      <div><small>Level-Abstand</small><b>${Math.max(...levels) - Math.min(...levels)} Level</b></div>
+    // Nächster Ort: Dungeons für alle, sonst Zonen für alle. Die Leiste nutzt die ganze Breite.
+    const forAll = (x) => allowed(x) && ok.every((c) => c.level >= x.min - 2 && c.level <= x.max);
+    const dungeons = M.DUNGEONS.filter(forAll);
+    const fits = dungeons.length ? dungeons : M.ZONES.filter(forAll);
+    tip = `<div class="route-next">
+      <small>Nächster Ort</small>
+      <div class="next-list">${fits.length ? fits.map((x) => place(x, `${x.min}-${x.max}`)).join('') : '<span class="none">kein Ort für alle, der Abstand ist zu groß</span>'}</div>
+      <span class="next-note">${fits.length ? `${dungeons.length ? 'Dungeon' : 'Zone'} · passt für alle ${ok.length}` : ''}</span>
     </div>`;
   }
   // Eingeklappt zeigt die Route nur die Stufen der Gruppe und die nächste Stufe.
