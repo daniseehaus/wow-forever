@@ -287,20 +287,26 @@ function swapBand() {
   el.classList.add('swap', 'swapping');
   clearTimeout(state.swapTimer);
   state.swapTimer = setTimeout(() => el.classList.remove('swapping'), 1300);
-  burst(c.name, { into: el, color: classColor(c), dur: 1300 });
+  // Das Band läuft auf Höhe der Modell-Bühne quer über den Charakter, nicht über die Talente.
+  // offsetTop statt getBoundingClientRect: Die Einblende-Animation verschiebt die Bühne gerade noch um einige Pixel.
+  const stage = el.querySelector('.lo-stage');
+  let y = stage ? stage.offsetHeight / 2 : null;
+  for (let n = stage; n && n !== el; n = n.offsetParent) y += n.offsetTop;
+  burst(c.name, { into: el, color: classColor(c), dur: 1300, y });
 }
 
 // ---------------------------------------------------------------------------
 // Bänder, Hochzählen und Einblenden
 
 // Band als Durchzug, auf der ganzen Seite oder in einem Element (into). Farbe und Schrift folgen der Klassenfarbe.
-function burst(text, { into = null, color = null, dur = 2600, icon = null } = {}) {
+function burst(text, { into = null, color = null, dur = 2600, icon = null, y = null } = {}) {
   const box = document.createElement('div');
   box.className = `burst${into ? ' local' : ''}`;
   box.setAttribute('aria-hidden', 'true');
   const strip = document.createElement('span');
   strip.className = 'band-strip';
   strip.style.setProperty('--dur', `${dur}ms`);
+  if (y != null) strip.style.setProperty('--y', `${Math.round(y)}px`);
   if (color) {
     const dark = isLight(color);
     strip.style.setProperty('--band', color);
