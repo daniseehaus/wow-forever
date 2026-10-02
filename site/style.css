@@ -194,6 +194,10 @@ main, footer, nav { position: relative; z-index: 1; }
 .tip b { font-size: 13px; }
 .tip span { color: var(--muted); line-height: 1.4; }
 .tip .tip-foot { font: 500 11px var(--mono); color: var(--accent-text); }
+/* iOS Safari löst Klicks auf Elemente ohne Zeiger-Cursor nicht aus. Auf Touch tragen Tooltips darum cursor: pointer, sonst öffnet ein Tippen nichts. */
+@media (hover: none) {
+  [data-tip] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+}
 
 /* Loadout */
 .loadout {

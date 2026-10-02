@@ -336,11 +336,14 @@ document.addEventListener('pointerout', (e) => { const a = e.target.closest?.('[
 document.addEventListener('focusin', (e) => { if (e.target.dataset?.tip && e.target.matches(':focus-visible')) showTip(e.target); });
 document.addEventListener('focusout', (e) => { if (e.target.dataset?.tip) hideTip(); });
 // Auf Touch zeigt ein Tippen den Tooltip, ein Tippen daneben schließt ihn.
+// Die Zeigerart kommt vom pointerdown, weil Safari sie am click nicht verlässlich mitgibt.
+let lastPointer = '';
+document.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; }, true);
 document.addEventListener('click', (e) => {
   const a = e.target.closest?.('[data-tip]');
   if (!a) return hideTip();
   e.stopPropagation();
-  if (e.pointerType === 'mouse') return;
+  if (lastPointer === 'mouse') return;
   if (tipEl?.anchor === a) hideTip(); else showTip(a);
 }, true);
 addEventListener('scroll', hideTip, { passive: true });
