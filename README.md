@@ -17,6 +17,7 @@ Eine GitHub Action holt die Daten stündlich von der Battle.net API und veröffe
 | `scripts/model-proxy.mjs` | Lokaler Proxy für 3D-Tests ohne Spiegelung |
 | `site/` | Die Seite (HTML, CSS, JS ohne Build-Schritt) |
 | `site/sounds/` | Bloodlust-Sound des Schamanen (Wowhead, Datei 568812, als MP3) |
+| `site/sounds/workers/` | Arbeiter-Stimmen aus Warcraft III, deutsch: Peon, Acolyte und Peasant (aus [Old German Voice Lines](https://www.hiveworkshop.com/threads/old-german-voice-lines-alte-deutsche-voice-lines.371972/), als MP3) |
 | `site/meta.js` | Spielwissen für Forever: Buffs, Tools, Berufe, Zonen, Dungeons, Raids, Stunden bis 60 |
 | `data/history.json` | Tageswerte je Charakter, schreibt nur die Action |
 | `data/sessions.json` | Erkannte gemeinsame Sessions (ab 4 Spielern) mit Level-Zuwachs, schreibt nur die Action |

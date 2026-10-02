@@ -185,7 +185,7 @@ function renderTiles() {
   state.tileViewers = [];
   const el = document.getElementById('tiles');
   el.innerHTML = state.chars.map((c, i) => tileHtml(c, i)).join('');
-  el.querySelectorAll('.tile[data-key]').forEach((t) => t.addEventListener('click', () => select(t.dataset.key)));
+  el.querySelectorAll('.tile[data-key]').forEach((t) => t.addEventListener('click', () => { workerVoice(t.dataset.key); select(t.dataset.key); }));
   el.querySelectorAll('img').forEach(imgFallback);
   if (state.use3d) mountTiles();
 }
@@ -260,7 +260,7 @@ function select(key) {
   state.selected = key;
   try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
-  const swap = () => { if (state.selected === key) { renderLoadout(); swapBand(); } };
+  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout(); swapBand(); } };
   const top = el.getBoundingClientRect().top;
   if (Math.abs(top - 90) < 40) { swap(); return; }
   // Ende des Scrollens: Position steht drei Bilder lang still (Safari kennt kein scrollend). Spätestens nach 1,5 s.
@@ -277,6 +277,12 @@ function select(key) {
   requestAnimationFrame(wait);
 }
 
+// Vor dem Wechsel offene Tooltips schließen. Der Wowhead-Tooltip schließt erst mit einem mouseout auf seinem Link.
+function releaseHover(el) {
+  hideTip();
+  [...el.querySelectorAll(':hover')].pop()?.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: document.body }));
+}
+
 // Beim Wechsel zieht der Name als Band in Klassenfarbe durch das Loadout.
 function swapBand() {
   const el = document.getElementById('loadout');
@@ -287,20 +293,26 @@ function swapBand() {
   el.classList.add('swap', 'swapping');
   clearTimeout(state.swapTimer);
   state.swapTimer = setTimeout(() => el.classList.remove('swapping'), 1300);
-  burst(c.name, { into: el, color: classColor(c), dur: 1300 });
+  // Das Band läuft auf Höhe der Modell-Bühne quer über den Charakter, nicht über die Talente.
+  // offsetTop statt getBoundingClientRect: Die Einblende-Animation verschiebt die Bühne gerade noch um einige Pixel.
+  const stage = el.querySelector('.lo-stage');
+  let y = stage ? stage.offsetHeight / 2 : null;
+  for (let n = stage; n && n !== el; n = n.offsetParent) y += n.offsetTop;
+  burst(c.name, { into: el, color: classColor(c), dur: 1300, y });
 }
 
 // ---------------------------------------------------------------------------
 // Bänder, Hochzählen und Einblenden
 
 // Band als Durchzug, auf der ganzen Seite oder in einem Element (into). Farbe und Schrift folgen der Klassenfarbe.
-function burst(text, { into = null, color = null, dur = 2600, icon = null } = {}) {
+function burst(text, { into = null, color = null, dur = 2600, icon = null, y = null } = {}) {
   const box = document.createElement('div');
   box.className = `burst${into ? ' local' : ''}`;
   box.setAttribute('aria-hidden', 'true');
   const strip = document.createElement('span');
   strip.className = 'band-strip';
   strip.style.setProperty('--dur', `${dur}ms`);
+  if (y != null) strip.style.setProperty('--y', `${Math.round(y)}px`);
   if (color) {
     const dark = isLight(color);
     strip.style.setProperty('--band', color);
@@ -377,6 +389,31 @@ function setupReveal() {
     io.unobserve(en.target);
   }), { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('main > .loadout, main > .panel').forEach((el) => { el.classList.add('reveal'); io.observe(el); });
+}
+
+// ---------------------------------------------------------------------------
+// Arbeiter-Stimmen aus Warcraft III, deutsche Fassung (Peon, Acolyte, Peasant). Klick auf eine Kachel spielt eine zufällige Antwort.
+// Wer dieselbe Kachel schnell hintereinander anklickt, macht den Arbeiter wütend.
+
+const VOICE = {
+  what: [['peon', 4], ['acolyte', 5], ['peasant', 4]].flatMap(([w, n]) => Array.from({ length: n }, (_, i) => `${w}-what${i + 1}`)),
+  pissed: [['peon', 4], ['acolyte', 8], ['peasant', 5]].flatMap(([w, n]) => Array.from({ length: n }, (_, i) => `${w}-pissed${i + 1}`)),
+  audio: null, key: null, clicks: 0, last: 0, prev: null,
+};
+
+function workerVoice(key) {
+  const now = Date.now();
+  VOICE.clicks = key === VOICE.key && now - VOICE.last < 1500 ? VOICE.clicks + 1 : 1;
+  VOICE.key = key;
+  VOICE.last = now;
+  const pool = VOICE.clicks >= 4 ? VOICE.pissed : VOICE.what;
+  let name;
+  do name = pool[Math.floor(Math.random() * pool.length)]; while (name === VOICE.prev);
+  VOICE.prev = name;
+  VOICE.audio?.pause();
+  VOICE.audio = new Audio(`sounds/workers/${name}.mp3`);
+  VOICE.audio.volume = 0.7;
+  VOICE.audio.play().catch(() => {});
 }
 
 // ---------------------------------------------------------------------------
