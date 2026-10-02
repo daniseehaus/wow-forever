@@ -11,6 +11,8 @@ Eine GitHub Action holt die Daten stündlich von der Battle.net API und veröffe
 | `scripts/fetch.mjs` | Abruf der API, schreibt `site/data.json`, Verlauf, Sessions und Aktivitäts-Feed |
 | `scripts/config.mjs` | Wählt ab dem Starttag die Forever-Einstellungen |
 | `scripts/switch-forever.mjs` | Übernimmt die Forever-Einstellungen fest in `config.json` (`npm run switch-forever`) |
+| `scripts/preview.mjs` | Vorschau bis zum Start: simulierte Classic-Werte und Showcase-Verlauf |
+| `scripts/build-talents.mjs` | Baut `site/talents.json` mit den Classic-Talentbäumen (`npm run build-talents`) |
 | `scripts/mirror-models.mjs` | Spiegelt die 3D-Modelldateien von Wowhead nach `site/modelviewer/` |
 | `scripts/model-proxy.mjs` | Lokaler Proxy für 3D-Tests ohne Spiegelung |
 | `site/` | Die Seite (HTML, CSS, JS ohne Build-Schritt) |
@@ -50,14 +52,33 @@ Alte Retail-Daten zu gleichnamigen Charakteren werden nicht weiter angezeigt.
 Lokal lässt sich die Umstellung vorab mit `node scripts/fetch.mjs --forever` testen. Nach dem Start übernimmt
 `npm run switch-forever` die Werte fest in `config.json` und entfernt den Block `forever`.
 
+## Vorschau bis zum Start
+
+Bis zum Start zeigt die Seite unsere Retail-Charaktere als Classic-Charaktere. Das steuert `simulate` in `config.json`
+(`"levels": [25, 27]`). Echt bleiben Name, Klasse, Volk, Gilde, Aussehen, Ausrüstung und letzter Login. Simuliert sind:
+
+- **Level:** fest je Name zwischen 25 und 27
+- **Talente:** feste Leveling-Builds je Baum (`BUILDS` in `preview.mjs`), gültig nach Reihen und Voraussetzungen. Bäume ohne Build füllt das Skript von oben nach unten.
+- **Berufe:** nur Classic-Berufe, Fortschritt auf 150 umgerechnet
+- **Werte und Itemlevel:** passend zum Level, Qualität der Items eine Stufe tiefer
+- **Showcase:** sieben gemeinsame Abende in den letzten zwei Wochen mit Level-Ups, Items, Berufen und Sessions. Daraus kommen Aktivität,
+  „Level pro Session“ und der letzte Login. Der Showcase landet nur in `site/`, nie in `data/`.
+
+Die Vorschau läuft als eigene Spielversion `preview`. Feed, Sessions und Verlauf aus Retail wandern beim ersten Lauf nach `data/archive/`.
+Echte Änderungen (neue Items, Berufe) erscheinen zusätzlich zum Showcase in der Aktivität.
+Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
+
 ## Sessions, Feed und Talente
 
 - **Sessions:** Die API kennt keine Spielzeit, nur den letzten Logout. Loggen sich mindestens 4 Charaktere (bei kleinerer Gruppe alle)
   innerhalb von 3 Stunden aus, zählt das als gemeinsame Session. Erkannt wird sie eine Stunde nach dem letzten Logout.
 - **Aktivität:** Jeder stündliche Abruf wird mit dem vorigen verglichen. Level-Ups bekommen den Zeitpunkt des Logouts, in dem sie
-  passiert sind. Die Verlaufskurve nutzt sie für eine stundengenaue Level-Treppe. Neue Items erscheinen ab Qualität „selten“.
+  passiert sind. Neue Items erscheinen ab Qualität „selten“.
 - **Talente:** Retail verlinkt den genauen Build im Wowhead-Rechner. Classic liefert die Punkte je Baum und die gewählten Talente,
-  aber nicht ihre Position im Baum. Der Link öffnet dort den Rechner der Klasse.
+  aber nicht ihre Position im Baum. Die Positionen, Ränge und Icons stehen deshalb in `site/talents.json`. Die Seite zeigt damit
+  die drei Bäume wie im Spiel und verlinkt den genauen Build im Wowhead-Rechner. Die Datei baut `npm run build-talents`
+  aus den Spieldaten (wago.tools) und den deutschen Wowhead-Tooltips. Die Classic-Bäume ändern sich nicht, ein Neubau ist nur bei
+  einer neuen Spielversion nötig (Build als Argument, z. B. `node scripts/build-talents.mjs 1.15.9.70003`).
 
 ## 3D-Modelle
 

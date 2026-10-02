@@ -3,8 +3,11 @@
   "launch": "2026-11-04",
   "region": "eu",
   "locale": "de_DE",
-  "maxLevel": 90,
-  "era": "retail",
+  "maxLevel": 60,
+  "era": "preview",
+  "simulate": {
+    "levels": [25, 27]
+  },
   "modelEnv": "live",
   "namespaces": {
     "profile": "profile-eu",
@@ -20,12 +23,13 @@
     "era": "classic",
     "wowhead": "classic",
     "modelEnv": "classic",
-    "characters": []
+    "characters": [],
+    "simulate": null
   },
   "characters": [
     {
       "realm": "Blackmoore",
-      "name": "Schmou"
+      "name": "Gluzanda"
     },
     {
       "realm": "Blackmoore",
@@ -40,8 +44,8 @@
       "name": "Donbratzo"
     },
     {
-      "realm": "Tarren Mill",
-      "name": "Meeresdk"
+      "realm": "Blackmoore",
+      "name": "Stevyfox"
     }
   ]
 }

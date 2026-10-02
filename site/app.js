@@ -4,7 +4,7 @@ const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
 
-const state = { data: null, history: {}, sessions: {}, feed: { events: [] }, feedShown: 30, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
+const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedShown: 30, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
 
 try {
   state.selected = localStorage.getItem('selected');
@@ -19,15 +19,14 @@ init();
 async function init() {
   try {
     const optional = (f) => fetch(`${f}?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
-    const [data, history, sessions, feed] = await Promise.all([
+    const [data, sessions, feed, talents] = await Promise.all([
       fetch(`data.json?t=${Date.now()}`).then((r) => r.json()),
-      optional('history.json'),
       optional('sessions.json'),
       optional('feed.json'),
+      fetch('talents.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
     ]);
     state.data = data;
-    // Ältere Verlaufsdateien enthalten die Charaktere direkt, neuere unter chars.
-    state.history = history.chars ?? history;
+    state.talents = talents.classes ?? {};
     state.sessions = sessions;
     state.feed = { events: feed.events ?? [] };
   } catch (err) {
@@ -45,7 +44,7 @@ async function init() {
     document.getElementById('title').textContent = d.title;
     document.getElementById('brand').textContent = d.title.toUpperCase();
   }
-  document.getElementById('brand-sub').textContent = `${d.era === 'retail' ? 'RETAIL' : 'FOREVER'} · EU · ${state.chars.length} SPIELER`;
+  document.getElementById('brand-sub').textContent = `${d.simulated ? 'VORSCHAU' : d.era === 'retail' ? 'RETAIL' : 'FOREVER'} · EU · ${state.chars.length} SPIELER`;
   document.getElementById('sync').textContent = `SYNC ${new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
 
   setupNav();
@@ -57,7 +56,6 @@ async function init() {
   renderProfessions();
   renderRoute();
   renderFeed();
-  renderHistory();
 }
 
 // ---------------------------------------------------------------------------
@@ -373,11 +371,13 @@ function detailsHtml(c) {
   return `<div class="details">${groups.map(([label, cells]) => `<div class="drow" style="--n:${cells.length}"><span class="dlabel">${label}</span>${cells.join('')}</div>`).join('')}</div>`;
 }
 
-// Talente: Classic zeigt die Punkte je Baum, Retail die Spezialisierung und Heldentalente.
-// Der Rechner-Link öffnet in Retail den genauen Build, in Classic den Rechner der Klasse.
+// Talente: Classic zeigt die drei Bäume im Raster des Spiels (4 Spalten, 7 Reihen), Retail die Spezialisierung und Heldentalente.
+// Die Position der Talente kommt aus talents.json, die API nennt nur die gewählten Talente.
 function talentsHtml(c) {
   const t = c.talents;
   if (!t) return '';
+  const layout = t.trees?.length ? state.talents[c.classId] : null;
+  if (layout) return talentTreesHtml(c, t, layout);
   const max = Math.max(1, (state.data.maxLevel ?? 60) - 9);
   const cells = t.trees?.length
     ? t.trees.map((tr) => cell(tr.name ?? '?', tr.points, (tr.points / max) * 100))
@@ -389,9 +389,59 @@ function talentsHtml(c) {
     return p.spell ? `<a href="https://www.wowhead.com${domain}/spell=${p.spell}" target="_blank" rel="noopener">${name}</a>` : `<span>${name}</span>`;
   }).join('');
   return `<div class="talents">
-    <div class="drow" style="--n:${cells.length + (t.calc ? 1 : 0)}"><span class="dlabel">Talente ${split}</span>${cells.join('')}
-      ${t.calc ? `<a class="dcell calc" href="${esc(t.calc)}" target="_blank" rel="noopener"><span>${t.trees?.length ? 'Rechner der Klasse' : 'Build im Rechner'}</span><b>Wowhead ↗</b></a>` : ''}</div>
-    ${picks ? `<div class="talent-list">${picks}</div>` : ''}
+    <div class="drow" style="--n:${cells.length}"><span class="dlabel">Talente ${split}</span>${cells.join('')}</div>
+    ${picks || t.calc ? `<div class="talent-list">${picks}${t.calc ? `<a class="tcalc" href="${esc(t.calc)}" target="_blank" rel="noopener">${t.trees?.length ? 'Rechner der Klasse' : 'Build im Rechner'} ↗</a>` : ''}</div>` : ''}
+  </div>`;
+}
+
+function talentTreesHtml(c, t, layout) {
+  // Gewählte Ränge je Talent: zuerst über die Talent-ID, sonst über den Zauber des Rangs.
+  const ranks = new Map();
+  const bySpell = new Map(layout.flatMap((tree) => tree.talents.flatMap((x) => x.ranks.map((s, i) => [s, [x.id, i + 1]]))));
+  for (const p of t.picks ?? []) {
+    const hit = p.id && layout.some((tree) => tree.talents.some((x) => x.id === p.id)) ? [p.id, p.rank] : bySpell.get(p.spell);
+    if (hit) ranks.set(hit[0], Math.max(ranks.get(hit[0]) ?? 0, hit[1] ?? 1));
+  }
+  const domain = state.data.wowhead || 'classic';
+  const points = layout.map((tree) => tree.talents.reduce((a, x) => a + (ranks.get(x.id) ?? 0), 0));
+  const total = points.reduce((a, b) => a + b, 0);
+  const avail = Math.max(0, (c.level ?? 0) - 9);
+
+  // Rechner-Link mit Build: je Baum die Ränge in Reihenfolge Reihe, Spalte, ohne Nullen am Ende.
+  const build = layout.map((tree) => tree.talents.map((x) => ranks.get(x.id) ?? 0).join('').replace(/0+$/, '')).join('-').replace(/-+$/, '');
+  const calc = t.calc ? `${t.calc}${build ? `/${build}` : ''}` : null;
+
+  const trees = layout.map((tree, ti) => {
+    const pos = new Map(tree.talents.map((x) => [x.id, x]));
+    const arrows = tree.talents.filter((x) => pos.has(x.req)).map((x) => {
+      const r = pos.get(x.req);
+      const on = (ranks.get(r.id) ?? 0) >= r.ranks.length;
+      const [x1, y1, x2, y2] = r.tier === x.tier
+        ? [(r.col < x.col ? r.col + 1 : r.col) * 100, r.tier * 100 + 50, (r.col < x.col ? x.col : x.col + 1) * 100, x.tier * 100 + 50]
+        : [r.col * 100 + 50, r.tier * 100 + 100, x.col * 100 + 50, x.tier * 100];
+      const path = x1 === x2 || y1 === y2 ? `M${x1} ${y1}L${x2} ${y2}` : `M${x1} ${y1}V${y2 - 30}H${x2}V${y2}`;
+      return `<path class="${on ? 'on' : ''}" d="${path}"/>`;
+    }).join('');
+    const nodes = tree.talents.map((x) => {
+      const r = ranks.get(x.id) ?? 0;
+      const cls = r >= x.ranks.length ? 'full' : r ? 'part' : '';
+      const spell = x.ranks[Math.max(0, r - 1)];
+      return `<a class="tal ${cls}" style="--x:${x.col};--y:${x.tier}" href="https://www.wowhead.com/${domain}/spell=${spell}" target="_blank" rel="noopener" aria-label="${esc(x.name)} ${r}/${x.ranks.length}">
+        <img src="https://wow.zamimg.com/images/wow/icons/medium/${esc(x.icon)}.jpg" alt="" loading="lazy"><i>${r}/${x.ranks.length}</i></a>`;
+    }).join('');
+    return `<div class="ttree${points[ti] ? '' : ' empty'}">
+      <div class="ttree-head"><span>${esc(tree.name)}</span><b>${points[ti]}</b></div>
+      <div class="ttree-grid"><svg viewBox="0 0 400 700" preserveAspectRatio="none" aria-hidden="true">${arrows}</svg>${nodes}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="talents">
+    <div class="talents-head">
+      <span class="dlabel">Talente <b class="split">${points.join(' / ')}</b></span>
+      <span class="tpoints">${total} von ${avail} Punkten verteilt</span>
+      ${calc ? `<a class="tcalc" href="${esc(calc)}" target="_blank" rel="noopener">Build im Rechner ↗</a>` : ''}
+    </div>
+    <div class="ttrees">${trees}</div>
   </div>`;
 }
 
@@ -417,9 +467,9 @@ function renderProfessions() {
 
   document.getElementById('profs').innerHTML = `<table>
     <thead><tr><th></th>${cols.map((p) => `<th title="${p}">${short(p)}</th>`).join('')}</tr></thead>
-    <tbody>${ok.map((c) => `<tr><td class="name">${esc(c.name)}</td>${cols.map((p) => {
+    <tbody>${ok.map((c) => `<tr style="--cls:${classColor(c)}"><td class="name">${esc(c.name)}</td>${cols.map((p) => {
       const s = skill(c, p);
-      if (s) return `<td class="${s.skill >= s.max ? 'max' : 'has'}" title="${p}">${s.skill}/${s.max}</td>`;
+      if (s) return `<td class="${s.skill >= s.max ? 'max' : 'has'}" title="${p}">${s.skill}/${s.max}<i class="pbar" style="--p:${s.max ? Math.min(100, (s.skill / s.max) * 100) : 0}%"></i></td>`;
       return '<td>·</td>';
     }).join('')}</tr>`).join('')}</tbody></table>`;
 }
@@ -535,91 +585,11 @@ function feedItemHtml(e) {
 }
 
 // ---------------------------------------------------------------------------
-// Verlauf
-
-// Punkte je Charakter auf einer Zeitachse. Der Tageswert zählt zum Ende seines Tages.
-// Für das Level kommen die Level-Ups aus dem Feed dazu, die auf die Stunde genau sind.
-function seriesPoints(c, metric) {
-  const end = Date.parse(state.data.generatedAt) || Date.now();
-  const pts = (state.history[c.key] ?? []).map((p) => ({ t: Math.min(Date.parse(p.d) + 864e5 - 1, end), v: p[metric] ?? 0 }));
-  if (metric === 'level') {
-    for (const e of state.feed.events) {
-      if (e.key !== c.key || e.type !== 'level') continue;
-      pts.push({ t: e.t - 1, v: e.from }, { t: e.t, v: e.to });
-    }
-    if (pts.length && c.level) pts.push({ t: end, v: c.level });
-  }
-  pts.sort((a, b) => a.t - b.t);
-  // Ein Level-Up-Ereignis kann vor einem Tageswert desselben Tages liegen, der schon das neue Level zeigt.
-  // Die Kurve fällt deshalb nie unter einen früheren Wert, solange es um Level geht.
-  if (metric === 'level') for (let i = 1; i < pts.length; i++) pts[i].v = Math.max(pts[i].v, pts[i - 1].v);
-  return pts.filter((p, i) => i === 0 || i === pts.length - 1 || p.v !== pts[i - 1].v || p.v !== pts[i + 1].v);
-}
-
-function renderHistory() {
-  const el = document.getElementById('history');
-  const metric = state.data.era === 'retail' ? 'ilvl' : 'level';
-  const series = state.chars.map((c) => ({ c, pts: seriesPoints(c, metric) })).filter((s) => s.pts.length);
-  const times = series.flatMap((s) => s.pts.map((p) => p.t));
-  const t0 = Math.min(...times), t1 = Math.max(...times);
-
-  // Ohne zwei Zeitpunkte gibt es keine Kurve. Dann bleibt der Bereich samt Navigationspunkt ausgeblendet.
-  const hasData = series.some((s) => s.pts.length >= 2) && t1 - t0 >= 36e5;
-  document.getElementById('verlauf').hidden = !hasData;
-  document.getElementById('nav-verlauf').hidden = !hasData;
-  if (!hasData) return;
-
-  // Die Kurve zeigt den Zuwachs seit dem ersten Wert, damit unterschiedliche Startwerte vergleichbar bleiben.
-  const delta = (pts, p) => p.v - pts[0].v;
-  const vals = series.flatMap((s) => s.pts.map((p) => delta(s.pts, p)));
-  const min = Math.min(...vals), max = Math.max(...vals);
-  const W = 800, H = 260, P = 28;
-  const x = (t) => P + ((t - t0) / (t1 - t0)) * (W - 2 * P);
-  const y = (v) => H - P - ((v - min) / Math.max(max - min, 1)) * (H - 2 * P);
-  const lines = series.map(({ c, pts }) => {
-    const color = classColor(c);
-    // Level steigen in Stufen, Itemlevel als Linie.
-    const path = pts.map((p, i) => {
-      const px = x(p.t).toFixed(1), py = y(delta(pts, p)).toFixed(1);
-      if (!i) return `M${px},${py}`;
-      return metric === 'level' ? `H${px} V${py}` : `L${px},${py}`;
-    }).join(' ');
-    const last = pts.at(-1);
-    return `<path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 6px ${color})"/>
-      <circle cx="${x(last.t)}" cy="${y(delta(pts, last))}" r="4" fill="${color}"/>`;
-  }).join('');
-
-  const days = [...new Set(series.flatMap((s) => (state.history[s.c.key] ?? []).map((p) => p.d)))].sort();
-  const since = days.find((d) => (Date.parse(days.at(-1)) - Date.parse(d)) / 864e5 <= 7) ?? days[0];
-  const recap = series.map(({ c }) => {
-    const hist = state.history[c.key] ?? [];
-    const a = hist.find((p) => p.d >= since) ?? hist[0];
-    const b = hist.at(-1);
-    const parts = [];
-    if (a && b) {
-      if (b.level - a.level) parts.push(`${signed(b.level - a.level)} Level`);
-      if ((b.ilvl ?? 0) - (a.ilvl ?? 0)) parts.push(`${signed(b.ilvl - a.ilvl)} iLvl`);
-      if ((b.epics ?? 0) - (a.epics ?? 0)) parts.push(`${signed(b.epics - a.epics)} episch`);
-    }
-    return `<div style="--cls:${classColor(c)}"><b>${esc(c.name)}</b><span>${parts.join(' · ') || 'keine Änderung'}</span></div>`;
-  }).join('');
-
-  document.getElementById('history-note').textContent = `${metric === 'ilvl' ? 'ITEMLEVEL' : 'LEVEL'}-ZUWACHS · SEIT ${fmtDay(t0)}`;
-  el.innerHTML = `<div><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Verlauf">${lines}</svg>
-    <div class="axis"><span>${fmtStamp(t0)}</span><span>${fmtStamp(t1)}</span></div>
-    <div class="legend">${series.map(({ c }) => `<span style="--cls:${classColor(c)}"><i></i>${esc(c.name)}</span>`).join('')}</div></div>
-    <div class="recap"><h3>Letzte 7 Tage</h3>${recap}</div>`;
-}
-
-// ---------------------------------------------------------------------------
 // Hilfen
 
 function classColor(c) { return M.CLASSES[c.classId]?.color ?? '#c9c2b3'; }
 function profName(n) { return M.PROFESSIONS[n] ?? n; }
-function signed(n) { return n > 0 ? `+${n}` : String(n); }
 function fmtDec(n) { return Number(n).toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
-function fmtStamp(t) { return new Date(t).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }); }
-function fmtDay(d) { return new Date(d).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
 
 function ago(ts) {
   const h = (Date.now() - ts) / 36e5;
