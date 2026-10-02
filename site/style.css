@@ -418,8 +418,15 @@ main, footer, nav { position: relative; z-index: 1; }
   .g3 > :last-child { grid-column: 1 / -1; columns: 2; column-gap: 28px; }
   .g3 > :last-child .gsec { column-span: all; }
   .grow { break-inside: avoid; }
-  .route-row { grid-template-columns: 50px minmax(0, 1fr); gap: 10px 16px; }
+  .route-row { grid-template-columns: 70px minmax(0, 1fr); gap: 10px 16px; }
   .route-row > :not(.lv) { grid-column: 2; }
+  /* Ohne Kopfzeile: Spieler als Chips neben der Stufe, Zonen und Dungeons mit eigener Beschriftung. */
+  .route-row .lv { order: -2; white-space: nowrap; }
+  .route-row .route-who { order: -1; flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .route-who span { padding: 2px 7px; border-radius: 6px; background: color-mix(in srgb, var(--cls) 12%, transparent); font-size: 11px; white-space: nowrap; }
+  .route-row .route-nobody, .route-row .route-raids { display: none; }
+  .place-list[data-label]::before { content: attr(data-label); grid-column: 1 / -1; font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+  .place-list[data-label="Dungeons"] { margin-top: 6px; }
   .prep { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   /* Navigation als zweite Zeile, die seitlich scrollt. */
   .nav-in { flex-wrap: wrap; height: auto; padding-top: 10px; padding-bottom: 10px; row-gap: 8px; }
