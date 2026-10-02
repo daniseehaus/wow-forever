@@ -91,7 +91,7 @@ main, footer, nav { position: relative; z-index: 1; }
 
 /* Kopf */
 .hero { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding: 40px 0 28px; }
-.eyebrow { font: 500 12px var(--mono); color: var(--accent-text); letter-spacing: .25em; }
+.eyebrow { font: 700 17px var(--ui); color: var(--text); letter-spacing: .12em; text-transform: uppercase; }
 .hero h1 {
   margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em;
   background: linear-gradient(100deg, #fff 30%, var(--accent-text) 50%, #fff 70%); background-size: 200% 100%;
