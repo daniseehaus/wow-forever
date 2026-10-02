@@ -59,6 +59,11 @@ async function init() {
   renderPrep();
   renderRoute();
   renderFeed();
+
+  setupReveal();
+  countIn(document.querySelector('main'));
+  startCountdown();
+  setupBloodlust();
 }
 
 // ---------------------------------------------------------------------------
@@ -106,11 +111,36 @@ function renderKpis() {
 }
 
 // Vor dem Start zählt die Zahl die Tage bis Forever, danach die Tage seit dem Start.
+function launchTime() { return state.data.launch ? new Date(`${state.data.launch}T00:00:00`).getTime() : null; }
+
 function countdownKpi() {
-  const launch = state.data.launch ? new Date(`${state.data.launch}T00:00:00`) : null;
+  const launch = launchTime();
   if (!launch) return '';
   const days = Math.ceil((launch - Date.now()) / 864e5);
   return days > 0 ? kpi(days, days === 1 ? 'Tag bis Forever' : 'Tage bis Forever', 'hot') : kpi(`Tag ${1 - days}`, 'seit Forever-Start', 'hot');
+}
+
+// Zum Start läuft das Forever-Band über die Seite. Am Starttag sieht es jeder Besucher einmal, mit ?live auch vorab.
+function startCountdown() {
+  const launch = launchTime();
+  if (!launch) return;
+  const live = () => {
+    if (Date.now() >= launch) try { localStorage.setItem('forever-live', '1'); } catch {}
+    burst('Forever ist live', { dur: 3600 });
+  };
+  let seen = false;
+  try { seen = localStorage.getItem('forever-live') === '1'; } catch {}
+  const since = Date.now() - launch;
+  if (new URLSearchParams(location.search).has('live') || (since >= 0 && since < 864e5 && !seen)) setTimeout(live, 900);
+  if (since >= 0) return;
+
+  // Bleibt die Seite über den Start offen, springt die Kennzahl auf „Tag 1“.
+  const timer = setInterval(() => {
+    if (Date.now() < launch) return;
+    clearInterval(timer);
+    renderKpis();
+    live();
+  }, 15000);
 }
 
 // Spielstunden bis Level 60 laut Referenzkurve. Die Gruppe spielt zusammen, also zählt der niedrigste Charakter.
@@ -195,7 +225,9 @@ async function mountTiles() {
     try {
       const v = await window.Model3D.mount(box, c.model, env);
       if (!document.body.contains(box)) { window.Model3D.destroy(v); return; }
+      v.charKey = c.key;
       state.tileViewers.push(v);
+      if (document.body.classList.contains('lust')) fight(v);
       stage.querySelector('img.render')?.remove();
       hideBand(band);
     } catch (err) {
@@ -211,7 +243,7 @@ async function mountTiles() {
 function loadingBand(el) {
   const band = document.createElement('span');
   band.className = 'loading-band';
-  band.innerHTML = '<span>Loading</span>';
+  band.innerHTML = '<span class="band-strip">Loading</span>';
   el.append(band);
   return band;
 }
@@ -221,15 +253,199 @@ function hideBand(band) {
   setTimeout(() => band.remove(), 400);
 }
 
+// Klick auf eine Kachel: erst zum Loadout scrollen, dann wechselt der Charakter mit dem Band. So sieht man den Effekt ganz.
 function select(key) {
-  if (key !== state.selected) {
-    state.selected = key;
-    try { localStorage.setItem('selected', key); } catch {}
-    document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
-    renderLoadout();
-  }
-  document.getElementById('loadout').scrollIntoView({ behavior: 'smooth' });
+  const el = document.getElementById('loadout');
+  if (key === state.selected) { el.scrollIntoView({ behavior: 'smooth' }); return; }
+  state.selected = key;
+  try { localStorage.setItem('selected', key); } catch {}
+  document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
+  const swap = () => { if (state.selected === key) { renderLoadout(); swapBand(); } };
+  const top = el.getBoundingClientRect().top;
+  if (Math.abs(top - 90) < 40) { swap(); return; }
+  // Ende des Scrollens: Position steht drei Bilder lang still (Safari kennt kein scrollend). Spätestens nach 1,5 s.
+  el.scrollIntoView({ behavior: 'smooth' });
+  const t0 = performance.now();
+  let lastY = -1;
+  let still = 0;
+  const wait = () => {
+    still = scrollY === lastY ? still + 1 : 0;
+    lastY = scrollY;
+    if (still >= 3 || performance.now() - t0 > 1500) swap();
+    else requestAnimationFrame(wait);
+  };
+  requestAnimationFrame(wait);
 }
+
+// Beim Wechsel zieht der Name als Band in Klassenfarbe durch das Loadout.
+function swapBand() {
+  const el = document.getElementById('loadout');
+  const c = state.chars.find((x) => x.key === state.selected);
+  if (!c) return;
+  el.classList.remove('swap');
+  void el.offsetWidth;
+  el.classList.add('swap', 'swapping');
+  clearTimeout(state.swapTimer);
+  state.swapTimer = setTimeout(() => el.classList.remove('swapping'), 1300);
+  burst(c.name, { into: el, color: classColor(c), dur: 1300 });
+}
+
+// ---------------------------------------------------------------------------
+// Bänder, Hochzählen und Einblenden
+
+// Band als Durchzug, auf der ganzen Seite oder in einem Element (into). Farbe und Schrift folgen der Klassenfarbe.
+function burst(text, { into = null, color = null, dur = 2600, icon = null } = {}) {
+  const box = document.createElement('div');
+  box.className = `burst${into ? ' local' : ''}`;
+  box.setAttribute('aria-hidden', 'true');
+  const strip = document.createElement('span');
+  strip.className = 'band-strip';
+  strip.style.setProperty('--dur', `${dur}ms`);
+  if (color) {
+    const dark = isLight(color);
+    strip.style.setProperty('--band', color);
+    strip.style.setProperty('--band-ink', dark ? '#07090c' : '#fff');
+    strip.classList.toggle('dark', dark);
+  }
+  strip.innerHTML = `${icon ? `<img src="${esc(icon)}" alt="">` : ''}<span>${esc(text)}</span>`;
+  box.append(strip);
+  (into ?? document.body).append(box);
+  into?.querySelectorAll(':scope > .burst').forEach((b) => b !== box && b.remove());
+  setTimeout(() => box.remove(), dur + 100);
+  return box;
+}
+
+// Helle Klassenfarben (Priester, Schurke) bekommen dunkle Schrift auf dem Band.
+function isLight(hex) {
+  const n = parseInt(hex.replace('#', '').slice(0, 6), 16);
+  const [r, g, b] = [n >> 16, (n >> 8) & 255, n & 255];
+  return 0.299 * r + 0.587 * g + 0.114 * b > 165;
+}
+
+// Zahlen zählen beim ersten Sichtbarwerden von 0 hoch. Text davor und danach bleibt stehen (z. B. „LV 90“, „~150 h“).
+const COUNT_SEL = [
+  '.kpi b', '.tile .nums span', '.rstat b', '.lo-head .chip.lv', '.lo-head .chip.il', '.gear .num', '.dcell b', '.split', '.ttree-head b',
+  '.route-tips b', '.gcount', '.wi b', '#group-count', '#prep-count', '#feed-note',
+].join(', ');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+function countIn(root) {
+  if (!root || reducedMotion.matches || !('IntersectionObserver' in window)) return;
+  const els = [...root.querySelectorAll(COUNT_SEL)].filter((el) => !el.children.length && !el.dataset.countTo && /\d/.test(el.textContent));
+  // Was gleichzeitig ins Bild kommt, startet leicht versetzt. So läuft die Welle von oben nach unten.
+  const io = new IntersectionObserver((entries) => entries.filter((en) => en.isIntersecting).forEach((en, k) => {
+    io.unobserve(en.target);
+    setTimeout(() => countUp(en.target), Math.min(k, 16) * 45);
+  }), { threshold: 0.4 });
+  els.forEach((el) => { el.dataset.countTo = el.textContent; el.textContent = el.textContent.replace(/\d+(?:,\d+)?/g, '0'); io.observe(el); });
+}
+
+// Alle Zahlen im Text zählen gleichzeitig hoch (z. B. „13 / 29 abgedeckt“). Am Ende blitzt der Wert kurz auf.
+function countUp(el, dur = 2000) {
+  const full = el.dataset.countTo;
+  const parts = full.split(/(\d+(?:,\d+)?)/);
+  const nums = parts.map((x, i) => (i % 2 ? { v: Number(x.replace(',', '.')), d: x.includes(',') ? x.split(',')[1].length : 0 } : null));
+  let last = null;
+  let elapsed = 0;
+  el.dataset.counting = '1';
+  const step = (t) => {
+    if (!el.isConnected) return;
+    // Je Bild höchstens 34 ms Fortschritt. Ruckelt die Seite (z. B. beim Laden eines 3D-Modells), springt die Zahl nicht.
+    if (last != null) elapsed += Math.min(34, Math.max(0, t - last));
+    last = t;
+    const p = Math.min(1, elapsed / dur);
+    const ease = p < 0.5 ? 2 * p * p : 1 - (2 - 2 * p) ** 2 / 2;
+    el.textContent = parts.map((x, i) => (nums[i]
+      ? (nums[i].v * ease).toLocaleString('de-DE', { minimumFractionDigits: nums[i].d, maximumFractionDigits: nums[i].d, useGrouping: false })
+      : x)).join('');
+    if (p < 1) { requestAnimationFrame(step); return; }
+    el.textContent = full;
+    delete el.dataset.counting;
+    el.dataset.counted = '1';
+    el.classList.add('count-flash');
+    setTimeout(() => el.classList.remove('count-flash'), 700);
+  };
+  requestAnimationFrame(step);
+}
+
+// Panels gleiten beim Scrollen ins Bild.
+function setupReveal() {
+  if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add('in');
+    io.unobserve(en.target);
+  }), { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('main > .loadout, main > .panel').forEach((el) => { el.classList.add('reveal'); io.observe(el); });
+}
+
+// ---------------------------------------------------------------------------
+// Bloodlust: Klick auf das Logo. 15 Sekunden Kampfrausch, danach 60 Sekunden „Gesättigt“.
+
+const LUST = { dur: 15000, sated: 60000, until: 0, satedUntil: 0, timer: null, sound: null };
+
+function setupBloodlust() {
+  LUST.sound = new Audio('sounds/bloodlust.mp3');
+  LUST.sound.preload = 'auto';
+  LUST.sound.volume = 0.8;
+  document.querySelector('.brand-logo').addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); bloodlust(); });
+}
+
+function bloodlust() {
+  const now = Date.now();
+  if (now < LUST.satedUntil) {
+    burst(`Gesättigt · ${Math.ceil((LUST.satedUntil - now) / 1000)} s`, { color: '#2a3038', dur: 1500 });
+    return;
+  }
+  LUST.until = now + LUST.dur;
+  LUST.satedUntil = now + LUST.sated;
+  LUST.sound.currentTime = 0;
+  LUST.sound.play().catch(() => {});
+  burst('Bloodlust', { color: '#c41e3a', icon: 'icons/bloodlust.jpg', dur: 2400 });
+  document.body.classList.add('lust', 'lust-hit');
+  setTimeout(() => document.body.classList.remove('lust-hit'), 600);
+  [...state.tileViewers, state.loViewer].filter(Boolean).forEach(fight);
+  clearTimeout(LUST.timer);
+  LUST.timer = setTimeout(() => {
+    document.body.classList.remove('lust');
+    [...state.tileViewers, state.loViewer].filter(Boolean).forEach(calm);
+  }, LUST.dur);
+}
+
+// Kampfhaltung und Angriff passend zur Waffe. Die API nennt keinen Waffentyp, darum zählen Klasse und Schildhand.
+function combatAnims(c) {
+  const main = (c.items ?? []).find((i) => i.slot === 'RANGED') ?? (c.items ?? []).find((i) => i.slot === 'MAIN_HAND');
+  if (c.classId === 3) {
+    const n = (main?.name ?? '').toLowerCase();
+    if (n.includes('armbrust')) return ['ReadyCrossbow', 'AttackCrossbow'];
+    if (/gewehr|büchse|flinte|muskete/.test(n)) return ['ReadyRifle', 'AttackRifle'];
+    return ['ReadyBow', 'AttackBow'];
+  }
+  if ([5, 8, 9].includes(c.classId)) return ['ReadySpellDirected', 'SpellCastDirected'];
+  if ((c.items ?? []).some((i) => i.slot === 'OFF_HAND')) return ['Ready1H', 'Attack1H'];
+  return ['Ready2H', 'Attack2H'];
+}
+
+// Bloodlust: erst Kampfschrei, dann im Wechsel Kampfhaltung und Angriff. Jede Figur mit eigenem Takt.
+function fight(v) {
+  const [ready, attack] = combatAnims(charByKey(v.charKey));
+  clearTimeout(v.fightTimer);
+  window.Model3D.play(v, 'BattleRoar');
+  let swing = false;
+  const next = () => {
+    if (!document.body.classList.contains('lust')) return;
+    swing = !swing;
+    window.Model3D.play(v, swing ? attack : ready);
+    v.fightTimer = setTimeout(next, swing ? 950 : 700 + Math.random() * 900);
+  };
+  v.fightTimer = setTimeout(next, 1500 + Math.random() * 400);
+}
+
+function calm(v) {
+  clearTimeout(v.fightTimer);
+  window.Model3D.play(v, v === state.loViewer ? document.querySelector('#lo-anims .active')?.dataset.anim ?? 'Stand' : 'Stand');
+}
+
 
 // ---------------------------------------------------------------------------
 // Gruppe: Buffs, Tools und Berufe
@@ -367,6 +583,7 @@ function renderLoadout() {
   el.style.setProperty('--cls', classColor(c));
 
   el.innerHTML = `
+
     <div class="lo-head">
       <div>
         <span class="eyebrow">// LOADOUT</span>
@@ -375,8 +592,8 @@ function renderLoadout() {
       </div>
       <div class="chips">
         <span class="chip role-chip">${role.label}</span>
-        <span class="chip">Level ${c.level}</span>
-        <span class="chip">iLvl ${c.equippedIlvl ?? '?'}</span>
+        <span class="chip lv">Level ${c.level}</span>
+        <span class="chip il">iLvl ${c.equippedIlvl ?? '?'}</span>
         ${sets ? `<span class="chip ok">Set ${sets.count} Teile</span>` : ''}
         ${c.lastLogin ? `<span class="chip">Aktiv ${ago(c.lastLogin)}</span>` : ''}
       </div>
@@ -394,6 +611,7 @@ function renderLoadout() {
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
   if (state.use3d && c.model) mountLoadout(c);
+  countIn(el);
 }
 
 async function mountLoadout(c) {
@@ -407,6 +625,8 @@ async function mountLoadout(c) {
     const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic', { priority: true });
     if (token !== state.loToken) { window.Model3D.destroy(v); return; }
     state.loViewer = v;
+    v.charKey = c.key;
+    if (document.body.classList.contains('lust')) fight(v);
     box.querySelector('img.render')?.remove();
     hideBand(band);
     const anims = document.getElementById('lo-anims');
@@ -424,7 +644,7 @@ async function mountLoadout(c) {
 function gearHtml(it, label) {
   if (!it) return `<div class="gear empty"><span class="ico"></span><span class="txt"><span class="nm">${label}</span><span class="meta">leer</span></span></div>`;
   const q = (it.quality || 'COMMON').toLowerCase();
-  const meta = [label, it.ilvl ? `iLvl ${it.ilvl}` : null].filter(Boolean).join(' · ');
+  const meta = [label, it.ilvl ? `iLvl <span class="num">${it.ilvl}</span>` : null].filter(Boolean).join(' · ');
   const ench = it.enchants?.length ? ` · <span class="en">${esc(it.enchants[0].replace(/^Verzaubert: /, ''))}</span>` : '';
   return link(it, `<div class="gear"><img class="ico b-${q}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">
     <span class="txt"><span class="nm q-${q}">${esc(it.name)}</span><span class="meta">${meta}${ench}</span></span></div>`);
@@ -546,6 +766,7 @@ function renderRecap() {
   const share = document.getElementById('recap-share');
   share.href = `https://wa.me/?text=${encodeURIComponent(shareText(s, list))}`;
   document.querySelectorAll('#recap .recap-row').forEach((b) => b.addEventListener('click', () => { state.recapIdx = Number(b.dataset.idx); renderRecap(); }));
+  countIn(document.getElementById('recap'));
   document.querySelectorAll('#recap img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
 }
@@ -704,7 +925,7 @@ function renderRoute() {
     <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span><span class="rg">${range}</span></a>`;
   const who = (list) => (list.length
     ? `<div class="route-who">${list.map((c) => `<span style="--cls:${classColor(c)}">${esc(c.name)} · ${c.level}</span>`).join('')}</div>`
-    : '<span class="none route-nobody">niemand</span>');
+    : '');
 
   const rows = bands.map(([a, b]) => {
     const zones = M.ZONES.filter((z) => allowed(z) && z.min >= a - 5 && z.min < b && z.max > a);

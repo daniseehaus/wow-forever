@@ -145,21 +145,45 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Ladebalken: schräges Band in Highlight-Farbe mit laufenden Streifen, abgeschnitten auf die Bühne. */
 .loading-band { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; overflow: hidden; pointer-events: none; transition: opacity .4s ease; }
 .loading-band.done { opacity: 0; }
-.loading-band span {
-  width: 150%; padding: 9px 0; transform: rotate(-14deg); text-align: center;
-  font: 800 22px/1 var(--display); letter-spacing: .32em; text-transform: uppercase; color: var(--accent-ink);
+/* Das Band ist das Stilmittel der Seite: Ladebalken, Charakterwechsel, Countdown-Ende und Bloodlust nutzen es. */
+.band-strip {
+  --band: var(--accent); --band-ink: var(--accent-ink);
+  display: flex; justify-content: center; align-items: center; gap: .5em; padding: 9px 0; text-align: center; white-space: nowrap;
+  font: 800 22px/1 var(--display); letter-spacing: .32em; text-transform: uppercase; color: var(--band-ink);
   text-shadow: 0 1px 6px rgba(0,0,0,.5);
   background:
     linear-gradient(45deg, rgba(255,255,255,.16) 25%, transparent 25% 50%, rgba(255,255,255,.16) 50% 75%, transparent 75%) 0 0 / 36px 36px,
-    var(--accent);
-  border-block: 1px solid color-mix(in srgb, var(--accent-ink) 35%, transparent);
+    var(--band);
+  border-block: 1px solid color-mix(in srgb, var(--band-ink) 35%, transparent);
   animation: band-stripes .9s linear infinite, band-glow 1.8s ease-in-out infinite;
 }
+.band-strip.dark { text-shadow: none; }
+.band-strip img { height: .72em; width: .72em; border-radius: 6px; box-shadow: 0 0 0 2px var(--band-ink); }
+.loading-band .band-strip { width: 150%; transform: rotate(-14deg); }
 @keyframes band-stripes { to { background-position: 36px 0, 0 0; } }
 @keyframes band-glow {
-  0%, 100% { box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent); }
-  50% { box-shadow: 0 0 42px color-mix(in srgb, var(--accent) 85%, transparent); }
+  0%, 100% { box-shadow: 0 0 18px color-mix(in srgb, var(--band) 45%, transparent); }
+  50% { box-shadow: 0 0 42px color-mix(in srgb, var(--band) 85%, transparent); }
 }
+
+/* Band als Durchzug: fährt schräg von links ein, hält kurz und fährt rechts wieder raus. */
+.burst { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow: hidden; pointer-events: none; }
+.burst.local { position: absolute; z-index: 6; }
+.burst .band-strip {
+  --tilt: -8deg; width: 170%; padding: 18px 0; font-size: clamp(40px, 8vw, 104px); letter-spacing: .22em;
+  transform: rotate(var(--tilt)) translateX(-110%);
+  animation: band-stripes .9s linear infinite, band-glow 1.8s ease-in-out infinite, burst-pass var(--dur, 2.6s) cubic-bezier(.75,0,.25,1) forwards;
+}
+.burst.local .band-strip { --tilt: -10deg; padding: 12px 0; font-size: clamp(30px, 5vw, 56px); }
+@keyframes burst-pass {
+  0% { transform: rotate(var(--tilt)) translateX(-110%); }
+  28%, 72% { transform: rotate(var(--tilt)) translateX(0); }
+  100% { transform: rotate(var(--tilt)) translateX(110%); }
+}
+/* Beim Wechsel taucht der neue Charakter hinter dem Band auf. */
+/* Während das Band läuft, bleibt der Ladebalken des Modells verborgen und blendet erst danach ein. */
+.loadout.swapping .loading-band { opacity: 0; transition: none; }
+.loadout.swap .lo-head, .loadout.swap .lo-body, .loadout.swap .talents { animation: rise .5s .45s both; }
 .loading-dot { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--cls); box-shadow: 0 0 20px var(--cls); animation: blink 1s infinite; }
 
 /* Panels */
@@ -478,7 +502,8 @@ main, footer, nav { position: relative; z-index: 1; }
 
   .hero { padding: 22px 0 18px; gap: 18px; }
   .hero h1 { font-size: clamp(40px, 12.5vw, 64px); }
-  .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; padding: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; width: 100%; padding: 0; align-items: stretch; }
+  .kpi { justify-content: flex-end; }
   .kpi { padding: 10px 12px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
   .kpi b { font-size: 30px; }
   .kpi > span { font-size: 10px; letter-spacing: .1em; }
@@ -527,12 +552,77 @@ main, footer, nav { position: relative; z-index: 1; }
   .ev { grid-template-columns: 40px 26px minmax(0, 1fr); gap: 8px; }
   .foot { flex-direction: column; }
 }
+/* Abschnitte gleiten beim Scrollen ins Bild, die Zeilen darin folgen gestaffelt. */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col) { animation: rise .5s both; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(2) { animation-delay: .05s; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(3) { animation-delay: .1s; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(4) { animation-delay: .15s; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(5) { animation-delay: .2s; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(6) { animation-delay: .25s; }
+.reveal.in :is(.route-row, .ev, .grow, .recap-row, .prep-col):nth-child(n+7) { animation-delay: .3s; }
+
+/* Bloodlust: Klick auf das Logo. Rote Vignette im Herzschlag, alles läuft schneller. */
+.brand-logo { cursor: pointer; transition: transform .2s; }
+.brand-logo:hover { transform: scale(1.08) rotate(-6deg); }
+.fx-lust {
+  position: fixed; inset: 0; z-index: 55; pointer-events: none; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(196,20,40,.38) 100%);
+}
+body.lust .fx-lust { opacity: 1; animation: lust-beat .55s ease-in-out infinite; }
+body.lust-hit main { animation: lust-shake .55s cubic-bezier(.36,.07,.19,.97) both; }
+body.lust .hero h1 { animation-duration: 1.4s; }
+body.lust .tile .sweep { animation-duration: 1.2s; }
+body.lust .fx-scan { animation-duration: 2s; }
+body.lust .sync i { animation-duration: .35s; }
+body.lust .tile { transition-duration: .12s; }
+@keyframes lust-beat { 0%, 100% { opacity: .65; } 30% { opacity: 1; } }
+/* Roter Rahmen um die ganze Seite, ein Lichtband läuft ringsum. */
+@property --lust-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.fx-lust::before {
+  content: ''; position: absolute; inset: 6px; padding: 4px; border-radius: 22px;
+  background: conic-gradient(from var(--lust-a), rgba(255,42,61,.25) 0 12%, #ff2a3d 22%, #ffd0d5 25%, #ff2a3d 28%, rgba(255,42,61,.25) 38% 62%, #ff2a3d 72%, #ffd0d5 75%, #ff2a3d 78%, rgba(255,42,61,.25) 88%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  filter: drop-shadow(0 0 8px #ff2a3d) blur(.6px);
+}
+.fx-lust::after { content: ''; position: absolute; inset: 6px; border-radius: 22px; box-shadow: inset 0 0 60px rgba(255,42,61,.45); }
+body.lust .fx-lust::before { animation: lust-spin 8s linear infinite; }
+@keyframes lust-spin { to { --lust-a: 360deg; } }
+/* Kacheln, Loadout-Ring und Logo schlagen im Takt mit. */
+body.lust .tile { animation: lust-tile .95s ease-in-out infinite; border-color: #ff2a3d; }
+body.lust .tile:nth-child(2n) { animation-delay: .12s; }
+body.lust .tile:nth-child(3n) { animation-delay: .24s; }
+body.lust .lo-stage .ring { animation: lust-ring .55s ease-in-out infinite; }
+body.lust .brand-logo { animation: lust-logo .55s ease-in-out infinite; }
+@keyframes lust-tile {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 18px rgba(255,42,61,.35); }
+  30% { transform: scale(1.025); box-shadow: 0 0 46px rgba(255,42,61,.8); }
+}
+@keyframes lust-ring {
+  0%, 100% { border-color: #ff2a3d; box-shadow: 0 0 30px rgba(255,42,61,.5); transform: translateX(-50%) scale(1); }
+  30% { border-color: #ffd0d5; box-shadow: 0 0 70px rgba(255,42,61,.95); transform: translateX(-50%) scale(1.08); }
+}
+@keyframes lust-logo { 30% { transform: scale(1.18) rotate(-8deg); filter: drop-shadow(0 0 14px #ff2a3d); } }
+
+/* Hochgezählte Zahl blitzt am Ende kurz auf. */
+.count-flash { animation: count-flash .7s ease-out; }
+@keyframes count-flash { 0% { text-shadow: 0 0 18px currentColor, 0 0 4px currentColor; } 100% { text-shadow: none; } }
+@keyframes lust-shake {
+  10%, 90% { transform: translate(-2px, 1px); }
+  20%, 80% { transform: translate(4px, -2px); }
+  30%, 50%, 70% { transform: translate(-6px, 2px); }
+  40%, 60% { transform: translate(6px, -1px); }
+}
+
 /* Sehr schmale Handys: Talente und Rechner-Link bleiben in einer Zeile. */
 @media (max-width: 400px) {
   .talents-head .dlabel, .talents-head .dlabel .split, .talents-head .tcalc { letter-spacing: 0; }
   .talents-head .dlabel { gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
