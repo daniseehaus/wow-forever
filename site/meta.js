@@ -133,5 +133,21 @@ window.META = (() => {
     DAMAGE: { label: 'DD', order: 2 },
   };
 
-  return { CLASSES, BUFFS, TOOLS, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES };
+  // Klassenquests und Lehrer-Meilensteine in Classic: Level, Aufgabe. Die Vorbereitung zeigt sie,
+  // wenn der letzte Abend das Level erreicht hat. Rot (hot) heißt: Quest oder Kauf mit Aufwand.
+  const CLASS_TASKS = {
+    1: [[10, 'Klassenquest: Verteidigungshaltung', true], [30, 'Klassenquest: Berserkerhaltung', true], [30, 'Klassenquest: Wirbelwindaxt', true]],
+    2: [[12, 'Klassenquest: Erlösung', true], [40, 'Schlachtross beim Lehrer', true], [60, 'Klassenquest: Streitross', true]],
+    3: [[10, 'Klassenquest: Begleiter zähmen', true]],
+    4: [[16, 'Klassenquest: Schlossknacken', true], [20, 'Klassenquest: Gifte', true]],
+    7: [[4, 'Klassenquest: Totem der Erde', true], [10, 'Klassenquest: Totem des Feuers', true], [20, 'Klassenquest: Totem des Wassers', true], [30, 'Klassenquest: Totem der Luft', true]],
+    9: [[10, 'Klassenquest: Leerwandler', true], [20, 'Klassenquest: Sukkubus', true], [30, 'Klassenquest: Teufelsjäger', true], [40, 'Teufelsross beim Lehrer', true], [60, 'Klassenquest: Schreckensross', true]],
+    11: [[10, 'Klassenquest: Bärengestalt', true], [14, 'Klassenquest: Vergiftung heilen', true], [16, 'Klassenquest: Wassergestalt', true]],
+  };
+
+  // Berufsstufen in Classic: Maximalwert der Stufe, nächste Stufe, Mindestlevel dafür.
+  // Ab 25 Punkten unter dem Maximum lässt sich die nächste Stufe lernen.
+  const PROF_RANKS = { 75: ['Geselle', 10], 150: ['Experte', 20], 225: ['Fachmann', 35] };
+
+  return { CLASSES, BUFFS, TOOLS, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES, CLASS_TASKS, PROF_RANKS };
 })();

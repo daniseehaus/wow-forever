@@ -4,7 +4,7 @@ const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 const ANIMATIONS = [['Stand', 'Stehen'], ['EmoteWave', 'Winken'], ['EmoteCheer', 'Jubeln'], ['EmoteDance', 'Tanzen'], ['Run', 'Laufen']];
 
-const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedShown: 30, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
+const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedShown: 30, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [], loViewer: null, loToken: 0 };
 
 try {
   state.selected = localStorage.getItem('selected');
@@ -53,6 +53,8 @@ async function init() {
   renderTiles();
   renderBuffs();
   renderLoadout();
+  renderRecap();
+  renderPrep();
   renderProfessions();
   renderRoute();
   renderFeed();
@@ -95,14 +97,10 @@ function setup3dToggle() {
 
 function renderKpis() {
   const ok = state.chars.filter((c) => c.level);
-  const levels = ok.map((c) => c.level);
-  const lo = Math.min(...levels), hi = Math.max(...levels);
-
   document.getElementById('kpis').innerHTML = [
     countdownKpi(),
-    kpi(lo === hi ? lo : `${lo}-${hi}`, 'Level-Spanne'),
-    hoursKpi(ok),
     tempoKpi(),
+    hoursKpi(ok),
   ].join('');
 }
 
@@ -131,6 +129,9 @@ function tempoKpi() {
   const avg = list.reduce((s, x) => s + x.gain, 0) / list.length;
   return kpi(fmtDec(avg), `Level pro Session · ${list.length}×`);
 }
+
+// Anteil der Spielzeit bis 60 in Prozent, laut Referenzkurve.
+function progress(level) { return (hoursAt(level) / hoursAt(60)) * 100; }
 
 function hoursAt(level) {
   const pts = M.LEVEL_HOURS;
@@ -479,6 +480,164 @@ function countSets(items) {
 }
 
 // ---------------------------------------------------------------------------
+// Letzte Session: eine Karte je gemeinsamer Session. Items kommen aus dem Feed (Logout im Zeitraum der Session),
+// Level, Berufspunkte, Logouts und Umskillen aus den Werten der Session.
+
+const QUALITY_NAMES = { EPIC: 'lila', RARE: 'blau', UNCOMMON: 'grün' };
+
+function sessionList() {
+  return (state.sessions.list ?? []).map((s, i, all) => {
+    const from = i ? all[i - 1].end : s.start - 6 * 36e5;
+    const items = state.feed.events.filter((e) => e.type === 'item' && e.t > from && e.t <= s.end && s.players.includes(e.key));
+    return { ...s, nr: i + 1, items };
+  });
+}
+
+function renderRecap() {
+  const list = sessionList();
+  const el = document.getElementById('rueckblick');
+  el.hidden = !list.length;
+  document.getElementById('nav-rueckblick').hidden = !list.length;
+  if (!list.length) return;
+
+  const idx = state.recapIdx ?? list.length - 1;
+  const s = list[idx];
+  const older = list.filter((x) => x !== s).reverse().slice(0, 4);
+  document.getElementById('recap').innerHTML = recapCardHtml(s, list) + older.map((x) => {
+    const aw = awards(x, list)[0];
+    return `<button type="button" class="recap-row" data-idx="${x.nr - 1}">
+      <b>Session ${x.nr}</b><span class="mono">${fmtDay(x.end)}</span>
+      <span class="mono recap-sum">${x.items.length} Items${aw ? ` · ${aw.title} ${esc(aw.who.map(charName).join(', '))}` : ''}</span>
+    </button>`;
+  }).join('');
+
+  const share = document.getElementById('recap-share');
+  share.href = `https://wa.me/?text=${encodeURIComponent(shareText(s, list))}`;
+  document.querySelectorAll('#recap .recap-row').forEach((b) => b.addEventListener('click', () => { state.recapIdx = Number(b.dataset.idx); renderRecap(); }));
+  document.querySelectorAll('#recap img').forEach(imgFallback);
+}
+
+function recapCardHtml(s, list) {
+  const stats = Object.values(s.stats ?? {});
+  const byQ = Object.entries(QUALITY_NAMES).map(([q, n]) => [s.items.filter((e) => e.quality === q).length, n]).filter(([k]) => k);
+  const avg = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null);
+  const lvlFrom = avg(stats.map((x) => x.level?.[0]).filter(Boolean));
+  const prof = stats.reduce((a, x) => a + (x.prof ?? 0), 0);
+  const profNames = new Set(state.feed.events.filter((e) => e.type === 'prof' && s.players.includes(e.key) && e.t > s.start - 6 * 36e5 && e.t <= s.end).map((e) => e.name));
+  const lvlTo = avg(stats.map((x) => x.level?.[1]).filter(Boolean));
+  const end = Math.max(...stats.map((x) => x.logout ?? 0), s.end);
+
+  const tiles = [
+    [s.items.length, 'Neue Items', byQ.map(([k, n]) => `${k} ${n}`).join(' · ') || 'keine', 'items'],
+    lvlTo ? [`+${Math.round(progress(lvlTo) - progress(lvlFrom ?? lvlTo))} %`, 'Weg bis 60', `jetzt ${Math.round(progress(lvlTo))} % geschafft`] : null,
+    [`+${prof}`, 'Berufspunkte', profNames.size ? `${profNames.size} ${profNames.size === 1 ? 'Beruf' : 'Berufe'}` : ''],
+    [fmtGain(s.gain), 'Level pro Char', lvlTo ? `jetzt Ø ${Math.round(lvlTo)}` : ''],
+  ].filter(Boolean);
+
+  const unlocks = recapUnlocks(s);
+  const aw = awards(s, list).slice(0, 4);
+  return `<article class="recap-card">
+    <div class="recap-top"><h3>Session ${s.nr}</h3><span class="mono">${fmtDay(end)} · Schluss ${fmtTime(end)}</span></div>
+    <div class="recap-stats">${tiles.map(([v, l, sub, cls]) => `<div class="rstat ${cls ?? ''}"><b>${v}</b><span>${l}</span><small>${esc(sub)}</small></div>`).join('')}</div>
+    ${unlocks.length ? `<div class="recap-unlock">${unlocks.map((u) => `<span>${u}</span>`).join('')}</div>` : ''}
+    ${aw.length ? `<div class="recap-label">Auszeichnungen</div>
+    <div class="awards">${aw.map((a) => `<div class="award"><span class="aw-title">${a.title}</span>
+      <b>${a.who.map((k) => `<span style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>`).join(', ')}</b><small>${esc(a.detail)}</small></div>`).join('')}</div>` : ''}
+  </article>`;
+}
+
+// Neu in Reichweite: Dungeons, deren Mindestlevel die Gruppe in dieser Session erreicht hat. Dazu Meilensteine.
+function recapUnlocks(s) {
+  const stats = Object.entries(s.stats ?? {});
+  if (!stats.length) return [];
+  const lo = (i) => Math.min(...stats.map(([, x]) => x.level?.[i] ?? 0));
+  const [from, to] = [lo(0), lo(1)];
+  const factions = new Set(state.chars.map((c) => (c.faction === 'HORDE' ? 'H' : 'A')));
+  const dungeons = M.DUNGEONS.filter((d) => (d.f === 'N' || factions.has(d.f)) && d.min - 2 > from && d.min - 2 <= to).map((d) => d.name);
+  const out = dungeons.length ? [`Neu in Reichweite: ${esc(dungeons.join(' · '))}`] : [];
+  if (from < 40 && to >= 40) out.push('Level 40: Reiten lernen');
+  if (from < 60 && to >= 60) out.push('Level 60: Max-Level');
+  return out;
+}
+
+// Auszeichnungen in fester Reihenfolge. Die Karte zeigt die ersten vier mit Gewinner. Bei Gleichstand gewinnen alle.
+function awards(s, list) {
+  const players = s.players ?? [];
+  const st = s.stats ?? {};
+  const top = (score, min = 1) => {
+    const vals = players.map((k) => [k, score(k)]).filter(([, v]) => v != null && v >= min);
+    const best = Math.max(...vals.map(([, v]) => v));
+    return { who: vals.filter(([, v]) => v === best).map(([k]) => k), best };
+  };
+  const itemsOf = (k) => s.items.filter((e) => e.key === k);
+  const earlier = list.filter((x) => x.nr < s.nr).flatMap((x) => x.items);
+  const out = [];
+  const add = (title, r, detail) => { if (r.who.length && r.who.length < players.length) out.push({ title, who: r.who, detail: detail(r.best) }); };
+
+  const firstEpic = players.filter((k) => itemsOf(k).some((e) => e.quality === 'EPIC') && !earlier.some((e) => e.key === k && e.quality === 'EPIC'));
+  if (firstEpic.length) out.push({ title: 'Epischer Moment', who: firstEpic, detail: 'erstes lila Item' });
+  const ups = s.items.filter((e) => e.ilvl != null && e.prev != null);
+  const bestUp = top((k) => Math.max(-1, ...ups.filter((e) => e.key === k).map((e) => e.ilvl - e.prev)));
+  const upItem = ups.find((e) => bestUp.who.includes(e.key) && e.ilvl - e.prev === bestUp.best);
+  add('Größtes Upgrade', bestUp, (v) => `${upItem?.slot ?? 'Item'} +${v} iLvl`);
+  add('Loot-Goblin', top((k) => itemsOf(k).length, 2), (v) => `${v} neue Items`);
+  add('Berufs-Streber', top((k) => st[k]?.prof, 10), (v) => `+${v} Punkte`);
+  const respec = players.filter((k) => st[k]?.respec);
+  if (respec.length) out.push({ title: 'Umskiller', who: respec, detail: 'Talente neu verteilt' });
+  if (s.items.length) add('Pechvogel', { who: players.filter((k) => !itemsOf(k).length) }, () => 'kein neues Item');
+  const logouts = players.map((k) => st[k]?.logout).filter(Boolean);
+  if (logouts.length > 1 && Math.max(...logouts) - Math.min(...logouts) >= 10 * 60e3) {
+    add('Licht aus', top((k) => st[k]?.logout, 0), (v) => `letzter Logout ${fmtTime(v)}`);
+    add('Fluchtwagen', top((k) => (st[k]?.logout ? -st[k].logout : null), -Infinity), (v) => `erster Logout ${fmtTime(-v)}`);
+  }
+  return out;
+}
+
+function shareText(s, list) {
+  const aw = awards(s, list).slice(0, 3).map((a) => `${a.title}: ${a.who.map(charName).join(', ')}`);
+  const url = `${location.origin}${location.pathname}#rueckblick`;
+  return [`Session ${s.nr} im Kasten: ${s.items.length} neue Items, ${fmtGain(s.gain)} Level pro Char.`, ...aw, url].join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Vor dem nächsten Abend: offene Punkte je Charakter aus dem letzten Abend und dem aktuellen Stand.
+// Rot sind Klassenquests und Berufe am Limit, die übrigen Punkte sind Routine.
+
+function renderPrep() {
+  const last = sessionList().at(-1);
+  const el = document.getElementById('vorbereitung');
+  const chars = state.chars.filter((c) => c.level);
+  const tasks = chars.map((c) => [c, prepTasks(c, last?.stats?.[c.key]?.level)]);
+  const total = tasks.reduce((a, [, t]) => a + t.length, 0);
+  el.hidden = !last;
+  if (!last) return;
+  document.getElementById('prep-count').textContent = total ? `${total} offene ${total === 1 ? 'Punkt' : 'Punkte'}` : 'alles erledigt';
+  document.getElementById('prep').style.setProperty('--n', tasks.length);
+  document.getElementById('prep').innerHTML = tasks.map(([c, list]) => `<div class="prep-col" style="--cls:${classColor(c)}">
+    <b>${esc(c.name)}</b>
+    ${list.length ? list.map(([text, hot]) => `<span class="task${hot ? ' hot' : ''}">${esc(text)}</span>`).join('') : '<span class="task done">nichts offen</span>'}
+  </div>`).join('');
+}
+
+function prepTasks(c, range) {
+  const [from, to] = range ?? [c.level, c.level];
+  const crossed = (lv) => from < lv && to >= lv;
+  const out = [];
+  for (const [lv, text, hot] of M.CLASS_TASKS[c.classId] ?? []) if (crossed(lv)) out.push([text, hot]);
+  if (crossed(40)) out.push(['Reiten lernen', true]);
+  for (const p of c.professions ?? []) {
+    const next = M.PROF_RANKS[p.max];
+    if (!next || p.skill < p.max - 25 || c.level < next[1]) continue;
+    out.push([`${profName(p.name)}: ${next[0]} lernen`, p.skill >= p.max]);
+  }
+  // Neue Zauber gibt es in Classic auf geraden Leveln.
+  for (let lv = to; lv > from; lv--) if (lv % 2 === 0) { out.push([`Lehrer: Level ${lv}`, false]); break; }
+  const free = c.talents?.trees?.length ? Math.max(0, c.level - 9 - c.talents.trees.reduce((a, t) => a + t.points, 0)) : 0;
+  if (free) out.push([`${free} ${free === 1 ? 'Talentpunkt' : 'Talentpunkte'} frei`, false]);
+  return out.sort((a, b) => b[1] - a[1]);
+}
+
+// ---------------------------------------------------------------------------
 // Berufe
 
 function renderProfessions() {
@@ -554,7 +713,8 @@ function renderRoute() {
 // Aktivität: Level-Ups, neue Items, Berufe, Gilde und gemeinsame Sessions, neueste zuerst
 
 function renderFeed() {
-  const events = [...state.feed.events].sort((a, b) => b.t - a.t);
+  // Grüne Items zählen nur in „Letzte Session“.
+  const events = state.feed.events.filter((e) => !(e.type === 'item' && e.quality === 'UNCOMMON')).sort((a, b) => b.t - a.t);
   document.getElementById('aktivitaet').hidden = !events.length;
   document.getElementById('nav-aktivitaet').hidden = !events.length;
   if (!events.length) return;
@@ -609,6 +769,11 @@ function feedItemHtml(e) {
 // ---------------------------------------------------------------------------
 // Hilfen
 
+function charByKey(k) { return state.data.characters.find((x) => x.key === k) ?? {}; }
+function charName(k) { return charByKey(k).name ?? k.split('/').pop(); }
+function fmtGain(n) { return `${n > 0 ? '+' : ''}${fmtDec(n)}`; }
+function fmtDay(t) { return new Date(t).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }); }
+function fmtTime(t) { return new Date(t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
 function classColor(c) { return M.CLASSES[c.classId]?.color ?? '#c9c2b3'; }
 function profName(n) { return M.PROFESSIONS[n] ?? n; }
 function fmtDec(n) { return Number(n).toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }

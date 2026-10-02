@@ -98,7 +98,8 @@ main, footer, nav { position: relative; z-index: 1; }
   -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 8s linear infinite;
 }
 .kpis { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: clamp(18px, 2.6vw, 40px); padding-bottom: 8px; }
-.kpi { display: flex; flex-direction: column; }
+/* Neben dem Titel: Zahlen rechtsbündig über dem Text, der Block endet bündig mit der rechten Kante der Seite. */
+.kpi { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
 .kpi b { font: 800 clamp(36px, 4vw, 56px)/1 var(--display); }
 .kpi > span { font-size: 11px; letter-spacing: .15em; color: var(--dim); text-transform: uppercase; }
 .kpi.hot b { color: var(--accent-text); }
@@ -315,6 +316,41 @@ main, footer, nav { position: relative; z-index: 1; }
 .tal.full i { color: var(--q-artifact); border-color: color-mix(in srgb, var(--q-artifact) 50%, transparent); }
 .tal:hover img { filter: none; transform: scale(1.06); }
 
+/* Abend-Rückblick */
+.share { font: 500 11px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
+.share:hover { color: var(--accent-text); border-color: currentColor; }
+.recap { display: flex; flex-direction: column; gap: 8px; }
+.recap-card { padding: 20px 22px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); border-top: 2px solid var(--accent); animation: rise .3s both; }
+.recap-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.recap-top h3 { margin: 0; font: 800 36px/1 var(--display); text-transform: uppercase; color: var(--text); letter-spacing: .01em; }
+.recap-stats, .awards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.recap-stats { margin: 18px 0 14px; }
+.rstat { display: flex; flex-direction: column; }
+.rstat b { font: 800 40px/1 var(--display); }
+.rstat.items b { color: var(--q-rare); }
+.rstat span { margin-top: 4px; font-size: 11px; letter-spacing: .15em; color: var(--dim); text-transform: uppercase; }
+.rstat small { font: 500 11px var(--mono); color: var(--muted); }
+.recap-unlock { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.recap-unlock span { padding: 7px 12px; border-radius: 8px; background: color-mix(in srgb, var(--accent) 9%, transparent); color: var(--accent-text); font-size: 13px; font-weight: 600; }
+.recap-label { font: 500 11px var(--mono); letter-spacing: .15em; color: var(--dim); text-transform: uppercase; padding-top: 14px; margin-bottom: 12px; border-top: 1px solid var(--line); }
+.award { display: flex; flex-direction: column; gap: 2px; }
+.aw-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.award b { font-size: 15px; font-weight: 700; }
+.award small { font: 500 11px var(--mono); color: var(--dim); }
+.recap-row { display: flex; align-items: baseline; gap: 12px; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.02); cursor: pointer; text-align: left; transition: border-color .2s; }
+.recap-row:hover { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.recap-row .recap-sum { margin-left: auto; text-align: right; }
+.recap-row:nth-of-type(3) { opacity: .75; }
+.recap-row:nth-of-type(n+4) { opacity: .55; }
+
+/* Vor dem nächsten Abend: eine Spalte je Charakter in der Reihenfolge der Kacheln */
+.prep { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 10px; }
+.prep-col { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 10px; border: 1px solid var(--line); border-top: 2px solid var(--cls); background: rgba(255,255,255,.02); }
+.prep-col > b { color: var(--cls); font-size: 14px; margin-bottom: 2px; }
+.task { padding: 6px 9px; border-radius: 7px; background: rgba(255,255,255,.05); color: #c9d1d9; font-size: 12px; line-height: 1.35; }
+.task.hot { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent-text); }
+.task.done { background: none; color: var(--dim); padding-left: 0; }
+
 /* Aktivität */
 .feed { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 6px 28px; align-items: start; }
 .feed-day h3 { padding: 6px 0 8px; border-bottom: 1px solid var(--line); }
@@ -340,6 +376,8 @@ main, footer, nav { position: relative; z-index: 1; }
 @media (max-width: 1100px) {
   html { scroll-padding-top: 116px; }
   .hero, .kpis { flex-wrap: wrap; }
+  /* Unter dem Titel stehen die Kennzahlen wieder linksbündig. */
+  .kpi { align-items: flex-start; text-align: left; }
   .lo-body { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .lo-body > div:nth-child(2) { order: -1; grid-column: 1 / -1; }
   .lo-stage { height: 460px; }
@@ -351,6 +389,7 @@ main, footer, nav { position: relative; z-index: 1; }
   .route-row { grid-template-columns: 50px minmax(0, 1fr); gap: 10px 16px; }
   .route-row > :not(.lv) { grid-column: 2; }
   .buff-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .prep { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   /* Navigation als zweite Zeile, die seitlich scrollt. */
   .nav-in { flex-wrap: wrap; height: auto; padding-top: 10px; padding-bottom: 10px; row-gap: 8px; }
   .nav-links { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
@@ -416,6 +455,13 @@ main, footer, nav { position: relative; z-index: 1; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }
   .route-tips div { flex-basis: 100%; }
+  .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
+  .prep { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .recap-card { padding: 16px; }
+  .rstat b { font-size: 32px; }
+  .recap-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
+  .recap-row { flex-wrap: wrap; }
+  .recap-row .recap-sum { margin-left: 0; text-align: left; flex-basis: 100%; }
   .ev { grid-template-columns: 40px 26px minmax(0, 1fr); gap: 8px; }
   .foot { flex-direction: column; }
 }

@@ -44,8 +44,8 @@ export function simulateClassic(data, opts, classicRole) {
   const [lo, hi] = opts.levels ?? [25, 27];
   const characters = data.characters.map((c) => (c.error || c.simulated ? c : simulateChar(c, layout, lo, hi, classicRole)));
   const showcase = buildShowcase(characters, Date.parse(data.generatedAt) || Date.now());
-  // Letzter Login: Ende des letzten Showcase-Abends, je Charakter ein paar Minuten versetzt.
-  const withLogin = characters.map((c) => (c.simulated ? { ...c, lastLogin: showcase.lastLogin + seeded(c.name)(40, 3) * 60e3 } : c));
+  // Letzter Login: Logout am letzten Showcase-Abend.
+  const withLogin = characters.map((c) => (c.simulated ? { ...c, lastLogin: showcase.lastLogin[c.key] ?? c.lastLogin } : c));
   return { data: { ...data, simulated: true, characters: withLogin }, showcase };
 }
 
@@ -138,7 +138,8 @@ function spendTalents(trees, main, total, build) {
 }
 
 // Showcase: sieben gemeinsame Abende in den letzten zwei Wochen, jeweils 19 bis 23:30 Uhr deutscher Zeit.
-// Jeder Charakter steigt dabei von Level 1 auf sein simuliertes Level. Dazu kommen Items, Berufe und die Sessions selbst.
+// Jeder Charakter steigt dabei von Level 1 auf sein simuliertes Level. Dazu kommen Items, Berufe und die Sessions selbst,
+// mit Werten je Spieler für den Abend-Rückblick (Itemlevel, Berufspunkte, Logout, Umskillen).
 // Die Zeiten hängen am Tag des Abrufs, nicht an der Stunde. So bleibt der Verlauf einen Tag lang gleich.
 function buildShowcase(characters, now) {
   const H = 3600 * 1000;
@@ -148,9 +149,13 @@ function buildShowcase(characters, now) {
   const events = [];
   const sessions = [];
   const levelAt = (c, i) => (i < 0 ? 1 : Math.round(1 + (c.level - 1) * ((i + 1) / nights.length) ** 0.8));
+  const ilvlAt = (c, i) => Math.max(1, Math.round((c.equippedIlvl ?? c.level) * (levelAt(c, i) / c.level)));
+  const logoutAt = (c, i) => nights[i].end - (20 - seeded(`${c.name}${i}`)(45, 7)) * 60e3;
+  const used = new Set();
 
   nights.forEach((night, i) => {
     const gains = [];
+    const stats = {};
     for (const c of chars) {
       const rand = seeded(`${c.name}${i}`);
       const at = (frac) => Math.round(night.start + frac * (night.end - night.start) + rand(20, 2) * 60e3);
@@ -166,21 +171,30 @@ function buildShowcase(characters, now) {
         if (i === 3 && p.skill >= 75) events.push({ t: at(0.6), key: c.key, type: 'prof', name: p.name, skill: 75 });
         if (i === nights.length - 1 && p.skill >= p.max) events.push({ t: at(0.7), key: c.key, type: 'prof', name: p.name, skill: p.max });
       }
+
+      // Null bis drei Items je Abend aus der echten Ausrüstung, mit Itemlevel davor und danach.
+      const pool = (c.items ?? []).filter((it) => it.id && ['UNCOMMON', 'RARE', 'EPIC'].includes(it.quality) && !used.has(`${c.key}${it.slot}`));
+      for (let k = 0; k < Math.min(pool.length, i ? rand(4, 3) : 0); k++) {
+        const it = pool[(rand(pool.length, 9) + k) % pool.length];
+        if (used.has(`${c.key}${it.slot}`)) continue;
+        used.add(`${c.key}${it.slot}`);
+        const ilvl = levelAt(c, i) + (it.quality === 'EPIC' ? 8 : it.quality === 'RARE' ? 4 : 1);
+        events.push({ t: at(0.3 + 0.2 * k), key: c.key, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl, prev: Math.max(1, ilvl - 2 - rand(9, 11 + k)) });
+      }
+
+      const profs = c.professions ?? [];
+      stats[c.key] = {
+        level: [levelAt(c, i - 1), levelAt(c, i)],
+        ilvl: [i ? ilvlAt(c, i - 1) : 1, ilvlAt(c, i)],
+        prof: Math.max(0, Math.round(profs.reduce((a, p) => a + p.skill, 0) / nights.length) - rand(15, 13)),
+        logout: logoutAt(c, i),
+        respec: i === 4 && c === chars[1],
+      };
     }
-    sessions.push({ start: night.start, end: night.end, gain: gains.reduce((a, b) => a + b, 0) / Math.max(1, gains.length), players: chars.map((c) => c.key) });
+    sessions.push({ start: night.start, end: night.end, gain: gains.reduce((a, b) => a + b, 0) / Math.max(1, gains.length), players: chars.map((c) => c.key), stats });
     events.push({ t: night.end + 15 * 60e3, type: 'session', start: night.start, gain: sessions.at(-1).gain, players: chars.map((c) => c.key) });
   });
 
-  // Bis zu drei gute Items je Charakter, verteilt auf die zweite Hälfte der Abende.
-  for (const c of chars) {
-    const rand = seeded(c.name);
-    const good = (c.items ?? []).filter((it) => it.id && ['RARE', 'EPIC'].includes(it.quality)).slice(0, 3);
-    good.forEach((it, k) => {
-      const night = nights[3 + ((rand(3, k + 1) + k) % 4)];
-      events.push({ t: night.start + (0.3 + 0.2 * k) * (night.end - night.start), key: c.key, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot });
-    });
-  }
-
-  const lastLogin = nights.at(-1).end;
+  const lastLogin = Object.fromEntries(chars.map((c) => [c.key, logoutAt(c, nights.length - 1)]));
   return { events: events.sort((a, b) => a.t - b.t), sessions, lastLogin };
 }
