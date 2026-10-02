@@ -208,7 +208,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .lo-head p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-weight: 700; font-size: 13px; }
-.chip.epic { color: var(--q-epic); border-color: rgba(192,113,255,.35); background: rgba(163,53,238,.12); }
 .chip.ok { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 30%, transparent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .lo-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 420px) minmax(0, 1fr); gap: 18px; align-items: center; }
 .gear-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
@@ -252,9 +251,13 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Leveling */
 /* Fortschritt als Balken am unteren Rand in Klassenfarbe, voller Balken mit Haken */
 
-.route-tips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-.route-tips div { flex: 1 1 260px; padding: 12px 14px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
-.route-tips small, .route-head span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+.route-next { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 24px; margin-bottom: 16px; padding: 12px 18px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
+.next-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 4px 24px; min-width: 0; }
+.next-list .place { font-size: 14px; font-weight: 700; }
+.next-list .place .nm { flex: 0 1 auto; }
+.next-list .place .rg { white-space: nowrap; }
+.next-note { font: 500 11px var(--mono); color: var(--dim); white-space: nowrap; }
+.route-next small, .route-head span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
 .route { display: flex; flex-direction: column; }
 .route-head, .route-row { display: grid; grid-template-columns: 70px minmax(0, 1.5fr) minmax(0, 1fr) 170px; gap: 24px; }
 .route-head { padding: 0 16px 8px; border-bottom: 1px solid var(--line); }
@@ -290,7 +293,6 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Classic-Talentbäume: Raster mit 4 Spalten und 7 Reihen wie im Spiel. Teilweise = grün, Maximalrang = gold. */
 .talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .talents-head .dlabel { min-width: 100px; }
-.tpoints { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .06em; }
 .tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; transition: .2s; }
 .tcalc:hover { color: var(--accent-text); }
 .ttrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
@@ -477,7 +479,7 @@ main, footer, nav { position: relative; z-index: 1; }
   .route-row { padding: 12px 4px; grid-template-columns: 44px minmax(0, 1fr); gap: 8px 12px; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }
-  .route-tips div { flex-basis: 100%; }
+  .route-next { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 12px 14px; }
   .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
   .prep { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .recap-card { padding: 16px; }
