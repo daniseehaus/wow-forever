@@ -7,11 +7,23 @@
     "level": 90,
     "ilvl": 289,
     "epics": 15
+   },
+   {
+    "d": "2026-10-02",
+    "level": 90,
+    "ilvl": 289,
+    "epics": 15
    }
   ],
   "blackmoore/lizli": [
    {
     "d": "2026-10-01",
+    "level": 90,
+    "ilvl": 312,
+    "epics": 16
+   },
+   {
+    "d": "2026-10-02",
     "level": 90,
     "ilvl": 312,
     "epics": 16
@@ -23,6 +35,12 @@
     "level": 80,
     "ilvl": 609,
     "epics": 16
+   },
+   {
+    "d": "2026-10-02",
+    "level": 80,
+    "ilvl": 609,
+    "epics": 16
    }
   ],
   "thrall/donbratzo": [
@@ -31,11 +49,23 @@
     "level": 90,
     "ilvl": 284,
     "epics": 15
+   },
+   {
+    "d": "2026-10-02",
+    "level": 90,
+    "ilvl": 284,
+    "epics": 15
    }
   ],
   "tarren-mill/meeresdk": [
    {
     "d": "2026-10-01",
+    "level": 90,
+    "ilvl": 326,
+    "epics": 16
+   },
+   {
+    "d": "2026-10-02",
     "level": 90,
     "ilvl": 326,
     "epics": 16
