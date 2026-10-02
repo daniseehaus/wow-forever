@@ -91,8 +91,10 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 
 ## Effekte
 
+Die Charakterkacheln erscheinen, sobald `data.json` geladen ist. Sessions, Aktivität und Talentdetails werden danach ergänzt.
+
 - **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`). Beim Start zeigen alle
-  3D-Kacheln sofort „Loading“. Das fertige Modell ersetzt den Balken. Schlägt der Aufbau fehl, erscheint der 2D-Render.
+  3D-Kacheln sofort „Loading“ über dem 2D-Render. Das fertige Modell ersetzt beides. Schlägt der Aufbau fehl, bleibt der 2D-Render.
 - **Forever-Start:** Zum Start und einmal am Starttag läuft „Forever ist live“ über die Seite. `?live` zeigt das Band vorab.
 - **Charakterwechsel:** Ein Klick auf eine Kachel startet sofort das Namensband und scrollt zum Loadout. Das Loadout baut während
   des Bands neu auf und wird sichtbar, wenn das Band ausläuft.
@@ -121,6 +123,7 @@ GitHub Pages erlaubt nur 10 Minuten Cache. Der Service Worker (`sw.js`) hält Mo
 Ab dem zweiten Besuch lädt die Seite keine Modelldaten mehr. Wechselt die Modell-Umgebung (Vorschau, dann Forever), löscht er den alten Cache.
 
 Der Wowhead-Viewer ist inoffiziell. Ändert Wowhead ihn, kann 3D ausfallen. Die Seite fällt dann auf die Renders zurück.
+Ein vorübergehender Fehler beim Laden des Viewer-Skripts blockiert spätere Versuche nicht.
 
 ## Lokal testen
 
