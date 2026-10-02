@@ -177,7 +177,7 @@ function tileHtml(c, i) {
   </button>`;
 }
 
-// Die Modelle starten nacheinander, damit der Browser nicht alle Dateien gleichzeitig lädt.
+// Model3D lädt die Modelle nacheinander. Der 2D-Render bleibt stehen, bis das Modell fertig ist.
 async function mountTiles() {
   const env = state.data.modelEnv || 'classic';
   for (const c of state.chars) {
@@ -328,7 +328,7 @@ async function mountLoadout(c) {
   holder.className = 'stage-3d';
   box.append(holder);
   try {
-    const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic');
+    const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic', { priority: true });
     if (token !== state.loToken) { window.Model3D.destroy(v); return; }
     state.loViewer = v;
     box.querySelector('img.render')?.remove();
