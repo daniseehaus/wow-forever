@@ -704,7 +704,7 @@ function renderRoute() {
     <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span><span class="rg">${range}</span></a>`;
   const who = (list) => (list.length
     ? `<div class="route-who">${list.map((c) => `<span style="--cls:${classColor(c)}">${esc(c.name)} · ${c.level}</span>`).join('')}</div>`
-    : '<span class="none">niemand</span>');
+    : '<span class="none route-nobody">niemand</span>');
 
   const rows = bands.map(([a, b]) => {
     const zones = M.ZONES.filter((z) => allowed(z) && z.min >= a - 5 && z.min < b && z.max > a);
@@ -712,16 +712,16 @@ function renderRoute() {
     const here = classicLevels ? ok.filter((c) => inBand(c, a, b)) : [];
     return `<div class="route-row ${here.length ? 'now' : ''}">
       <span class="lv">${a}-${b}</span>
-      <div class="place-list">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
-      <div class="place-list single">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
+      <div class="place-list" data-label="Zonen">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
+      <div class="place-list single" data-label="Dungeons">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
       ${who(here)}
     </div>`;
   });
   const at60 = classicLevels ? ok.filter((c) => c.level >= 60) : [];
   rows.push(`<div class="route-row ${at60.length ? 'now' : ''}">
     <span class="lv">60</span>
-    <div class="place-list">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
-    <span class="none">Raids</span>
+    <div class="place-list" data-label="Raids">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
+    <span class="none route-raids">Raids</span>
     ${who(at60)}
   </div>`);
 
