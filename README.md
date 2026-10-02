@@ -16,6 +16,7 @@ Eine GitHub Action holt die Daten stündlich von der Battle.net API und veröffe
 | `scripts/mirror-models.mjs` | Spiegelt die 3D-Modelldateien von Wowhead nach `site/modelviewer/` |
 | `scripts/model-proxy.mjs` | Lokaler Proxy für 3D-Tests ohne Spiegelung |
 | `site/` | Die Seite (HTML, CSS, JS ohne Build-Schritt) |
+| `site/sounds/` | Bloodlust-Sound des Schamanen (Wowhead, Datei 568812, als MP3) |
 | `site/meta.js` | Spielwissen für Forever: Buffs, Tools, Berufe, Zonen, Dungeons, Raids, Stunden bis 60 |
 | `data/history.json` | Tageswerte je Charakter, schreibt nur die Action |
 | `data/sessions.json` | Erkannte gemeinsame Sessions (ab 4 Spielern) mit Level-Zuwachs, schreibt nur die Action |
@@ -84,6 +85,15 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   die drei Bäume wie im Spiel und verlinkt den genauen Build im Wowhead-Rechner. Die Datei baut `npm run build-talents`
   aus den Spieldaten (wago.tools) und den deutschen Wowhead-Tooltips. Die Classic-Bäume ändern sich nicht, ein Neubau ist nur bei
   einer neuen Spielversion nötig (Build als Argument, z. B. `node scripts/build-talents.mjs 1.15.9.70003`).
+
+## Effekte
+
+- **Band:** Das schräge Band mit laufenden Streifen ist das Stilmittel der Seite (`burst()` in `app.js`).
+- **Forever-Start:** Zum Start und einmal am Starttag läuft „Forever ist live“ über die Seite. `?live` zeigt das Band vorab.
+- **Charakterwechsel:** Ein Klick auf eine Kachel scrollt zum Loadout. Dort zieht der Name als Band in Klassenfarbe durch.
+- **Hochzählen und Einblenden:** Zahlen zählen beim ersten Sichtbarwerden von 0 hoch und blitzen am Ende kurz auf (`COUNT_SEL` in `app.js`). Die Abschnitte gleiten beim Scrollen ins Bild.
+- **Bloodlust:** Ein Klick auf das Logo startet 15 Sekunden Bloodlust mit Sound, rotem Lauf-Rahmen um die Seite und pulsierenden Kacheln. Danach gilt 60 Sekunden „Gesättigt“.
+- Bei „Bewegung reduzieren“ im System bleiben alle Effekte aus.
 
 ## 3D-Modelle
 
