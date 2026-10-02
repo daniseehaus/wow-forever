@@ -1,74 +1,44 @@
 {
- "era": "retail",
+ "era": "preview",
  "chars": {
-  "blackmoore/schmou": [
-   {
-    "d": "2026-10-01",
-    "level": 90,
-    "ilvl": 289,
-    "epics": 15
-   },
+  "blackmoore/gluzanda": [
    {
     "d": "2026-10-02",
-    "level": 90,
-    "ilvl": 289,
-    "epics": 15
+    "level": 25,
+    "ilvl": 28,
+    "epics": 0
    }
   ],
   "blackmoore/lizli": [
    {
-    "d": "2026-10-01",
-    "level": 90,
-    "ilvl": 312,
-    "epics": 16
-   },
-   {
     "d": "2026-10-02",
-    "level": 90,
-    "ilvl": 312,
-    "epics": 16
+    "level": 27,
+    "ilvl": 32,
+    "epics": 0
    }
   ],
   "blackmoore/muhrice": [
    {
-    "d": "2026-10-01",
-    "level": 80,
-    "ilvl": 609,
-    "epics": 16
-   },
-   {
     "d": "2026-10-02",
-    "level": 80,
-    "ilvl": 609,
-    "epics": 16
+    "level": 26,
+    "ilvl": 31,
+    "epics": 0
    }
   ],
   "thrall/donbratzo": [
    {
-    "d": "2026-10-01",
-    "level": 90,
-    "ilvl": 284,
-    "epics": 15
-   },
-   {
     "d": "2026-10-02",
-    "level": 90,
-    "ilvl": 284,
-    "epics": 15
+    "level": 26,
+    "ilvl": 31,
+    "epics": 0
    }
   ],
-  "tarren-mill/meeresdk": [
-   {
-    "d": "2026-10-01",
-    "level": 90,
-    "ilvl": 326,
-    "epics": 16
-   },
+  "blackmoore/stevyfox": [
    {
     "d": "2026-10-02",
-    "level": 90,
-    "ilvl": 326,
-    "epics": 16
+    "level": 26,
+    "ilvl": 29,
+    "epics": 0
    }
   ]
  }
