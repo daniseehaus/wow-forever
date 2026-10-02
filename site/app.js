@@ -9,9 +9,10 @@ const state = { data: null, history: {}, sessions: {}, feed: { events: [] }, fee
 try {
   state.selected = localStorage.getItem('selected');
   const pref = localStorage.getItem('use3d');
-  state.use3d = pref ? pref === '1' : !matchMedia('(max-width: 760px)').matches;
+  state.use3d = pref ? pref === '1' : true;
 } catch {}
-if (!window.Model3D.supported()) state.use3d = false;
+// Auf Handys bleibt es bei den 2D-Renders, der Schalter ist dort ausgeblendet (siehe style.css).
+if (!window.Model3D.supported() || matchMedia('(max-width: 760px)').matches) state.use3d = false;
 
 init();
 

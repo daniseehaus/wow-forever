@@ -66,7 +66,7 @@ Aussehen und Transmog über `/appearance`, die Display-IDs über `/item-appearan
 Wowhead erlaubt keinen direkten Abruf aus fremden Seiten. Die Action spiegelt deshalb alle benötigten
 Dateien (etwa 70 MB für 5 Charaktere) nach GitHub Pages. Ändert sich am Aussehen nichts, übernimmt sie die Dateien aus dem Cache
 und überspringt Browser-Installation und Spiegelung (`mirror-models.mjs --hash` und `--restore`). Auf schmalen Bildschirmen und ohne WebGL zeigt
-die Seite die 2D-Renders. Der Schalter „3D an/aus“ in der Navigation überschreibt das.
+die Seite immer die 2D-Renders, auf Handys gibt es den Schalter „3D an/aus“ nicht. Auf größeren Bildschirmen schaltet er 3D ab.
 
 Der Wowhead-Viewer ist inoffiziell. Ändert Wowhead ihn, kann 3D ausfallen. Die Seite fällt dann auf die Renders zurück.
 

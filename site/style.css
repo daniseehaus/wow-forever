@@ -6,13 +6,13 @@
   --text: #e6edf3;
   --muted: #8b97a5;
   --dim: #5b6673;
-  --accent: #4e2a84;
-  --accent-text: #a98be0;   /* hellere Stufe für Text auf dunklem Grund */
+  --accent: #ff3a5e;        /* Klassenfarbe Todesritter */
+  --accent-text: #ff6b84;   /* hellere Stufe für Text auf dunklem Grund */
   --accent-ink: #ffffff;    /* Schrift auf Flächen in Highlight-Farbe */
   --warn: #ff3a5e;
   --radius: 18px;
   --radius-sm: 12px;
-  --cls: #a98be0;
+  --cls: #ff6b84;
   --q-poor: #9d9d9d;
   --q-common: #ffffff;
   --q-uncommon: #1eff00;
@@ -319,6 +319,10 @@ main, footer, nav { position: relative; z-index: 1; }
   .nav-links { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .nav-links::-webkit-scrollbar { display: none; }
   .nav-links a { flex: none; padding: 7px 12px; font-size: 12px; }
+}
+/* 3D läuft auf Handys nicht zuverlässig. Dort gibt es nur die 2D-Renders und keinen Schalter. */
+@media (max-width: 760px) {
+  #toggle-3d { display: none; }
 }
 @media (max-width: 600px) {
   body { font-size: 14px; }
