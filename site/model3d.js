@@ -87,16 +87,18 @@ window.Model3D = (() => {
     if (busy || !queue.length) return;
     busy = true;
     const job = queue.shift();
+    let viewer = null;
     try {
       // Inzwischen aus der Seite entfernt (anderer Charakter gewählt, 3D aus): nicht mehr laden.
       if (!document.body.contains(job.container)) throw new Error('Viewer nicht mehr benötigt.');
       job.onStart?.();
-      const viewer = await create(job.container, job.model, job.env);
-      await loaded(viewer);
+      viewer = await create(job.container, job.model, job.env);
+      await loaded(viewer, job.container);
       pace(viewer, job.container, job.fps);
       job.container.classList.add('ready');
       job.resolve(viewer);
     } catch (err) {
+      destroy(viewer);
       job.reject(err);
     } finally {
       busy = false;
@@ -122,16 +124,17 @@ window.Model3D = (() => {
 
   // Fertig heißt: Modell geladen und seit einer halben Sekunde keine neue Datei (Items, Texturen).
   // Nach 30 Sekunden geht es trotzdem weiter, damit ein hängendes Modell die anderen nicht blockiert.
-  async function loaded(viewer) {
+  async function loaded(viewer, container) {
     const start = performance.now();
     lastFile = start;
     while (performance.now() - start < 30000) {
       await new Promise((r) => setTimeout(r, 150));
-      if (viewer.renderer?.stop) return;
+      if (!document.body.contains(container) || viewer.renderer?.stop) throw new Error('Viewer nicht mehr benötigt.');
       const actors = viewer.renderer?.actors ?? [];
       const done = actors.length && actors.every((a) => a.isLoaded?.());
       if (done && performance.now() - lastFile > 500) return;
     }
+    throw new Error('3D-Modell nicht vollständig geladen.');
   }
 
   // Der Viewer ruft draw(t) in jedem Bild auf. Hier zeichnet er höchstens fps-mal pro Sekunde

@@ -4,8 +4,8 @@ const SLOTS_LEFT = [['HEAD', 'Kopf'], ['NECK', 'Hals'], ['SHOULDER', 'Schultern'
 const SLOTS_RIGHT = [['HANDS', 'Hände'], ['WAIST', 'Taille'], ['LEGS', 'Beine'], ['FEET', 'Füße'], ['FINGER_1', 'Finger 1'], ['FINGER_2', 'Finger 2'], ['TRINKET_1', 'Schmuck 1'], ['TRINKET_2', 'Schmuck 2'], ['RANGED', 'Distanz']];
 // Laufende Streifen des Bands als eigene Ebene. Sie bewegt sich per transform, das kostet keinen Hauptthread.
 const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
-// Dauer des Namensbands beim Charakterwechsel. Erst danach baut das neue 3D-Modell auf.
-const SWAP_MS = 1300;
+// Das Namensband startet sofort beim Klick und deckt den Aufbau des Loadouts ab.
+const SWAP_MS = 1700;
 
 const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
@@ -254,8 +254,8 @@ function tileHtml(c, i) {
   </button>`;
 }
 
-// Model3D lädt die Modelle nacheinander. Der 2D-Render bleibt stehen, bis das Modell fertig ist.
-// Das Ladeband erscheint erst, wenn das Modell der Kachel wirklich aufbaut. So läuft es als Welle durch die Kacheln.
+// Model3D lädt die Modelle nacheinander. Alle Kacheln zeigen sofort Loading und erst danach ihr fertiges 3D-Modell.
+// Schlägt ein Modell fehl, erscheint stattdessen sein 2D-Render.
 // Alle Modelle zeichnen höchstens 60 Bilder pro Sekunde, auch auf 120-Hz-Displays (pace in model3d.js).
 async function mountTiles() {
   const env = state.data.modelEnv || 'classic';
@@ -263,31 +263,34 @@ async function mountTiles() {
   for (const c of state.chars) {
     if (!state.use3d || !c.model) continue;
     const stage = document.querySelector(`[data-stage="${CSS.escape(c.key)}"]`);
-    if (stage) jobs.push({ c, stage });
+    if (!stage) continue;
+    stage.classList.add('loading-3d');
+    const band = loadingBand(stage);
+    jobs.push({ c, stage, band });
   }
-  for (const { c, stage } of jobs) {
+  for (const { c, stage, band } of jobs) {
     const box = document.createElement('div');
     box.className = 'stage-3d';
     stage.append(box);
-    let band = null;
     try {
-      const v = await window.Model3D.mount(box, c.model, env, { onStart: () => { band = loadingBand(stage); } });
+      const v = await window.Model3D.mount(box, c.model, env);
       if (!document.body.contains(box)) { window.Model3D.destroy(v); return; }
       v.charKey = c.key;
       state.tileViewers.push(v);
       if (document.body.classList.contains('lust')) fight(v);
       stage.querySelector('img.render')?.remove();
+      stage.classList.remove('loading-3d');
       hideBand(band);
     } catch (err) {
       box.remove();
+      stage.classList.remove('loading-3d');
       hideBand(band);
       console.warn('3D nicht verfügbar:', err.message);
-      return;
     }
   }
 }
 
-// Schräger Balken über dem 2D-Render, solange das 3D-Modell lädt.
+// Schräger Balken statt des 2D-Renders, solange das 3D-Modell lädt.
 function loadingBand(el) {
   const band = document.createElement('span');
   band.className = 'loading-band';
@@ -302,28 +305,22 @@ function hideBand(band) {
   setTimeout(() => band.remove(), 400);
 }
 
-// Klick auf eine Kachel: erst zum Loadout scrollen, dann wechselt der Charakter mit dem Band. So sieht man den Effekt ganz.
+// Klick auf eine Kachel: Das Band startet sofort, während Scrollen und Aufbau im Hintergrund laufen.
 function select(key) {
   const el = document.getElementById('loadout');
   if (key === state.selected) { el.scrollIntoView({ behavior: 'smooth' }); return; }
   state.selected = key;
   try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
-  const swap = () => { if (state.selected === key) { releaseHover(el); renderLoadout(); swapBand(); } };
-  const top = el.getBoundingClientRect().top;
-  if (Math.abs(top - 90) < 40) { swap(); return; }
-  // Ende des Scrollens: Position steht drei Bilder lang still (Safari kennt kein scrollend). Spätestens nach 1,5 s.
+  swapBand();
   el.scrollIntoView({ behavior: 'smooth' });
-  const t0 = performance.now();
-  let lastY = -1;
-  let still = 0;
-  const wait = () => {
-    still = scrollY === lastY ? still + 1 : 0;
-    lastY = scrollY;
-    if (still >= 3 || performance.now() - t0 > 1500) swap();
-    else requestAnimationFrame(wait);
-  };
-  requestAnimationFrame(wait);
+  // Zwei Bilder geben dem Band Zeit, sichtbar zu werden, bevor das Loadout neu aufgebaut wird.
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (state.selected !== key) return;
+    releaseHover(el);
+    renderLoadout();
+    el.classList.add('swap');
+  }));
 }
 
 // Vor dem Wechsel offene Tooltips schließen. Der Wowhead-Tooltip schließt erst mit einem mouseout auf seinem Link.
@@ -338,8 +335,7 @@ function swapBand() {
   const c = state.chars.find((x) => x.key === state.selected);
   if (!c) return;
   el.classList.remove('swap');
-  void el.offsetWidth;
-  el.classList.add('swap', 'swapping');
+  el.classList.add('swapping');
   clearTimeout(state.swapTimer);
   state.swapTimer = setTimeout(() => el.classList.remove('swapping'), SWAP_MS);
   // Das Band läuft über den ganzen Bildschirm. So ist es auch auf dem Handy sichtbar, wo das Loadout länger als der Bildschirm ist.
@@ -971,8 +967,8 @@ function renderRoute() {
   const tips = new Set(classicLevels && ok.length ? [best(M.ZONES), best(M.DUNGEONS)].filter(Boolean) : []);
 
   const place = (x, range, mark = false) => {
-    const next = mark && tips.has(x) ? ` data-tip="${esc(`Als Nächstes\n${inside(x) === ok.length ? `passt für alle ${ok.length}` : `${ok.length - inside(x)} knapp drunter`}`)}" data-tip-plain` : '';
-    return `<a class="place${next ? ' next' : ''}" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener"${next}>
+    const next = mark && tips.has(x);
+    return `<a class="place${next ? ' next' : ''}" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener">
     <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? '<em>Als Nächstes</em>' : ''}<span class="rg">${range}</span></a>`;
   };
 
