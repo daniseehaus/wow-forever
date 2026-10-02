@@ -3,7 +3,7 @@
  "snapshot": {
   "blackmoore/gluzanda": {
    "level": 25,
-   "lastLogin": 1790890980000,
+   "lastLogin": 1790891460000,
    "guild": null,
    "items": {
     "HEAD": 250459,
@@ -23,6 +23,24 @@
     "MAIN_HAND": 256992,
     "OFF_HAND": 264423
    },
+   "ilvls": {
+    "HEAD": 30,
+    "NECK": 27,
+    "SHOULDER": 30,
+    "CHEST": 30,
+    "WAIST": 27,
+    "LEGS": 27,
+    "FEET": 30,
+    "WRIST": 30,
+    "HANDS": 27,
+    "FINGER_1": 27,
+    "FINGER_2": 27,
+    "TRINKET_1": 30,
+    "TRINKET_2": 27,
+    "BACK": 27,
+    "MAIN_HAND": 27,
+    "OFF_HAND": 27
+   },
    "profs": {
     "Herbalism": 5,
     "Mining": 29,
@@ -32,7 +50,7 @@
   },
   "blackmoore/lizli": {
    "level": 27,
-   "lastLogin": 1790890920000,
+   "lastLogin": 1790890320000,
    "guild": null,
    "items": {
     "HEAD": 271555,
@@ -52,6 +70,24 @@
     "MAIN_HAND": 272270,
     "OFF_HAND": 245769
    },
+   "ilvls": {
+    "HEAD": 32,
+    "NECK": 32,
+    "SHOULDER": 32,
+    "CHEST": 32,
+    "WAIST": 32,
+    "LEGS": 32,
+    "FEET": 32,
+    "WRIST": 32,
+    "HANDS": 32,
+    "FINGER_1": 32,
+    "FINGER_2": 32,
+    "TRINKET_1": 32,
+    "TRINKET_2": 32,
+    "BACK": 32,
+    "MAIN_HAND": 32,
+    "OFF_HAND": 32
+   },
    "profs": {
     "Herbalism": 150,
     "Alchemy": 150,
@@ -61,7 +97,7 @@
   },
   "blackmoore/muhrice": {
    "level": 26,
-   "lastLogin": 1790890800000,
+   "lastLogin": 1790890140000,
    "guild": null,
    "items": {
     "HEAD": 211984,
@@ -81,6 +117,24 @@
     "MAIN_HAND": 178730,
     "OFF_HAND": 222432
    },
+   "ilvls": {
+    "HEAD": 31,
+    "NECK": 31,
+    "SHOULDER": 31,
+    "CHEST": 31,
+    "WAIST": 31,
+    "LEGS": 31,
+    "FEET": 31,
+    "WRIST": 31,
+    "HANDS": 31,
+    "FINGER_1": 31,
+    "FINGER_2": 31,
+    "TRINKET_1": 31,
+    "TRINKET_2": 31,
+    "BACK": 31,
+    "MAIN_HAND": 31,
+    "OFF_HAND": 31
+   },
    "profs": {
     "Blacksmithing": 83,
     "Mining": 150,
@@ -89,7 +143,7 @@
   },
   "thrall/donbratzo": {
    "level": 26,
-   "lastLogin": 1790890320000,
+   "lastLogin": 1790891220000,
    "guild": null,
    "items": {
     "HEAD": 249988,
@@ -108,6 +162,23 @@
     "BACK": 258575,
     "MAIN_HAND": 258412
    },
+   "ilvls": {
+    "HEAD": 31,
+    "NECK": 31,
+    "SHOULDER": 31,
+    "CHEST": 31,
+    "WAIST": 31,
+    "LEGS": 31,
+    "FEET": 31,
+    "WRIST": 31,
+    "HANDS": 31,
+    "FINGER_1": 31,
+    "FINGER_2": 31,
+    "TRINKET_1": 31,
+    "TRINKET_2": 31,
+    "BACK": 31,
+    "MAIN_HAND": 31
+   },
    "profs": {
     "Herbalism": 15,
     "Alchemy": 1,
@@ -117,7 +188,7 @@
   },
   "blackmoore/stevyfox": {
    "level": 26,
-   "lastLogin": 1790890860000,
+   "lastLogin": 1790891460000,
    "guild": null,
    "items": {
     "HEAD": 250060,
@@ -137,6 +208,25 @@
     "BACK": 257174,
     "MAIN_HAND": 257269,
     "OFF_HAND": 264521
+   },
+   "ilvls": {
+    "HEAD": 31,
+    "NECK": 28,
+    "SHOULDER": 31,
+    "SHIRT": 28,
+    "CHEST": 28,
+    "WAIST": 28,
+    "LEGS": 28,
+    "FEET": 31,
+    "WRIST": 28,
+    "HANDS": 28,
+    "FINGER_1": 28,
+    "FINGER_2": 28,
+    "TRINKET_1": 28,
+    "TRINKET_2": 28,
+    "BACK": 31,
+    "MAIN_HAND": 28,
+    "OFF_HAND": 28
    },
    "profs": {
     "Skinning": 150
