@@ -42,7 +42,11 @@ window.Model3D = (() => {
       if (!probe?.ok) throw new Error('Keine gespiegelten Modelldateien gefunden.');
       if (!window.jQuery) await script('https://code.jquery.com/jquery-3.7.1.min.js');
       await script(`${base}viewer/viewer.min.js`);
-    })();
+    })().catch((err) => {
+      // Ein vorübergehender Netzfehler darf spätere Versuche nicht dauerhaft blockieren.
+      ready = null;
+      throw err;
+    });
     return ready;
   }
 

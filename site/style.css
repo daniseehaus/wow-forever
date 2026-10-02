@@ -133,7 +133,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile .ago { font: 500 11px var(--mono); color: var(--muted); }
 .tile .stage { position: absolute; left: 0; right: 0; top: 40px; bottom: 112px; z-index: 2; }
 .tile .stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.7); filter: drop-shadow(0 12px 24px rgba(0,0,0,.9)); }
-.tile .stage.loading-3d img.render { visibility: hidden; }
+.tile .stage.loading-3d img.render { opacity: .6; }
 .tile .info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 16px; background: linear-gradient(0deg, #07090c 35%, transparent); }
 .tile .name { display: block; font-weight: 700; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; color: var(--cls); }
 .tile .spec { font: 500 11px var(--mono); color: var(--muted); }
@@ -143,7 +143,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile.error .info .spec { color: var(--warn); }
 
 .stage-3d { position: absolute; inset: 0; opacity: 0; transition: opacity .4s ease; }
-/* Sichtbar erst mit fertigem Modell, bis dahin bleibt der 2D-Render stehen. */
+/* Sichtbar erst mit fertigem Modell, bis dahin bleibt der 2D-Render hinter Loading stehen. */
 .stage-3d.ready { opacity: 1; }
 /* In den Kacheln ist das Modell nur Vorschau: kein Drehen und Zoomen, der Klick geht an die Kachel. */
 .tile .stage-3d { pointer-events: none; }

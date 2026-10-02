@@ -7,7 +7,7 @@ const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
 // Das Namensband startet sofort beim Klick und deckt den Aufbau des Loadouts ab.
 const SWAP_MS = 1700;
 
-const state = { data: null, talents: {}, sessions: {}, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
+const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
 const narrow = matchMedia('(max-width: 760px)');
 let pref3d = null;
@@ -31,18 +31,13 @@ function want3d() {
 init();
 
 async function init() {
+  const optional = (f) => fetch(`${f}?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+  // Die Zusatzdaten starten parallel, halten aber die Charakterkacheln nicht auf.
+  const sessionsPromise = optional('sessions.json');
+  const feedPromise = optional('feed.json');
+  const talentsPromise = fetch('talents.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   try {
-    const optional = (f) => fetch(`${f}?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
-    const [data, sessions, feed, talents] = await Promise.all([
-      fetch(`data.json?t=${Date.now()}`).then((r) => r.json()),
-      optional('sessions.json'),
-      optional('feed.json'),
-      fetch('talents.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({})),
-    ]);
-    state.data = data;
-    state.talents = talents.classes ?? {};
-    state.sessions = sessions;
-    state.feed = { events: feed.events ?? [] };
+    state.data = await fetch(`data.json?t=${Date.now()}`).then((r) => r.json());
   } catch (err) {
     document.getElementById('sync').textContent = 'Daten fehlen';
     document.querySelector('.sync').classList.add('stale');
@@ -79,6 +74,20 @@ async function init() {
   document.body.classList.add('ready');
   startCountdown();
   setupBloodlust();
+
+  const sessionsReady = sessionsPromise.then((sessions) => {
+    state.sessions = sessions;
+    renderKpis();
+  });
+  const feedReady = feedPromise.then((feed) => {
+    state.feed = { events: feed.events ?? [] };
+    renderFeed();
+  });
+  Promise.all([sessionsReady, feedReady]).then(() => renderRecap());
+  talentsPromise.then((talents) => {
+    state.talents = talents.classes ?? {};
+    refreshTalents();
+  });
 }
 
 // Stand der Daten. Der Punkt ist grün, solange der stündliche Abruf läuft, und rot ab 2 Stunden Rückstand.
@@ -199,6 +208,7 @@ function hoursKpi(chars) {
 
 // Tempo: durchschnittlicher Level-Zuwachs je gemeinsamer Session (letzte 10 Sessions).
 function tempoKpi() {
+  if (!state.sessions) return kpi('…', 'Level pro Session', 'txt');
   const list = (state.sessions.list ?? []).slice(-10);
   if (!list.length) return kpi('neu', 'Level pro Session', 'txt');
   const avg = list.reduce((s, x) => s + x.gain, 0) / list.length;
@@ -254,8 +264,8 @@ function tileHtml(c, i) {
   </button>`;
 }
 
-// Model3D lädt die Modelle nacheinander. Alle Kacheln zeigen sofort Loading und erst danach ihr fertiges 3D-Modell.
-// Schlägt ein Modell fehl, erscheint stattdessen sein 2D-Render.
+// Model3D lädt die Modelle nacheinander. Alle Kacheln zeigen sofort Loading über dem 2D-Render.
+// Das fertige 3D-Modell ersetzt beides. Schlägt der Aufbau fehl, bleibt der 2D-Render stehen.
 // Alle Modelle zeichnen höchstens 60 Bilder pro Sekunde, auch auf 120-Hz-Displays (pace in model3d.js).
 async function mountTiles() {
   const env = state.data.modelEnv || 'classic';
@@ -290,7 +300,7 @@ async function mountTiles() {
   }
 }
 
-// Schräger Balken statt des 2D-Renders, solange das 3D-Modell lädt.
+// Schräger Balken über dem 2D-Render, solange das 3D-Modell lädt.
 function loadingBand(el) {
   const band = document.createElement('span');
   band.className = 'loading-band';
@@ -650,8 +660,19 @@ function renderLoadout() {
     </div>
     ${boardKpis(c, items, sets)}
     <div class="board">${slots.map(([s, l]) => cardHtml(items.get(s), l, maxIlvl)).join('')}</div>
-    ${talentsHtml(c)}`;
+    <div class="talent-content" data-key="${esc(c.key)}">${talentsHtml(c)}</div>`;
 
+  el.querySelectorAll('img').forEach(imgFallback);
+  window.$WowheadPower?.refreshLinks?.();
+}
+
+// Nur die Talentbäume ersetzen, wenn ihre Zusatzdatei nach dem Loadout eintrifft.
+function refreshTalents() {
+  const el = document.querySelector('.talent-content');
+  if (!el) return;
+  const c = state.chars.find((x) => x.key === el.dataset.key);
+  if (!c) return;
+  el.innerHTML = talentsHtml(c);
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
 }
@@ -775,7 +796,7 @@ function countSets(items) {
 const QUALITY_NAMES = { EPIC: 'lila', RARE: 'blau', UNCOMMON: 'grün' };
 
 function sessionList() {
-  return (state.sessions.list ?? []).map((s, i, all) => {
+  return (state.sessions?.list ?? []).map((s, i, all) => {
     const from = i ? all[i - 1].end : s.start - 6 * 36e5;
     const items = state.feed.events.filter((e) => e.type === 'item' && e.t > from && e.t <= s.end && s.players.includes(e.key));
     return { ...s, nr: i + 1, items };
