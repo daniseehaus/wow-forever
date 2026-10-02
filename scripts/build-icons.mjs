@@ -1,5 +1,6 @@
-// Baut die Icons der Seite aus site/icons/bloodlust.jpg: Favicon, Apple-Touch-Icon, Manifest-Icons und Link-Vorschau.
+// Baut die Icons der Seite aus site/icons/bloodlust.jpg: Favicon, Logo, Apple-Touch-Icon, Manifest-Icons und Link-Vorschau.
 // Das Quell-Icon von Wowhead hat nur 56 px. Die großen Formate setzen es deshalb mittig auf einen dunklen Grund mit rotem Schein.
+// Favicon und Logo nutzen site/icons/symbol.png: das Symbol ohne schwarzen Grund und Rahmen, freigestellt aus icon-512.png.
 // Die Dateien liegen im Repo, das Skript läuft nur bei Bedarf (npm run build-icons).
 
 import { readFile } from 'node:fs/promises';
@@ -7,14 +8,15 @@ import { chromium } from 'playwright';
 
 const DIR = new URL('../site/icons/', import.meta.url);
 const SRC = `data:image/jpeg;base64,${(await readFile(new URL('bloodlust.jpg', DIR))).toString('base64')}`;
+const SYMBOL = `data:image/png;base64,${(await readFile(new URL('symbol.png', DIR))).toString('base64')}`;
 const FONTS = 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=IBM+Plex+Mono:wght@500&display=swap';
 
 const BASE = `* { margin: 0; box-sizing: border-box; } body { background: #07090c; overflow: hidden; }
   .ico { display: block; background: url(${SRC}) center / cover; }`;
 
-// Favicon: nur das Icon, leicht gerundet.
-const favicon = (s) => `<style>${BASE} body { background: transparent; }
-  .ico { width: ${s}px; height: ${s}px; border-radius: ${Math.round(s * 0.18)}px; }</style><span class="ico"></span>`;
+// Favicon und Logo: nur das freigestellte Symbol auf transparentem Grund.
+const symbol = (s) => `<style>${BASE} body { background: transparent; }
+  .ico { width: ${s}px; height: ${s}px; background: url(${SYMBOL}) center / contain no-repeat; }</style><span class="ico"></span>`;
 
 // App-Icon: volle Fläche (iOS und Android runden selbst), Icon in der sicheren Zone für maskable.
 const app = (s) => `<style>${BASE}
@@ -36,8 +38,9 @@ const og = `<link href="${FONTS}" rel="stylesheet"><style>${BASE}
   <span class="ico"></span><div><h1>GEILBLEIBER</h1><p>WOW FOREVER · EU</p></div>`;
 
 const jobs = [
-  ['favicon-32.png', 32, 32, favicon(32), true],
-  ['favicon-16.png', 16, 16, favicon(16), true],
+  ['favicon-32.png', 32, 32, symbol(32), true],
+  ['favicon-16.png', 16, 16, symbol(16), true],
+  ['logo.png', 96, 96, symbol(96), true],
   ['apple-touch-icon.png', 180, 180, app(180)],
   ['icon-192.png', 192, 192, app(192)],
   ['icon-512.png', 512, 512, app(512)],
