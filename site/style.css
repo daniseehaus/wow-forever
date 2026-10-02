@@ -91,7 +91,7 @@ main, footer, nav { position: relative; z-index: 1; }
 
 /* Kopf */
 .hero { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding: 40px 0 28px; }
-.eyebrow { font: 500 12px var(--mono); color: var(--accent-text); letter-spacing: .25em; }
+.eyebrow { font: 700 17px var(--ui); color: var(--text); letter-spacing: .12em; text-transform: uppercase; }
 .hero h1 {
   margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em;
   background: linear-gradient(100deg, #fff 30%, var(--accent-text) 50%, #fff 70%); background-size: 200% 100%;
@@ -193,6 +193,10 @@ main, footer, nav { position: relative; z-index: 1; }
 .tip b { font-size: 13px; }
 .tip span { color: var(--muted); line-height: 1.4; }
 .tip .tip-foot { font: 500 11px var(--mono); color: var(--accent-text); }
+/* iOS Safari löst Klicks auf Elemente ohne Zeiger-Cursor nicht aus. Auf Touch tragen Tooltips darum cursor: pointer, sonst öffnet ein Tippen nichts. */
+@media (hover: none) {
+  [data-tip] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+}
 
 /* Loadout */
 .loadout {
@@ -207,7 +211,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .lo-head p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-weight: 700; font-size: 13px; }
-.chip.epic { color: var(--q-epic); border-color: rgba(192,113,255,.35); background: rgba(163,53,238,.12); }
 .chip.ok { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 30%, transparent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .lo-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 420px) minmax(0, 1fr); gap: 18px; align-items: center; }
 .gear-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
@@ -251,9 +254,13 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Leveling */
 /* Fortschritt als Balken am unteren Rand in Klassenfarbe, voller Balken mit Haken */
 
-.route-tips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-.route-tips div { flex: 1 1 260px; padding: 12px 14px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
-.route-tips small, .route-head span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+.route-next { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 24px; margin-bottom: 16px; padding: 12px 18px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
+.next-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 4px 24px; min-width: 0; }
+.next-list .place { font-size: 14px; font-weight: 700; }
+.next-list .place .nm { flex: 0 1 auto; }
+.next-list .place .rg { white-space: nowrap; }
+.next-note { font: 500 11px var(--mono); color: var(--dim); white-space: nowrap; }
+.route-next small, .route-head span { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
 .route { display: flex; flex-direction: column; }
 .route-head, .route-row { display: grid; grid-template-columns: 70px minmax(0, 1.5fr) minmax(0, 1fr) 170px; gap: 24px; }
 .route-head { padding: 0 16px 8px; border-bottom: 1px solid var(--line); }
@@ -281,16 +288,16 @@ main, footer, nav { position: relative; z-index: 1; }
 .talent-list { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 110px; }
 .talent-list > * { padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--text); transition: .15s; }
 .talent-list a:hover { border-color: var(--cls); color: var(--cls); }
-.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: none; color: var(--dim); font: 500 13px var(--mono); }
-.talent-list > .tcalc:hover { color: var(--accent-text); border-color: currentColor; }
+.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-radius: 0; background: none; color: var(--dim); font: 500 13px var(--mono); text-transform: uppercase; }
+.talent-list > .tcalc:hover { color: var(--accent-text); }
 .talent-list em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); margin-left: 2px; }
 
 /* Classic-Talentbäume: Raster mit 4 Spalten und 7 Reihen wie im Spiel. Teilweise = grün, Maximalrang = gold. */
-.talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.talents-head .dlabel { min-width: 100px; }
-.tpoints { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .06em; }
-.tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
-.tcalc:hover { color: var(--accent-text); border-color: currentColor; }
+.talents-head { display: flex; align-items: baseline; gap: 4px 16px; flex-wrap: wrap; }
+.talents-head .dlabel { display: inline-flex; align-items: baseline; gap: 10px; font-size: 13px; letter-spacing: .06em; }
+.talents-head .dlabel .split { display: block; margin: 0; font: 700 13px/1 var(--mono); letter-spacing: .06em; }
+.tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; transition: .2s; }
+.tcalc:hover { color: var(--accent-text); }
 .ttrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .ttree { padding: 14px 18px 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); }
 .ttree-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
@@ -311,8 +318,8 @@ main, footer, nav { position: relative; z-index: 1; }
 .tal:hover img { filter: none; transform: scale(1.06); }
 
 /* Abend-Rückblick */
-.share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; border-bottom: 1px solid transparent; transition: .2s; }
-.share:hover { color: var(--accent-text); border-color: currentColor; }
+.share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; transition: .2s; }
+.share:hover { color: var(--accent-text); }
 .recap { display: flex; flex-direction: column; gap: 8px; }
 .recap-card { padding: 20px 22px; border-radius: var(--radius-sm); border: 1px solid var(--line); animation: rise .3s both; }
 .recap-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -377,7 +384,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .ev-txt { min-width: 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ev-txt .who { color: var(--cls, var(--text)); }
 .ev-txt strong { color: var(--text); }
-.ev-txt em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); text-transform: uppercase; }
 .ev-txt a { font-weight: 700; }
 .ev-max .wi img { box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent); }
 .ev-max strong { color: var(--accent-text); }
@@ -439,8 +445,15 @@ main, footer, nav { position: relative; z-index: 1; }
   .g3 > :last-child { grid-column: 1 / -1; columns: 2; column-gap: 28px; }
   .g3 > :last-child .gsec { column-span: all; }
   .grow { break-inside: avoid; }
-  .route-row { grid-template-columns: 50px minmax(0, 1fr); gap: 10px 16px; }
+  .route-row { grid-template-columns: 70px minmax(0, 1fr); gap: 10px 16px; }
   .route-row > :not(.lv) { grid-column: 2; }
+  /* Ohne Kopfzeile: Spieler als Chips neben der Stufe, Zonen und Dungeons mit eigener Beschriftung. */
+  .route-row .lv { order: -2; white-space: nowrap; }
+  .route-row .route-who { order: -1; flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .route-who span { padding: 2px 7px; border-radius: 6px; background: color-mix(in srgb, var(--cls) 12%, transparent); font-size: 11px; white-space: nowrap; }
+  .route-row .route-nobody, .route-row .route-raids { display: none; }
+  .place-list[data-label]::before { content: attr(data-label); grid-column: 1 / -1; font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+  .place-list[data-label="Dungeons"] { margin-top: 6px; }
   .prep { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   /* Navigation als zweite Zeile, die seitlich scrollt. */
   .nav-in { flex-wrap: wrap; height: auto; padding-top: 10px; padding-bottom: 10px; row-gap: 8px; }
@@ -455,7 +468,6 @@ main, footer, nav { position: relative; z-index: 1; }
 @media (max-width: 600px) {
   .ttrees { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .ttree { scroll-snap-align: start; padding: 12px 12px 14px; }
-  .tcalc { margin-left: 0; }
   body { font-size: 14px; }
   html { scroll-padding-top: 108px; }
   .nav-in { padding-top: 8px; padding-bottom: 8px; }
@@ -505,7 +517,7 @@ main, footer, nav { position: relative; z-index: 1; }
   .route-row { padding: 12px 4px 12px 12px; grid-template-columns: 44px minmax(0, 1fr); gap: 8px 12px; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }
-  .route-tips div { flex-basis: 100%; }
+  .route-next { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 12px 14px; }
   .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
   .prep { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .recap-card { padding: 16px; }
@@ -514,6 +526,11 @@ main, footer, nav { position: relative; z-index: 1; }
   .recap-row { padding: 10px 12px; }
   .ev { grid-template-columns: 40px 26px minmax(0, 1fr); gap: 8px; }
   .foot { flex-direction: column; }
+}
+/* Sehr schmale Handys: Talente und Rechner-Link bleiben in einer Zeile. */
+@media (max-width: 400px) {
+  .talents-head .dlabel, .talents-head .dlabel .split, .talents-head .tcalc { letter-spacing: 0; }
+  .talents-head .dlabel { gap: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

@@ -130,7 +130,7 @@ window.META = (() => {
   const ROLES = {
     TANK: { label: 'Tank', order: 0 },
     HEALER: { label: 'Heal', order: 1 },
-    DAMAGE: { label: 'DD', order: 2 },
+    DAMAGE: { label: 'DPS', order: 2 },
   };
 
   // Klassenquests und Lehrer-Meilensteine in Classic: Level, Aufgabe. Die Vorbereitung zeigt sie,

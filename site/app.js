@@ -45,7 +45,9 @@ async function init() {
     document.getElementById('brand').textContent = d.title.toUpperCase();
   }
   document.getElementById('brand-sub').textContent = `${d.simulated ? 'VORSCHAU' : d.era === 'retail' ? 'RETAIL' : 'FOREVER'} · EU · ${state.chars.length} SPIELER`;
-  document.getElementById('sync').textContent = `SYNC ${new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
+  const time = new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('sync').textContent = `SYNC ${time}`;
+  document.getElementById('foot-stamp').textContent = `Stand ${time}`;
 
   setupNav();
   setup3dToggle();
@@ -172,7 +174,7 @@ function tileHtml(c, i) {
     <span class="info">
       <span class="name">${esc(c.name)}</span>
       <span class="spec">${esc(c.spec || '')} ${esc(c.className || '')}${c.stale ? ' · alter Stand' : ''}</span>
-      <span class="nums"><span>LV ${c.level}</span><span class="il">${c.equippedIlvl ?? '?'}</span></span>
+      <span class="nums"><span>LV ${c.level}</span><span class="il">iLvl ${c.equippedIlvl ?? '?'}</span></span>
     </span>
   </button>`;
 }
@@ -301,7 +303,7 @@ function renderGroup() {
     return `<div class="gcol"><div class="gsec"><span>${title}</span><b class="gcount" tabindex="0" data-tip="${esc(tip)}" data-tip-plain>${count}</b></div>${rows.join('')}</div>`;
   };
 
-  document.getElementById('group-count').textContent = `${buffs.length} / ${M.BUFFS.length} BUFFS · ${tools.length} / ${M.TOOLS.length} TOOLS · ${primaryHave} / ${M.PRIMARY_PROFESSIONS.length} BERUFE`;
+  document.getElementById('group-count').textContent = `${buffs.length + tools.length + primaryHave} / ${M.BUFFS.length + M.TOOLS.length + M.PRIMARY_PROFESSIONS.length} abgedeckt`;
   const el = document.getElementById('group');
   el.innerHTML = `<div class="g3">
       ${col('Buffs', buffs, `${buffs.length} / ${M.BUFFS.length}`, buffs.miss)}
@@ -334,11 +336,14 @@ document.addEventListener('pointerout', (e) => { const a = e.target.closest?.('[
 document.addEventListener('focusin', (e) => { if (e.target.dataset?.tip && e.target.matches(':focus-visible')) showTip(e.target); });
 document.addEventListener('focusout', (e) => { if (e.target.dataset?.tip) hideTip(); });
 // Auf Touch zeigt ein Tippen den Tooltip, ein Tippen daneben schließt ihn.
+// Die Zeigerart kommt vom pointerdown, weil Safari sie am click nicht verlässlich mitgibt.
+let lastPointer = '';
+document.addEventListener('pointerdown', (e) => { lastPointer = e.pointerType; }, true);
 document.addEventListener('click', (e) => {
   const a = e.target.closest?.('[data-tip]');
   if (!a) return hideTip();
   e.stopPropagation();
-  if (e.pointerType === 'mouse') return;
+  if (lastPointer === 'mouse') return;
   if (tipEl?.anchor === a) hideTip(); else showTip(a);
 }, true);
 addEventListener('scroll', hideTip, { passive: true });
@@ -371,7 +376,7 @@ function renderLoadout() {
       <div class="chips">
         <span class="chip role-chip">${role.label}</span>
         <span class="chip">Level ${c.level}</span>
-        <span class="chip epic">iLvl ${c.equippedIlvl ?? '?'}</span>
+        <span class="chip">iLvl ${c.equippedIlvl ?? '?'}</span>
         ${sets ? `<span class="chip ok">Set ${sets.count} Teile</span>` : ''}
         ${c.lastLogin ? `<span class="chip">Aktiv ${ago(c.lastLogin)}</span>` : ''}
       </div>
@@ -457,8 +462,6 @@ function talentTreesHtml(c, t, layout) {
   }
   const domain = state.data.wowhead || 'classic';
   const points = layout.map((tree) => tree.talents.reduce((a, x) => a + (ranks.get(x.id) ?? 0), 0));
-  const total = points.reduce((a, b) => a + b, 0);
-  const avail = Math.max(0, (c.level ?? 0) - 9);
 
   // Rechner-Link mit Build: je Baum die Ränge in Reihenfolge Reihe, Spalte, ohne Nullen am Ende.
   const build = layout.map((tree) => tree.talents.map((x) => ranks.get(x.id) ?? 0).join('').replace(/0+$/, '')).join('-').replace(/-+$/, '');
@@ -491,7 +494,6 @@ function talentTreesHtml(c, t, layout) {
   return `<div class="talents">
     <div class="talents-head">
       <span class="dlabel">Talente <b class="split">${points.join(' / ')}</b></span>
-      <span class="tpoints">${total} von ${avail} Punkten verteilt</span>
       ${calc ? `<a class="tcalc" href="${esc(calc)}" target="_blank" rel="noopener">Build im Rechner ↗</a>` : ''}
     </div>
     <div class="ttrees">${trees}</div>
@@ -656,7 +658,7 @@ function renderPrep() {
   const total = tasks.reduce((a, [, t]) => a + t.length, 0);
   el.hidden = !last;
   if (!last) return;
-  document.getElementById('prep-count').textContent = total ? `${total} offene ${total === 1 ? 'Punkt' : 'Punkte'}` : 'alles erledigt';
+  document.getElementById('prep-count').textContent = total ? `${total} offen` : 'alles erledigt';
   document.getElementById('prep').style.setProperty('--n', tasks.length);
   document.getElementById('prep').innerHTML = tasks.map(([c, list]) => `<div class="prep-col" style="--cls:${classColor(c)}">
     <b>${esc(c.name)}</b>
@@ -693,13 +695,16 @@ function renderRoute() {
   const bands = [[1, 10], [10, 20], [20, 30], [30, 40], [40, 50], [50, 60]];
   const inBand = (c, a, b) => c.level >= a && (c.level < b || (b === 60 && c.level <= 60));
 
-  document.getElementById('route-note').textContent = classicLevels ? 'PASSEND ZUM LEVEL' : 'AB FOREVER-START · VORSCHAU';
+  const lvs = ok.map((c) => c.level);
+  const lo = Math.min(...lvs), hi = Math.max(...lvs);
+  document.getElementById('route-note').textContent = !classicLevels ? 'AB FOREVER-START · VORSCHAU'
+    : !lvs.length ? '' : lo === hi ? `Gruppe LV ${lo}` : `Gruppe LV ${lo} bis ${hi}`;
 
   const place = (x, range) => `<a class="place" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener">
     <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span><span class="rg">${range}</span></a>`;
   const who = (list) => (list.length
     ? `<div class="route-who">${list.map((c) => `<span style="--cls:${classColor(c)}">${esc(c.name)} · ${c.level}</span>`).join('')}</div>`
-    : '<span class="none">niemand</span>');
+    : '<span class="none route-nobody">niemand</span>');
 
   const rows = bands.map(([a, b]) => {
     const zones = M.ZONES.filter((z) => allowed(z) && z.min >= a - 5 && z.min < b && z.max > a);
@@ -707,26 +712,29 @@ function renderRoute() {
     const here = classicLevels ? ok.filter((c) => inBand(c, a, b)) : [];
     return `<div class="route-row ${here.length ? 'now' : ''}">
       <span class="lv">${a}-${b}</span>
-      <div class="place-list">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
-      <div class="place-list single">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
+      <div class="place-list" data-label="Zonen">${zones.map((z) => place(z, `${z.min}-${z.max}`)).join('')}</div>
+      <div class="place-list single" data-label="Dungeons">${dungeons.length ? dungeons.map((d) => place(d, `${d.min}-${d.max}`)).join('') : '<span class="none">keine</span>'}</div>
       ${who(here)}
     </div>`;
   });
   const at60 = classicLevels ? ok.filter((c) => c.level >= 60) : [];
   rows.push(`<div class="route-row ${at60.length ? 'now' : ''}">
     <span class="lv">60</span>
-    <div class="place-list">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
-    <span class="none">Raids</span>
+    <div class="place-list" data-label="Raids">${M.RAIDS.map((r) => place({ ...r, f: 'N' }, `${r.size} Sp.`)).join('')}</div>
+    <span class="none route-raids">Raids</span>
     ${who(at60)}
   </div>`);
 
   let tip = '';
   if (classicLevels && ok.length) {
-    const fits = M.DUNGEONS.filter((d) => allowed(d) && ok.every((c) => c.level >= d.min - 2 && c.level <= d.max));
-    const levels = ok.map((c) => c.level);
-    tip = `<div class="route-tips">
-      <div><small>Passt für alle</small><b>${fits.length ? fits.map((d) => d.name).join(', ') : 'kein Dungeon, der Abstand ist zu groß'}</b></div>
-      <div><small>Level-Abstand</small><b>${Math.max(...levels) - Math.min(...levels)} Level</b></div>
+    // Nächster Ort: Dungeons für alle, sonst Zonen für alle. Die Leiste nutzt die ganze Breite.
+    const forAll = (x) => allowed(x) && ok.every((c) => c.level >= x.min - 2 && c.level <= x.max);
+    const dungeons = M.DUNGEONS.filter(forAll);
+    const fits = dungeons.length ? dungeons : M.ZONES.filter(forAll);
+    tip = `<div class="route-next">
+      <small>Nächster Ort</small>
+      <div class="next-list">${fits.length ? fits.map((x) => place(x, `${x.min}-${x.max}`)).join('') : '<span class="none">kein Ort für alle, der Abstand ist zu groß</span>'}</div>
+      <span class="next-note">${fits.length ? `${dungeons.length ? 'Dungeon' : 'Zone'} · passt für alle ${ok.length}` : ''}</span>
     </div>`;
   }
   // Eingeklappt zeigt die Route nur die Stufen der Gruppe und die nächste Stufe.
@@ -802,7 +810,7 @@ function feedItemHtml(e) {
     case 'item': {
       const q = (e.quality || 'COMMON').toLowerCase();
       const img = `<img class="ico sm b-${q}" src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy">`;
-      return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}${e.slot ? ` <em>${esc(e.slot)}</em>` : ''}`);
+      return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}`);
     }
     case 'prof':
       return row('ev-prof', feedIcon(FEED_ICONS.prof[profName(e.name)] ?? 'inv_misc_note_01'), e.learned ? `lernt <strong>${esc(profName(e.name))}</strong>` : `${esc(profName(e.name))} auf <strong>${e.skill}</strong>`);
