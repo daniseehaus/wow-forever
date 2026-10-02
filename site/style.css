@@ -134,7 +134,9 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile.error { cursor: default; }
 .tile.error .info .spec { color: var(--warn); }
 
-.stage-3d { position: absolute; inset: 0; }
+.stage-3d { position: absolute; inset: 0; opacity: 0; transition: opacity .4s ease; }
+/* Sichtbar erst mit fertigem Modell, bis dahin bleibt der 2D-Render stehen. */
+.stage-3d.ready { opacity: 1; }
 /* In den Kacheln ist das Modell nur Vorschau: kein Drehen und Zoomen, der Klick geht an die Kachel. */
 .tile .stage-3d { pointer-events: none; }
 .stage-3d canvas { display: block; }
