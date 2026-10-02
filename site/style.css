@@ -283,16 +283,16 @@ main, footer, nav { position: relative; z-index: 1; }
 .talent-list { display: flex; flex-wrap: wrap; gap: 6px; padding-left: 110px; }
 .talent-list > * { padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid var(--line); font-size: 12px; font-weight: 600; color: var(--text); transition: .15s; }
 .talent-list a:hover { border-color: var(--cls); color: var(--cls); }
-.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: none; color: var(--dim); font: 500 13px var(--mono); }
-.talent-list > .tcalc:hover { color: var(--accent-text); border-color: currentColor; }
+.talent-list > .tcalc { align-self: center; padding: 0; border: 0; border-radius: 0; background: none; color: var(--dim); font: 500 13px var(--mono); text-transform: uppercase; }
+.talent-list > .tcalc:hover { color: var(--accent-text); }
 .talent-list em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); margin-left: 2px; }
 
 /* Classic-Talentbäume: Raster mit 4 Spalten und 7 Reihen wie im Spiel. Teilweise = grün, Maximalrang = gold. */
 .talents-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .talents-head .dlabel { min-width: 100px; }
 .tpoints { font: 500 11px var(--mono); color: var(--muted); letter-spacing: .06em; }
-.tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; border-bottom: 1px solid transparent; transition: .2s; }
-.tcalc:hover { color: var(--accent-text); border-color: currentColor; }
+.tcalc { margin-left: auto; font: 500 13px var(--mono); color: var(--dim); letter-spacing: .06em; text-transform: uppercase; transition: .2s; }
+.tcalc:hover { color: var(--accent-text); }
 .ttrees { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
 .ttree { padding: 14px 18px 18px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: linear-gradient(180deg, color-mix(in srgb, var(--cls) 7%, transparent), rgba(255,255,255,.015) 60%); }
 .ttree.empty { background: rgba(255,255,255,.015); }
@@ -314,8 +314,8 @@ main, footer, nav { position: relative; z-index: 1; }
 .tal:hover img { filter: none; transform: scale(1.06); }
 
 /* Abend-Rückblick */
-.share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; border-bottom: 1px solid transparent; transition: .2s; }
-.share:hover { color: var(--accent-text); border-color: currentColor; }
+.share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; transition: .2s; }
+.share:hover { color: var(--accent-text); }
 .recap { display: flex; flex-direction: column; gap: 8px; }
 .recap-card { padding: 20px 22px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); border-top: 2px solid var(--accent); animation: rise .3s both; }
 .recap-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -381,7 +381,6 @@ main, footer, nav { position: relative; z-index: 1; }
 .ev-txt { min-width: 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ev-txt .who { color: var(--cls, var(--text)); }
 .ev-txt strong { color: var(--text); }
-.ev-txt em { font: 500 10px var(--mono); font-style: normal; color: var(--dim); text-transform: uppercase; }
 .ev-txt a { font-weight: 700; }
 .ev-max .wi img { box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 60%, transparent); }
 .ev-max strong { color: var(--accent-text); }

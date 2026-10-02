@@ -802,7 +802,7 @@ function feedItemHtml(e) {
     case 'item': {
       const q = (e.quality || 'COMMON').toLowerCase();
       const img = `<img class="ico sm b-${q}" src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy">`;
-      return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}${e.slot ? ` <em>${esc(e.slot)}</em>` : ''}`);
+      return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}`);
     }
     case 'prof':
       return row('ev-prof', feedIcon(FEED_ICONS.prof[profName(e.name)] ?? 'inv_misc_note_01'), e.learned ? `lernt <strong>${esc(profName(e.name))}</strong>` : `${esc(profName(e.name))} auf <strong>${e.skill}</strong>`);
