@@ -244,8 +244,8 @@ function renderGroup() {
   const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
   const classNames = (ids) => ids.map((id) => M.CLASSES[id]?.name).join(', ');
   const tag = (c, tip) => `<span class="tag" style="--cls:${classColor(c)}" tabindex="0" data-tip="${esc(tip)}">${esc(c.name)}</span>`;
-  const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--c:${classColor(who[0])}">
-    <i class="dot"></i><span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
+  const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--hl:${classColor(who[0])}">
+    <span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
 
   // Buffs und Tools: Tag-Tooltip nennt Klasse und Zauber des Charakters.
   const spellTip = (entry, c) => {
