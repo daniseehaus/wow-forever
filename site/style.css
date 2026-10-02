@@ -141,6 +141,24 @@ main, footer, nav { position: relative; z-index: 1; }
 /* In den Kacheln ist das Modell nur Vorschau: kein Drehen und Zoomen, der Klick geht an die Kachel. */
 .tile .stage-3d { pointer-events: none; }
 .stage-3d canvas { display: block; }
+/* Ladebalken: schräges Band in Highlight-Farbe mit laufenden Streifen, abgeschnitten auf die Bühne. */
+.loading-band { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; overflow: hidden; pointer-events: none; transition: opacity .4s ease; }
+.loading-band.done { opacity: 0; }
+.loading-band span {
+  width: 150%; padding: 9px 0; transform: rotate(-14deg); text-align: center;
+  font: 800 22px/1 var(--display); letter-spacing: .32em; text-transform: uppercase; color: var(--accent-ink);
+  text-shadow: 0 1px 6px rgba(0,0,0,.5);
+  background:
+    linear-gradient(45deg, rgba(255,255,255,.16) 25%, transparent 25% 50%, rgba(255,255,255,.16) 50% 75%, transparent 75%) 0 0 / 36px 36px,
+    var(--accent);
+  border-block: 1px solid color-mix(in srgb, var(--accent-ink) 35%, transparent);
+  animation: band-stripes .9s linear infinite, band-glow 1.8s ease-in-out infinite;
+}
+@keyframes band-stripes { to { background-position: 36px 0, 0 0; } }
+@keyframes band-glow {
+  0%, 100% { box-shadow: 0 0 18px color-mix(in srgb, var(--accent) 45%, transparent); }
+  50% { box-shadow: 0 0 42px color-mix(in srgb, var(--accent) 85%, transparent); }
+}
 .loading-dot { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--cls); box-shadow: 0 0 20px var(--cls); animation: blink 1s infinite; }
 
 /* Panels */

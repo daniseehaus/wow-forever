@@ -180,10 +180,13 @@ function tileHtml(c, i) {
 // Model3D lädt die Modelle nacheinander. Der 2D-Render bleibt stehen, bis das Modell fertig ist.
 async function mountTiles() {
   const env = state.data.modelEnv || 'classic';
+  const jobs = [];
   for (const c of state.chars) {
     if (!state.use3d || !c.model) continue;
     const stage = document.querySelector(`[data-stage="${CSS.escape(c.key)}"]`);
-    if (!stage) continue;
+    if (stage) jobs.push({ c, stage, band: loadingBand(stage) });
+  }
+  for (const { c, stage, band } of jobs) {
     const box = document.createElement('div');
     box.className = 'stage-3d';
     stage.append(box);
@@ -192,12 +195,28 @@ async function mountTiles() {
       if (!document.body.contains(box)) { window.Model3D.destroy(v); return; }
       state.tileViewers.push(v);
       stage.querySelector('img.render')?.remove();
+      hideBand(band);
     } catch (err) {
       box.remove();
+      jobs.forEach((j) => hideBand(j.band));
       console.warn('3D nicht verfügbar:', err.message);
       return;
     }
   }
+}
+
+// Schräger Balken über dem 2D-Render, solange das 3D-Modell wartet oder lädt.
+function loadingBand(el) {
+  const band = document.createElement('span');
+  band.className = 'loading-band';
+  band.innerHTML = '<span>Loading</span>';
+  el.append(band);
+  return band;
+}
+
+function hideBand(band) {
+  band.classList.add('done');
+  setTimeout(() => band.remove(), 400);
 }
 
 function select(key) {
@@ -327,11 +346,13 @@ async function mountLoadout(c) {
   const holder = document.createElement('div');
   holder.className = 'stage-3d';
   box.append(holder);
+  const band = loadingBand(box);
   try {
     const v = await window.Model3D.mount(holder, c.model, state.data.modelEnv || 'classic', { priority: true });
     if (token !== state.loToken) { window.Model3D.destroy(v); return; }
     state.loViewer = v;
     box.querySelector('img.render')?.remove();
+    hideBand(band);
     const anims = document.getElementById('lo-anims');
     anims.hidden = false;
     anims.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
@@ -340,6 +361,7 @@ async function mountLoadout(c) {
     }));
   } catch {
     holder.remove();
+    hideBand(band);
   }
 }
 
