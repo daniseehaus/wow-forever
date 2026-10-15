@@ -15,7 +15,13 @@ Node.js-Skripte, GitHub Action, GitHub Pages, Battle.net API.
 | Daten holen | `npm run fetch` |
 | Talente bauen | `npm run build-talents` |
 | Icons bauen | `npm run build-icons` |
-| Testen | keine automatischen Tests, Prüfung von Hand (TODO: Prüfweg ergänzen) |
+| Testen | keine automatischen Tests, Prüfung von Hand: siehe `## Prüfung` |
+
+## Prüfung
+
+Entwurf, bitte bestätigen oder anpassen.
+
+1. `npm run fetch` lokal ausführen und `index.html` öffnen. Nach dem Push: `gh run list -L 1` zeigt einen grünen Lauf.
 
 ## Deploy
 
