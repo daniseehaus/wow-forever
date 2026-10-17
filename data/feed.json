@@ -57,7 +57,7 @@
     "NECK": 272229,
     "SHOULDER": 271553,
     "CHEST": 271558,
-    "WAIST": 239664,
+    "WAIST": 271552,
     "LEGS": 271554,
     "FEET": 272232,
     "WRIST": 272238,
@@ -67,7 +67,7 @@
     "TRINKET_1": 248583,
     "TRINKET_2": 251792,
     "BACK": 272230,
-    "MAIN_HAND": 272270,
+    "MAIN_HAND": 237838,
     "OFF_HAND": 245769
    },
    "ilvls": {
@@ -233,5 +233,30 @@
    }
   }
  },
- "events": []
+ "events": [
+  {
+   "t": 1792265408800,
+   "key": "blackmoore/lizli",
+   "type": "item",
+   "id": 271552,
+   "name": "Umkreisender Hüftgurt des kosmischen Büßers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7667304.jpg",
+   "slot": "Taille",
+   "ilvl": 32,
+   "prev": 32
+  },
+  {
+   "t": 1792265408800,
+   "key": "blackmoore/lizli",
+   "type": "item",
+   "id": 237838,
+   "name": "Ritualmesser des Magisters",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7091028.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 32,
+   "prev": 32
+  }
+ ]
 }
