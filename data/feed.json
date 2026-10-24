@@ -64,7 +64,7 @@
     "HANDS": 271556,
     "FINGER_1": 272150,
     "FINGER_2": 272149,
-    "TRINKET_1": 248583,
+    "TRINKET_1": 274493,
     "TRINKET_2": 251792,
     "BACK": 271550,
     "MAIN_HAND": 237838,
@@ -291,6 +291,18 @@
    "quality": "RARE",
    "icon": "https://render.worldofwarcraft.com/eu/icons/56/7667307.jpg",
    "slot": "Rücken",
+   "ilvl": 32,
+   "prev": 32
+  },
+  {
+   "t": 1792865224146,
+   "key": "blackmoore/lizli",
+   "type": "item",
+   "id": 274493,
+   "name": "Bildnis von Ula'teks Getreuen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/1058938.jpg",
+   "slot": "Schmuckstück 1",
    "ilvl": 32,
    "prev": 32
   }
