@@ -145,6 +145,12 @@
     "level": 25,
     "ilvl": 28,
     "epics": 0
+   },
+   {
+    "d": "2026-10-26",
+    "level": 25,
+    "ilvl": 28,
+    "epics": 0
    }
   ],
   "blackmoore/lizli": [
@@ -288,6 +294,12 @@
    },
    {
     "d": "2026-10-25",
+    "level": 27,
+    "ilvl": 32,
+    "epics": 0
+   },
+   {
+    "d": "2026-10-26",
     "level": 27,
     "ilvl": 32,
     "epics": 0
@@ -437,6 +449,12 @@
     "level": 26,
     "ilvl": 31,
     "epics": 0
+   },
+   {
+    "d": "2026-10-26",
+    "level": 26,
+    "ilvl": 31,
+    "epics": 0
    }
   ],
   "thrall/donbratzo": [
@@ -583,6 +601,12 @@
     "level": 26,
     "ilvl": 31,
     "epics": 0
+   },
+   {
+    "d": "2026-10-26",
+    "level": 26,
+    "ilvl": 31,
+    "epics": 0
    }
   ],
   "blackmoore/stevyfox": [
@@ -726,6 +750,12 @@
    },
    {
     "d": "2026-10-25",
+    "level": 26,
+    "ilvl": 29,
+    "epics": 0
+   },
+   {
+    "d": "2026-10-26",
     "level": 26,
     "ilvl": 29,
     "epics": 0
