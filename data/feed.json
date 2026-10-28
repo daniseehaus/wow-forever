@@ -60,7 +60,7 @@
     "WAIST": 271552,
     "LEGS": 271554,
     "FEET": 271557,
-    "WRIST": 272238,
+    "WRIST": 271551,
     "HANDS": 271556,
     "FINGER_1": 272150,
     "FINGER_2": 272149,
@@ -303,6 +303,18 @@
    "quality": "RARE",
    "icon": "https://render.worldofwarcraft.com/eu/icons/56/1058938.jpg",
    "slot": "Schmuckstück 1",
+   "ilvl": 32,
+   "prev": 32
+  },
+  {
+   "t": 1793214410776,
+   "key": "blackmoore/lizli",
+   "type": "item",
+   "id": 271551,
+   "name": "Beringung des kosmischen Büßers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7667306.jpg",
+   "slot": "Handgelenk",
    "ilvl": 32,
    "prev": 32
   }
