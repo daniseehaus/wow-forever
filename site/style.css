@@ -94,19 +94,20 @@ main, footer, nav { position: relative; z-index: 1; }
 .chip-btn:hover { color: var(--text); }
 
 /* Kopf */
-.hero { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding: 40px 0 28px; }
+.hero { display: flex; flex-wrap: nowrap; justify-content: space-between; align-items: flex-end; gap: 24px; padding: 40px 0 28px; }
 .eyebrow { font: 700 17px var(--ui); color: var(--text); letter-spacing: .12em; text-transform: uppercase; }
 .hero h1 {
-  margin: 4px 0 0; font: 800 clamp(64px, 9vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em;
+  margin: 4px 0 0; font: 800 clamp(64px, 7vw, 124px)/.85 var(--display); text-transform: uppercase; letter-spacing: -.01em;
   background: linear-gradient(100deg, #fff 30%, var(--accent-text) 50%, #fff 70%); background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 8s linear infinite;
 }
 @keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
-.kpis { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: clamp(18px, 2.6vw, 40px); padding-bottom: 8px; }
+.kpis { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: clamp(16px, 2vw, 40px); padding-bottom: 8px; }
 /* Neben dem Titel: Zahlen rechtsbündig über dem Text, der Block endet bündig mit der rechten Kante der Seite. */
-.kpi { display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
-.kpi b { font: 800 clamp(36px, 4vw, 56px)/1 var(--display); }
-.kpi > span { font-size: 11px; letter-spacing: .15em; color: var(--dim); text-transform: uppercase; }
+/* Die großen Zahlen brechen nie um. Nur die Beschriftung darf in eine zweite Zeile. */
+.kpi { display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex: none; }
+.kpi b { font: 800 clamp(36px, 4vw, 56px)/1 var(--display); white-space: nowrap; }
+.kpi > span { max-width: clamp(170px, 15vw, 210px); font-size: 11px; letter-spacing: .15em; color: var(--dim); text-transform: uppercase; }
 .kpi.hot b { color: var(--accent-text); }
 .kpi.txt b { color: var(--dim); }
 
