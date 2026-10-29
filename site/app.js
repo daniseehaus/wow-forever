@@ -171,7 +171,7 @@ const ART_SHOW = new Date('2026-11-05T20:00:00').getTime();
 
 function artKpi() {
   const ms = ART_SHOW - Date.now();
-  const label = 'bis zu einer Random Kunstausstellung';
+  const label = 'bis random Kunstausstellung';
   if (ms <= 0) return kpi('jetzt', 'Random Kunstausstellung', 'hot');
   if (ms < 864e5) {
     const hours = Math.ceil(ms / 36e5);

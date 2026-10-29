@@ -102,7 +102,7 @@ main, footer, nav { position: relative; z-index: 1; }
   -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 8s linear infinite;
 }
 @keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
-.kpis { display: flex; flex-wrap: nowrap; align-items: flex-end; gap: clamp(16px, 2vw, 40px); padding-bottom: 8px; }
+.kpis { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: clamp(16px, 2vw, 40px); padding-bottom: 8px; }
 /* Neben dem Titel: Zahlen rechtsbündig über dem Text, der Block endet bündig mit der rechten Kante der Seite. */
 /* Die großen Zahlen brechen nie um. Nur die Beschriftung darf in eine zweite Zeile. */
 .kpi { display: flex; flex-direction: column; align-items: flex-end; text-align: right; flex: none; }
