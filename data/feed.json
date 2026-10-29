@@ -11,7 +11,7 @@
     "SHOULDER": 249650,
     "CHEST": 249645,
     "WAIST": 257018,
-    "LEGS": 264409,
+    "LEGS": 250457,
     "FEET": 249646,
     "WRIST": 251079,
     "HANDS": 256978,
@@ -29,7 +29,7 @@
     "SHOULDER": 30,
     "CHEST": 30,
     "WAIST": 27,
-    "LEGS": 27,
+    "LEGS": 30,
     "FEET": 30,
     "WRIST": 30,
     "HANDS": 27,
@@ -317,6 +317,18 @@
    "slot": "Handgelenk",
    "ilvl": 32,
    "prev": 32
+  },
+  {
+   "t": 1793293568776,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 250457,
+   "name": "Beinlinge des verschlingenden Vorreiters",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7388208.jpg",
+   "slot": "Beine",
+   "ilvl": 30,
+   "prev": 27
   }
  ]
 }
