@@ -184,7 +184,7 @@ function artKpi() {
 }
 
 // Der Forever-Start ist offen.
-function foreverKpi() { return kpi('unbekannt', 'Tage bis Forever', 'txt'); }
+function foreverKpi() { return kpi('🤷‍♂️', 'Tage bis Forever', 'txt'); }
 
 function launchTime() { return state.data.launch ? new Date(`${state.data.launch}T00:00:00`).getTime() : null; }
 
