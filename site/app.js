@@ -73,6 +73,8 @@ async function init() {
   // Erst jetzt wird der Inhalt sichtbar. So springt beim Laden nichts (siehe style.css, body.ready).
   document.body.classList.add('ready');
   startCountdown();
+  // Der Kunstausstellungs-Countdown läuft weiter, solange die Seite offen ist.
+  setInterval(renderKpis, 60000);
   setupBloodlust();
 
   const sessionsReady = sessionsPromise.then((sessions) => {
@@ -157,21 +159,34 @@ function setup3dToggle() {
 function renderKpis() {
   const ok = state.chars.filter((c) => c.level);
   document.getElementById('kpis').innerHTML = [
-    countdownKpi(),
+    artKpi(),
+    foreverKpi(),
     tempoKpi(),
     hoursKpi(ok),
   ].join('');
 }
 
-// Vor dem Start zählt die Zahl die Tage bis Forever, danach die Tage seit dem Start.
-function launchTime() { return state.data.launch ? new Date(`${state.data.launch}T00:00:00`).getTime() : null; }
-
-function countdownKpi() {
-  const launch = launchTime();
-  if (!launch) return '';
-  const days = Math.ceil((launch - Date.now()) / 864e5);
-  return days > 0 ? kpi(days, days === 1 ? 'Tag bis Forever' : 'Tage bis Forever', 'hot') : kpi(`Tag ${1 - days}`, 'seit Forever-Start', 'hot');
+// Die nächste Random Kunstausstellung ist immer donnerstags um 20 Uhr. Unter einem Tag zählt die Zahl Stunden.
+function artKpi() {
+  const now = new Date();
+  const next = new Date(now);
+  next.setHours(20, 0, 0, 0);
+  next.setDate(next.getDate() + ((4 - now.getDay() + 7) % 7));
+  if (next <= now) next.setDate(next.getDate() + 7);
+  const ms = next - now;
+  const label = 'bis zu einer Random Kunstausstellung';
+  if (ms < 864e5) {
+    const hours = Math.ceil(ms / 36e5);
+    return kpi(hours, `${hours === 1 ? 'Stunde' : 'Stunden'} ${label}`, 'hot');
+  }
+  const days = Math.ceil(ms / 864e5);
+  return kpi(days, `${days === 1 ? 'Tag' : 'Tage'} ${label}`, 'hot');
 }
+
+// Der Forever-Start ist offen.
+function foreverKpi() { return kpi('unbekannt', 'Tage bis Forever', 'txt'); }
+
+function launchTime() { return state.data.launch ? new Date(`${state.data.launch}T00:00:00`).getTime() : null; }
 
 // Zum Start läuft das Forever-Band über die Seite. Am Starttag sieht es jeder Besucher einmal, mit ?live auch vorab.
 function startCountdown() {
