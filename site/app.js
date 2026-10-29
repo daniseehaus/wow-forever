@@ -166,20 +166,20 @@ function renderKpis() {
   ].join('');
 }
 
-// Die nächste Random Kunstausstellung ist immer donnerstags um 20 Uhr. Unter einem Tag zählt die Zahl Stunden.
+// Die Random Kunstausstellung beginnt am Donnerstag, 5. November 2026, um 20 Uhr. Unter einem Tag zählt die Zahl Stunden.
+const ART_SHOW = new Date('2026-11-05T20:00:00').getTime();
+
 function artKpi() {
-  const now = new Date();
-  const next = new Date(now);
-  next.setHours(20, 0, 0, 0);
-  next.setDate(next.getDate() + ((4 - now.getDay() + 7) % 7));
-  if (next <= now) next.setDate(next.getDate() + 7);
-  const ms = next - now;
+  const ms = ART_SHOW - Date.now();
   const label = 'bis zu einer Random Kunstausstellung';
+  if (ms <= 0) return kpi('jetzt', 'Random Kunstausstellung', 'hot');
   if (ms < 864e5) {
     const hours = Math.ceil(ms / 36e5);
     return kpi(hours, `${hours === 1 ? 'Stunde' : 'Stunden'} ${label}`, 'hot');
   }
-  const days = Math.ceil(ms / 864e5);
+  // Ab einem Tag zählen Kalendertage: Donnerstag bis Donnerstag sind 7 Tage, egal zu welcher Uhrzeit.
+  const day = (t) => new Date(t).setHours(0, 0, 0, 0);
+  const days = Math.round((day(ART_SHOW) - day(Date.now())) / 864e5);
   return kpi(days, `${days === 1 ? 'Tag' : 'Tage'} ${label}`, 'hot');
 }
 
