@@ -14,7 +14,7 @@
     "LEGS": 278902,
     "FEET": 278894,
     "WRIST": 251079,
-    "HANDS": 278898,
+    "HANDS": 280035,
     "FINGER_1": 264411,
     "FINGER_2": 279010,
     "TRINKET_1": 193701,
@@ -32,7 +32,7 @@
     "LEGS": 27,
     "FEET": 27,
     "WRIST": 30,
-    "HANDS": 27,
+    "HANDS": 30,
     "FINGER_1": 27,
     "FINGER_2": 30,
     "TRINKET_1": 30,
@@ -472,6 +472,18 @@
    "icon": "https://render.worldofwarcraft.com/eu/icons/56/7674304.jpg",
    "slot": "Schildhand",
    "ilvl": 27,
+   "prev": 27
+  },
+  {
+   "t": 1793369196640,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 280035,
+   "name": "Schleiertuchunterarmschienen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7871830.jpg",
+   "slot": "Hände",
+   "ilvl": 30,
    "prev": 27
   }
  ]
