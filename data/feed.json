@@ -13,7 +13,7 @@
     "WAIST": 257018,
     "LEGS": 276025,
     "FEET": 280038,
-    "WRIST": 251079,
+    "WRIST": 272254,
     "HANDS": 271484,
     "FINGER_1": 277897,
     "FINGER_2": 279010,
@@ -43,7 +43,7 @@
    },
    "profs": {
     "Herbalism": 5,
-    "Mining": 29,
+    "Mining": 32,
     "Cooking": 150,
     "Fishing": 85
    }
@@ -593,6 +593,18 @@
    "slot": "Brust",
    "ilvl": 32,
    "prev": 32
+  },
+  {
+   "t": 1793450436796,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272254,
+   "name": "Maschenwickel des Böenreiters",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7871827.jpg",
+   "slot": "Handgelenk",
+   "ilvl": 30,
+   "prev": 30
   }
  ]
 }
