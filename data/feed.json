@@ -7,7 +7,7 @@
    "guild": null,
    "items": {
     "HEAD": 278882,
-    "NECK": 279194,
+    "NECK": 272229,
     "SHOULDER": 278886,
     "CHEST": 273789,
     "WAIST": 257018,
@@ -21,7 +21,7 @@
     "TRINKET_2": 280377,
     "BACK": 257022,
     "MAIN_HAND": 259351,
-    "OFF_HAND": 276059
+    "OFF_HAND": 272269
    },
    "ilvls": {
     "HEAD": 27,
@@ -39,11 +39,11 @@
     "TRINKET_2": 27,
     "BACK": 27,
     "MAIN_HAND": 30,
-    "OFF_HAND": 27
+    "OFF_HAND": 30
    },
    "profs": {
     "Herbalism": 5,
-    "Mining": 32,
+    "Mining": 35,
     "Cooking": 150,
     "Fishing": 85
    }
@@ -605,6 +605,30 @@
    "slot": "Handgelenk",
    "ilvl": 30,
    "prev": 30
+  },
+  {
+   "t": 1793462764999,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272229,
+   "name": "Schlangentalisman",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7866592.jpg",
+   "slot": "Hals",
+   "ilvl": 27,
+   "prev": 27
+  },
+  {
+   "t": 1793462764999,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272269,
+   "name": "Grabstein des Seelenversieglers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7727259.jpg",
+   "slot": "Schildhand",
+   "ilvl": 30,
+   "prev": 27
   }
  ]
 }
