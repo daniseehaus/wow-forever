@@ -16,12 +16,12 @@
     "WRIST": 272254,
     "HANDS": 271484,
     "FINGER_1": 277897,
-    "FINGER_2": 279010,
+    "FINGER_2": 252258,
     "TRINKET_1": 265027,
     "TRINKET_2": 280377,
     "BACK": 257022,
-    "MAIN_HAND": 259351,
-    "OFF_HAND": 272269
+    "MAIN_HAND": 272269,
+    "OFF_HAND": 259351
    },
    "ilvls": {
     "HEAD": 27,
@@ -653,6 +653,18 @@
    "slot": "Brust",
    "ilvl": 30,
    "prev": 27
+  },
+  {
+   "t": 1793567187277,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 252258,
+   "name": "Scheußlicher Siegelring von Atroxus",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7636586.jpg",
+   "slot": "Ring 2",
+   "ilvl": 30,
+   "prev": 30
   }
  ]
 }
