@@ -9,7 +9,7 @@
     "HEAD": 278882,
     "NECK": 272229,
     "SHOULDER": 278886,
-    "CHEST": 273789,
+    "CHEST": 272247,
     "WAIST": 257018,
     "LEGS": 272251,
     "FEET": 280038,
@@ -27,7 +27,7 @@
     "HEAD": 27,
     "NECK": 27,
     "SHOULDER": 27,
-    "CHEST": 27,
+    "CHEST": 30,
     "WAIST": 30,
     "LEGS": 30,
     "FEET": 30,
@@ -639,6 +639,18 @@
    "quality": "RARE",
    "icon": "https://render.worldofwarcraft.com/eu/icons/56/7871823.jpg",
    "slot": "Beine",
+   "ilvl": 30,
+   "prev": 27
+  },
+  {
+   "t": 1793523994251,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272247,
+   "name": "Brünne des Böenreiters",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7871829.jpg",
+   "slot": "Brust",
    "ilvl": 30,
    "prev": 27
   }
