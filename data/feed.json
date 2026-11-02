@@ -8,7 +8,7 @@
    "items": {
     "HEAD": 278882,
     "NECK": 272229,
-    "SHOULDER": 278886,
+    "SHOULDER": 271481,
     "CHEST": 272247,
     "WAIST": 257018,
     "LEGS": 272251,
@@ -17,8 +17,8 @@
     "HANDS": 271484,
     "FINGER_1": 277897,
     "FINGER_2": 252258,
-    "TRINKET_1": 265027,
-    "TRINKET_2": 280377,
+    "TRINKET_1": 274497,
+    "TRINKET_2": 265027,
     "BACK": 257022,
     "MAIN_HAND": 272269,
     "OFF_HAND": 259351
@@ -26,7 +26,7 @@
    "ilvls": {
     "HEAD": 27,
     "NECK": 27,
-    "SHOULDER": 27,
+    "SHOULDER": 30,
     "CHEST": 30,
     "WAIST": 30,
     "LEGS": 30,
@@ -35,7 +35,7 @@
     "HANDS": 30,
     "FINGER_1": 30,
     "FINGER_2": 30,
-    "TRINKET_1": 27,
+    "TRINKET_1": 30,
     "TRINKET_2": 27,
     "BACK": 27,
     "MAIN_HAND": 30,
@@ -665,6 +665,30 @@
    "slot": "Ring 2",
    "ilvl": 30,
    "prev": 30
+  },
+  {
+   "t": 1793657202748,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 271481,
+   "name": "Zischender Mantel des Schlangenorakels",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7705650.jpg",
+   "slot": "Schulter",
+   "ilvl": 30,
+   "prev": 27
+  },
+  {
+   "t": 1793657202748,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 274497,
+   "name": "Seelenzerreißendes Gift",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/5764920.jpg",
+   "slot": "Schmuckstück 1",
+   "ilvl": 30,
+   "prev": 27
   }
  ]
 }
