@@ -12,20 +12,20 @@
     "CHEST": 272247,
     "WAIST": 257018,
     "LEGS": 272251,
-    "FEET": 280038,
+    "FEET": 272248,
     "WRIST": 272254,
     "HANDS": 271484,
     "FINGER_1": 277897,
     "FINGER_2": 252258,
     "TRINKET_1": 274497,
-    "TRINKET_2": 265027,
+    "TRINKET_2": 265657,
     "BACK": 272225,
     "MAIN_HAND": 272269,
-    "OFF_HAND": 259351
+    "OFF_HAND": 272269
    },
    "ilvls": {
     "HEAD": 30,
-    "NECK": 27,
+    "NECK": 30,
     "SHOULDER": 30,
     "CHEST": 30,
     "WAIST": 30,
@@ -36,7 +36,7 @@
     "FINGER_1": 30,
     "FINGER_2": 30,
     "TRINKET_1": 30,
-    "TRINKET_2": 27,
+    "TRINKET_2": 30,
     "BACK": 30,
     "MAIN_HAND": 30,
     "OFF_HAND": 30
@@ -711,6 +711,30 @@
    "quality": "RARE",
    "icon": "https://render.worldofwarcraft.com/eu/icons/56/7874488.jpg",
    "slot": "Rücken",
+   "ilvl": 30,
+   "prev": 27
+  },
+  {
+   "t": 1793732777787,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272248,
+   "name": "Treter des Fußschützer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7871826.jpg",
+   "slot": "Füße",
+   "ilvl": 30,
+   "prev": 30
+  },
+  {
+   "t": 1793732777787,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 265657,
+   "name": "Faser der lebenden Agonie",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/457636.jpg",
+   "slot": "Schmuckstück 2",
    "ilvl": 30,
    "prev": 27
   }
