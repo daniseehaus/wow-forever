@@ -6,7 +6,7 @@
    "lastLogin": 1793656260000,
    "guild": null,
    "items": {
-    "HEAD": 278882,
+    "HEAD": 272250,
     "NECK": 272229,
     "SHOULDER": 271481,
     "CHEST": 272247,
@@ -19,12 +19,12 @@
     "FINGER_2": 252258,
     "TRINKET_1": 274497,
     "TRINKET_2": 265027,
-    "BACK": 257022,
+    "BACK": 272225,
     "MAIN_HAND": 272269,
     "OFF_HAND": 259351
    },
    "ilvls": {
-    "HEAD": 27,
+    "HEAD": 30,
     "NECK": 27,
     "SHOULDER": 30,
     "CHEST": 30,
@@ -37,7 +37,7 @@
     "FINGER_2": 30,
     "TRINKET_1": 30,
     "TRINKET_2": 27,
-    "BACK": 27,
+    "BACK": 30,
     "MAIN_HAND": 30,
     "OFF_HAND": 30
    },
@@ -687,6 +687,30 @@
    "quality": "RARE",
    "icon": "https://render.worldofwarcraft.com/eu/icons/56/5764920.jpg",
    "slot": "Schmuckstück 1",
+   "ilvl": 30,
+   "prev": 27
+  },
+  {
+   "t": 1793696778463,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272250,
+   "name": "Blick des Böenreiters",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7871822.jpg",
+   "slot": "Kopf",
+   "ilvl": 30,
+   "prev": 27
+  },
+  {
+   "t": 1793696778463,
+   "key": "blackmoore/gluzanda",
+   "type": "item",
+   "id": 272225,
+   "name": "Mantel des Lohenwandlers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/eu/icons/56/7874488.jpg",
+   "slot": "Rücken",
    "ilvl": 30,
    "prev": 27
   }
