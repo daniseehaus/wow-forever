@@ -1,12 +1,7 @@
 {
- "era": "retail",
- "lastEnd": 1790882092000,
- "levels": {
-  "blackmoore/schmou": 90,
-  "blackmoore/lizli": 90,
-  "blackmoore/muhrice": 80,
-  "thrall/donbratzo": 90,
-  "tarren-mill/meeresdk": 90
- },
+ "era": "classic",
+ "lastEnd": 0,
+ "levels": {},
+ "base": {},
  "list": []
 }
