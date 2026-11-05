@@ -215,7 +215,8 @@ function startCountdown() {
 // Vor dem Start (Retail-Charaktere über 60) zeigt die Zahl die volle Strecke ab Level 1.
 function hoursKpi(chars) {
   const preStart = state.data.era === 'retail';
-  const level = preStart ? 1 : Math.min(...chars.map((c) => c.level));
+  // Ohne Charakter mit Daten (z. B. nur Platzhalter) gilt Level 1.
+  const level = preStart || !chars.length ? 1 : Math.min(...chars.map((c) => c.level));
   const left = Math.max(0, hoursAt(60) - hoursAt(level));
   if (!preStart && left === 0) return kpi('60', 'Alle auf Max-Level');
   return kpi(`~${Math.round(left)} h`, preStart ? 'Spielzeit bis 60' : 'Noch bis Level 60');
@@ -263,7 +264,7 @@ function tileHtml(c, i) {
   const color = classColor(c);
   // --i staffelt Einblenden und Bloodlust-Puls (siehe style.css).
   if (!c.level) {
-    return `<div class="tile error" style="--cls:${color};--i:${i}">
+    return `<div class="tile error${c.placeholder ? ' placeholder' : ''}" style="--cls:${color};--i:${i}">
       <div class="info"><span class="name">${esc(c.name)}</span><span class="spec">${esc(c.error || 'Keine Daten')}</span></div></div>`;
   }
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;

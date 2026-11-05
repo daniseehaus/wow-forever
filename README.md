@@ -45,6 +45,8 @@ Die API sucht den Charakter dann unter `/profile/wow/character/zukk-sturmzüngle
 
 Die API zeigt ein Profil erst nach dem ersten Logout des Charakters.
 
+Ein Eintrag nur mit Namen (`{ "name": "Daniel" }`) ist ein Platzhalter. Die Seite zeigt ihn als „Charakter folgt“ und fragt die API nicht ab.
+
 ## Umstellung auf Forever
 
 Der Namespace wählt die Spielversion. Bis zum Start von Forever läuft die Seite mit Retail (`profile-eu`, `static-eu`).

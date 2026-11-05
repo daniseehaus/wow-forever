@@ -25,10 +25,10 @@
     "modelEnv": "classic",
     "characters": [
       { "name": "Zukk", "surname": "Sturmzüngler" },
-      { "realm": "Blackmoore", "name": "Lizli" },
-      { "realm": "Blackmoore", "name": "Muhrice" },
-      { "realm": "Thrall", "name": "Donbratzo" },
-      { "realm": "Blackmoore", "name": "Stevyfox" }
+      { "name": "Daniel" },
+      { "name": "Benny" },
+      { "name": "Mike" },
+      { "name": "Stefan" }
     ],
     "simulate": null
   },

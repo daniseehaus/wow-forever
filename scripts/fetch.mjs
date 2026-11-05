@@ -54,8 +54,9 @@ const feed = demo ? demoFeed(data) : await updateFeed(data, preview ? {} : sessi
 const events = preview ? [...preview.showcase.events, ...feed.events].sort((a, b) => a.t - b.t) : feed.events;
 await writeFile(new URL('site/feed.json', root), JSON.stringify({ era: feed.era, events }) + '\n');
 
-const failed = data.characters.filter((c) => c.error).length;
-console.log(`data.json geschrieben (${data.era}): ${data.characters.length} Charaktere, ${failed} mit Fehler.`);
+const failed = data.characters.filter((c) => c.error && !c.placeholder).length;
+const open = data.characters.filter((c) => c.placeholder).length;
+console.log(`data.json geschrieben (${data.era}): ${data.characters.length} Charaktere, ${failed} mit Fehler, ${open} Platzhalter.`);
 
 // ---------------------------------------------------------------------------
 
@@ -108,6 +109,12 @@ async function buildLive() {
   const characters = [];
   for (const entry of config.characters) {
     const key = charKey(entry);
+    // Platzhalter: nur ein Name, noch ohne Realm oder Nachnamen. Kein Abruf.
+    if (!entry.realm && !entry.surname) {
+      console.log(`offen   ${key}`);
+      characters.push({ key, name: entry.name, placeholder: true, error: 'Charakter folgt' });
+      continue;
+    }
     try {
       characters.push(await fetchCharacter(api, entry, caches));
       console.log(`ok      ${key}`);
@@ -577,6 +584,7 @@ function stripMarkup(text) {
 
 // Forever kennt keine Realms: Dort heißt der Charakter "name-nachname" (klein, Umlaute bleiben).
 function charKey(entry) {
+  if (!entry.realm && !entry.surname) return `offen/${entry.name.toLowerCase()}`;
   if (entry.surname) return `${entry.name}-${entry.surname}`.toLowerCase().replace(/\s+/g, '-');
   return `${realmSlug(entry.realm)}/${entry.name.toLowerCase()}`;
 }

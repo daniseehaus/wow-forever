@@ -142,6 +142,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile .nums .il { color: var(--accent-text); }
 .tile.error { cursor: default; }
 .tile.error .info .spec { color: var(--warn); }
+.tile.placeholder .info .spec { color: var(--muted); }
 
 .stage-3d { position: absolute; inset: 0; opacity: 0; transition: opacity .4s ease; }
 /* Sichtbar erst mit fertigem Modell. Beim Laden bleibt der 2D-Render verborgen. */
