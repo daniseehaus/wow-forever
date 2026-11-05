@@ -137,6 +137,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile .stage.loading-3d img.render { visibility: hidden; }
 .tile .info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 16px; background: linear-gradient(0deg, #07090c 35%, transparent); }
 .tile .name { display: block; font-weight: 700; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; color: var(--cls); }
+.tile .name .surname { display: block; font-size: .6em; letter-spacing: .08em; opacity: .8; }
 .tile .spec { font: 500 11px var(--mono); color: var(--muted); }
 .tile .nums { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); font: 800 24px var(--display); }
 .tile .nums .il { color: var(--accent-text); }

@@ -73,8 +73,6 @@ async function init() {
   // Erst jetzt wird der Inhalt sichtbar. So springt beim Laden nichts (siehe style.css, body.ready).
   document.body.classList.add('ready');
   startCountdown();
-  // Der Kunstausstellungs-Countdown läuft weiter, solange die Seite offen ist.
-  setInterval(renderKpis, 60000);
   setupBloodlust();
 
   const sessionsReady = sessionsPromise.then((sessions) => {
@@ -159,32 +157,10 @@ function setup3dToggle() {
 function renderKpis() {
   const ok = state.chars.filter((c) => c.level);
   document.getElementById('kpis').innerHTML = [
-    artKpi(),
-    foreverKpi(),
     tempoKpi(),
     hoursKpi(ok),
   ].join('');
 }
-
-// Die Random Kunstausstellung beginnt am Donnerstag, 5. November 2026, um 20 Uhr. Unter einem Tag zählt die Zahl Stunden.
-const ART_SHOW = new Date('2026-11-05T20:00:00').getTime();
-
-function artKpi() {
-  const ms = ART_SHOW - Date.now();
-  const label = 'bis random Kunstausstellung';
-  if (ms <= 0) return kpi('jetzt', 'Random Kunstausstellung', 'hot');
-  if (ms < 864e5) {
-    const hours = Math.ceil(ms / 36e5);
-    return kpi(hours, `${hours === 1 ? 'Stunde' : 'Stunden'} ${label}`, 'hot');
-  }
-  // Ab einem Tag zählen Kalendertage: Donnerstag bis Donnerstag sind 7 Tage, egal zu welcher Uhrzeit.
-  const day = (t) => new Date(t).setHours(0, 0, 0, 0);
-  const days = Math.round((day(ART_SHOW) - day(Date.now())) / 864e5);
-  return kpi(days, `${days === 1 ? 'Tag' : 'Tage'} ${label}`, 'hot');
-}
-
-// Der Forever-Start ist offen.
-function foreverKpi() { return kpi('🤷‍♂️', 'Tage bis Forever', 'txt'); }
 
 function launchTime() { return state.data.launch ? new Date(`${state.data.launch}T00:00:00`).getTime() : null; }
 
@@ -265,15 +241,15 @@ function tileHtml(c, i) {
   // --i staffelt Einblenden und Bloodlust-Puls (siehe style.css).
   if (!c.level) {
     return `<div class="tile error${c.placeholder ? ' placeholder' : ''}" style="--cls:${color};--i:${i}">
-      <div class="info"><span class="name">${esc(c.name)}</span><span class="spec">${esc(c.error || 'Keine Daten')}</span></div></div>`;
+      <div class="info"><span class="name">${nameHtml(c)}</span><span class="spec">${esc(c.error || 'Keine Daten')}</span></div></div>`;
   }
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;
-  return `<button type="button" class="tile ${c.key === state.selected ? 'selected' : ''}" data-key="${esc(c.key)}" style="--cls:${color};--i:${i}" aria-label="${esc(c.name)} auswählen">
+  return `<button type="button" class="tile ${c.key === state.selected ? 'selected' : ''}" data-key="${esc(c.key)}" style="--cls:${color};--i:${i}" aria-label="${esc(fullName(c))} auswählen">
     <span class="sweep"></span>
     <span class="top"><span class="role">${role.label.toUpperCase()}</span><span class="ago">${c.lastLogin ? ago(c.lastLogin) : ''}</span></span>
     <span class="stage" data-stage="${esc(c.key)}">${c.render ? `<img class="render" src="${esc(c.render)}" alt="" fetchpriority="high">` : ''}</span>
     <span class="info">
-      <span class="name">${esc(c.name)}</span>
+      <span class="name">${nameHtml(c)}</span>
       <span class="spec">${esc(c.spec || '')} ${esc(c.className || '')}${c.stale ? ' · alter Stand' : ''}</span>
       <span class="nums"><span>LV ${c.level}</span><span class="il">iLvl ${c.equippedIlvl ?? '?'}</span></span>
     </span>
@@ -367,7 +343,7 @@ function swapBand() {
   // Das Band läuft über den ganzen Bildschirm. So ist es auch auf dem Handy sichtbar, wo das Loadout länger als der Bildschirm ist.
   // Bei schnellem Klicken ersetzt das neue Band das alte.
   state.swapBurst?.remove();
-  state.swapBurst = burst(c.name, { color: classColor(c), dur: SWAP_MS });
+  state.swapBurst = burst(fullName(c), { color: classColor(c), dur: SWAP_MS });
 }
 
 // ---------------------------------------------------------------------------
@@ -535,14 +511,14 @@ function renderGroup() {
   const ok = state.chars.filter((c) => c.level);
   const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
   const classNames = (ids) => ids.map((id) => M.CLASSES[id]?.name).join(', ');
-  const tag = (c, tip) => `<span class="tag" style="--cls:${classColor(c)}" tabindex="0" data-tip="${esc(tip)}">${esc(c.name)}</span>`;
+  const tag = (c, tip) => `<span class="tag" style="--cls:${classColor(c)}" tabindex="0" data-tip="${esc(tip)}">${esc(fullName(c))}</span>`;
   const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--hl:${classColor(who[0])}">
     <span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
 
   // Buffs und Tools: Tag-Tooltip nennt Klasse und Zauber des Charakters.
   const spellTip = (entry, c) => {
     const spells = entry.spells.filter(([, , cls]) => cls === c.classId).map(([, n]) => n);
-    return `${c.name} · ${M.CLASSES[c.classId]?.name ?? ''}\n${spells.length ? spells.join(', ') : entry.name}`;
+    return `${fullName(c)} · ${M.CLASSES[c.classId]?.name ?? ''}\n${spells.length ? spells.join(', ') : entry.name}`;
   };
   // Was niemand mitbringt, nennt der Tooltip am Zähler der Spalte, gruppiert nach der Klasse, die es mitbringt.
   const entries = (list, sub) => {
@@ -570,7 +546,7 @@ function renderGroup() {
     const next = M.PROF_RANKS[p.max];
     const step = p.skill < p.max ? `noch ${p.max - p.skill} Punkte bis ${p.max}`
       : next ? `Stufe voll · ${next[0]} ab Level ${next[1]}` : 'Maximum erreicht';
-    return `${c.name} · ${name}\n${p.skill} / ${p.max}${rank ? ` · ${rank}` : ''}\n${step}`;
+    return `${fullName(c)} · ${name}\n${p.skill} / ${p.max}${rank ? ` · ${rank}` : ''}\n${step}`;
   };
   const profList = [...new Set([...M.PRIMARY_PROFESSIONS, ...ok.flatMap((c) => (c.professions ?? []).map((p) => profName(p.name)))])];
   const profRows = [];
@@ -585,7 +561,7 @@ function renderGroup() {
     const kind = SECONDARY.includes(name) ? 'Sekundär' : GATHERING.includes(name) ? 'Sammeln' : 'Herstellen';
     profRows.push([kind === 'Sekundär' ? 2 : kind === 'Sammeln' ? 0 : 1, row(name, kind, has.map(([c]) => c),
       has.map(([c, p]) => tag(c, profTip(c, p, name))).join(''), '',
-      `${name} · ${kind}\n${has.map(([c, p]) => `${c.name} ${p.skill} / ${p.max}`).join('\n')}`)]);
+      `${name} · ${kind}\n${has.map(([c, p]) => `${fullName(c)} ${p.skill} / ${p.max}`).join('\n')}`)]);
   }
   profRows.sort((x, y) => x[0] - y[0]);
   const primaryHave = M.PRIMARY_PROFESSIONS.length - missProfs.length;
@@ -956,7 +932,7 @@ function renderPrep() {
   document.getElementById('prep-count').textContent = total ? `${total} offen` : 'alles erledigt';
   document.getElementById('prep').style.setProperty('--n', tasks.length);
   document.getElementById('prep').innerHTML = tasks.map(([c, list]) => `<div class="prep-col" style="--cls:${classColor(c)}">
-    <b>${esc(c.name)}</b>
+    <b>${esc(fullName(c))}</b>
     ${list.length ? list.map(([text, hot]) => `<span class="task${hot ? ' hot' : ''}">${esc(text)}</span>`).join('') : '<span class="task done">nichts offen</span>'}
   </div>`).join('');
 }
@@ -1088,8 +1064,8 @@ function feedIcon(name, badge = '') {
 function feedItemHtml(e) {
   const time = new Date(e.t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   const c = state.data.characters.find((x) => x.key === e.key);
-  const name = (key) => esc(state.data.characters.find((x) => x.key === key)?.name ?? key.split('/').pop());
-  const who = c ? `<b class="who" style="--cls:${classColor(c)}">${esc(c.name)}</b>` : e.key ? `<b class="who">${name(e.key)}</b>` : '';
+  const name = (key) => esc(charName(key));
+  const who = c ? `<b class="who" style="--cls:${classColor(c)}">${esc(fullName(c))}</b>` : e.key ? `<b class="who">${name(e.key)}</b>` : '';
   // Jeder Eintrag ist eine Zeile. Was nicht passt, kürzt die Seite ab, Details zeigt der Tooltip.
   const row = (cls, icon, text, tip = '') => `<li class="ev ${cls}"${c ? ` style="--cls:${classColor(c)}"` : ''}${tip ? ` data-tip="${esc(tip)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
 
@@ -1108,7 +1084,7 @@ function feedItemHtml(e) {
       return row('ev-guild', feedIcon(FEED_ICONS.guild), e.guild ? `tritt <strong>&lt;${esc(e.guild)}&gt;</strong> bei` : `verlässt <strong>&lt;${esc(e.from ?? '')}&gt;</strong>`);
     case 'session': {
       const hours = e.start ? Math.max(0, (e.t - e.start) / 36e5) : null;
-      const players = (e.players ?? []).map((k) => charByKey(k).name ?? k.split('/').pop());
+      const players = (e.players ?? []).map(charName);
       const lv = Math.round(e.gain ?? 0) ? ` · ${fmtGain(e.gain)} Level` : '';
       return row('ev-session', feedIcon(FEED_ICONS.session), `<strong>Gemeinsame Session</strong> · ${players.length} Spieler${lv}`,
         `Gemeinsame Session\n${players.join(', ')}${hours >= 0.5 ? `\nLogouts über ${fmtDec(hours)} Std.` : ''}`);
@@ -1122,7 +1098,11 @@ function feedItemHtml(e) {
 // Hilfen
 
 function charByKey(k) { return state.data.characters.find((x) => x.key === k) ?? {}; }
-function charName(k) { return charByKey(k).name ?? k.split('/').pop(); }
+function charName(k) { const c = charByKey(k); return c.name ? fullName(c) : k.split('/').pop(); }
+// Kachel: Nachname klein in der zweiten Zeile.
+function nameHtml(c) { return `${esc(c.name)}${c.surname ? `<small class="surname">${esc(c.surname)}</small>` : ''}`; }
+// Voller Name: In Forever gehört der Nachname dazu.
+function fullName(c) { return [c.name, c.surname].filter(Boolean).join(' '); }
 // Die Gruppe levelt gemeinsam, der Zuwachs zählt darum in ganzen Leveln.
 function fmtGain(n) { const r = Math.round(n ?? 0); return `${r > 0 ? '+' : ''}${r}`; }
 function fmtDay(t) { return new Date(t).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }); }
