@@ -25,9 +25,9 @@
     "modelEnv": "classic",
     "characters": [
       { "name": "Daniel" },
-      { "name": "Mike" },
+      { "name": "Heili", "surname": "Klum" },
       { "name": "Zukk", "surname": "Sturmzüngler" },
-      { "name": "Benny" },
+      { "name": "Pavel", "surname": "Plattenpapst" },
       { "name": "Stefan" }
     ],
     "simulate": null

@@ -388,7 +388,7 @@ function createApi(token) {
       await new Promise((r) => setTimeout(r, 1000 * attempt));
       return api(path, namespace, attempt + 1);
     }
-    if (res.status === 404) throw new Error('nicht gefunden (Name, Nachname oder Realm und Namespace prüfen; Profil erst nach Logout sichtbar)');
+    if (res.status === 404) throw new Error('nicht gefunden (Profil erst ab Level 10 und nach Logout sichtbar; sonst Name und Nachname prüfen)');
     if (!res.ok) throw new Error(`HTTP ${res.status} bei ${path}`);
     return res.json();
   };

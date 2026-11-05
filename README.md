@@ -43,7 +43,7 @@ Forever kennt keine Realms. Dort steht statt des Realms der Nachname:
 
 Die API sucht den Charakter dann unter `/profile/wow/character/zukk-sturmzüngler` (klein, Umlaute bleiben) im Namespace `profile-forever-eu`.
 
-Die API zeigt ein Profil erst nach dem ersten Logout des Charakters.
+Die API zeigt ein Profil erst ab Level 10 und nach dem ersten Logout des Charakters.
 
 Ein Eintrag nur mit Namen (`{ "name": "Daniel" }`) ist ein Platzhalter. Die Seite zeigt ihn als „Charakter folgt“ und fragt die API nicht ab.
 
