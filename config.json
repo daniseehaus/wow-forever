@@ -16,14 +16,20 @@
   "wowhead": "",
   "forever": {
     "namespaces": {
-      "profile": "profile-classic1x-eu",
-      "static": "static-classic1x-eu"
+      "profile": "profile-forever-eu",
+      "static": "static-forever-eu"
     },
     "maxLevel": 60,
     "era": "classic",
     "wowhead": "classic",
     "modelEnv": "classic",
-    "characters": [],
+    "characters": [
+      { "name": "Zukk", "surname": "Sturmzüngler" },
+      { "realm": "Blackmoore", "name": "Lizli" },
+      { "realm": "Blackmoore", "name": "Muhrice" },
+      { "realm": "Thrall", "name": "Donbratzo" },
+      { "realm": "Blackmoore", "name": "Stevyfox" }
+    ],
     "simulate": null
   },
   "characters": [

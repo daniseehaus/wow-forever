@@ -114,7 +114,7 @@ async function buildLive() {
     } catch (err) {
       console.warn(`fehler  ${key}: ${err.message}`);
       const old = previous.get(key);
-      characters.push(old ? { ...old, stale: true, error: err.message } : { key, name: entry.name, realmName: entry.realm, error: err.message });
+      characters.push(old ? { ...old, stale: true, error: err.message } : { key, name: entry.name, surname: entry.surname ?? null, realmName: entry.realm ?? null, error: err.message });
     }
   }
 
@@ -131,7 +131,7 @@ async function buildLive() {
 }
 
 async function fetchCharacter(api, entry, caches) {
-  const base = `/profile/wow/character/${realmSlug(entry.realm)}/${encodeURIComponent(entry.name.toLowerCase())}`;
+  const base = `/profile/wow/character/${charPath(entry)}`;
   const ns = config.namespaces.profile;
   const optional = (path) => api(`${base}${path}`, ns).catch(() => null);
 
@@ -167,7 +167,8 @@ async function fetchCharacter(api, entry, caches) {
   return {
     key: charKey(entry),
     name: summary.name,
-    realmName: summary.realm?.name ?? entry.realm,
+    surname: summary.surname ?? entry.surname ?? null,
+    realmName: summary.realm?.name ?? entry.realm ?? null,
     level: summary.level,
     classId: summary.character_class?.id,
     className: summary.character_class?.name,
@@ -380,7 +381,7 @@ function createApi(token) {
       await new Promise((r) => setTimeout(r, 1000 * attempt));
       return api(path, namespace, attempt + 1);
     }
-    if (res.status === 404) throw new Error('nicht gefunden (Name, Realm oder Namespace prüfen; Profil erst nach Logout sichtbar)');
+    if (res.status === 404) throw new Error('nicht gefunden (Name, Nachname oder Realm und Namespace prüfen; Profil erst nach Logout sichtbar)');
     if (!res.ok) throw new Error(`HTTP ${res.status} bei ${path}`);
     return res.json();
   };
@@ -574,8 +575,15 @@ function stripMarkup(text) {
   return (text ?? '').replace(/\|A:[^|]*\|a/g, '').replace(/\|c[0-9a-f]{8}|\|r/gi, '').trim();
 }
 
+// Forever kennt keine Realms: Dort heißt der Charakter "name-nachname" (klein, Umlaute bleiben).
 function charKey(entry) {
+  if (entry.surname) return `${entry.name}-${entry.surname}`.toLowerCase().replace(/\s+/g, '-');
   return `${realmSlug(entry.realm)}/${entry.name.toLowerCase()}`;
+}
+
+function charPath(entry) {
+  if (entry.surname) return encodeURIComponent(charKey(entry));
+  return `${realmSlug(entry.realm)}/${encodeURIComponent(entry.name.toLowerCase())}`;
 }
 
 function loadDotEnv(url) {

@@ -664,8 +664,8 @@ function renderLoadout() {
     <div class="lo-head">
       <div>
         <span class="eyebrow">// LOADOUT</span>
-        <h2>${esc(c.name)}</h2>
-        <p>${c.title ? `${esc(c.title)} · ` : ''}${esc(c.race || '')} · ${esc(c.spec || '')} ${esc(c.className || '')}${c.guild ? ` · &lt;${esc(c.guild)}&gt;` : ''} · ${esc(c.realmName || '')}</p>
+        <h2>${esc(c.name)}${c.surname ? ` <span class="surname">${esc(c.surname)}</span>` : ''}</h2>
+        <p>${c.title ? `${esc(c.title)} · ` : ''}${esc(c.race || '')} · ${esc(c.spec || '')} ${esc(c.className || '')}${c.guild ? ` · &lt;${esc(c.guild)}&gt;` : ''}${c.realmName ? ` · ${esc(c.realmName)}` : ''}</p>
       </div>
       <div class="chips">
         <span class="chip role-chip">${role.label}</span>

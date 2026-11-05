@@ -251,6 +251,7 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .lo-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 14px; }
 .lo-head .eyebrow { display: block; margin-bottom: 4px; }
 .lo-head h2 { margin: 0; font: 800 clamp(44px, 6vw, 72px)/.9 var(--display); text-transform: uppercase; color: var(--cls); text-shadow: 0 0 40px color-mix(in srgb, var(--cls) 45%, transparent); }
+.lo-head h2 .surname { display: block; margin-top: .15em; font-size: .4em; letter-spacing: .1em; opacity: .8; }
 .lo-head p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-weight: 700; font-size: 13px; }

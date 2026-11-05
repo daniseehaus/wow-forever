@@ -35,6 +35,14 @@ In `config.json` unter `characters` je Charakter Realm und Name eintragen:
 { "realm": "Everlook", "name": "Thoradin" }
 ```
 
+Forever kennt keine Realms. Dort steht statt des Realms der Nachname:
+
+```json
+{ "name": "Zukk", "surname": "Sturmzüngler" }
+```
+
+Die API sucht den Charakter dann unter `/profile/wow/character/zukk-sturmzüngler` (klein, Umlaute bleiben) im Namespace `profile-forever-eu`.
+
 Die API zeigt ein Profil erst nach dem ersten Logout des Charakters.
 
 ## Umstellung auf Forever
@@ -46,7 +54,7 @@ sie von selbst. `forever.switchAt` (z. B. `"2026-11-04T17:00:00+01:00"`) legt be
 
 Vor dem Start prüfen:
 
-- `forever.namespaces` auf den Forever-Namespace setzen, sobald Blizzard ihn nennt (eingetragen ist Classic Era: `profile-classic1x-eu`, `static-classic1x-eu`)
+- `forever.namespaces` zeigt auf `profile-forever-eu` und `static-forever-eu` (seit dem Start in der API, Region „CAMWOW Europa“, Patch 1.60.1)
 - `forever.characters` mit den neuen Charakteren füllen. Bleibt die Liste leer, gilt die normale Charakterliste.
 - `forever.modelEnv` auf `classic` lassen, falls Wowhead die Modelle unter `modelviewer/classic/` führt
 
