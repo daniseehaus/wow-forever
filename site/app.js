@@ -44,8 +44,8 @@ async function init() {
     return;
   }
 
-  const roleOrder = (c) => M.ROLES[c.role]?.order ?? 9;
-  state.chars = [...state.data.characters].sort((a, b) => roleOrder(a) - roleOrder(b) || (b.level ?? 0) - (a.level ?? 0) || (b.equippedIlvl ?? 0) - (a.equippedIlvl ?? 0));
+  // Feste Reihenfolge wie in config.json (characters bzw. forever.characters).
+  state.chars = [...state.data.characters];
   if (!state.chars.some((c) => c.key === state.selected && c.level)) state.selected = state.chars.find((c) => c.level)?.key;
 
   const d = state.data;

@@ -24,10 +24,10 @@
     "wowhead": "classic",
     "modelEnv": "classic",
     "characters": [
-      { "name": "Zukk", "surname": "Sturmzüngler" },
       { "name": "Daniel" },
-      { "name": "Benny" },
       { "name": "Mike" },
+      { "name": "Zukk", "surname": "Sturmzüngler" },
+      { "name": "Benny" },
       { "name": "Stefan" }
     ],
     "simulate": null
