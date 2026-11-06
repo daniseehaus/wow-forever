@@ -1,7 +1,22 @@
 {
  "era": "classic",
- "lastEnd": 0,
- "levels": {},
- "base": {},
+ "lastEnd": 1793994996000,
+ "levels": {
+  "heili-klum": 12
+ },
+ "base": {
+  "heili-klum": {
+   "ilvl": 4,
+   "profs": {
+    "Tailoring": 56,
+    "Enchanting": 10,
+    "Cooking": 34,
+    "Fishing": 1
+   },
+   "talents": {
+    "135379": 3
+   }
+  }
+ },
  "list": []
 }

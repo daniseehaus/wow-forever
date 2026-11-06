@@ -1,5 +1,41 @@
 {
  "era": "classic",
- "snapshot": {},
+ "snapshot": {
+  "heili-klum": {
+   "level": 12,
+   "lastLogin": 1793994996000,
+   "guild": null,
+   "items": {
+    "SHIRT": 53,
+    "CHEST": 6240,
+    "WAIST": 7026,
+    "LEGS": 4309,
+    "FEET": 3274,
+    "WRIST": 4308,
+    "HANDS": 12299,
+    "BACK": 3322,
+    "MAIN_HAND": 766,
+    "RANGED": 286743
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 12,
+    "WAIST": 9,
+    "LEGS": 14,
+    "FEET": 5,
+    "WRIST": 12,
+    "HANDS": 8,
+    "BACK": 10,
+    "MAIN_HAND": 7,
+    "RANGED": 13
+   },
+   "profs": {
+    "Tailoring": 56,
+    "Enchanting": 10,
+    "Cooking": 34,
+    "Fishing": 1
+   }
+  }
+ },
  "events": []
 }

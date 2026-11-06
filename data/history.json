@@ -1,4 +1,13 @@
 {
  "era": "classic",
- "chars": {}
+ "chars": {
+  "heili-klum": [
+   {
+    "d": "2026-11-06",
+    "level": 12,
+    "ilvl": 4,
+    "epics": 0
+   }
+  ]
+ }
 }
