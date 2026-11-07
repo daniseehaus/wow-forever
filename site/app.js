@@ -869,8 +869,7 @@ function recapUnlocks(s) {
   if (!stats.length) return [];
   const lo = (i) => Math.min(...stats.map(([, x]) => x.level?.[i] ?? 0));
   const [from, to] = [lo(0), lo(1)];
-  const factions = new Set(state.chars.map((c) => (c.faction === 'HORDE' ? 'H' : 'A')));
-  const dungeons = M.DUNGEONS.filter((d) => (d.f === 'N' || factions.has(d.f)) && d.min - 2 > from && d.min - 2 <= to).map((d) => d.name);
+  const dungeons = M.DUNGEONS.filter((d) => d.min - 2 > from && d.min - 2 <= to).map((d) => d.name);
   const out = dungeons.length ? [`Neu in Reichweite: ${esc(dungeons.join(' · '))}`] : [];
   if (from < 40 && to >= 40) out.push('Level 40: Reiten lernen');
   if (from < 60 && to >= 60) out.push('Level 60: Max-Level');
@@ -960,8 +959,6 @@ function prepTasks(c, range) {
 
 function renderRoute() {
   const ok = state.chars.filter((c) => c.level);
-  const factions = new Set(ok.map((c) => (c.faction === 'HORDE' ? 'H' : 'A')));
-  const allowed = (x) => x.f === 'N' || factions.has(x.f);
   const classicLevels = state.data.era !== 'retail';
   const bands = [[1, 10], [10, 20], [20, 30], [30, 40], [40, 50], [50, 60]];
   const inBand = (c, a, b) => c.level >= a && (c.level < b || (b === 60 && c.level <= 60));
@@ -973,7 +970,7 @@ function renderRoute() {
 
   // Tipp: je Spalte der beste Ort für die ganze Gruppe. Bewertet nach Spielern im Levelbereich,
   // bei Gleichstand nach dem Abstand der Mitten. Spieler dürfen 2 Level unter dem Minimum liegen.
-  const forAll = (x) => allowed(x) && ok.every((c) => c.level >= x.min - 2 && c.level <= x.max);
+  const forAll = (x) => ok.every((c) => c.level >= x.min - 2 && c.level <= x.max);
   const inside = (x) => ok.filter((c) => c.level >= x.min && c.level <= x.max).length;
   const gap = (x) => Math.abs((x.min + x.max) / 2 - (lo + hi) / 2);
   const best = (list) => list.filter(forAll).sort((x, y) => inside(y) - inside(x) || gap(x) - gap(y))[0];
@@ -989,8 +986,8 @@ function renderRoute() {
     const here = classicLevels && ok.some((c) => inBand(c, a, b));
     // Markiert wird nur in der Stufe der Gruppe, dort steht der Tipp vorne in seiner Liste.
     const tipFirst = (x, y) => (here ? tips.has(y) - tips.has(x) : 0);
-    const zones = M.ZONES.filter((z) => allowed(z) && z.min >= a - 5 && z.min < b && z.max > a).sort(tipFirst);
-    const dungeons = M.DUNGEONS.filter((d) => allowed(d) && d.min >= a && d.min < b).sort(tipFirst);
+    const zones = M.ZONES.filter((z) => z.min >= a - 5 && z.min < b && z.max > a).sort(tipFirst);
+    const dungeons = M.DUNGEONS.filter((d) => d.min >= a && d.min < b).sort(tipFirst);
     return `<div class="route-row ${here ? 'now' : ''}">
       <span class="lv">${a}-${b}</span>
       <div class="place-list" data-label="Zonen">${zones.map((z) => place(z, `${z.min}-${z.max}`, here)).join('')}</div>

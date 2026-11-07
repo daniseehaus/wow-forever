@@ -79,15 +79,13 @@ window.META = (() => {
   const PRIMARY_PROFESSIONS = ['Alchemie', 'Schmiedekunst', 'Verzauberkunst', 'Ingenieurskunst', 'Kräuterkunde', 'Lederverarbeitung', 'Bergbau', 'Kürschnerei', 'Schneiderei'];
 
   // Fraktion: A = Allianz, H = Horde, N = beide.
+  // Wir spielen Horde: Allianz-Gebiete und -Dungeons stehen nicht in der Liste.
   const ZONES = [
-    { name: 'Wald von Elwynn', id: 12, min: 1, max: 10, f: 'A' }, { name: 'Dun Morogh', id: 1, min: 1, max: 10, f: 'A' },
-    { name: 'Teldrassil', id: 141, min: 1, max: 10, f: 'A' }, { name: 'Durotar', id: 14, min: 1, max: 10, f: 'H' },
+    { name: 'Durotar', id: 14, min: 1, max: 10, f: 'H' },
     { name: 'Mulgore', id: 215, min: 1, max: 10, f: 'H' }, { name: 'Tirisfal', id: 85, min: 1, max: 10, f: 'H' },
-    { name: 'Westfall', id: 40, min: 10, max: 20, f: 'A' }, { name: 'Loch Modan', id: 38, min: 10, max: 20, f: 'A' },
-    { name: 'Dunkelküste', id: 148, min: 10, max: 20, f: 'A' }, { name: 'Brachland', id: 17, min: 10, max: 25, f: 'H' },
-    { name: 'Silberwald', id: 130, min: 10, max: 20, f: 'H' }, { name: 'Rotkammgebirge', id: 44, min: 15, max: 25, f: 'A' },
+    { name: 'Brachland', id: 17, min: 10, max: 25, f: 'H' },
+    { name: 'Silberwald', id: 130, min: 10, max: 20, f: 'H' },
     { name: 'Steinkrallengebirge', id: 406, min: 15, max: 27, f: 'N' }, { name: 'Ashenvale', id: 331, min: 18, max: 30, f: 'N' },
-    { name: 'Dämmerwald', id: 10, min: 18, max: 30, f: 'A' }, { name: 'Sumpfland', id: 11, min: 20, max: 30, f: 'A' },
     { name: 'Vorgebirge von Hillsbrad', id: 267, min: 20, max: 30, f: 'N' }, { name: 'Tausend Nadeln', id: 400, min: 25, max: 35, f: 'N' },
     { name: 'Arathihochland', id: 45, min: 30, max: 40, f: 'N' }, { name: 'Desolace', id: 405, min: 30, max: 40, f: 'N' },
     { name: 'Schlingendorntal', id: 33, min: 30, max: 45, f: 'N' }, { name: 'Marschen von Dustwallow', id: 15, min: 35, max: 45, f: 'N' },
@@ -102,9 +100,9 @@ window.META = (() => {
   ];
 
   const DUNGEONS = [
-    { name: 'Ragefireabgrund', id: 2437, min: 13, max: 18, f: 'H' }, { name: 'Die Todesminen', id: 1581, min: 17, max: 26, f: 'A' },
+    { name: 'Ragefireabgrund', id: 2437, min: 13, max: 18, f: 'H' },
     { name: 'Die Höhlen des Wehklagens', id: 718, min: 17, max: 24, f: 'N' }, { name: 'Burg Shadowfang', id: 209, min: 22, max: 30, f: 'N' },
-    { name: 'Blackfathom-Tiefe', id: 719, min: 24, max: 32, f: 'N' }, { name: 'Das Verlies', id: 717, min: 24, max: 32, f: 'A' },
+    { name: 'Blackfathom-Tiefe', id: 719, min: 24, max: 32, f: 'N' },
     { name: 'Gnomeregan', id: 721, min: 29, max: 38, f: 'N' }, { name: 'Der Kral von Razorfen', id: 491, min: 29, max: 38, f: 'N' },
     { name: 'Das Scharlachrote Kloster', id: 796, min: 28, max: 45, f: 'N' }, { name: 'Die Hügel von Razorfen', id: 722, min: 37, max: 46, f: 'N' },
     { name: 'Uldaman', id: 1337, min: 41, max: 51, f: 'N' }, { name: "Zul'Farrak", id: 1176, min: 44, max: 54, f: 'N' },
