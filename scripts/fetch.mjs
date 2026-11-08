@@ -84,7 +84,7 @@ const feed = demo ? demoFeed(data) : guildDemo ? await withAchievements(demoFeed
 const events = preview ? [...preview.showcase.events, ...feed.events].sort((a, b) => a.t - b.t) : feed.events;
 await writeFile(new URL('site/feed.json', root), JSON.stringify({ era: feed.era, events }) + '\n');
 // Quest-Verlauf: wer wann welche Quest abgeschlossen hat. Grundlage für „Verpasst“ im Abschnitt Quests.
-const questLog = demo ? { events: [] } : guildDemo ? demoQuestLog(data) : await updateQuestLog(data);
+const questLog = demo ? { events: [] } : guildDemo ? demoQuestLog(data) : await updateQuestLog(data, history);
 await writeFile(new URL('site/quest-log.json', root), JSON.stringify({ events: questLog.events }) + '\n');
 
 const failed = data.characters.filter((c) => c.error && !c.placeholder).length;
@@ -824,19 +824,21 @@ function previousGuildUrl() {
 // ---------------------------------------------------------------------------
 // Quests des Squads. Die Profile nennen nur IDs, Titel und Zone kommen deutsch aus den Spieldaten (/data/wow/quest).
 // Quests ändern sich nur mit einem Patch. Ihre Daten liegen darum in data/quests.json, die Action speichert sie, ein lokaler Lauf nur im Speicher.
+// k markiert Klassenquests: Die Quest verlangt höchstens 3 Klassen. Einträge ohne k stammen von früher und kommen neu.
 async function buildQuests(chars) {
   const file = new URL('data/quests.json', root);
   const ns = config.namespaces.static;
   const stored = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
   const cache = stored?.ns === ns ? stored.quests : {};
   const ids = [...new Set(chars.flatMap((c) => [...(c.quests?.open ?? []), ...(c.quests?.done ?? [])]))];
-  const missing = ids.filter((id) => !(id in cache));
+  const missing = ids.filter((id) => !(id in cache) || (cache[id] && !('k' in cache[id])));
   let next = 0;
   await Promise.all(Array.from({ length: 8 }, async () => {
     while (next < missing.length) {
       const id = missing[next++];
       const q = await ctx.api(`/data/wow/quest/${id}`, ns).catch(() => null);
-      cache[id] = q ? { t: q.title ?? null, z: q.area?.name ?? null } : null;
+      const classes = q?.requirements?.classes?.length ?? 0;
+      cache[id] = q ? { t: q.title ?? null, z: q.area?.name ?? null, k: classes > 0 && classes <= 3 } : null;
     }
   }));
   if (missing.length && process.env.GITHUB_ACTIONS) {
@@ -847,12 +849,21 @@ async function buildQuests(chars) {
   return Object.fromEntries(ids.filter((id) => cache[id]?.t).map((id) => [id, cache[id]]));
 }
 
-// Jeder Abruf vergleicht die abgeschlossenen Quests mit dem letzten Stand. Neue bekommen den Zeitpunkt des letzten Logouts.
+// Jeder Abruf vergleicht die abgeschlossenen Quests mit dem letzten Stand. Neue bekommen den Zeitpunkt des letzten Logouts
+// und das Level des Charakters (lv). Die API kennt kein Quest-Level, das Level beim Abschluss ersetzt es.
+// Ältere Einträge ohne lv bekommen das Level aus dem Verlauf (history) am Tag des Logouts.
 // Der Verlauf hält 30 Tage. Der erste Lauf je Charakter legt nur den Stand fest.
-async function updateQuestLog(data) {
+async function updateQuestLog(data, history) {
   const log = await loadState('quest-log', () => ({ snapshot: {}, events: [] }));
   if (!process.env.GITHUB_ACTIONS) return log;
   const now = Date.now();
+  const levelAt = (key, t) => {
+    const day = new Date(t).toISOString().slice(0, 10);
+    const list = history?.chars?.[key] ?? [];
+    const point = list.filter((p) => p.d <= day).at(-1) ?? list[0];
+    return point?.level ?? data.characters.find((c) => c.key === key)?.level ?? null;
+  };
+  for (const e of log.events) if (e.lv == null) e.lv = levelAt(e.key, e.t);
   for (const c of data.characters) {
     if (c.error || !c.quests?.done) continue;
     const old = log.snapshot[c.key];
@@ -860,7 +871,7 @@ async function updateQuestLog(data) {
     if (!old) continue;
     const before = new Set(old);
     const t = c.lastLogin ?? now;
-    for (const id of c.quests.done) if (!before.has(id)) log.events.push({ t, key: c.key, id });
+    for (const id of c.quests.done) if (!before.has(id)) log.events.push({ t, key: c.key, id, lv: c.level ?? null });
   }
   log.events = log.events.filter((e) => now - e.t < 30 * 864e5).sort((a, b) => a.t - b.t);
   await saveState('quest-log', log);
@@ -885,11 +896,13 @@ function demoQuestLog(data) {
   if (!away) return { events: [] };
   const mine = new Set([...(away.quests.done ?? []), ...(away.quests.open ?? [])]);
   const start = Math.max(away.lastLogin ?? 0, Date.now() - 12 * 36e5) + 36e5;
+  // Die Seite zeigt nur Quests, die mindestens 2 andere abgeschlossen haben. Darum nimmt der Test solche Quests.
+  const others = chars.filter((c) => c !== away);
+  const count = new Map();
+  for (const c of others) for (const id of c.quests.done) count.set(id, (count.get(id) ?? 0) + 1);
+  const ids = [...count].filter(([id, n]) => n >= 2 && !mine.has(id) && data.questInfo?.[id]?.z && !data.questInfo[id].k).map(([id]) => id).slice(-12);
   const events = [];
-  chars.filter((c) => c !== away).forEach((c, i) => {
-    const todo = c.quests.done.filter((id) => !mine.has(id) && data.questInfo?.[id]).slice(-5 - i);
-    todo.forEach((id, k) => events.push({ t: start + (i * 5 + k) * 600e3, key: c.key, id }));
-  });
+  ids.forEach((id, k) => others.filter((c) => c.quests.done.includes(id)).forEach((c, i) => events.push({ t: start + (k * 3 + i) * 600e3, key: c.key, id, lv: c.level })));
   return { events: events.sort((a, b) => a.t - b.t) };
 }
 

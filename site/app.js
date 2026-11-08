@@ -840,8 +840,10 @@ function craftHints(c) {
 
 // ---------------------------------------------------------------------------
 // Quests: nur „Verpasst“. Was andere im Log abgestimmt haben, klärt der Squad live.
-// Je Charakter eine Karte mit den Quests, die andere abgeschlossen haben, seit er zuletzt online war (Quest-Verlauf aus fetch.mjs).
-// Quests ohne Zone (Klassen- und Berufsquests) betreffen nur einen Charakter und zählen nicht. Gleiche Titel in einer Zone stehen einmal.
+// Je Charakter eine Karte mit den Quests, die mindestens 2 andere abgeschlossen haben, seit er zuletzt online war (Quest-Verlauf aus fetch.mjs).
+// Klassenquests (k) und Quests ohne Zone (Berufsquests) betreffen nur einen Charakter und zählen nicht. Gleiche Titel in einer Zone stehen einmal.
+// Die API kennt kein Quest-Level. Als Quest-Level gilt das niedrigste Level der anderen beim Abschluss (lv).
+// Liegt es 5 oder mehr Level unter dem eigenen Level, ist die Quest grau und zählt nicht.
 // Eine Quest lässt sich je Charakter ignorieren (×). Das merkt sich nur dieser Browser (localStorage), die Seite hat keinen Server.
 
 const QUEST_IGNORE_KEY = 'questIgnore';
@@ -862,13 +864,15 @@ function questMissed() {
     const done = new Set(c.quests.done);
     const map = new Map();
     for (const e of state.questLog) {
-      if (e.t <= since || e.key === c.key || !info[e.id]?.z || done.has(e.id)) continue;
+      if (e.t <= since || e.key === c.key || !info[e.id]?.z || info[e.id].k || done.has(e.id)) continue;
       // Schlüssel aus Charakter, Zone und Titel. So gilt „ignorieren“ auch für Varianten derselben Quest.
       const k = `${c.key}|${info[e.id].z}|${info[e.id].t}`;
-      if (!map.has(k)) map.set(k, { id: e.id, key: k, by: new Set() });
-      map.get(k).by.add(e.key);
+      if (!map.has(k)) map.set(k, { id: e.id, key: k, by: new Set(), lv: Infinity });
+      const x = map.get(k);
+      x.by.add(e.key);
+      x.lv = Math.min(x.lv, e.lv ?? charByKey(e.key)?.level ?? Infinity);
     }
-    const all = [...map.values()];
+    const all = [...map.values()].filter((x) => x.by.size >= 2 && !(x.lv <= c.level - 5));
     hidden += all.filter((x) => ignored.has(x.key)).length;
     return { c, since, list: all.filter((x) => !ignored.has(x.key)).map((x) => ({ ...x, by: [...x.by] })) };
   }).filter((x) => x.list.length).sort((a, b) => b.list.length - a.list.length);

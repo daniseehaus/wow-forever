@@ -40,6 +40,7 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-09: „Verpasst“ zeigt eine Quest nur, wenn mindestens 2 andere Squad-Charaktere sie abgeschlossen haben. Keine Klassenquests (höchstens 3 Klassen erlaubt). Quests 5 oder mehr Level unter dem eigenen Level fallen weg. Die API kennt kein Quest-Level, als Ersatz gilt das niedrigste Level der Abschließenden beim Abschluss.
 - 2026-11-08: Neue Baseline für Sessions: 2 gemeinsame Sessions (die letzte und heute, Level 1 bis 10). Die automatische Erkennung beginnt danach (`sessionBaseline` in `config.json`).
 - 2026-11-08: Squad bekommt Crafting (nur gelernte Rezepte, Wertevergleich nach Spielweise statt Itemlevel, auch Verzauberungen und Rüstungssets, keine Verbrauchsgüter, Liste „Hersteller → Empfänger“) und Quests (nur „Verpasst seit dem Logout“, den Rest stimmt der Squad live ab). Keine Beute-Wunschliste, die API kennt keine Forever-Dungeonbeute. Erfolge stehen ohne Punkte in der Aktivität. Bühne der Modelle ohne Runenkreis, nur Schein und Glühwürmchen.
 - 2026-11-08: Beide Seiten haben dieselbe Navigation (Abschnitte der Startseite, „Guild“ am Ende). Talentbäume bis 760 px zum Wischen, kein Karussell, darüber unverändert. Eine Namenskorrektur in `config.json` erzeugt im Gilden-Feed kein Ereignis.
