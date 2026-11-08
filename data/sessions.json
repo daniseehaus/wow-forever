@@ -1,21 +1,67 @@
 {
  "era": "classic",
- "lastEnd": 1793994996000,
+ "lastEnd": 1794178243000,
  "levels": {
-  "heili-klum": 12
+  "wladimir-klatschko": 12,
+  "heili-kabel": 11,
+  "zukk-sturmzüngler": 12,
+  "pavel-plattenpapst": 11,
+  "orkward-orkbert": 11
  },
  "base": {
-  "heili-klum": {
-   "ilvl": 4,
+  "wladimir-klatschko": {
+   "ilvl": 5,
    "profs": {
-    "Tailoring": 56,
-    "Enchanting": 10,
-    "Cooking": 34,
-    "Fishing": 1
+    "Mining": 72,
+    "Blacksmithing": 62,
+    "Cooking": 1,
+    "First Aid": 1
    },
    "talents": {
-    "135379": 3
+    "135507": 3
    }
+  },
+  "heili-kabel": {
+   "ilvl": 7,
+   "profs": {
+    "Tailoring": 68,
+    "Enchanting": 35,
+    "Cooking": 1,
+    "First Aid": 1
+   },
+   "talents": {
+    "142601": 2
+   }
+  },
+  "zukk-sturmzüngler": {
+   "ilvl": 5,
+   "profs": {
+    "Alchemy": 36,
+    "Herbalism": 62,
+    "Cooking": 2
+   },
+   "talents": {
+    "134214": 3
+   }
+  },
+  "pavel-plattenpapst": {
+   "ilvl": 4,
+   "profs": {
+    "Mining": 70,
+    "Engineering": 80,
+    "Cooking": 20,
+    "Fishing": 1,
+    "First Aid": 34
+   },
+   "talents": {}
+  },
+  "orkward-orkbert": {
+   "ilvl": 4,
+   "profs": {
+    "Skinning": 75,
+    "Cooking": 1
+   },
+   "talents": {}
   }
  },
  "list": []
