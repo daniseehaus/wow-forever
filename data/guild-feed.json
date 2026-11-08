@@ -27,16 +27,19 @@
    "surname": "Sturmzüngler",
    "classId": 7,
    "rank": "Mitglied",
-   "level": 11,
-   "lastLogin": 1794172387000,
+   "level": 12,
+   "lastLogin": 1794177693000,
    "epics": []
   },
   "pavel-plattenpapst": {
-   "id": null,
+   "id": 11114997,
    "name": "Pavel",
    "surname": "Plattenpapst",
-   "classId": null,
-   "rank": "Mitglied"
+   "classId": 2,
+   "rank": "Mitglied",
+   "level": 11,
+   "lastLogin": 1794178243000,
+   "epics": []
   },
   "orkward-orkbert": {
    "id": 12680483,

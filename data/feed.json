@@ -155,37 +155,74 @@
    ]
   },
   "zukk-sturmzüngler": {
-   "level": 11,
-   "lastLogin": 1794172387000,
-   "guild": null,
+   "level": 12,
+   "lastLogin": 1794177693000,
+   "guild": "Geilbleiber",
    "items": {
     "SHIRT": 6134,
     "CHEST": 4916,
     "WAIST": 4919,
     "LEGS": 1431,
-    "FEET": 1367,
+    "FEET": 4942,
     "WRIST": 4928,
     "HANDS": 4940,
     "FINGER_1": 281268,
     "BACK": 4944,
-    "MAIN_HAND": 4562
+    "MAIN_HAND": 4562,
+    "RANGED": 263412
    },
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 5,
     "WAIST": 5,
     "LEGS": 8,
-    "FEET": 3,
+    "FEET": 12,
     "WRIST": 8,
     "HANDS": 10,
     "FINGER_1": 9,
     "BACK": 12,
-    "MAIN_HAND": 10
+    "MAIN_HAND": 10,
+    "RANGED": 10
    },
    "profs": {
-    "Alchemy": 18,
-    "Herbalism": 42,
-    "Cooking": 1
+    "Alchemy": 36,
+    "Herbalism": 62,
+    "Cooking": 2
+   },
+   "achs": []
+  },
+  "pavel-plattenpapst": {
+   "level": 11,
+   "lastLogin": 1794178243000,
+   "guild": "Geilbleiber",
+   "items": {
+    "SHIRT": 6125,
+    "CHEST": 10421,
+    "WAIST": 15472,
+    "LEGS": 3473,
+    "FEET": 15473,
+    "WRIST": 281272,
+    "HANDS": 1734,
+    "BACK": 4944,
+    "MAIN_HAND": 6214
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 10,
+    "WAIST": 9,
+    "LEGS": 13,
+    "FEET": 10,
+    "WRIST": 10,
+    "HANDS": 11,
+    "BACK": 12,
+    "MAIN_HAND": 16
+   },
+   "profs": {
+    "Mining": 70,
+    "Engineering": 80,
+    "Cooking": 20,
+    "Fishing": 1,
+    "First Aid": 34
    },
    "achs": []
   }
@@ -317,6 +354,33 @@
   {
    "t": 1794176441000,
    "key": "wladimir-klatschko",
+   "type": "guild",
+   "guild": "Geilbleiber",
+   "from": null
+  },
+  {
+   "t": 1794177693000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 11,
+   "to": 12,
+   "max": false
+  },
+  {
+   "t": 1794177693000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 263412,
+   "name": "Totem der Geladenen Flammen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134919.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 10,
+   "prev": null
+  },
+  {
+   "t": 1794177693000,
+   "key": "zukk-sturmzüngler",
    "type": "guild",
    "guild": "Geilbleiber",
    "from": null

@@ -36,6 +36,14 @@
   "zukk-sturmzüngler": [
    {
     "d": "2026-11-08",
+    "level": 12,
+    "ilvl": 5,
+    "epics": 0
+   }
+  ],
+  "pavel-plattenpapst": [
+   {
+    "d": "2026-11-08",
     "level": 11,
     "ilvl": 4,
     "epics": 0
