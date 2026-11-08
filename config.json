@@ -14,6 +14,15 @@
     "static": "static-eu"
   },
   "wowhead": "",
+  "guild": {
+    "name": "Geilbleiber",
+    "ranks": ["Gildenmeister", "Offizier", "Veteran", "Mitglied", "Rekrut"],
+    "members": [
+      { "name": "Bernhard", "surname": "Backstab" },
+      { "name": "Hammer", "surname": "Hanno" },
+      { "name": "Lokk", "surname": "Eidlöter" }
+    ]
+  },
   "forever": {
     "namespaces": {
       "profile": "profile-forever-eu",
@@ -21,8 +30,9 @@
     },
     "maxLevel": 60,
     "era": "classic",
-    "wowhead": "classic",
-    "modelEnv": "classic",
+    "wowhead": "forever",
+    "modelEnv": "live",
+    "sessionBaseline": { "count": 2, "levels": 9, "until": "2026-11-09T06:00:00+01:00" },
     "characters": [
       { "name": "Daniel" },
       { "name": "Heili", "surname": "Kabel" },

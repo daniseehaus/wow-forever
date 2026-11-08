@@ -7,7 +7,7 @@ const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
 // Das Namensband startet sofort beim Klick und deckt den Aufbau des Loadouts ab.
 const SWAP_MS = 1700;
 
-const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
+const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
 const narrow = matchMedia('(max-width: 760px)');
 let pref3d = null;
@@ -28,13 +28,15 @@ function want3d() {
   return !matchMedia('(pointer: coarse)').matches && !navigator.connection?.saveData;
 }
 
-init();
+// Die Gildenseite (gilde.html) nutzt die Hilfen dieser Datei und startet mit guild.js selbst.
+if (document.getElementById('tiles')) init();
 
 async function init() {
   const optional = (f) => fetch(`${f}?t=${Date.now()}`).then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   // Die Zusatzdaten starten parallel, halten aber die Charakterkacheln nicht auf.
   const sessionsPromise = optional('sessions.json');
   const feedPromise = optional('feed.json');
+  const questLogPromise = optional('quest-log.json');
   const talentsPromise = fetch('talents.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   try {
     state.data = await fetch(`data.json?t=${Date.now()}`).then((r) => r.json());
@@ -63,6 +65,8 @@ async function init() {
   renderKpis();
   renderTiles();
   renderGroup();
+  renderCrafts();
+  renderQuests();
   renderLoadout();
   renderRecap();
   renderPrep();
@@ -84,13 +88,14 @@ async function init() {
     renderFeed();
   });
   Promise.all([sessionsReady, feedReady]).then(() => renderRecap());
+  questLogPromise.then((log) => { state.questLog = log.events ?? []; renderQuests(); });
   talentsPromise.then((talents) => {
     state.talents = talents.classes ?? {};
     refreshTalents();
   });
 }
 
-// Stand der Daten. Der Punkt ist grün, solange der stündliche Abruf läuft, und rot ab 2 Stunden Rückstand.
+// Stand der Daten. Der Punkt ist grün, solange der Abruf (alle 15 Minuten) läuft, und rot ab 2 Stunden Rückstand.
 // Ältere Stände zeigen das Datum, damit sie nicht aktuell wirken.
 function renderSync() {
   const t = new Date(state.data.generatedAt);
@@ -109,7 +114,8 @@ function renderSync() {
 // Der aktive Punkt folgt dem Abschnitt unter der Navigation. Die Positionen stehen im Speicher und
 // werden nur neu gemessen, wenn sich die Höhe der Seite ändert. Beim Scrollen liest die Seite kein Layout.
 function setupNav() {
-  const links = [...document.querySelectorAll('.nav-links a')];
+  // Nur Sprungmarken auf dieser Seite. Links zur anderen Seite (Gilde, Gruppe) werden nie aktiv.
+  const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
   const targets = links.map((a) => document.querySelector(a.getAttribute('href')));
   let tops = [];
   const onScroll = () => {
@@ -128,6 +134,25 @@ function setupNav() {
     onScroll();
   }).observe(document.querySelector('main'));
   addEventListener('scroll', onScroll, { passive: true });
+
+  // Passt die Navigation nicht in die Zeile, blendet sie am Rand aus. So sieht man, dass sie seitlich weitergeht.
+  // Beim ersten Überlauf rückt der aktive Punkt ins Bild (Gildenseite: Guild steht ganz rechts).
+  // Die Links werden mit beobachtet: Ihre Breite ändert sich, wenn die Schrift nachlädt oder Session und Prep erscheinen.
+  const bar = document.querySelector('.nav-links');
+  let centered = false;
+  const fade = () => {
+    const more = bar.scrollWidth - bar.clientWidth;
+    if (!centered && more > 1) {
+      centered = true;
+      const cur = bar.querySelector('a.active');
+      if (cur) bar.scrollLeft = cur.offsetLeft - bar.offsetLeft - bar.clientWidth / 2 + cur.offsetWidth / 2;
+    }
+    bar.classList.toggle('fade-l', more > 1 && bar.scrollLeft > 1);
+    bar.classList.toggle('fade-r', more > 1 && bar.scrollLeft < more - 1);
+  };
+  bar.addEventListener('scroll', fade, { passive: true });
+  const ro = new ResizeObserver(fade);
+  [bar, ...bar.children].forEach((el) => ro.observe(el));
 }
 
 function setup3dToggle() {
@@ -158,8 +183,15 @@ function renderKpis() {
   const ok = state.chars.filter((c) => c.level);
   document.getElementById('kpis').innerHTML = [
     tempoKpi(),
+    avgKpi(ok),
     hoursKpi(ok),
   ].join('');
+}
+
+// Durchschnittslevel der Gruppe, wie auf der Gildenseite. Vor dem Start (Retail-Charaktere) zählt es nicht.
+function avgKpi(chars) {
+  if (!chars.length || state.data.era === 'retail') return kpi('?', 'Ø Level', 'txt');
+  return kpi(fmtDec(chars.reduce((s, c) => s + c.level, 0) / chars.length), 'Ø Level');
 }
 
 function launchTime() { return state.data.launch ? new Date(`${state.data.launch}T00:00:00`).getTime() : null; }
@@ -199,12 +231,17 @@ function hoursKpi(chars) {
 }
 
 // Tempo: durchschnittlicher Level-Zuwachs je gemeinsamer Session (letzte 10 Sessions).
+// Die Baseline (Sessions vor der Erkennung, config sessionBaseline) zählt mit, solange es weniger als 10 erkannte Sessions gibt.
 function tempoKpi() {
   if (!state.sessions) return kpi('…', 'Level pro Session', 'txt');
   const list = (state.sessions.list ?? []).slice(-10);
-  if (!list.length) return kpi('neu', 'Level pro Session', 'txt');
-  const avg = list.reduce((s, x) => s + x.gain, 0) / list.length;
-  return kpi(fmtDec(avg), `Level pro Session · ${list.length}×`);
+  const base = list.length < 10 ? state.sessions.baseline : null;
+  const count = list.length + (base?.count ?? 0);
+  const total = (state.sessions.list ?? []).length + (state.sessions.baseline?.count ?? 0);
+  // Vor der ersten gemeinsamen Session gibt es kein Tempo. Die Kennzahl zählt dann die Sessions.
+  if (!count) return kpi('0', 'Gemeinsame Sessions', 'txt');
+  const avg = (list.reduce((s, x) => s + x.gain, 0) + (base?.levels ?? 0)) / count;
+  return kpi(fmtDec(avg), `Level pro Session · ${total}×`);
 }
 
 // Anteil der Spielzeit bis 60 in Prozent, laut Referenzkurve.
@@ -233,7 +270,18 @@ function renderTiles() {
   el.innerHTML = state.chars.map((c, i) => tileHtml(c, i)).join('');
   el.querySelectorAll('.tile[data-key]').forEach((t) => t.addEventListener('click', () => { workerVoice(t.dataset.key); select(t.dataset.key); }));
   el.querySelectorAll('img').forEach(imgFallback);
+  showSelectedTile();
   if (state.use3d) mountTiles();
+}
+
+// Auf dem Handy laufen die Kacheln seitlich. Die gewählte Kachel steht dann im Bild, nicht hinter dem Rand.
+function showSelectedTile(smooth = false) {
+  const row = document.getElementById('tiles');
+  const tile = row.querySelector('.tile.selected');
+  if (!tile || row.scrollWidth <= row.clientWidth) return;
+  const left = tile.offsetLeft - row.offsetLeft - parseFloat(getComputedStyle(row).scrollPaddingLeft || 0);
+  const inView = tile.offsetLeft - row.offsetLeft >= row.scrollLeft && tile.offsetLeft - row.offsetLeft + tile.offsetWidth <= row.scrollLeft + row.clientWidth;
+  if (!inView) row.scrollTo({ left, behavior: smooth ? 'smooth' : 'auto' });
 }
 
 function tileHtml(c, i) {
@@ -245,9 +293,10 @@ function tileHtml(c, i) {
   }
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;
   return `<button type="button" class="tile ${c.key === state.selected ? 'selected' : ''}" data-key="${esc(c.key)}" style="--cls:${color};--i:${i}" aria-label="${esc(fullName(c))} auswählen">
+    ${stageFxHtml()}
     <span class="sweep"></span>
     <span class="top"><span class="role">${role.label.toUpperCase()}</span><span class="ago">${c.lastLogin ? ago(c.lastLogin) : ''}</span></span>
-    <span class="stage" data-stage="${esc(c.key)}">${c.render ? `<img class="render" src="${esc(c.render)}" alt="" fetchpriority="high">` : ''}</span>
+    <span class="stage" data-stage="${esc(c.key)}">${stageImg(c, 'fetchpriority="high"')}</span>
     <span class="info">
       <span class="name">${nameHtml(c)}</span>
       <span class="spec">${esc(c.spec || '')} ${esc(c.className || '')}${c.stale ? ' · alter Stand' : ''}</span>
@@ -280,7 +329,7 @@ async function mountTiles() {
       v.charKey = c.key;
       state.tileViewers.push(v);
       if (document.body.classList.contains('lust')) fight(v);
-      stage.querySelector('img.render')?.remove();
+      stage.querySelector('img.render, img.stage-icon')?.remove();
       stage.classList.remove('loading-3d');
       hideBand(band);
     } catch (err) {
@@ -290,6 +339,21 @@ async function mountTiles() {
       console.warn('3D nicht verfügbar:', err.message);
     }
   }
+}
+
+// Bild auf der Bühne: der 2D-Render, ohne Render das große Klassen-Icon. So bleibt die Bühne nie leer (3D aus, Handy).
+function stageImg(c, attrs = '') {
+  return c.render
+    ? `<img class="render" src="${esc(c.render)}" alt="" ${attrs}>`
+    : `<img class="stage-icon" src="${classIcon(c.classId, 'large')}" alt="" ${attrs}>`;
+}
+
+// Bühne hinter dem Modell (Kachel und Gilden-Detail): pulsierender Schein in Klassenfarbe und Glühwürmchen,
+// die langsam aufsteigen. Alles bewegt sich nur per transform und opacity (siehe style.css, .stage-fx).
+function stageFxHtml() {
+  const r = (a, b) => (a + Math.random() * (b - a)).toFixed(1);
+  const flies = Array.from({ length: 14 }, () => `<i class="fly" style="left:${r(6, 94)}%;top:${r(45, 92)}%;--s:${r(2, 4.5)}px;--x:${r(-26, 26)}px;--d:${r(7, 13)}s;--w:-${r(0, 13)}s"></i>`).join('');
+  return `<span class="stage-fx" aria-hidden="true"><i class="stage-glow"></i>${flies}</span>`;
 }
 
 // Schräger Balken statt des 2D-Renders, solange das 3D-Modell lädt.
@@ -314,6 +378,7 @@ function select(key) {
   state.selected = key;
   try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
+  showSelectedTile(true);
   swapBand();
   el.scrollIntoView({ behavior: 'smooth' });
   // Zwei Bilder geben dem Band Zeit, sichtbar zu werden, bevor das Loadout neu aufgebaut wird.
@@ -456,7 +521,7 @@ function bloodlust() {
 
 // Im Rausch laufen Scan-Linie, Titel-Glanz, Kachel-Schimmer und Sync-Punkt schneller.
 // Das Tempo ändert sich über die Web Animations API. Eine neue animation-duration würde die Animationen springen lassen.
-const LUST_TEMPO = { scan: 5, shimmer: 5.7, sweep: 5, blink: 4 };
+const LUST_TEMPO = { scan: 5, shimmer: 5.7, sweep: 5, blink: 4, 'glow-pulse': 3, firefly: 2.5 };
 function lustTempo(on) {
   for (const a of document.getAnimations()) {
     const rate = LUST_TEMPO[a.animationName];
@@ -500,12 +565,10 @@ function calm(v) {
 
 
 // ---------------------------------------------------------------------------
-// Gruppe: Buffs, Tools und Berufe
+// Gruppe: Buffs und Tools
 
-// Buffs, Tools und Berufe in einer Kachel: je Eintrag eine Zeile, rechts die Charaktere als Tags.
-const GATHERING = ['Kräuterkunde', 'Bergbau', 'Kürschnerei'];
-const SECONDARY = ['Kochkunst', 'Angeln', 'Erste Hilfe'];
-const PROF_RANK_NAMES = { 75: 'Lehrling', 150: 'Geselle', 225: 'Experte', 300: 'Fachmann' };
+// Buffs und Tools in einer Kachel: je Eintrag eine Zeile, rechts die Charaktere als Tags.
+// Berufe stehen hier nicht: Der Squad kennt sie, im Loadout stehen sie je Charakter.
 
 function renderGroup() {
   const ok = state.chars.filter((c) => c.level);
@@ -540,44 +603,328 @@ function renderGroup() {
   const buffs = entries(M.BUFFS, (e) => e.effect);
   const tools = entries(M.TOOLS, (e) => classNames(e.classes));
 
-  // Berufe: der Tooltip am Tag zeigt Punkte, Stufe und nächsten Schritt.
-  const profTip = (c, p, name) => {
-    const rank = PROF_RANK_NAMES[p.max];
-    const next = M.PROF_RANKS[p.max];
-    const step = p.skill < p.max ? `noch ${p.max - p.skill} Punkte bis ${p.max}`
-      : next ? `Stufe voll · ${next[0]} ab Level ${next[1]}` : 'Maximum erreicht';
-    return `${fullName(c)} · ${name}\n${p.skill} / ${p.max}${rank ? ` · ${rank}` : ''}\n${step}`;
-  };
-  const profList = [...new Set([...M.PRIMARY_PROFESSIONS, ...ok.flatMap((c) => (c.professions ?? []).map((p) => profName(p.name)))])];
-  const profRows = [];
-  const missProfs = [];
-  for (const name of profList) {
-    const has = ok.map((c) => [c, c.professions?.find((p) => profName(p.name) === name)]).filter(([, p]) => p)
-      .sort((x, y) => (y[1].skill ?? 0) - (x[1].skill ?? 0));
-    if (!has.length) {
-      if (M.PRIMARY_PROFESSIONS.includes(name)) missProfs.push(name);
-      continue;
-    }
-    const kind = SECONDARY.includes(name) ? 'Sekundär' : GATHERING.includes(name) ? 'Sammeln' : 'Herstellen';
-    profRows.push([kind === 'Sekundär' ? 2 : kind === 'Sammeln' ? 0 : 1, row(name, kind, has.map(([c]) => c),
-      has.map(([c, p]) => tag(c, profTip(c, p, name))).join(''), '',
-      `${name} · ${kind}\n${has.map(([c, p]) => `${fullName(c)} ${p.skill} / ${p.max}`).join('\n')}`)]);
-  }
-  profRows.sort((x, y) => x[0] - y[0]);
-  const primaryHave = M.PRIMARY_PROFESSIONS.length - missProfs.length;
-
   const col = (title, rows, count, miss) => {
     const tip = miss.length ? `Fehlt in der Gruppe\n${miss.join('\n')}` : 'Alles da';
     return `<div class="gcol"><div class="gsec"><span>${title}</span><b class="gcount" tabindex="0" data-tip="${esc(tip)}" data-tip-plain>${count}</b></div>${rows.join('')}</div>`;
   };
 
-  document.getElementById('group-count').textContent = `${buffs.length + tools.length + primaryHave} / ${M.BUFFS.length + M.TOOLS.length + M.PRIMARY_PROFESSIONS.length} abgedeckt`;
+  document.getElementById('group-count').textContent = `${buffs.length + tools.length} / ${M.BUFFS.length + M.TOOLS.length} abgedeckt`;
   const el = document.getElementById('group');
   el.innerHTML = `<div class="g3">
       ${col('Buffs', buffs, `${buffs.length} / ${M.BUFFS.length}`, buffs.miss)}
       ${col('Tools', tools, `${tools.length} / ${M.TOOLS.length}`, tools.miss)}
-      ${col('Berufe', profRows.map(([, r]) => r), `${primaryHave} / ${M.PRIMARY_PROFESSIONS.length}`, missProfs)}
     </div>`;
+}
+
+// ---------------------------------------------------------------------------
+// Herstellen: Was kann der Squad füreinander herstellen? Grundlage sind nur die gelernten Rezepte (state.data.crafts, buildCrafts in fetch.mjs).
+// 1. Ausrüstung: Ein Item zählt, wenn der Charakter es tragen kann und seine Werte für Klasse und Rolle besser sind als im Slot.
+//    Liegt das Mindestlevel bis zu 3 Level über dem Charakter, steht es als „bald“ in der Liste.
+// 2. Verbesserungen: Verzauberungen, Rüstungssets und Zielfernrohre für angelegte Items ohne Verzauberung.
+
+// Inventartyp des Items → Slots der Ausrüstung.
+const CRAFT_SLOTS = {
+  HEAD: ['HEAD'], NECK: ['NECK'], SHOULDER: ['SHOULDER'], CLOAK: ['BACK'], CHEST: ['CHEST'], ROBE: ['CHEST'], WRIST: ['WRIST'], HAND: ['HANDS'],
+  WAIST: ['WAIST'], LEGS: ['LEGS'], FEET: ['FEET'], FINGER: ['FINGER_1', 'FINGER_2'], TRINKET: ['TRINKET_1', 'TRINKET_2'],
+  WEAPON: ['MAIN_HAND'], WEAPONMAINHAND: ['MAIN_HAND'], TWOHWEAPON: ['MAIN_HAND'], WEAPONOFFHAND: ['OFF_HAND'], SHIELD: ['OFF_HAND'], HOLDABLE: ['OFF_HAND'],
+  RANGED: ['RANGED'], RANGEDRIGHT: ['RANGED'], THROWN: ['RANGED'],
+};
+// Waffenfertigkeiten je Klasse wie in Classic (Unterklassen der Waffen: 0 Axt, 1 Zweihandaxt, 2 Bogen, 3 Gewehr, 4 Streitkolben,
+// 5 Zweihandstreitkolben, 6 Stangenwaffe, 7 Schwert, 8 Zweihandschwert, 10 Stab, 13 Faustwaffe, 15 Dolch, 16 Wurfwaffe, 18 Armbrust, 19 Zauberstab).
+const WEAPON_SKILLS = {
+  1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 15, 16, 18], 2: [0, 1, 4, 5, 6, 7, 8], 3: [0, 1, 2, 3, 6, 7, 8, 10, 13, 15, 16, 18],
+  4: [2, 3, 4, 7, 13, 15, 16, 18], 5: [4, 10, 15, 19], 7: [0, 1, 4, 5, 10, 13, 15], 8: [7, 10, 15, 19], 9: [7, 10, 15, 19], 11: [4, 5, 10, 13, 15],
+};
+// Gewichte der Werte je Spielweise: Wie viel ist 1 Punkt wert, gemessen an 1 Punkt des Hauptwerts. Grobe Erfahrungswerte fürs Leveln.
+// Rüstung zählt wenig, Waffenschaden pro Sekunde (dps) viel. Unbekannte Werte zählen nicht.
+const STAT_WEIGHTS = {
+  str: { STRENGTH: 1, AGILITY: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.05, SPIRIT: 0.05, armor: 0.01, dps: 3 },
+  tank: { STRENGTH: 0.7, AGILITY: 0.6, STAMINA: 1, ATTACK_POWER: 0.3, INTELLECT: 0.05, SPIRIT: 0.05, EXTRA_ARMOR: 0.05, armor: 0.04, dps: 2 },
+  agi: { AGILITY: 1, STRENGTH: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.1, SPIRIT: 0.05, armor: 0.01, dps: 3 },
+  hunter: { AGILITY: 1, INTELLECT: 0.4, STAMINA: 0.5, ATTACK_POWER: 0.45, STRENGTH: 0.1, SPIRIT: 0.1, armor: 0.01, dps: 1.5 },
+  caster: { INTELLECT: 1, SPIRIT: 0.6, STAMINA: 0.5, SPELL_POWER: 1.2, SPELL_DAMAGE_DONE: 1.2, SPELL_HEALING_DONE: 0.3, armor: 0.005, dps: 0.2 },
+  healer: { INTELLECT: 1, SPIRIT: 0.8, STAMINA: 0.4, SPELL_HEALING_DONE: 1, SPELL_POWER: 1, SPELL_DAMAGE_DONE: 0.3, armor: 0.005, dps: 0.2 },
+};
+const SLOT_LABELS = Object.fromEntries([...SLOTS_LEFT, ...SLOTS_RIGHT]);
+// Diese Werte zeigt die Seite als Unterschied. Rüstung nur, wenn sie für die Spielweise zählt.
+const STAT_SHORT = { STRENGTH: 'Stä', AGILITY: 'Bew', STAMINA: 'Aus', INTELLECT: 'Int', SPIRIT: 'Wil', ATTACK_POWER: 'AP', SPELL_POWER: 'ZM', SPELL_DAMAGE_DONE: 'ZS', SPELL_HEALING_DONE: 'Heil', armor: 'Rüst', dps: 'DPS' };
+
+function playstyle(c) {
+  if (c.role === 'HEALING') return 'healer';
+  if (c.role === 'TANK') return 'tank';
+  const spec = (c.spec ?? '').toLowerCase();
+  if (c.classId === 3) return 'hunter';
+  if (c.classId === 4) return 'agi';
+  if (c.classId === 11) return /wild/.test(spec) ? 'agi' : 'caster';
+  if (c.classId === 7) return /verstärk/.test(spec) ? 'str' : 'caster';
+  if ([5, 8, 9].includes(c.classId)) return 'caster';
+  return 'str';
+}
+
+// Wert eines Items für den Charakter. Ohne Werte (alter Datenstand) zählt das Itemlevel.
+function itemScore(c, it) {
+  if (!it) return 0;
+  if (!it.stats) return it.ilvl ?? 0;
+  const w = STAT_WEIGHTS[playstyle(c)];
+  let score = (it.armor ?? 0) * (w.armor ?? 0) + (it.dps ?? 0) * (w.dps ?? 0);
+  for (const [k, v] of Object.entries(it.stats)) score += v * (w[k] ?? 0);
+  return score;
+}
+
+// Unterschied neu minus alt je Wert, nur Werte, die für die Spielweise zählen. Größter Gewinn zuerst.
+function statDiff(c, neu, alt) {
+  const w = STAT_WEIGHTS[playstyle(c)];
+  const keys = new Set([...Object.keys(neu.stats ?? {}), ...Object.keys(alt?.stats ?? {}), 'armor', 'dps']);
+  const out = [];
+  for (const k of keys) {
+    const a = k === 'armor' || k === 'dps' ? (neu[k] ?? 0) : (neu.stats?.[k] ?? 0);
+    const b = k === 'armor' || k === 'dps' ? (alt?.[k] ?? 0) : (alt?.stats?.[k] ?? 0);
+    const d = Math.round((a - b) * 10) / 10;
+    if (!d || !(w[k] >= 0.1 || (k === 'armor' && w.armor >= 0.04))) continue;
+    out.push([k, d, d * (w[k] ?? 0)]);
+  }
+  return out.sort((x, y) => y[2] - x[2]);
+}
+function statName(k) { return k === 'armor' ? 'Rüstung' : k === 'dps' ? 'Schaden pro Sekunde' : state.data.statNames?.[k] ?? k; }
+
+// Rüstungsarten: Stoff alle, Leder alle außer Stoffträgern, Kette und Platte je nach Klasse, Kette für Jäger und Schamanen und Platte erst ab 40.
+function canWear(c, it) {
+  if (it.cls === 2) return (WEAPON_SKILLS[c.classId] ?? []).includes(it.sub);
+  const id = c.classId;
+  switch (it.sub) {
+    case 0: case 1: return true;
+    case 2: return ![5, 8, 9].includes(id);
+    case 3: return [1, 2].includes(id) || ([3, 7].includes(id) && c.level >= 40);
+    case 4: return [1, 2].includes(id) && c.level >= 40;
+    case 6: return [1, 2, 7].includes(id);
+    default: return false;
+  }
+}
+
+// Je Charakter: beste Ausrüstung je Slot (größter Gewinn zuerst) und mögliche Verbesserungen je Slot.
+function craftUpgrades() {
+  const crafts = state.data.crafts ?? [];
+  const ok = state.chars.filter((c) => c.level);
+  return ok.map((c) => {
+    const items = new Map((c.items ?? []).map((i) => [i.slot, i]));
+    // Kandidaten je Slot. Jetzt tragbar vor „bald“, dann größter Gewinn. Dasselbe Item von mehreren Herstellern zählt einmal.
+    const bySlot = new Map();
+    for (const cr of crafts.filter((x) => x.item)) {
+      const it = cr.item;
+      if (!canWear(c, it) || it.req > c.level + 3) continue;
+      if (it.inv === 'TWOHWEAPON' && items.has('OFF_HAND')) continue;
+      // Ringe und Schmuck: der schwächere der beiden Slots. Schurken tragen zwei Waffen, dort zählt die schwächere Hand.
+      let slots = CRAFT_SLOTS[it.inv] ?? [];
+      if (it.inv === 'WEAPON' && c.classId === 4) slots = ['MAIN_HAND', 'OFF_HAND'];
+      const slot = [...slots].sort((x, y) => itemScore(c, items.get(x)) - itemScore(c, items.get(y)))[0];
+      if (!slot || (c.items ?? []).some((x) => x.id === it.id)) continue;
+      const cur = items.get(slot);
+      const gain = itemScore(c, it) - itemScore(c, cur);
+      // Kleine Unterschiede (unter einem halben Punkt Hauptwert) lohnen das Herstellen nicht.
+      if (gain < 0.5) continue;
+      if (!bySlot.has(slot)) bySlot.set(slot, new Map());
+      const same = bySlot.get(slot).get(it.id);
+      if (same) { same.by.push(cr.by); continue; }
+      bySlot.get(slot).set(it.id, { slot, craft: cr, by: [cr.by], gain, diff: statDiff(c, it, cur), soon: it.req > c.level, cur });
+    }
+    const best = [...bySlot.values()].map((m) => {
+      const [top, ...rest] = [...m.values()].sort((x, y) => x.soon - y.soon || y.gain - x.gain);
+      return { ...top, others: rest };
+    });
+    // Verbesserungen nur für angelegte Items ohne Verzauberung, je Slot mit allen Möglichkeiten. Ein Item mit Mindestlevel zählt erst ab diesem Level.
+    const enhance = new Map();
+    for (const cr of crafts.filter((x) => x.enhance)) {
+      if ((cr.enhance.req ?? 0) > c.level) continue;
+      for (const slot of cr.enhance.slots) {
+        const cur = items.get(slot);
+        if (!cur || cur.enchants?.length) continue;
+        if (!enhance.has(slot)) enhance.set(slot, new Map());
+        const key = cr.enhance.id ?? cr.enhance.name;
+        const m = enhance.get(slot);
+        if (m.has(key)) m.get(key).by.push(cr.by); else m.set(key, { ...cr.enhance, by: [cr.by] });
+      }
+    }
+    // Slots mit denselben Möglichkeiten (Rüstungsset für Brust, Beine, Hände, Füße) stehen in einer Zeile. Die beste Möglichkeit zuerst.
+    const rows = new Map();
+    for (const [slot, m] of enhance) {
+      const opts = [...m.values()].sort((a, b) => (b.req ?? 0) - (a.req ?? 0) || (b.ilvl ?? 0) - (a.ilvl ?? 0));
+      const key = opts.map((o) => o.id ?? o.name).join('|');
+      if (rows.has(key)) rows.get(key)[0].push(slot); else rows.set(key, [[slot], opts]);
+    }
+    return { c, items: best.sort((a, b) => a.soon - b.soon || b.gain - a.gain), enhance: [...rows.values()] };
+  });
+}
+
+// Crafting als eine Liste gleich großer Zeilen. Jede Zeile beginnt mit dem Hersteller, dann der Empfänger: „Bernhard → Lokk“.
+// Sortiert nach Hersteller, dann nach Gewinn. Verbesserungen, die mehrere bekommen können (Rüstungsset), stehen einmal mit allen Empfängern.
+function craftRows() {
+  const order = new Map(state.chars.map((c, i) => [c.key, i]));
+  const rows = [];
+  const enh = new Map();
+  for (const { c, items, enhance } of craftUpgrades()) {
+    for (const x of items) rows.push({ kind: 'item', ...x, by: [...new Set(x.by)], to: [c.key] });
+    for (const [slots, opts] of enhance) {
+      const key = opts.map((o) => o.id ?? o.name).join('|');
+      if (!enh.has(key)) enh.set(key, { kind: 'enhance', by: [...new Set(opts.flatMap((o) => o.by))], to: [], slotsOf: {}, opts, gain: 0, soon: false });
+      const r = enh.get(key);
+      r.to.push(c.key);
+      r.slotsOf[c.key] = slots;
+    }
+  }
+  rows.push(...enh.values());
+  // Wer selbst herstellen kann, steht als Hersteller vorne. So gruppiert die Liste nach dem, der die Arbeit macht.
+  const lead = (r) => (r.kind === 'item' && r.by.includes(r.to[0]) ? r.to[0] : [...r.by].sort((x, y) => order.get(x) - order.get(y))[0]);
+  return rows.map((r) => ({ ...r, lead: lead(r) }))
+    .sort((a, b) => order.get(a.lead) - order.get(b.lead) || a.soon - b.soon || (a.kind === 'enhance') - (b.kind === 'enhance') || b.gain - a.gain);
+}
+
+function renderCrafts() {
+  const rows = craftRows();
+  const now = rows.filter((r) => !r.soon).length;
+  document.getElementById('craft-count').textContent = now ? plural(now, 'Upgrade', 'Upgrades') : 'nichts offen';
+  const el = document.getElementById('crafts');
+  if (!rows.length) {
+    el.innerHTML = `<p class="craft-none">${(state.data.crafts ?? []).length ? 'Im Moment kann niemand im Squad einen Slot verbessern.' : 'Noch kann niemand im Squad tragbare Ausrüstung herstellen.'}</p>`;
+    return;
+  }
+  const tag = (key) => { const c = charByKey(key); return `<span class="tag" style="--cls:${classColor(c)}">${esc(c.name ?? key)}</span>`; };
+  const icon = (it) => link(it, `<img class="ico sm b-${(it.quality || 'COMMON').toLowerCase()}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">`);
+  const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
+  // Hersteller links, Empfänger rechts vom Pfeil: „Bernhard → Lokk“, „Lokk → selbst“, „Bernhard → alle“ (alle im Squad).
+  const squad = state.chars.filter((c) => c.level).length;
+  const who = (r) => {
+    const self = r.kind === 'item' && r.by.includes(r.to[0]);
+    const to = self ? '<span class="tag craft-self">selbst</span>'
+      : r.to.length === squad && squad > 2 ? '<span class="tag craft-all">alle</span>' : r.to.map(tag).join('');
+    return `<span class="craft-who">${tag(r.lead)}<span class="craft-arrow">→</span>${to}</span>`;
+  };
+  const itemRow = (r) => {
+    const it = r.craft.item;
+    const q = (it.quality || 'COMMON').toLowerCase();
+    const tip = [it.name, [it.subName, `iLvl ${it.ilvl}`, `ab Level ${it.req}`].filter(Boolean).join(' · '),
+      r.diff.length ? `Gegenüber jetzt: ${r.diff.map(([k, d]) => `${fmt(d)} ${statName(k)}`).join(', ')}` : '',
+      r.cur ? `Jetzt: ${r.cur.name} (iLvl ${r.cur.ilvl ?? '?'})` : 'Jetzt: leer', `Material: ${r.craft.reagents.map(([n, k]) => `${k}× ${n}`).join(', ')}`,
+      r.others.length ? `Auch möglich: ${r.others.map((o) => o.craft.item.name).join(', ')}` : ''].filter(Boolean).join('\n');
+    const chips = r.diff.slice(0, 2).map(([k, d]) => `<span class="${d > 0 ? 'up' : 'down'}">${fmt(d)} ${STAT_SHORT[k] ?? statName(k)}</span>`).join('');
+    return `<div class="craft${r.soon ? ' soon' : ''}" tabindex="0" data-tip="${esc(tip)}">
+      ${who(r)}
+      <span class="craft-item">${icon(it)}<span class="craft-txt"><span class="q-${q}">${esc(it.name)}</span>
+        <small>${esc(SLOT_LABELS[r.slot] ?? r.slot)}${r.soon ? ` · ab Level ${it.req}` : ''}</small></span><span class="craft-diff">${chips}</span></span></div>`;
+  };
+  const enhanceRow = (r) => {
+    const best = r.opts[0];
+    const slots = [...new Set(Object.values(r.slotsOf).flat())].map((x) => SLOT_LABELS[x] ?? x);
+    const tip = [best.name, ...r.to.map((k) => `${charByKey(k).name}: ${r.slotsOf[k].map((x) => SLOT_LABELS[x] ?? x).join(', ')}`),
+      ...r.opts.slice(0, 6).map((o) => `${o.name}${o.desc ? `: ${o.desc.replace(/^Benutzen: /, '').replace(/ \(.*?Abklingzeit\)/, '')}` : ''}`)].join('\n');
+    const ico = best.icon ? icon(best) : `<span class="ench-ico">${feedIcon(FEED_ICONS.prof.Verzauberkunst)}</span>`;
+    return `<div class="craft ench" tabindex="0" data-tip="${esc(tip)}">
+      ${who(r)}
+      <span class="craft-item">${ico}<span class="craft-txt"><span>${esc(best.name)}</span>
+        <small>${esc(slots.join(', '))}${r.opts.length > 1 ? ` · ${plural(r.opts.length - 1, 'weitere Möglichkeit', 'weitere Möglichkeiten')}` : ''}</small></span></span></div>`;
+  };
+  el.innerHTML = `<div class="craft-list">${rows.map((r) => (r.kind === 'item' ? itemRow(r) : enhanceRow(r))).join('')}</div>`;
+  el.querySelectorAll('img').forEach(imgFallback);
+  window.$WowheadPower?.refreshLinks?.();
+}
+
+// Hinweis auf der Karte im Loadout: Diesen Slot kann jemand im Squad besser herstellen. Nennt den größten Gewinn.
+function craftHints(c) {
+  const mine = craftUpgrades().find((x) => x.c.key === c.key);
+  const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
+  return new Map((mine?.items ?? []).filter((x) => !x.soon).map((x) => {
+    const who = x.by.includes(c.key) ? 'Selbst herstellen' : `${charByKey(x.by[0]).name} stellt her`;
+    const d = x.diff[0];
+    return [x.slot, `${who}${d ? `: ${fmt(d[1])} ${statName(d[0])}` : ''}`];
+  }));
+}
+
+// ---------------------------------------------------------------------------
+// Quests: nur „Verpasst“. Was andere im Log abgestimmt haben, klärt der Squad live.
+// Je Charakter eine Karte mit den Quests, die andere abgeschlossen haben, seit er zuletzt online war (Quest-Verlauf aus fetch.mjs).
+// Quests ohne Zone (Klassen- und Berufsquests) betreffen nur einen Charakter und zählen nicht. Gleiche Titel in einer Zone stehen einmal.
+// Eine Quest lässt sich je Charakter ignorieren (×). Das merkt sich nur dieser Browser (localStorage), die Seite hat keinen Server.
+
+const QUEST_IGNORE_KEY = 'questIgnore';
+function questIgnored() {
+  try { return new Set(JSON.parse(localStorage.getItem(QUEST_IGNORE_KEY) ?? '[]')); } catch { return new Set(); }
+}
+function saveQuestIgnored(set) {
+  try { localStorage.setItem(QUEST_IGNORE_KEY, JSON.stringify([...set])); } catch {}
+}
+
+function questMissed() {
+  const info = state.data.questInfo ?? {};
+  const chars = state.chars.filter((c) => c.level && c.quests);
+  const ignored = questIgnored();
+  let hidden = 0;
+  const list = chars.map((c) => {
+    const since = c.lastLogin ?? 0;
+    const done = new Set(c.quests.done);
+    const map = new Map();
+    for (const e of state.questLog) {
+      if (e.t <= since || e.key === c.key || !info[e.id]?.z || done.has(e.id)) continue;
+      // Schlüssel aus Charakter, Zone und Titel. So gilt „ignorieren“ auch für Varianten derselben Quest.
+      const k = `${c.key}|${info[e.id].z}|${info[e.id].t}`;
+      if (!map.has(k)) map.set(k, { id: e.id, key: k, by: new Set() });
+      map.get(k).by.add(e.key);
+    }
+    const all = [...map.values()];
+    hidden += all.filter((x) => ignored.has(x.key)).length;
+    return { c, since, list: all.filter((x) => !ignored.has(x.key)).map((x) => ({ ...x, by: [...x.by] })) };
+  }).filter((x) => x.list.length).sort((a, b) => b.list.length - a.list.length);
+  return { list, hidden };
+}
+
+function renderQuests() {
+  const el = document.getElementById('quests');
+  const info = state.data.questInfo ?? {};
+  const has = state.chars.some((c) => c.level && c.quests);
+  document.getElementById('quests-panel').hidden = !has;
+  document.getElementById('nav-quests').hidden = !has;
+  if (!has) return;
+  const { list: missed, hidden } = questMissed();
+  document.getElementById('quests-note').textContent = missed.length ? `${plural(missed.length, 'Charakter', 'Charaktere')} mit verpassten Quests` : '';
+  const restore = hidden ? `<button type="button" class="q-restore">${plural(hidden, 'ignorierte Quest', 'ignorierte Quests')} wieder zeigen</button>` : '';
+  const bind = () => {
+    el.querySelectorAll('.q-x').forEach((b) => b.addEventListener('click', () => {
+      const set = questIgnored();
+      set.add(b.dataset.ign);
+      saveQuestIgnored(set);
+      hideTip();
+      renderQuests();
+    }));
+    el.querySelector('.q-restore')?.addEventListener('click', () => { saveQuestIgnored(new Set()); renderQuests(); });
+  };
+  if (!missed.length) { el.innerHTML = `<p class="q-empty">Niemand hat etwas verpasst.</p>${restore}`; bind(); return; }
+
+  const tag = (key) => { const c = charByKey(key); return `<span class="tag" style="--cls:${classColor(c)}">${esc(c.name)}</span>`; };
+  const row = (q) => `<div class="q-row"><a href="${wh(state.data.wowhead, `quest=${q.id}`)}" target="_blank" rel="noopener">${esc(info[q.id].t)}</a>
+    <span class="tags">${q.by.map(tag).join('')}<button type="button" class="q-x" data-ign="${esc(q.key)}" aria-label="${esc(info[q.id].t)} ignorieren" title="Ignorieren">×</button></span></div>`;
+  // Je Karte nach Zonen, Zonen mit den meisten Quests zuerst. Ab 8 Quests klappt der Rest auf.
+  const card = ({ c, since, list }) => {
+    const zones = new Map();
+    for (const q of list) { const z = info[q.id].z; if (!zones.has(z)) zones.set(z, []); zones.get(z).push(q); }
+    const groups = [...zones].sort((a, b) => b[1].length - a[1].length);
+    let left = 8;
+    const shown = [];
+    const hidden = [];
+    for (const [z, qs] of groups) {
+      const n = Math.max(0, Math.min(qs.length, left));
+      left -= n;
+      if (n) shown.push([z, qs.slice(0, n)]);
+      if (qs.length > n) hidden.push([z, qs.slice(n)]);
+    }
+    const block = ([z, qs]) => `<div class="q-zone"><span class="q-zname">${esc(z)}</span>${qs.map(row).join('')}</div>`;
+    const rest = hidden.reduce((n, [, qs]) => n + qs.length, 0);
+    return `<article class="q-card" style="--cls:${classColor(c)}">
+      <header><b>${esc(c.name)}</b><span>${plural(list.length, 'Quest', 'Quests')} verpasst</span><small>offline ${ago(since)}</small></header>
+      ${shown.map(block).join('')}
+      ${rest ? `<details class="q-more"><summary>${plural(rest, 'weitere Quest', 'weitere Quests')}</summary>${hidden.map(block).join('')}</details>` : ''}
+    </article>`;
+  };
+  el.innerHTML = `<div class="q-cards">${missed.map(card).join('')}</div>${restore}`;
+  bind();
+  window.$WowheadPower?.refreshLinks?.();
 }
 
 // Hover-Tooltip für alles mit data-tip: Maus zeigt beim Überfahren, Touch und Tastatur per Tippen bzw. Fokus.
@@ -634,8 +981,9 @@ function renderLoadout() {
   const sets = countSets(c.items || []);
   const role = M.ROLES[c.role] ?? M.ROLES.DAMAGE;
   el.style.setProperty('--cls', classColor(c));
-  const slots = [...SLOTS_LEFT, ...SLOTS_RIGHT].filter(([s]) => s !== 'RANGED' || items.has(s));
+  const slots = boardSlots(items);
   const maxIlvl = Math.max(1, ...(c.items ?? []).map((i) => i.ilvl ?? 0));
+  const hints = craftHints(c);
 
   el.innerHTML = `
     <div class="lo-head">
@@ -651,11 +999,24 @@ function renderLoadout() {
       </div>
     </div>
     ${boardKpis(c, items, sets)}
-    <div class="board">${slots.map(([s, l]) => cardHtml(items.get(s), l, maxIlvl)).join('')}</div>
+    ${loInfoHtml(c)}
+    <div class="board">${slots.map(([s, l]) => cardHtml(items.get(s), l, maxIlvl, hints.get(s))).join('')}</div>
     <div class="talent-content" data-key="${esc(c.key)}">${talentsHtml(c)}</div>`;
 
   el.querySelectorAll('img').forEach(imgFallback);
+  focusMainTree(el);
   window.$WowheadPower?.refreshLinks?.();
+}
+
+// Werte und Berufe zwischen Kennzahlen und Ausrüstung, wie im Gilden-Detail unter dem Porträt.
+function loInfoHtml(c) {
+  const stats = statRows(c.stats);
+  const profs = profRows(c);
+  if (!stats && !profs) return '';
+  return `<div class="lo-info">
+    ${stats ? `<div class="gd-sec"><span class="gd-label">Werte</span><dl class="gd-stats lo-stats">${stats}</dl></div>` : ''}
+    ${profs ? `<div class="gd-sec"><span class="gd-label">Berufe</span><div class="gd-profs">${profs}</div></div>` : ''}
+  </div>`;
 }
 
 // Nur die Talentbäume ersetzen, wenn ihre Zusatzdatei nach dem Loadout eintrifft.
@@ -666,7 +1027,52 @@ function refreshTalents() {
   if (!c) return;
   el.innerHTML = talentsHtml(c);
   el.querySelectorAll('img').forEach(imgFallback);
+  focusMainTree(el);
   window.$WowheadPower?.refreshLinks?.();
+}
+
+// Bis 760 px stehen die Bäume nebeneinander zum Wischen. Sichtbar ist zuerst der Baum mit den meisten Punkten.
+function focusMainTree(root) {
+  requestAnimationFrame(() => root.querySelectorAll('.ttrees').forEach((row) => {
+    if (row.scrollWidth <= row.clientWidth) return;
+    const trees = [...row.children];
+    const pts = trees.map((t) => Number(t.querySelector('.ttree-head b')?.textContent) || 0);
+    const main = trees[pts.indexOf(Math.max(...pts))];
+    row.scrollLeft = main ? main.offsetLeft - row.offsetLeft : 0;
+  }));
+}
+
+// Werte aus der Charakter-API (Squad-Loadout und Gilden-Detail). Angriffskraft und Zaubermacht nur, wenn sie zählen. Leere Werte fallen weg.
+function statRows(s) {
+  if (!s) return '';
+  const n = (v) => (v == null ? null : Math.round(v).toLocaleString('de-DE'));
+  const pct = (v) => (v ? `${fmtDec(v)} %` : null);
+  const rows = [
+    ['Gesundheit', n(s.health)],
+    [s.powerType ?? 'Mana', n(s.power)],
+    ['Stärke', n(s.strength)],
+    ['Beweglichkeit', n(s.agility)],
+    ['Ausdauer', n(s.stamina)],
+    ['Intelligenz', n(s.intellect)],
+    ['Willenskraft', n(s.spirit)],
+    ['Rüstung', n(s.armor)],
+    s.spellPower > (s.attackPower ?? 0) ? ['Zaubermacht', n(s.spellPower)] : ['Angriffskraft', n(s.attackPower)],
+    ['Kritisch', pct(s.crit)],
+  ].filter(([, v]) => v != null);
+  return rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
+}
+
+// Berufe mit Skill und Balken (Squad-Loadout und Gilden-Detail).
+function profRows(c) {
+  return (c.professions ?? []).map((p) => {
+    const pct = p.max ? Math.round(((p.skill ?? 0) / p.max) * 100) : 0;
+    return `<div class="gd-prof"><span>${esc(profName(p.name))}</span><b>${p.skill ?? '?'}<small> / ${p.max ?? '?'}</small></b><i class="bar"><i style="width:${pct}%"></i></i></div>`;
+  }).join('');
+}
+
+// Slots auf dem Board. Distanz und Schildhand erscheinen nur mit Item: Zweihandwaffen und Jäger lassen die Schildhand frei.
+function boardSlots(items) {
+  return [...SLOTS_LEFT, ...SLOTS_RIGHT].filter(([s]) => !['RANGED', 'OFF_HAND'].includes(s) || items.has(s));
 }
 
 // Kennzahlen über den Karten: Itemlevel, Set-Teile, verzauberte Slots und der schwächste Slot (leer oder niedrigstes iLvl).
@@ -675,29 +1081,32 @@ function boardKpis(c, items, sets) {
   const enchanted = enchantable.filter((s) => items.get(s).enchants?.length).length;
   const all = [...SLOTS_LEFT, ...SLOTS_RIGHT].filter(([s]) => s !== 'RANGED');
   // Leere Schildhand zählt nicht: Zweihandwaffen und Jäger lassen sie frei.
-  const empty = all.find(([s]) => s !== 'OFF_HAND' && !items.has(s));
+  const empties = all.filter(([s]) => s !== 'OFF_HAND' && !items.has(s));
+  const empty = empties[0];
   const weakest = [...items.values()].filter((i) => i.ilvl != null && i.slot !== 'RANGED').sort((a, b) => a.ilvl - b.ilvl)[0];
   // Haben alle Items dasselbe iLvl, gibt es keinen schwächsten Slot.
   const even = weakest && [...items.values()].every((i) => i.slot === 'RANGED' || i.ilvl === weakest.ilvl);
-  const weakLabel = empty ? empty[1] : even ? 'keiner' : weakest ? all.find(([s]) => s === weakest.slot)?.[1] ?? weakest.slot : '?';
+  const weakLabel = empties.length > 1 ? `${empties.length} Slots` : empty ? empty[1] : even ? 'keiner' : weakest ? all.find(([s]) => s === weakest.slot)?.[1] ?? weakest.slot : '?';
   const kpis = [
     [c.equippedIlvl ?? '?', 'Itemlevel'],
     [sets ? `${sets.count} Teile` : 'keins', 'Set'],
     [`${enchanted} / ${enchantable.length}`, 'Verzaubert'],
-    [weakLabel, empty ? 'Leerer Slot' : even ? 'Schwächster Slot' : `Schwächster · iLvl ${weakest?.ilvl ?? '?'}`],
+    [weakLabel, empties.length > 1 ? 'Leere Slots' : empty ? 'Leerer Slot' : even ? 'Schwächster Slot' : `Schwächster · iLvl ${weakest?.ilvl ?? '?'}`],
   ];
-  return `<div class="board-kpis">${kpis.map(([v, l], i) => `<div class="bk${i === 3 && !even ? ' weak' : ''}"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>`;
+  const tip = empties.length > 1 ? ` title="${esc(empties.map(([, l]) => l).join(', '))}"` : '';
+  return `<div class="board-kpis">${kpis.map(([v, l], i) => `<div class="bk${i === 3 && (empty || !even) ? ' weak' : ''}"${i === 3 ? tip : ''}><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>`;
 }
 
 // Karte je Slot: Rand in Qualitätsfarbe, Balken zeigt das iLvl im Verhältnis zum besten Item des Charakters.
-function cardHtml(it, label, maxIlvl) {
-  if (!it) return `<div class="card empty"><span class="ico"></span><span class="txt"><span class="nm">${label}</span><span class="meta">leer</span></span></div>`;
+function cardHtml(it, label, maxIlvl, hint = null) {
+  const craft = hint ? `<span class="craft-hint">${esc(hint)}</span>` : '';
+  if (!it) return `<div class="card empty"><span class="ico"></span><span class="txt"><span class="nm">${label}</span><span class="meta">leer</span>${craft}</span></div>`;
   const q = (it.quality || 'COMMON').toLowerCase();
   const meta = [label, it.ilvl ? `iLvl ${it.ilvl}` : null].filter(Boolean).join(' · ');
   const ench = it.enchants?.length ? `<span class="en">${esc(it.enchants[0].replace(/^Verzaubert: /, ''))}</span>` : '';
   const pct = it.ilvl ? Math.round((it.ilvl / maxIlvl) * 100) : 0;
   return link(it, `<div class="card c-${q}"><img class="ico b-${q}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">
-    <span class="txt"><span class="nm q-${q}">${esc(it.name)}</span><span class="meta">${meta}</span>${ench}<i class="bar"><i style="width:${pct}%"></i></i></span></div>`);
+    <span class="txt"><span class="nm q-${q}">${esc(it.name)}</span><span class="meta">${meta}</span>${ench}${craft}<i class="bar"><i style="width:${pct}%"></i></i></span></div>`);
 }
 
 // Talente: Classic zeigt die drei Bäume im Raster des Spiels (4 Spalten, 7 Reihen), Retail die Spezialisierung und Heldentalente.
@@ -718,23 +1127,27 @@ function talentsHtml(c) {
   }).join('');
   return `<div class="talents">
     <div class="drow" style="--n:${cells.length}"><span class="dlabel">Talente ${split}</span>${cells.join('')}</div>
-    ${picks || t.calc ? `<div class="talent-list">${picks}${t.calc ? `<a class="tcalc" href="${esc(whDe(t.calc))}" target="_blank" rel="noopener">${t.trees?.length ? 'Rechner der Klasse' : 'Build im Rechner'} ↗</a>` : ''}</div>` : ''}
+    ${picks || t.calc ? `<div class="talent-list">${picks}${t.calc ? `<a class="tcalc" href="${esc(whDe(t.calc))}" target="_blank" rel="noopener">${t.trees?.length ? 'Talentrechner' : 'Build im Talentrechner'} ↗</a>` : ''}</div>` : ''}
   </div>`;
 }
 
 function talentTreesHtml(c, t, layout) {
   // Gewählte Ränge je Talent: zuerst über die Talent-ID, sonst über den Zauber des Rangs.
   const ranks = new Map();
+  const maxRank = new Map(layout.flatMap((tree) => tree.talents.map((x) => [x.id, x.ranks.length || 1])));
   const bySpell = new Map(layout.flatMap((tree) => tree.talents.flatMap((x) => x.ranks.map((s, i) => [s, [x.id, i + 1]]))));
+  // Forever nennt den Zauber von Rang 1 und den Rang getrennt. Darum zählt der höhere der beiden Ränge.
   for (const p of t.picks ?? []) {
     const hit = p.id && layout.some((tree) => tree.talents.some((x) => x.id === p.id)) ? [p.id, p.rank] : bySpell.get(p.spell);
-    if (hit) ranks.set(hit[0], Math.max(ranks.get(hit[0]) ?? 0, hit[1] ?? 1));
+    // Nie mehr als der Höchstrang des Talents, auch wenn die API mehr meldet.
+    if (hit) ranks.set(hit[0], Math.min(maxRank.get(hit[0]) ?? 1, Math.max(ranks.get(hit[0]) ?? 0, hit[1] ?? 1, p.rank ?? 1)));
   }
   const domain = state.data.wowhead || 'classic';
   const points = layout.map((tree) => tree.talents.reduce((a, x) => a + (ranks.get(x.id) ?? 0), 0));
 
   // Rechner-Link mit Build: je Baum die Ränge in Reihenfolge Reihe, Spalte, ohne Nullen am Ende.
-  const build = layout.map((tree) => tree.talents.map((x) => ranks.get(x.id) ?? 0).join('').replace(/0+$/, '')).join('-').replace(/-+$/, '');
+  // Der Forever-Rechner von Wowhead kodiert den Build anders. Dort öffnet der Link den Talentrechner der Klasse ohne Build.
+  const build = domain === 'forever' ? '' : layout.map((tree) => tree.talents.map((x) => ranks.get(x.id) ?? 0).join('').replace(/0+$/, '')).join('-').replace(/-+$/, '');
   const calc = t.calc ? `${whDe(t.calc)}${build ? `/${build}` : ''}` : null;
 
   const trees = layout.map((tree, ti) => {
@@ -764,7 +1177,7 @@ function talentTreesHtml(c, t, layout) {
   return `<div class="talents">
     <div class="talents-head">
       <span class="dlabel">Talente <b class="split">${points.join(' / ')}</b></span>
-      ${calc ? `<a class="tcalc" href="${esc(calc)}" target="_blank" rel="noopener">Build im Rechner ↗</a>` : ''}
+      ${calc ? `<a class="tcalc" href="${esc(calc)}" target="_blank" rel="noopener">${build ? 'Build im Talentrechner' : 'Talentrechner'} ↗</a>` : ''}
     </div>
     <div class="ttrees">${trees}</div>
   </div>`;
@@ -787,11 +1200,13 @@ function countSets(items) {
 
 const QUALITY_NAMES = { EPIC: 'lila', RARE: 'blau', UNCOMMON: 'grün' };
 
+// Erkannte Sessions mit Nummer. Die Nummer zählt die Baseline mit: Nach 2 Sessions aus der Baseline ist die erste erkannte Session Nummer 3.
 function sessionList() {
+  const offset = state.sessions?.baseline?.count ?? 0;
   return (state.sessions?.list ?? []).map((s, i, all) => {
     const from = i ? all[i - 1].end : s.start - 6 * 36e5;
     const items = state.feed.events.filter((e) => e.type === 'item' && e.t > from && e.t <= s.end && s.players.includes(e.key));
-    return { ...s, nr: i + 1, items };
+    return { ...s, nr: offset + i + 1, idx: i, items };
   });
 }
 
@@ -807,7 +1222,7 @@ function renderRecap() {
   const older = list.filter((x) => x !== s).reverse().slice(0, 4);
   document.getElementById('recap').innerHTML = recapCardHtml(s, list) + (older.length ? `<div class="recap-older">${older.map((x) => {
     const aw = awards(x, list)[0];
-    return `<button type="button" class="recap-row" data-idx="${x.nr - 1}">
+    return `<button type="button" class="recap-row" data-idx="${x.idx}">
       <span class="recap-row-top"><b>Session ${x.nr}</b><span class="mono">${fmtDay(x.end)}</span></span>
       <span class="mono recap-sum">${x.items.length} Items${aw ? ` · ${aw.title} ${esc(aw.who.map(charName).join(', '))}` : ''}</span>
     </button>`;
@@ -941,7 +1356,8 @@ function prepTasks(c, range) {
   const crossed = (lv) => from < lv && to >= lv;
   const out = [];
   for (const [lv, text, hot] of M.CLASS_TASKS[c.classId] ?? []) if (crossed(lv)) out.push([text, hot]);
-  if (crossed(40)) out.push(['Reiten lernen', true]);
+  // Forever: Mit dem Reiten gibt es das Reittier dazu. Ab 40 auch die zweite Talentverteilung (Dualspezialisierung).
+  if (crossed(40)) out.push(['Reiten lernen', true], ['Dualspezialisierung freischalten', false]);
   for (const p of c.professions ?? []) {
     const next = M.PROF_RANKS[p.max];
     if (!next || p.skill < p.max - 25 || c.level < next[1]) continue;
@@ -955,7 +1371,7 @@ function prepTasks(c, range) {
 }
 
 // ---------------------------------------------------------------------------
-// Leveling-Route (Classic-Zonen, aktiv ab Forever-Start)
+// Leveling-Route (Forever-Zonen und -Dungeons aus meta.js)
 
 function renderRoute() {
   const ok = state.chars.filter((c) => c.level);
@@ -976,10 +1392,13 @@ function renderRoute() {
   const best = (list) => list.filter(forAll).sort((x, y) => inside(y) - inside(x) || gap(x) - gap(y))[0];
   const tips = new Set(classicLevels && ok.length ? [best(M.ZONES), best(M.DUNGEONS)].filter(Boolean) : []);
 
+  // Ohne Wowhead-ID (neuer Raid ohne Eintrag) steht der Ort ohne Link.
   const place = (x, range, mark = false) => {
     const next = mark && tips.has(x);
-    return `<a class="place${next ? ' next' : ''}" href="${wh('classic', `zone=${x.id}`)}" target="_blank" rel="noopener">
-    <i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? '<em>Als Nächstes</em>' : ''}<span class="rg">${range}</span></a>`;
+    const inner = `<i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? '<em>Als Nächstes</em>' : ''}<span class="rg">${range}</span>`;
+    return x.id
+      ? `<a class="place${next ? ' next' : ''}" href="${wh(state.data.wowhead || 'classic', `zone=${x.id}`)}" target="_blank" rel="noopener">${inner}</a>`
+      : `<span class="place">${inner}</span>`;
   };
 
   const rows = bands.map(([a, b]) => {
@@ -1001,17 +1420,18 @@ function renderRoute() {
     <span class="none route-raids">Raids</span>
   </div>`);
 
-  // Eingeklappt zeigt die Route die Stufen der Gruppe in der Mitte, dazu die Stufe davor und danach.
+  // Eingeklappt zeigt die Route nur die Stufen, in denen jemand aus der Gruppe steht, und die Stufe danach.
+  // Stufen hinter der Gruppe fallen weg, auch zwischen zwei weit auseinander liegenden Charakteren.
   const now = rows.map((r, i) => (r.includes('route-row now') ? i : -1)).filter((i) => i >= 0);
-  const [from, to] = now.length ? [Math.max(0, now[0] - 1), Math.min(rows.length - 1, now.at(-1) + 1)] : [0, rows.length - 1];
-  const hidden = rows.length - (to - from + 1);
-  const visible = state.routeAll ? rows : rows.slice(from, to + 1);
+  const keep = now.length ? new Set([...now, Math.min(rows.length - 1, now.at(-1) + 1)]) : new Set(rows.keys());
+  const hidden = rows.length - keep.size;
+  const visible = state.routeAll ? rows : rows.filter((_, i) => keep.has(i));
   const el = document.getElementById('route');
   el.innerHTML = `<div class="route">
       <div class="route-head"><span>Level</span><span>Zonen</span><span>Dungeons</span></div>
       ${visible.join('')}
     </div>
-    ${hidden ? `<button type="button" class="chip-btn route-more">${state.routeAll ? 'Nur aktuelle Stufen zeigen' : `Ganze Route zeigen · ${hidden} weitere Stufen`}</button>` : ''}`;
+    ${hidden ? `<button type="button" class="chip-btn route-more">${state.routeAll ? 'Nur aktuelle Stufen zeigen' : `Ganze Route zeigen · ${plural(hidden, 'weitere Stufe', 'weitere Stufen')}`}</button>` : ''}`;
   el.querySelector('.route-more')?.addEventListener('click', () => { state.routeAll = !state.routeAll; renderRoute(); });
 }
 
@@ -1035,10 +1455,10 @@ function renderFeed() {
   const shown = [...days].slice(0, state.feedDays);
   const rest = days.size - shown.length;
   const week = events.filter((e) => e.type === 'level' && Date.now() - e.t < 7 * 864e5).reduce((n, e) => n + (e.to - e.from), 0);
-  document.getElementById('feed-note').textContent = week ? `${week} LEVEL IN 7 TAGEN` : `${events.length} EREIGNISSE`;
+  document.getElementById('feed-note').textContent = week ? `${week} LEVEL IN 7 TAGEN` : plural(events.length, 'EREIGNIS', 'EREIGNISSE');
 
   const el = document.getElementById('feed');
-  el.innerHTML = shown.map(([day, list]) => `<div class="feed-day"><h3>${day}<span>${list.length} Ereignisse</span></h3><ul>${list.map(feedItemHtml).join('')}</ul></div>`).join('')
+  el.innerHTML = shown.map(([day, list]) => `<div class="feed-day"><h3>${day}<span>${plural(list.length, 'Ereignis', 'Ereignisse')}</span></h3><ul>${list.map(feedItemHtml).join('')}</ul></div>`).join('')
     + (rest ? `<button type="button" class="chip-btn feed-more">Vorherigen Tag zeigen · noch ${rest}</button>` : '');
   el.querySelectorAll('img').forEach(imgFallback);
   el.querySelector('.feed-more')?.addEventListener('click', () => { state.feedDays++; renderFeed(); });
@@ -1047,7 +1467,7 @@ function renderFeed() {
 
 // Spiel-Icons für die Aktivität. Level-Ups tragen die neue Stufe als Badge.
 const FEED_ICONS = {
-  level: 'spell_holy_surgeoflight', max: 'achievement_level_60', session: 'inv_misc_groupneedmore', guild: 'inv_shirt_guildtabard_01',
+  level: 'spell_holy_surgeoflight', max: 'achievement_level_60', session: 'inv_misc_groupneedmore', guild: 'inv_shirt_guildtabard_01', leave: 'ability_vanish',
   prof: {
     Alchemie: 'trade_alchemy', Schmiedekunst: 'trade_blacksmithing', Verzauberkunst: 'trade_engraving', Ingenieurskunst: 'trade_engineering',
     Kräuterkunde: 'trade_herbalism', Lederverarbeitung: 'trade_leatherworking', Bergbau: 'trade_mining', Kürschnerei: 'inv_misc_pelt_wolf_01',
@@ -1077,6 +1497,12 @@ function feedItemHtml(e) {
     }
     case 'prof':
       return row('ev-prof', feedIcon(FEED_ICONS.prof[profName(e.name)] ?? 'inv_misc_note_01'), e.learned ? `lernt <strong>${esc(profName(e.name))}</strong>` : `${esc(profName(e.name))} auf <strong>${e.skill}</strong>`);
+    case 'achievement': {
+      const ico = `<span class="wi"><img src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy"></span>`;
+      const name = `<strong>${esc(e.name)}</strong>`;
+      return row('ev-ach', ico, `erhält den Erfolg ${e.id ? `<a href="${wh(state.data.wowhead, `achievement=${e.id}`)}" target="_blank" rel="noopener">${name}</a>` : name}`,
+        e.desc ? `${e.name}\n${e.desc}` : '');
+    }
     case 'guild':
       return row('ev-guild', feedIcon(FEED_ICONS.guild), e.guild ? `tritt <strong>&lt;${esc(e.guild)}&gt;</strong> bei` : `verlässt <strong>&lt;${esc(e.from ?? '')}&gt;</strong>`);
     case 'session': {
@@ -1104,8 +1530,11 @@ function fullName(c) { return [c.name, c.surname].filter(Boolean).join(' '); }
 function fmtGain(n) { const r = Math.round(n ?? 0); return `${r > 0 ? '+' : ''}${r}`; }
 function fmtDay(t) { return new Date(t).toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }); }
 function fmtTime(t) { return new Date(t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
+const CLASS_ICONS = { 1: 'warrior', 2: 'paladin', 3: 'hunter', 4: 'rogue', 5: 'priest', 7: 'shaman', 8: 'mage', 9: 'warlock', 11: 'druid' };
+function classIcon(id, size = 'medium') { return `https://wow.zamimg.com/images/wow/icons/${size}/classicon_${CLASS_ICONS[id] ?? 'warrior'}.jpg`; }
 function classColor(c) { return M.CLASSES[c.classId]?.color ?? '#c9c2b3'; }
 function profName(n) { return M.PROFESSIONS[n] ?? n; }
+function plural(n, one, many) { return `${n} ${n === 1 ? one : many}`; }
 function fmtDec(n) { return Number(n).toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
 
 function ago(ts) {
@@ -1121,9 +1550,12 @@ function link(it, inner) {
   return `<a href="${wh(state.data.wowhead ?? 'classic', `item=${it.id}`)}" target="_blank" rel="noopener">${inner}</a>`;
 }
 
-// Wowhead auf Deutsch: Classic unter /classic/de/, Retail unter /de/. Die Tooltips folgen der Sprache des Links.
+// Wowhead auf Deutsch: Forever unter /forever/de/, Classic unter /classic/de/, Retail unter /de/. Die Tooltips folgen der Sprache des Links.
 function wh(env, path) { return `https://www.wowhead.com/${env ? `${env}/` : ''}de/${path}`; }
-function whDe(url) { return url.replace(/^(https:\/\/www\.wowhead\.com\/(?:classic\/)?)(?!de\/)/, '$1de/'); }
+function whDe(url) {
+  if (/^https:\/\/www\.wowhead\.com\/(?:(?:classic|forever)\/)?de\//.test(url)) return url;
+  return url.replace(/^(https:\/\/www\.wowhead\.com\/(?:(?:classic|forever)\/)?)/, '$1de/');
+}
 
 function imgFallback(img) {
   img.addEventListener('error', () => { if (img.classList.contains('ico')) img.src = FALLBACK_ICON; else img.remove(); }, { once: true });

@@ -135,6 +135,9 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile .stage { position: absolute; left: 0; right: 0; top: 40px; bottom: 112px; z-index: 2; }
 .tile .stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.7); filter: drop-shadow(0 12px 24px rgba(0,0,0,.9)); }
 .tile .stage.loading-3d img.render { visibility: hidden; }
+/* Ohne 2D-Render steht das Klassen-Icon groß auf der Bühne (stageImg in app.js). */
+img.stage-icon { position: absolute; left: 50%; top: 50%; width: 96px; height: 96px; translate: -50% -50%; border-radius: 20px; border: 2px solid color-mix(in srgb, var(--cls) 60%, #000); box-shadow: 0 0 40px color-mix(in srgb, var(--cls) 35%, transparent); opacity: .9; }
+.loading-3d img.stage-icon { visibility: hidden; }
 .tile .info { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 16px; background: linear-gradient(0deg, #07090c 35%, transparent); }
 .tile .name { display: block; font-weight: 700; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; color: var(--cls); }
 .tile .name .surname { display: block; font-size: .6em; letter-spacing: .08em; opacity: .8; }
@@ -145,6 +148,31 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile.error .info .spec { color: var(--warn); }
 .tile.placeholder .info .spec { color: var(--muted); }
 
+/* Bühne hinter dem Modell (stageFxHtml in app.js): ein pulsierender Schein in Klassenfarbe und Glühwürmchen, die langsam aufsteigen und flackern.
+   Bei Bloodlust läuft beides schneller (LUST_TEMPO in app.js). */
+.stage-fx { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+.stage-fx > * { position: absolute; }
+/* Im Gilden-Detail liegt die Bühne unter Render und 3D-Modell, die dort keinen eigenen z-index haben. */
+.gd-stage .stage-fx { z-index: 0; }
+.stage-glow {
+  left: 50%; top: 45%; width: 100%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--cls) 30%, transparent), transparent 62%); animation: glow-pulse 3.2s ease-in-out infinite;
+}
+.fly {
+  width: var(--s); height: var(--s); border-radius: 50%; opacity: 0;
+  background: color-mix(in srgb, var(--cls) 35%, #fff); box-shadow: 0 0 6px 1px color-mix(in srgb, var(--cls) 75%, transparent);
+  animation: firefly var(--d) var(--w) ease-in-out infinite;
+}
+@keyframes glow-pulse { 50% { opacity: .55; scale: .94; } }
+@keyframes firefly {
+  0% { opacity: 0; transform: translate(0, 0); }
+  15% { opacity: .9; }
+  30% { opacity: .35; }
+  45% { opacity: 1; transform: translate(var(--x), -90px); }
+  65% { opacity: .45; }
+  80% { opacity: .85; }
+  100% { opacity: 0; transform: translate(calc(var(--x) * -.6), -200px); }
+}
 .stage-3d { position: absolute; inset: 0; opacity: 0; transition: opacity .4s ease; }
 /* Sichtbar erst mit fertigem Modell. Beim Laden bleibt der 2D-Render verborgen. */
 .stage-3d.ready { opacity: 1; }
@@ -206,7 +234,7 @@ main, footer, nav { position: relative; z-index: 1; }
 /* Solange das Band läuft, reagiert das Loadout nicht auf die Maus: kein Hover, keine Tooltips. */
 .loadout.swapping { pointer-events: none; }
 body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
-.loadout.swap .lo-head, .loadout.swap .board-kpis, .loadout.swap .board, .loadout.swap .talents { animation: rise .5s 1.05s both; }
+.loadout.swap .lo-head, .loadout.swap .board-kpis, .loadout.swap .lo-info, .loadout.swap .board, .loadout.swap .talents { animation: rise .5s 1.05s both; }
 
 /* Panels */
 .panel {
@@ -220,8 +248,8 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .panel h2 { margin: 0; font-weight: 700; font-size: 17px; letter-spacing: .12em; text-transform: uppercase; }
 .panel h3 { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
-/* Gruppe: Buffs, Tools und Berufe in einer Kachel, gleiche Zeile für alles */
-.g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+/* Gruppe: Buffs und Tools in einer Kachel, gleiche Zeile für alles */
+.g3 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
 .gsec { display: flex; justify-content: space-between; padding: 0 2px 8px; border-bottom: 1px solid var(--line); font: 500 10px var(--mono); color: var(--dim); letter-spacing: .14em; text-transform: uppercase; }
 .gsec b { color: var(--dim); font-weight: 500; }
 .gcount { cursor: default; border-bottom: 1px dotted color-mix(in srgb, var(--dim) 60%, transparent); outline: none; }
@@ -273,7 +301,8 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 }
 .card:hover { background: rgba(255,255,255,.05); border-color: var(--q); }
 .card .txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.card .nm { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Lange Item-Namen brechen in eine zweite Zeile um und werden erst danach gekürzt. */
+.card .nm { font-size: 13px; font-weight: 700; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; }
 .card .meta { font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .en { font: 500 10px var(--mono); color: #7be07b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .bar { display: block; height: 3px; margin-top: 6px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
@@ -311,7 +340,7 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .route-row.now .lv { color: var(--accent-text); }
 .place-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px 20px; min-width: 0; }
 .place { display: flex; align-items: baseline; gap: 8px; min-width: 0; padding: 3px 0; font-size: 13px; font-weight: 600; color: var(--text); border-bottom: 1px dotted transparent; transition: .15s; }
-.place:hover { color: var(--accent-text); }
+a.place:hover { color: var(--accent-text); }
 .place .nm { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .place .rg { font: 500 11px var(--mono); color: var(--dim); }
 .place .fd { width: 6px; height: 6px; flex: none; align-self: center; border-radius: 50%; background: var(--dim); }
@@ -407,6 +436,53 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .task.hot { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent-text); }
 .task.done { background: none; color: var(--dim); padding-left: 0; }
 
+/* Quests: je Charakter, der etwas verpasst hat, eine Karte. Die Karten teilen sich die Breite. */
+.q-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 12px; align-items: start; }
+.q-card { padding: 12px 14px 8px; border-radius: 12px; border: 1px solid var(--line); border-top: 2px solid var(--cls); background: linear-gradient(180deg, color-mix(in srgb, var(--cls) 6%, transparent), transparent 70px), rgba(255,255,255,.02); }
+.q-card header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-bottom: 6px; font-size: 13px; color: var(--muted); }
+.q-card header span { white-space: nowrap; }
+.q-card header b { color: var(--cls); font-size: 15px; }
+.q-card header small { margin-left: auto; font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; }
+.q-zone { margin: 4px 0 6px; }
+.q-zname { display: block; padding: 4px 0 2px; font: 600 10px var(--mono); color: var(--dim); letter-spacing: .1em; text-transform: uppercase; }
+.q-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.03); font-size: 13px; }
+.q-row > a { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); transition: color .15s; }
+.q-row > a:hover { color: var(--accent-text); }
+.q-row .tags { display: flex; gap: 4px; flex: none; }
+.q-x { display: grid; place-items: center; width: 22px; height: 22px; margin-left: 2px; padding: 0; border: 1px solid transparent; border-radius: 6px; background: none; color: var(--dim); font-size: 15px; line-height: 1; cursor: pointer; opacity: .5; transition: .15s; }
+.q-row:hover .q-x, .q-x:focus-visible { opacity: 1; }
+.q-x:hover, .q-x:focus-visible { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 40%, transparent); outline: none; }
+@media (hover: none) { .q-x { opacity: .8; } }
+.q-restore { margin-top: 10px; padding: 0; border: 0; background: none; cursor: pointer; font: 500 11px var(--mono); color: var(--dim); text-decoration: underline dotted; }
+.q-restore:hover { color: var(--text); }
+.q-more summary { padding: 6px 0; cursor: pointer; font: 500 11px var(--mono); color: var(--dim); }
+.q-more summary:hover { color: var(--text); }
+.q-empty { margin: 0; font: 500 12px var(--mono); color: var(--dim); }
+
+/* Crafting: eine Liste gleich großer Zeilen, die sich auf zwei oder drei Spalten verteilt. Links Hersteller → Empfänger,
+   rechts das Item und der Unterschied der wichtigsten Werte (grün mehr, rot weniger). Blass, was erst bald geht. */
+.craft-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 8px 14px; }
+.craft { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: center; gap: 12px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.035); outline: none; transition: background .15s; }
+.craft:hover, .craft:focus-visible { background: rgba(255,255,255,.07); }
+.craft-who { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-width: 0; }
+.craft-arrow { font: 600 11px var(--mono); color: var(--dim); padding: 0 2px; }
+.tag.craft-all, .tag.craft-self { --cls: var(--muted); }
+.craft-item { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 8px; min-width: 0; }
+.craft-item > a { display: block; line-height: 0; }
+.craft-txt { display: flex; flex-direction: column; min-width: 0; font-size: 12px; font-weight: 700; }
+.craft-txt > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.craft-txt small { font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.craft-diff { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font: 600 11px var(--mono); white-space: nowrap; }
+.craft-diff .up { color: var(--q-uncommon); }
+.craft-diff .down { color: var(--accent-text); }
+.craft.soon { opacity: .55; }
+.craft.ench .craft-txt > span { color: #7be07b; }
+.craft-none { margin: 0; font: 500 12px var(--mono); color: var(--dim); }
+@media (max-width: 600px) {
+  .craft { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+}
+.card .craft-hint { font: 500 10px var(--mono); color: var(--q-uncommon); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
 /* Aktivität */
 .feed { display: flex; flex-direction: column; gap: 6px; }
 .feed-day h3 { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0 8px; border-bottom: 1px solid var(--line); }
@@ -483,9 +559,6 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .recap-loot { padding: 14px 0 0; border-left: 0; border-top: 1px solid var(--line); }
   .recap-loot .recap-label { margin-bottom: 12px; }
   .recap-older { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .g3 > :last-child { grid-column: 1 / -1; columns: 2; column-gap: 28px; }
-  .g3 > :last-child .gsec { column-span: all; }
   .grow { break-inside: avoid; }
   .route-row { grid-template-columns: 70px minmax(0, 1fr); gap: 10px 16px; }
   .route-row > :not(.lv) { grid-column: 2; }
@@ -501,15 +574,22 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .brand, .nav-right { flex: 0 1 auto; }
   .nav-links { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .nav-links::-webkit-scrollbar { display: none; }
+  /* Geht die Navigation seitlich weiter, blendet sie zum Rand hin aus (fade-l, fade-r aus setupNav in app.js). */
+  .nav-links.fade-r { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
+  .nav-links.fade-l { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px); mask-image: linear-gradient(90deg, transparent, #000 40px); }
+  .nav-links.fade-l.fade-r { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
   .nav-links a { flex: none; padding: 7px 12px; font-size: 12px; }
 }
 /* 3D läuft auf Handys nicht zuverlässig. Dort gibt es nur die 2D-Renders und keinen Schalter. */
 @media (max-width: 760px) {
   #toggle-3d { display: none; }
+  /* Talentbäume nebeneinander zum Wischen. Der nächste Baum ragt ins Bild, so sieht man, dass es weitergeht. */
+  .ttrees { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 58%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .ttrees::-webkit-scrollbar { display: none; }
+  .ttree { scroll-snap-align: start; padding: 12px 12px 14px; }
 }
 @media (max-width: 600px) {
-  .ttrees { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .ttree { scroll-snap-align: start; padding: 12px 12px 14px; }
+  .ttrees { grid-auto-columns: 84%; }
   body { font-size: 14px; }
   html { scroll-padding-top: 108px; }
   .nav-in { padding-top: 8px; padding-bottom: 8px; }
@@ -525,6 +605,9 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .kpi { padding: 10px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
   .kpi b { font-size: 28px; }
   .kpi > span { font-size: 10px; letter-spacing: .08em; }
+  /* Drei Kennzahlen (Squad) stehen in einer Reihe, vier (Gilde) in zwei. */
+  .kpis:has(> .kpi:nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kpis:has(> .kpi:nth-child(3):last-child) .kpi b { font-size: 24px; }
 
   /* Kacheln als Reihe zum Wischen statt einer langen Liste. */
   .tiles {
@@ -555,7 +638,6 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   .dcell b { font-size: 20px; }
 
   .g3 { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .g3 > :last-child { columns: 1; }
   .route-row { padding: 12px 4px 12px 12px; grid-template-columns: 44px minmax(0, 1fr); gap: 8px 12px; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }
@@ -646,3 +728,181 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 }
 
 [hidden] { display: none !important; }
+
+/* Gildenseite (gilde.html, guild.js) */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Squad-Loadout: Werte und Berufe zwischen Kennzahlen und Ausrüstung, gleiche Bausteine wie im Gilden-Detail. */
+.lo-info { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 14px 28px; margin-bottom: 12px; padding: 14px 16px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(255,255,255,.025); }
+.gd-stats.lo-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
+  .gd-stats.lo-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .lo-info { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Kennzahlen (Squad und Gilde): gleich breite Spalten mit Trennlinie. Zahl und Text stehen linksbündig übereinander,
+   so wirkt der Abstand gleich, egal wie lang Zahl oder Text sind. Auf dem Handy bleiben es Kacheln. */
+@media (min-width: 601px) {
+  .kpis { gap: 0; }
+  .kpi { align-items: flex-start; text-align: left; min-width: clamp(120px, 10vw, 150px); padding: 2px clamp(18px, 2vw, 28px) 0; border-left: 1px solid var(--line); }
+  .kpi > span { margin-top: 6px; }
+}
+@media (min-width: 1101px) {
+  .kpi:last-child { padding-right: 0; }
+}
+/* Unter dem Titel: alle Kennzahlen in einer Zeile, gleich breit. Sie brechen nie in eine zweite Zeile um, die Trennlinien bleiben richtig. */
+@media (min-width: 601px) and (max-width: 1100px) {
+  .kpis { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); width: 100%; }
+  .kpi { min-width: 0; }
+  .kpi:first-child { padding-left: 0; border-left: 0; }
+}
+
+/* Filter: Klassen-Icons links, Suche rechtsbündig */
+.gfilter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 16px; }
+.gf-classes { display: flex; flex-wrap: wrap; gap: 6px; }
+.gf-cls { padding: 0; width: 34px; height: 34px; border-radius: 9px; border: 2px solid var(--line); background: #000; cursor: pointer; overflow: hidden; transition: .15s; }
+.gf-cls img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gf-cls:hover { border-color: var(--cls); }
+.gf-cls[aria-pressed="true"] { border-color: var(--cls); box-shadow: 0 0 14px color-mix(in srgb, var(--cls) 45%, transparent); }
+/* Ist eine Klasse gewählt, treten die übrigen zurück. */
+.gf-classes.some .gf-cls[aria-pressed="false"] img { filter: grayscale(1) brightness(.5); }
+.gf-search { margin-left: auto; }
+.gf-search input {
+  width: 220px; height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel);
+  font: 500 12px var(--mono); color: var(--text); outline: none;
+}
+.gf-search input:focus-visible { border-color: var(--accent); }
+
+/* Tabelle */
+.gtable-wrap { overflow-x: auto; margin: 0 -8px; padding: 0 8px; }
+/* Feste Spalten in Prozent: Die Tabelle passt bei jeder Breite, das Detail macht sie nie breiter. Inhalte brechen in der Zelle um. */
+.gtable { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+/* Die Breiten sind gemessen: Bei jeder Breite passen Klassenname, Spaltenköpfe samt Pfeil und zwei Berufe in eine Zeile. */
+.gtable th.c-name { width: 15%; } .gtable th.c-class { width: 14%; } .gtable th.c-race { width: 7%; }
+.gtable th.c-level { width: 7%; } .gtable th.c-rank { width: 9%; } .gtable th.c-ilvl { width: 5%; }
+.gtable th.c-profs { width: 31%; } .gtable th.c-last { width: 12%; }
+.gtable th { padding: 0; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.gtable th button {
+  display: inline-flex; align-items: center; gap: 4px; width: 100%; padding: 0 8px 8px; overflow: hidden; border: 0; background: none; cursor: pointer;
+  font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; text-align: left;
+}
+.gtable th button:hover, .gtable th[aria-sort="ascending"] button, .gtable th[aria-sort="descending"] button { color: var(--text); }
+.gtable th button i { font-style: normal; font-size: 8px; color: var(--accent-text); }
+.gtable th .sm { display: none; }
+.gtable td { padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
+.grow-m { cursor: pointer; transition: background .15s; }
+.grow-m td:first-child { box-shadow: inset 3px 0 0 transparent; transition: box-shadow .15s; }
+.grow-m:hover { background: rgba(255,255,255,.035); }
+.grow-m:focus-visible { background: rgba(255,255,255,.05); outline: 2px solid color-mix(in srgb, var(--cls) 80%, #fff); outline-offset: -2px; }
+.gtable th button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+.gf-cls:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+.grow-m:hover td:first-child, .grow-m:focus-visible td:first-child, .grow-m.open td:first-child { box-shadow: inset 3px 0 0 var(--cls); }
+.grow-m.open { background: color-mix(in srgb, var(--cls) 8%, transparent); }
+.grow-m.open td { border-bottom-color: transparent; }
+.gname { font-weight: 700; font-size: 14px; color: var(--cls); }
+.gname .surname { margin-left: 5px; font-weight: 600; font-size: 12px; opacity: .75; white-space: nowrap; }
+.gstale { display: block; font: 500 10px var(--mono); color: var(--warn); }
+.gclass { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; color: var(--muted); }
+.gclass img { flex: none; width: 22px; height: 22px; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--cls) 60%, #000); }
+.gclass span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.c-race, .c-rank, .c-last { color: var(--muted); }
+.c-level b { font: 800 22px/1 var(--display); color: var(--text); }
+.c-ilvl { font: 800 18px/1 var(--display); color: var(--accent-text); }
+.c-last { white-space: nowrap; }
+.gprof { display: inline-flex; align-items: center; gap: 5px; margin: 2px 8px 2px 0; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.gprof img { width: 16px; height: 16px; border-radius: 4px; }
+.gprof b { color: var(--text); font: 500 11px var(--mono); }
+.gnone { font: 500 11px var(--mono); color: var(--dim); }
+/* Länger als 14 Tage offline: blass, steht unten. Ohne Profil: nur Name und Hinweis. */
+.grow-m.inactive > td { opacity: .42; }
+.grow-m.inactive:hover > td, .grow-m.inactive.open > td { opacity: .8; }
+.grow-m.missing { cursor: default; }
+.grow-m.missing > td { opacity: .5; }
+.c-missing { font: 500 11px var(--mono); color: var(--dim); }
+.gsep td { padding: 16px 10px 6px; border-bottom: 1px solid var(--line); font: 500 10px var(--mono); color: var(--dim); letter-spacing: .12em; text-transform: uppercase; }
+.gempty td { padding: 26px 10px; text-align: center; font: 500 12px var(--mono); color: var(--dim); }
+
+/* Detail unter der Zeile */
+.gdetail > td { padding: 0 0 18px; white-space: normal; border-bottom: 1px solid var(--line); }
+.gd { padding: 18px 18px 6px; border-radius: var(--radius-sm); border: 1px solid color-mix(in srgb, var(--cls) 30%, var(--line)); background: color-mix(in srgb, var(--cls) 4%, rgba(0,0,0,.25)); animation: rise .35s both; }
+.gd-top { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 22px; align-items: start; }
+/* Linke Spalte: Porträt, darunter Werte und Berufe. So bleibt unter dem Porträt keine leere Fläche. */
+.gd-side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.gd-sec { display: flex; flex-direction: column; gap: 8px; }
+.gd-label { font: 500 10px var(--mono); color: var(--dim); letter-spacing: .14em; text-transform: uppercase; }
+.gd-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; margin: 0; }
+.gd-stats > div { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; min-width: 0; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+.gd-stats dt { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gd-stats dd { margin: 0; font: 500 12px var(--mono); color: var(--text); white-space: nowrap; }
+.gd-stage { position: relative; height: 300px; border-radius: var(--radius-sm); overflow: hidden; background: radial-gradient(ellipse at 50% 70%, color-mix(in srgb, var(--cls) 18%, transparent), transparent 70%); }
+.gd-stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1.5); filter: drop-shadow(0 12px 24px rgba(0,0,0,.9)); }
+.gd-stage.loading-3d img.render { visibility: hidden; }
+/* Nur das Klassen-Icon und kein 3D: Die Bühne wird flacher, Werte und Berufe rücken nach oben.
+   Lädt ein 3D-Modell (loading-3d), bleibt die volle Höhe. Der Viewer misst seine Bühne beim Start, sonst stünde die Figur klein und zu hoch. */
+.gd-stage:has(> img.stage-icon):not(.loading-3d) { height: 200px; }
+.gd .lo-head h2 { font-size: clamp(34px, 4vw, 52px); }
+.gd-profs { display: flex; flex-direction: column; gap: 6px; }
+.gd-prof { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 8px; min-width: 0; }
+.gd-prof span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gd-prof b { font: 500 12px var(--mono); color: var(--text); }
+.gd-prof b small { color: var(--dim); }
+.gd-prof .bar { grid-column: 1 / -1; display: block; height: 3px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
+.gd-prof .bar i { display: block; height: 100%; background: var(--cls); }
+.gd .board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Bis 1300 px reicht für „Zuletzt online“ der kurze Kopf. */
+@media (max-width: 1300px) {
+  .gtable th .lg { display: none; }
+  .gtable th .sm { display: inline; }
+}
+@media (max-width: 1100px) {
+  .c-race, .c-rank { display: none; }
+  .gclass span { display: none; }
+  .gtable th.c-name { width: 18%; } .gtable th.c-class { width: 8%; } .gtable th.c-level { width: 8%; }
+  .gtable th.c-ilvl { width: 7%; } .gtable th.c-profs { width: 42%; } .gtable th.c-last { width: 17%; }
+  .gname .surname { display: block; margin-left: 0; }
+  .gd-top { grid-template-columns: 230px minmax(0, 1fr); }
+  .gd-stage { height: 260px; }
+  .gd-stats { grid-template-columns: minmax(0, 1fr); }
+  .gd .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* Ab 900 px zeigen die Berufe nur Icon und Skill. Den Namen nennt der Tooltip. */
+@media (max-width: 900px) {
+  .gprof .pn { display: none; }
+  .gtable th.c-name { width: 24%; } .gtable th.c-class { width: 10%; } .gtable th.c-level { width: 10%; }
+  .gtable th.c-ilvl { width: 8%; } .gtable th.c-profs { width: 26%; } .gtable th.c-last { width: 22%; }
+}
+@media (max-width: 760px) {
+  .c-ilvl { display: none; }
+  .gtable th.c-name { width: 26%; } .gtable th.c-class { width: 13%; } .gtable th.c-level { width: 13%; }
+  .gtable th.c-profs { width: 26%; } .gtable th.c-last { width: 22%; }
+  .gtable td.c-last { white-space: normal; }
+  /* Eine Spalte: Porträt, Name, Kennzahlen, Werte, Berufe, Ausrüstung. Die beiden Spalten lösen sich dafür auf. */
+  .gd-top { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+  .gd-side, .gd-main { display: contents; }
+  .gd-stage { order: 1; height: 260px; }
+  .gd-main > .lo-head { order: 2; margin-bottom: 0; }
+  .gd-main > .board-kpis { order: 3; margin-bottom: 0; }
+  .gd-side > .gd-sec { order: 4; }
+  .gd-main > .board { order: 5; }
+  .gd-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gd { padding: 14px 12px 4px; }
+  .gd .board-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gf-search, .gf-search input { width: 100%; }
+}
+@media (max-width: 600px) {
+  /* Ausrüstung in einer Spalte wie im Squad-Loadout: Namen bleiben lesbar. */
+  .gd .board { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  /* Alle neun Klassen-Icons passen in eine Zeile. */
+  .gf-classes { gap: 4px; }
+  .gf-cls { width: 31px; height: 31px; }
+  .c-profs { display: none; }
+  .gtable td { padding: 9px 6px; }
+  .gtable th button { padding: 0 6px 8px; }
+  .gtable th.c-name { width: 36%; } .gtable th.c-class { width: 18%; } .gtable th.c-level { width: 19%; } .gtable th.c-last { width: 27%; }
+}
+@media (max-width: 400px) {
+  .gtable th button { letter-spacing: .04em; }
+}

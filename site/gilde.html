@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gilde · WoW Forever</title>
+  <meta name="theme-color" content="#07090c">
+  <meta name="description" content="Mitglieder, Klassen, Berufe und Fortschritt unserer Gilde in WoW Forever.">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WoW Forever">
+  <meta property="og:title" content="Gilde · WoW Forever">
+  <meta property="og:description" content="Mitglieder, Klassen, Berufe und Fortschritt unserer Gilde in WoW Forever.">
+  <meta property="og:url" content="https://daniseehaus.github.io/wow-forever/gilde.html">
+  <meta property="og:image" content="https://daniseehaus.github.io/wow-forever/icons/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Barlow+Condensed:wght@600;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>const whTooltips = { colorLinks: false, iconizeLinks: false, renameLinks: false };</script>
+  <script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
+</head>
+<body class="guild-page">
+  <div class="fx-scan" aria-hidden="true"></div>
+  <div class="fx-glow" aria-hidden="true"></div>
+  <div class="fx-lust" aria-hidden="true"><i class="lust-ring"><i></i></i></div>
+
+  <nav class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top">
+        <img class="brand-logo" src="icons/logo.png" alt="" width="38" height="38" title="Bloodlust">
+        <span class="brand-text"><b id="brand">GILDE</b><small id="brand-sub">EU</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="./">Overview</a>
+        <a href="./#loadout">Loadout</a>
+        <a href="./#rueckblick" id="nav-rueckblick" hidden>Session</a>
+        <a href="./#vorbereitung" id="nav-vorbereitung" hidden>Prep</a>
+        <a href="./#gruppe">Squad</a>
+        <a href="./#handwerk">Crafting</a>
+        <a href="./#quests-panel">Quests</a>
+        <a href="./#leveling">Leveling</a>
+        <a href="./#aktivitaet">Activity</a>
+        <a href="#top" class="active" aria-current="page">Guild</a>
+      </div>
+      <div class="nav-right">
+        <button id="toggle-3d" class="chip-btn" type="button" aria-pressed="true">3D an</button>
+        <span class="sync"><i></i><span id="sync">Lade …</span></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap" id="top">
+    <header class="hero">
+      <div>
+        <span class="eyebrow">// GUILD</span>
+        <h1 id="title" class="title-text">Gilde</h1>
+      </div>
+      <div class="kpis" id="kpis"></div>
+    </header>
+
+    <section class="panel" id="mitglieder">
+      <div class="panel-head"><h2>// Roster</h2><span class="mono" id="roster-count" aria-live="polite"></span></div>
+      <div class="gfilter" id="gfilter"></div>
+      <div class="gtable-wrap">
+        <table class="gtable" id="roster"></table>
+      </div>
+    </section>
+
+    <section class="panel" id="gildenfeed">
+      <div class="panel-head"><h2>// Activity</h2><span class="mono" id="gfeed-note"></span></div>
+      <div class="feed" id="gfeed"></div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span><span id="foot-stamp">Stand …</span> · Daten: Battle.net, Wowhead</span>
+  </footer>
+
+  <script src="meta.js"></script>
+  <script src="model3d.js"></script>
+  <script src="app.js"></script>
+  <script src="guild.js"></script>
+</body>
+</html>

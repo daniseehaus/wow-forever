@@ -13,7 +13,8 @@ Node.js-Skripte, GitHub Action, GitHub Pages, Battle.net API.
 | Zweck | Befehl |
 |---|---|
 | Daten holen | `npm run fetch` |
-| Talente bauen | `npm run build-talents` |
+| Testdaten Squad und Gilde | `node scripts/fetch.mjs --guild-demo` (echte Mitglieder plus Beispiele, Squad mit denselben Charakteren), danach `node scripts/mirror-models.mjs` |
+| Talente bauen | `npm run build-talents` (Forever-Bäume aus der Battle.net API, braucht `.env`) |
 | Icons bauen | `npm run build-icons` |
 | Testen | keine automatischen Tests, Prüfung von Hand: siehe `## Prüfung` |
 
@@ -25,7 +26,7 @@ Entwurf, bitte bestätigen oder anpassen.
 
 ## Deploy
 
-GitHub Action `.github/workflows/update.yml` holt die Daten stündlich und veröffentlicht auf GitHub Pages.
+GitHub Action `.github/workflows/update.yml` holt die Daten alle 15 Minuten und veröffentlicht auf GitHub Pages. Den Takt gibt der Pi vor (`wow-anstossen.timer` in `pi-homeserver`), der Zeitplan von GitHub ist nur die stündliche Reserve.
 
 ## Struktur
 
@@ -38,3 +39,11 @@ Noch keine.
 ## Entscheidungen
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
+
+- 2026-11-08: Neue Baseline für Sessions: 2 gemeinsame Sessions (die letzte und heute, Level 1 bis 10). Die automatische Erkennung beginnt danach (`sessionBaseline` in `config.json`).
+- 2026-11-08: Squad bekommt Crafting (nur gelernte Rezepte, Wertevergleich nach Spielweise statt Itemlevel, auch Verzauberungen und Rüstungssets, keine Verbrauchsgüter, Liste „Hersteller → Empfänger“) und Quests (nur „Verpasst seit dem Logout“, den Rest stimmt der Squad live ab). Keine Beute-Wunschliste, die API kennt keine Forever-Dungeonbeute. Erfolge stehen ohne Punkte in der Aktivität. Bühne der Modelle ohne Runenkreis, nur Schein und Glühwürmchen.
+- 2026-11-08: Beide Seiten haben dieselbe Navigation (Abschnitte der Startseite, „Guild“ am Ende). Talentbäume bis 760 px zum Wischen, kein Karussell, darüber unverändert. Eine Namenskorrektur in `config.json` erzeugt im Gilden-Feed kein Ereignis.
+- 2026-11-08: Die ganze Seite folgt Forever: Talentbäume aus der Battle.net API (`talent-tree`), Wowhead-Links und Tooltips unter `/forever/`, Zonen, Dungeons, Raids, Buffs und Klassenaufgaben in `meta.js` auf Stand 1.60.1.
+- 2026-11-08: Gildenseite als eigene Seite `gilde.html`: ganze Gilde, sortierbare Tabelle ohne Talente-Spalte, Kennzahlen, Filter nur Klasse und Suche (Berufe über die Sortierung), Detail mit 3D für alle Mitglieder und kompletten Talentbäumen, Gilden-Feed (Beitritt, Austritt, Rang, Level-Meilensteine, epische Items). Inaktiv ab 14 Tagen, blass am Ende. Kein Standort, nur „zuletzt online“. Keine Twink-Zuordnung, kein Berufe-Verzeichnis, keine Diagramme, kein Dungeon-Finder, keine Ranglisten.
+- 2026-11-08: 3D für Forever über den Live-Viewer (`forever.modelEnv: "live"`). Der Classic-Viewer lädt `.mo3`-Dateien, die Wowhead nicht mehr liefert.
+- 2026-11-08: Forever-API kennt keine Gilden (kein Gildenfeld, kein Roster). Mitglieder und Ränge stehen in `config.json` unter `guild`.

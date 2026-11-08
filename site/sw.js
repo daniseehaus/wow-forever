@@ -8,7 +8,7 @@
 
 const MODELS = 'wf-models-';        // je Modell-Umgebung ein Cache, z. B. wf-models-live
 const RENDERS = 'wf-renders';
-const LIMIT = { models: 3000, renders: 40 };   // Einträge je Cache, danach fallen die ältesten weg
+const LIMIT = { models: 3000, renders: 80 };   // Einträge je Cache, danach fallen die ältesten weg
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));

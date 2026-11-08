@@ -24,13 +24,7 @@ window.Model3D = (() => {
     if (ready) return ready;
     const base = `modelviewer/${env}/`;
     window.CONTENT_PATH = base;
-    window.WH = window.WH || {};
-    Object.assign(window.WH, {
-      debug() {},
-      defaultAnimation: 'Stand',
-      WebP: { getImageExtension: () => '.webp' },
-      Wow: { Item: { INVENTORY_TYPE_SHOULDERS: 3, INVENTORY_TYPE_ROBE: 20, INVENTORY_TYPE_CHEST: 5 } },
-    });
+    stubs();
     // Die letzte fertig geladene Modelldatei zeigt, ob der aktuelle Viewer noch Dateien nachlädt.
     try {
       new PerformanceObserver((list) => {
@@ -48,6 +42,21 @@ window.Model3D = (() => {
       throw err;
     });
     return ready;
+  }
+
+  // Der Viewer erwartet ein paar Teile von Wowheads globalem WH. Das Tooltip-Skript (tooltips.js) lädt verzögert
+  // und ersetzt WH womöglich erst nach load(). Darum setzt create() die fehlenden Teile vor jedem Viewer neu.
+  // Vorhandene Teile bleiben, damit die Tooltips weiter laufen.
+  function stubs() {
+    const wh = (window.WH ??= {});
+    if (typeof wh.debug !== 'function') wh.debug = () => {};
+    wh.defaultAnimation ??= 'Stand';
+    wh.WebP ??= { getImageExtension: () => '.webp' };
+    wh.Wow ??= {};
+    wh.Wow.Item ??= {};
+    wh.Wow.Item.INVENTORY_TYPE_SHOULDERS ??= 3;
+    wh.Wow.Item.INVENTORY_TYPE_ROBE ??= 20;
+    wh.Wow.Item.INVENTORY_TYPE_CHEST ??= 5;
   }
 
   function script(src) {
@@ -112,6 +121,7 @@ window.Model3D = (() => {
 
   async function create(container, model, env) {
     await load(env);
+    stubs();
     const rect = container.getBoundingClientRect();
     return new window.ZamModelViewer({
       type: 2,

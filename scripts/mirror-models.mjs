@@ -1,4 +1,4 @@
-// Spiegelt die 3D-Dateien aller Charaktere nach site/modelviewer/.
+// Spiegelt die 3D-Dateien aller Charaktere (Gruppe aus data.json, Gilde aus guild.json) nach site/modelviewer/.
 //
 // Wowhead erlaubt keinen direkten Abruf aus fremden Webseiten (keine CORS-Header).
 // Das Skript öffnet deshalb einen unsichtbaren Browser, baut jedes Modell einmal auf
@@ -34,7 +34,10 @@ const HEADERS = {
 const ANIMATIONS = ['Stand', 'EmoteWave', 'EmoteCheer', 'EmoteDance', 'EmoteLaugh', 'EmoteRoar', 'Run'];
 const MANIFEST = new URL('.model-cache/manifest.json', root);
 
-const models = data.characters.filter((c) => c.model).map((c) => ({ key: c.key, ...c.model }));
+// Gruppe und Gilde. Gruppen-Charaktere stehen in beiden Dateien, sie zählen einmal.
+const guildFile = new URL('site/guild.json', root);
+const guild = existsSync(guildFile) ? JSON.parse(await readFile(guildFile, 'utf8')) : { members: [] };
+const models = [...new Map([...data.characters, ...guild.members].filter((c) => c.model).map((c) => [c.key, { key: c.key, ...c.model }])).values()];
 const hash = stateHash();
 
 if (process.argv.includes('--hash')) {

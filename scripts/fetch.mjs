@@ -5,6 +5,13 @@
 //   node scripts/fetch.mjs --demo   Beispieldaten ohne API, zum lokalen Testen der Seite
 //   node scripts/fetch.mjs --config andere.json   andere Konfiguration nutzen
 //   node scripts/fetch.mjs --forever   Forever-Einstellungen schon vor dem Start nutzen (zum Testen)
+//   node scripts/fetch.mjs --guild-demo   echte Daten, die Gilde mit Beispiel-Mitgliedern auf 15 aufgefüllt,
+//                                         der Squad mit denselben Test-Charakteren (zum Vergleich)
+//
+// Gilde: Forever kennt keine Gilden in der API (kein Gildenfeld, kein Roster). Die Mitglieder stehen deshalb
+// in config.guild.members. Die Gilde umfasst diese Liste und alle Charaktere aus characters (ohne Platzhalter).
+// Der Abruf schreibt site/guild.json und hält Beitritte, Austritte, Rangwechsel, Level-Meilensteine
+// und epische Items in data/guild-feed.json fest.
 //
 // Vorschau: Mit config.simulate wandelt der Abruf die echten Retail-Charaktere in Classic-Charaktere um
 // (Level, Talentbäume, Berufe, Werte, Itemlevel) und ergänzt einen Showcase-Verlauf für Aktivität und Sessions.
@@ -37,22 +44,48 @@ const configArg = process.argv.indexOf('--config');
 const configFile = configArg > -1 ? process.argv[configArg + 1] : 'config.json';
 const config = resolveConfig(JSON.parse(await readFile(new URL(configFile, root), 'utf8')), process.argv.includes('--forever'));
 const demo = process.argv.includes('--demo');
+const guildDemo = process.argv.includes('--guild-demo');
 const era = config.era ?? 'classic';
+// API-Zugang und Caches des echten Abrufs. Die Gilde nutzt sie mit.
+const ctx = {};
 
 const live = demo ? null : await buildLive();
 const preview = live && config.simulate ? simulateClassic(live, config.simulate, classicRole) : null;
 const data = demo ? buildDemo() : preview?.data ?? live;
 await mkdir(new URL('site/', root), { recursive: true });
-if (!demo) await localRenders(data);
+if (!demo) await localRenders(data.characters);
+if (ctx.api) {
+  data.crafts = await buildCrafts(data.characters);
+  data.statNames = ctx.statNames ?? {};
+  data.questInfo = await buildQuests(data.characters);
+}
 await writeFile(outFile, JSON.stringify(data, null, 2) + '\n');
+
+// Gilde: eigene Datei, eigener Feed. In der Vorschau (Retail-Charaktere) gibt es keine Gilde.
+const guild = config.guild && !preview ? (demo ? buildDemoGuild([]) : await buildGuild(live)) : null;
+if (guild) {
+  if (guildDemo) buildDemoGuild(guild.members);
+  if (!demo) await localRenders(guild.members);
+  if (guildDemo) await fillSquad(data, guild);
+  await writeFile(new URL('site/guild.json', root), JSON.stringify(guild, null, 2) + '\n');
+  const guildFeed = demo || guildDemo ? demoGuildFeed(guild) : await updateGuildFeed(guild);
+  await writeFile(new URL('site/guild-feed.json', root), JSON.stringify({ era: guildFeed.era, events: guildFeed.events }) + '\n');
+  console.log(`guild.json geschrieben: ${guild.members.length} Mitglieder, ${guild.members.filter((m) => m.error).length} ohne Profil.`);
+}
 const history = demo ? {} : await updateHistory(data);
 await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\n');
 // In der Vorschau stammen die Sessions nur aus dem Showcase, der Feed aus Showcase und echten Änderungen.
 const sessions = demo ? {} : preview ? { list: preview.showcase.sessions } : await updateSessions(data);
-await writeFile(new URL('site/sessions.json', root), JSON.stringify(sessions) + '\n');
-const feed = demo ? demoFeed(data) : await updateFeed(data, preview ? {} : sessions);
+// Baseline: gemeinsame Sessions vor der Erkennung (config sessionBaseline). Die Seite zählt sie mit, zeigt aber keine Karte dafür.
+const baseline = config.sessionBaseline ? { count: config.sessionBaseline.count ?? 0, levels: config.sessionBaseline.levels ?? 0 } : null;
+await writeFile(new URL('site/sessions.json', root), JSON.stringify({ ...sessions, baseline }) + '\n');
+// Mit --guild-demo zeigt die Aktivität Beispiele und die echten Erfolge der echten Charaktere.
+const feed = demo ? demoFeed(data) : guildDemo ? await withAchievements(demoFeed(data), data) : await updateFeed(data, preview ? {} : sessions);
 const events = preview ? [...preview.showcase.events, ...feed.events].sort((a, b) => a.t - b.t) : feed.events;
 await writeFile(new URL('site/feed.json', root), JSON.stringify({ era: feed.era, events }) + '\n');
+// Quest-Verlauf: wer wann welche Quest abgeschlossen hat. Grundlage für „Verpasst“ im Abschnitt Quests.
+const questLog = demo ? { events: [] } : guildDemo ? demoQuestLog(data) : await updateQuestLog(data);
+await writeFile(new URL('site/quest-log.json', root), JSON.stringify({ events: questLog.events }) + '\n');
 
 const failed = data.characters.filter((c) => c.error && !c.placeholder).length;
 const open = data.characters.filter((c) => c.placeholder).length;
@@ -65,7 +98,7 @@ console.log(`data.json geschrieben (${data.era}): ${data.characters.length} Char
 // Der Name enthält einen Hash der Quelle: Ändert sich das Aussehen, ändert sich der Name, und kein Cache zeigt das alte Bild.
 // renderSrc merkt sich die Quelle. Übernimmt der nächste Lauf einen alten Stand (Abruf fehlgeschlagen), baut er das Bild daraus neu.
 // Ohne sharp (lokal ohne npm install) oder bei einem Fehler bleibt der Link zu Blizzard.
-async function localRenders(data) {
+async function localRenders(chars) {
   let sharp;
   try {
     sharp = (await import('sharp')).default;
@@ -75,7 +108,7 @@ async function localRenders(data) {
   }
   const dir = new URL('site/renders/', root);
   await mkdir(dir, { recursive: true });
-  for (const c of data.characters) {
+  for (const c of chars) {
     const src = c.renderSrc ?? (/^https?:/.test(c.render ?? '') ? c.render : null);
     if (!src) continue;
     const file = `${c.key.replace(/[^a-z0-9]+/gi, '-')}-${createHash('sha1').update(src).digest('hex').slice(0, 8)}.webp`;
@@ -105,6 +138,7 @@ async function buildLive() {
   const api = createApi(token);
   const previous = await loadPrevious();
   const caches = { icons: new Map(), specs: new Map(), displays: new Map() };
+  Object.assign(ctx, { api, caches });
 
   const characters = [];
   for (const entry of config.characters) {
@@ -142,7 +176,7 @@ async function fetchCharacter(api, entry, caches) {
   const ns = config.namespaces.profile;
   const optional = (path) => api(`${base}${path}`, ns).catch(() => null);
 
-  const [summary, equipment, media, stats, specs, profs, appearance] = await Promise.all([
+  const [summary, equipment, media, stats, specs, profs, appearance, achievements, questsOpen, questsDone] = await Promise.all([
     api(base, ns),
     api(`${base}/equipment`, ns),
     optional('/character-media'),
@@ -150,6 +184,9 @@ async function fetchCharacter(api, entry, caches) {
     optional('/specializations'),
     optional('/professions'),
     optional('/appearance'),
+    optional('/achievements'),
+    optional('/quests'),
+    optional('/quests/completed'),
   ]);
 
   const items = [];
@@ -162,6 +199,10 @@ async function fetchCharacter(api, entry, caches) {
       quality: it.quality?.type,
       ilvl: it.level?.value ?? null,
       enchants: (it.enchantments ?? []).map((e) => stripMarkup(e.display_string)).filter(Boolean),
+      // Werte für den Vergleich mit herstellbaren Items (Crafting).
+      stats: statMap(it.stats),
+      armor: it.armor?.value ?? null,
+      dps: it.weapon?.dps?.value ?? null,
       sockets: (it.sockets ?? []).length,
       set: it.set?.item_set?.name ?? null,
       icon: await itemIcon(api, it.item?.id, caches.icons),
@@ -173,6 +214,8 @@ async function fetchCharacter(api, entry, caches) {
 
   return {
     key: charKey(entry),
+    // Feste ID des Charakters bei Blizzard. Der Gilden-Feed erkennt daran eine Namenskorrektur in config.json.
+    id: summary.id ?? null,
     name: summary.name,
     surname: summary.surname ?? entry.surname ?? null,
     realmName: summary.realm?.name ?? entry.realm ?? null,
@@ -193,10 +236,138 @@ async function fetchCharacter(api, entry, caches) {
     render: asset('main-raw') ?? asset('main') ?? asset('inset'),
     stats: pickStats(stats),
     professions: pickProfessions(profs),
+    // Gelernte Rezepte aller Berufe (IDs), auch Kochen und Erste Hilfe. Was sie herstellen, klärt buildCrafts.
+    recipes: [...(profs?.primaries ?? []), ...(profs?.secondaries ?? [])].flatMap((e) => (e.tiers ?? []).flatMap((t) => (t.known_recipes ?? []).map((r) => r.id))),
     talents: pickTalents(specs, summary),
     model: await modelData(api, appearance, caches.displays),
+    // Abgeschlossene Erfolge als [ID, Zeitpunkt], älteste zuerst. Namen und Icons holt erst der Feed, nur für neue Erfolge.
+    achievements: pickAchievements(achievements),
+    // Questlog: offene und abgeschlossene Quests (IDs). Titel und Zone holt buildQuests.
+    quests: questsOpen || questsDone ? { open: (questsOpen?.in_progress ?? []).map((q) => q.id), done: (questsDone?.quests ?? []).map((q) => q.id) } : null,
     items,
   };
+}
+
+function pickAchievements(a) {
+  if (!a?.achievements) return null;
+  return a.achievements.filter((x) => x.id && x.completed_timestamp).map((x) => [x.id, x.completed_timestamp]).sort((x, y) => x[1] - y[1]);
+}
+
+// ---------------------------------------------------------------------------
+// Herstellen im Squad: Was kann jeder mit seinen Rezepten herstellen, das man tragen kann (Rüstung und Waffen),
+// und welche Verzauberungen kennt er. Den Abgleich mit der Ausrüstung macht die Seite (crafts in app.js).
+// Rezepte ändern sich nur mit einem Patch. Ihre Daten liegen darum in data/recipes.json und werden nur für neue Rezepte abgerufen.
+// Die Action speichert die Datei, ein lokaler Lauf nur im Speicher.
+
+
+async function buildCrafts(chars) {
+  // Format der Datei. Ändert sich das, was recipeInfo speichert, die Zahl erhöhen.
+  const RECIPE_VERSION = 3;
+  const file = new URL('data/recipes.json', root);
+  const ns = config.namespaces.static;
+  const stored = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
+  // Neuer Patch (anderer Namespace) oder neues Format (v): Rezepte neu abrufen.
+  const cache = stored?.ns === ns && stored?.v === RECIPE_VERSION ? stored.recipes : {};
+  let fresh = 0;
+  const out = [];
+  for (const c of chars) {
+    for (const id of c.recipes ?? []) {
+      if (!(id in cache)) {
+        const info = await recipeInfo(id).catch((err) => { console.warn(`Rezept ${id}: ${err.message}`); return undefined; });
+        if (info === undefined) continue;
+        cache[id] = info;
+        fresh++;
+      }
+      if (cache[id]) out.push({ by: c.key, recipe: id, ...cache[id] });
+    }
+  }
+  if (fresh && process.env.GITHUB_ACTIONS) {
+    await mkdir(new URL('data/', root), { recursive: true });
+    await writeFile(file, JSON.stringify({ ns, v: RECIPE_VERSION, recipes: cache }) + '\n');
+  }
+  const n = (k) => out.filter((x) => x[k]).length;
+  console.log(`Herstellen: ${n('item')} Ausrüstung, ${n('enhance')} Verbesserungen (${fresh} Rezepte neu abgerufen).`);
+  return out;
+}
+
+// Werte eines Items als { STRENGTH: 5, ... }. Die deutschen Namen sammelt ctx.statNames für die Seite.
+function statMap(list) {
+  const out = {};
+  for (const s of list ?? []) {
+    const type = s.type?.type;
+    if (!type || s.value == null || s.is_negated) continue;
+    out[type] = (out[type] ?? 0) + s.value;
+    if (s.type?.name) (ctx.statNames ??= {})[type] = s.type.name;
+  }
+  return out;
+}
+
+
+// Was ein Rezept herstellt. Zwei Arten, null für alles andere (Barren, Leder, Taschen, Verbrauchsgüter):
+// item: tragbare Ausrüstung mit Werten. enhance: dauerhafte Verbesserung eines Slots (Verzauberung, Rüstungsset, Zielfernrohr).
+async function recipeInfo(id) {
+  const ns = config.namespaces.static;
+  const r = await ctx.api(`/data/wow/recipe/${id}`, ns);
+  const reagents = (r.reagents ?? []).map((x) => [x.reagent?.name, x.quantity]);
+  if (!r.crafted_item) {
+    const [, prefix] = (r.name ?? '').match(/^(.+?) - /) ?? [];
+    // Verzauberungen nennen ihren Slot vorne im Namen, z. B. „Armschiene - Ausdauer“.
+    const slot = { Armschiene: 'WRIST', Brust: 'CHEST', Umhang: 'BACK', Stiefel: 'FEET', Handschuhe: 'HANDS', Schild: 'OFF_HAND', Waffe: 'MAIN_HAND', '2H-Waffe': 'MAIN_HAND', Zweihandwaffe: 'MAIN_HAND' }[prefix];
+    return slot ? { enhance: { kind: 'enchant', slots: [slot], two: /2H|Zweihand/.test(prefix), name: r.name, desc: r.description ?? null }, reagents } : null;
+  }
+  const it = await ctx.api(`/data/wow/item/${r.crafted_item.id}`, ns);
+  const cls = it.item_class?.id;
+  const base = { id: it.id, name: it.name, quality: it.quality?.type ?? null, ilvl: it.level ?? null, req: it.required_level ?? 0, icon: await itemIcon(ctx.api, it.id, ctx.caches.icons) };
+  const desc = (it.preview_item?.spells ?? []).map((s) => s.description).filter(Boolean).join(' ') || null;
+  if (cls === 0) {
+    if (it.item_subclass?.id === 6) {
+      // Slots, die eine dauerhafte Verbesserung nennt (Rüstungsset, Zielfernrohr): „…auf der Brust, an den Beinen, Händen oder Füßen…“.
+      const words = [['CHEST', /Brust/], ['LEGS', /Beine/], ['HANDS', /Hände|Händen|Handschuh/], ['FEET', /Füße|Füßen|Stiefel/],
+        ['WRIST', /Armschiene|Handgelenk/], ['BACK', /Umhang|Rücken/], ['HEAD', /Kopf/], ['SHOULDER', /Schulter/], ['RANGED', /Fernkampf|Zielfernrohr/],
+        ['OFF_HAND', /Schild/], ['MAIN_HAND', /Waffe|Nahkampf/]];
+      const slots = words.filter(([, re]) => re.test(desc ?? '')).map(([s]) => s);
+      return slots.length ? { enhance: { kind: 'item', slots, ...base, desc }, reagents } : null;
+    }
+    // Verbrauchsgüter (Tränke, Essen, Verbände) zeigt die Seite vorerst nicht.
+    return null;
+  }
+  if (![2, 4].includes(cls) || it.inventory_type?.type === 'NON_EQUIP') return null;
+  const p = it.preview_item ?? {};
+  return {
+    item: {
+      ...base,
+      inv: it.inventory_type?.type ?? null,
+      cls,
+      sub: it.item_subclass?.id ?? null,
+      subName: it.item_subclass?.name ?? null,
+      lines: (p.stats ?? []).map((s) => s.display?.display_string).filter(Boolean),
+      stats: statMap(p.stats),
+      armor: p.armor?.value ?? null,
+      dps: p.weapon?.dps?.value ?? null,
+    },
+    reagents,
+  };
+}
+
+// Name, Beschreibung und Icon eines Erfolgs aus den Spieldaten von Forever (deutsch). Das Profil nennt die Namen nur englisch.
+async function achievementInfo(id) {
+  ctx.achievements ??= new Map();
+  if (!ctx.achievements.has(id)) {
+    ctx.achievements.set(id, (async () => {
+      const ns = config.namespaces.static;
+      const [a, media] = await Promise.all([
+        ctx.api(`/data/wow/achievement/${id}`, ns).catch(() => null),
+        ctx.api(`/data/wow/media/achievement/${id}`, ns).catch(() => null),
+      ]);
+      return { name: a?.name ?? null, desc: a?.description ?? null, icon: media?.assets?.find((x) => x.key === 'icon')?.value ?? null };
+    })());
+  }
+  return ctx.achievements.get(id);
+}
+
+async function achievementEvent(key, id, t) {
+  const info = await achievementInfo(id);
+  return info.name ? { t, key, type: 'achievement', id, ...info } : null;
 }
 
 // Inventartypen in der Zählung des Wowhead-Modellviewers.
@@ -324,7 +495,12 @@ function pickStats(s) {
     agility: v(s.agility),
     intellect: v(s.intellect),
     stamina: v(s.stamina),
+    spirit: v(s.spirit),
     armor: v(s.armor),
+    attackPower: s.attack_power ?? null,
+    spellPower: s.spell_power ?? null,
+    dodge: pct(s.dodge),
+    defense: v(s.defense),
     crit: Math.max(pct(s.melee_crit) ?? 0, pct(s.spell_crit) ?? 0, pct(s.ranged_crit) ?? 0) || null,
     haste: Math.max(pct(s.melee_haste) ?? 0, pct(s.spell_haste) ?? 0, pct(s.ranged_haste) ?? 0) || null,
     mastery: pct(s.mastery),
@@ -353,13 +529,14 @@ async function itemIcon(api, id, cache) {
   return cache.get(id);
 }
 
-// Blizzards Render-Server kennt nicht jedes neue Icon. Dann liefert Wowhead den Icon-Namen.
+// Blizzards Render-Server kennt nicht jedes neue Icon. Dann liefert Wowhead den Icon-Namen (in Forever aus /forever/).
 async function resolveIcon(api, id) {
   const blizzard = await api(`/data/wow/media/item/${id}`, config.namespaces.static)
     .then((m) => m.assets?.find((a) => a.key === 'icon')?.value ?? null)
     .catch(() => null);
   if (blizzard && (await fetch(blizzard).then((r) => r.ok).catch(() => false))) return blizzard;
-  const name = await fetch(`https://nether.wowhead.com/tooltip/item/${id}?dataEnv=1&locale=0`)
+  const env = config.wowhead ? `${config.wowhead}/` : '';
+  const name = await fetch(`https://nether.wowhead.com/${env}tooltip/item/${id}?locale=0`)
     .then((r) => (r.ok ? r.json() : null))
     .then((j) => j?.icon)
     .catch(() => null);
@@ -394,16 +571,15 @@ function createApi(token) {
   };
 }
 
-async function loadPrevious() {
+async function loadPrevious(url = process.env.PREVIOUS_DATA_URL, file = outFile, list = 'characters') {
   const map = new Map();
-  const url = process.env.PREVIOUS_DATA_URL;
   try {
     const prev = url
       ? await fetch(url, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null))
-      : existsSync(outFile) ? JSON.parse(await readFile(outFile, 'utf8')) : null;
+      : existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
     // Nach dem Wechsel der Spielversion passt der alte Stand nicht mehr, auch bei gleichem Namen.
     if ((prev?.era ?? era) !== era) return map;
-    for (const c of prev?.characters ?? []) if (c.key && !c.demo) map.set(c.key, c);
+    for (const c of prev?.[list] ?? []) if (c.key && !c.demo) map.set(c.key, c);
   } catch {
     // Kein alter Stand vorhanden, das ist beim ersten Lauf normal.
   }
@@ -481,7 +657,9 @@ async function updateSessions(data) {
     const players = fresh.filter((c) => end - c.lastLogin <= SESSION_WINDOW);
     if (players.length >= minPlayers && Date.now() - end >= QUIET) {
       const gains = players.filter((c) => state.levels[c.key] != null).map((c) => c.level - state.levels[c.key]);
-      if (gains.length) {
+      // Sessions bis sessionBaseline.until stecken schon in der Baseline. Sie setzen nur den Stand, ohne eigene Session.
+      const counted = Date.parse(config.sessionBaseline?.until ?? '') || 0;
+      if (gains.length && end >= counted) {
         state.list.push({
           start: Math.min(...players.map((c) => c.lastLogin)),
           end,
@@ -537,6 +715,8 @@ async function updateFeed(data, sessions) {
       items: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.id])),
       ilvls: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.ilvl ?? null])),
       profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
+      // Fehlt die Liste (Abruf fehlgeschlagen), bleibt die alte. So meldet der nächste Lauf nicht alle Erfolge neu.
+      achs: c.achievements ? c.achievements.map(([id]) => id) : feed.snapshot[c.key]?.achs ?? null,
     };
     const old = feed.snapshot[c.key];
     feed.snapshot[c.key] = snap;
@@ -559,6 +739,14 @@ async function updateFeed(data, sessions) {
       else if (Math.floor(skill / 75) > Math.floor(before / 75) || (p.max && skill >= p.max && before < p.max)) add({ ...base, type: 'prof', name: p.name, skill });
     }
     if ((c.guild ?? null) !== (old.guild ?? null)) add({ ...base, type: 'guild', guild: c.guild ?? null, from: old.guild ?? null });
+    // Neue Erfolge mit ihrem genauen Zeitpunkt. Der erste Lauf mit Erfolgen legt nur den Stand fest, ohne Ereignisse.
+    if (old.achs && c.achievements) {
+      for (const [id, at] of c.achievements) {
+        if (old.achs.includes(id)) continue;
+        const e = await achievementEvent(c.key, id, at);
+        if (e) add(e);
+      }
+    }
   }
 
   const last = sessions.list?.at(-1);
@@ -569,6 +757,223 @@ async function updateFeed(data, sessions) {
   feed.events.sort((a, b) => a.t - b.t);
   feed.events = feed.events.slice(-FEED_LIMIT);
   await saveState('feed', feed);
+  return feed;
+}
+
+// ---------------------------------------------------------------------------
+// Gilde
+
+// Mitglieder: alle Charaktere aus characters (ohne Platzhalter) und config.guild.members.
+// Ein Eintrag in members mit gleichem Namen wie ein Gruppen-Charakter setzt nur dessen Rang.
+// Gruppen-Charaktere ruft der Abruf nicht zweimal ab. Schlägt ein Mitglied fehl, bleibt sein letzter Stand.
+function guildEntries() {
+  const g = config.guild;
+  const ranks = g.ranks ?? [];
+  const fallback = ranks.includes('Mitglied') ? 'Mitglied' : ranks.at(-1) ?? 'Mitglied';
+  const list = new Map();
+  for (const e of [...config.characters, ...(g.members ?? [])]) {
+    if (!e.realm && !e.surname) continue;
+    const key = charKey(e);
+    list.set(key, { ...list.get(key), ...e, rank: e.rank ?? list.get(key)?.rank ?? fallback });
+  }
+  return [...list.values()];
+}
+
+function guildMeta(members) {
+  return {
+    generatedAt: new Date().toISOString(),
+    name: config.guild.name ?? config.title,
+    era,
+    modelEnv: config.modelEnv ?? 'classic',
+    wowhead: config.wowhead,
+    maxLevel: config.maxLevel,
+    ranks: config.guild.ranks ?? [],
+    members,
+  };
+}
+
+async function buildGuild(data) {
+  const previous = await loadPrevious(previousGuildUrl(), new URL('site/guild.json', root), 'members');
+  const group = new Map(data.characters.map((c) => [c.key, c]));
+  const members = [];
+  for (const entry of guildEntries()) {
+    const key = charKey(entry);
+    try {
+      // Gruppen-Charaktere kommen aus data.json, auch ihr Fehler. Kein zweiter Abruf.
+      // Hat data.json einen alten Stand (stale), gilt dieser auch hier. Sonst greift der letzte Stand der Gilde.
+      const squad = group.get(key);
+      if (squad?.error && !squad.level) throw new Error(squad.error);
+      const c = squad ?? (await fetchCharacter(ctx.api, entry, ctx.caches));
+      members.push({ ...c, rank: entry.rank });
+      if (!group.has(key)) console.log(`gilde   ${key}`);
+    } catch (err) {
+      console.warn(`gilde   ${key}: ${err.message}`);
+      const old = previous.get(key);
+      members.push(old ? { ...old, rank: entry.rank, stale: true, error: err.message } : { key, name: entry.name, surname: entry.surname ?? null, rank: entry.rank, error: err.message });
+    }
+  }
+  return guildMeta(members);
+}
+
+// Die letzte veröffentlichte guild.json liegt neben der data.json.
+function previousGuildUrl() {
+  const url = process.env.PREVIOUS_DATA_URL;
+  return url ? url.replace(/data\.json$/, 'guild.json') : null;
+}
+
+// ---------------------------------------------------------------------------
+// Quests des Squads. Die Profile nennen nur IDs, Titel und Zone kommen deutsch aus den Spieldaten (/data/wow/quest).
+// Quests ändern sich nur mit einem Patch. Ihre Daten liegen darum in data/quests.json, die Action speichert sie, ein lokaler Lauf nur im Speicher.
+async function buildQuests(chars) {
+  const file = new URL('data/quests.json', root);
+  const ns = config.namespaces.static;
+  const stored = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
+  const cache = stored?.ns === ns ? stored.quests : {};
+  const ids = [...new Set(chars.flatMap((c) => [...(c.quests?.open ?? []), ...(c.quests?.done ?? [])]))];
+  const missing = ids.filter((id) => !(id in cache));
+  let next = 0;
+  await Promise.all(Array.from({ length: 8 }, async () => {
+    while (next < missing.length) {
+      const id = missing[next++];
+      const q = await ctx.api(`/data/wow/quest/${id}`, ns).catch(() => null);
+      cache[id] = q ? { t: q.title ?? null, z: q.area?.name ?? null } : null;
+    }
+  }));
+  if (missing.length && process.env.GITHUB_ACTIONS) {
+    await mkdir(new URL('data/', root), { recursive: true });
+    await writeFile(file, JSON.stringify({ ns, quests: cache }) + '\n');
+  }
+  console.log(`Quests: ${ids.length} bekannt (${missing.length} neu abgerufen).`);
+  return Object.fromEntries(ids.filter((id) => cache[id]?.t).map((id) => [id, cache[id]]));
+}
+
+// Jeder Abruf vergleicht die abgeschlossenen Quests mit dem letzten Stand. Neue bekommen den Zeitpunkt des letzten Logouts.
+// Der Verlauf hält 30 Tage. Der erste Lauf je Charakter legt nur den Stand fest.
+async function updateQuestLog(data) {
+  const log = await loadState('quest-log', () => ({ snapshot: {}, events: [] }));
+  if (!process.env.GITHUB_ACTIONS) return log;
+  const now = Date.now();
+  for (const c of data.characters) {
+    if (c.error || !c.quests?.done) continue;
+    const old = log.snapshot[c.key];
+    log.snapshot[c.key] = c.quests.done;
+    if (!old) continue;
+    const before = new Set(old);
+    const t = c.lastLogin ?? now;
+    for (const id of c.quests.done) if (!before.has(id)) log.events.push({ t, key: c.key, id });
+  }
+  log.events = log.events.filter((e) => now - e.t < 30 * 864e5).sort((a, b) => a.t - b.t);
+  await saveState('quest-log', log);
+  return log;
+}
+
+// Testdaten: Beispiel-Charaktere bekommen Teile der echten Questlogs, damit sich die Questlogs vergleichen lassen.
+function demoQuests(chars) {
+  const real = chars.filter((c) => !c.demo && c.quests);
+  if (!real.length) return;
+  chars.filter((c) => c.demo && !c.quests).forEach((c, i) => {
+    const a = real[i % real.length].quests;
+    const b = real[(i + 1) % real.length].quests;
+    c.quests = { open: [...a.open.slice(0, 10), ...b.open.slice(3, 9)], done: [...new Set([...a.done.slice(0, Math.floor(a.done.length * 0.7)), ...b.done.slice(0, 40)])] };
+  });
+}
+
+// Testverlauf: Der Charakter, der am längsten offline ist, hat die letzte Runde verpasst. Die anderen schließen in der Zeit Quests ab.
+function demoQuestLog(data) {
+  const chars = data.characters.filter((c) => c.level && c.quests);
+  const away = [...chars].sort((a, b) => (a.lastLogin ?? 0) - (b.lastLogin ?? 0))[0];
+  if (!away) return { events: [] };
+  const mine = new Set([...(away.quests.done ?? []), ...(away.quests.open ?? [])]);
+  const start = Math.max(away.lastLogin ?? 0, Date.now() - 12 * 36e5) + 36e5;
+  const events = [];
+  chars.filter((c) => c !== away).forEach((c, i) => {
+    const todo = c.quests.done.filter((id) => !mine.has(id) && data.questInfo?.[id]).slice(-5 - i);
+    todo.forEach((id, k) => events.push({ t: start + (i * 5 + k) * 600e3, key: c.key, id }));
+  });
+  return { events: events.sort((a, b) => a.t - b.t) };
+}
+
+// Nur mit --guild-demo: Squad-Charaktere ohne Profil (und Platzhalter) übernehmen Gildenmitglieder mit Daten,
+// erst die echten, dann die Beispiele. So zeigen Squad und Gilde dieselben Charaktere und lassen sich vergleichen.
+// Dazu kommt ein Beispiel-Feed für die Startseite. data/ bleibt unberührt.
+async function fillSquad(data, guild) {
+  const used = new Set(data.characters.filter((c) => !c.error).map((c) => c.key));
+  const spare = guild.members.filter((m) => !m.error && m.level && !used.has(m.key)).sort((a, b) => !!a.demo - !!b.demo);
+  data.characters = data.characters.map((c) => (c.error && spare.length ? spare.shift() : c));
+  demoQuests(data.characters);
+  data.crafts = await buildCrafts(data.characters);
+  data.statNames = ctx.statNames ?? {};
+  data.questInfo = await buildQuests(data.characters);
+  await writeFile(outFile, JSON.stringify(data, null, 2) + '\n');
+  await writeFile(new URL('site/feed.json', root), JSON.stringify(demoFeed(data)) + '\n');
+  console.log(`Squad mit Test-Charakteren gefüllt: ${data.characters.map((c) => c.name).join(', ')}`);
+}
+
+// Gilden-Feed: Jeder Abruf vergleicht Mitgliederliste, Rang, Level und epische Items mit dem letzten Stand.
+// Level zählen nur als Meilenstein (20, 30, 40, 50, 60), einzelne Level-Ups wären bei einer ganzen Gilde zu viel.
+// Wer aus config.guild.members verschwindet, gilt als ausgetreten. Das Ereignis trägt den Namen, weil der Eintrag fehlt.
+// Eine Namenskorrektur in config.json ist kein Austritt mit Beitritt: Verschwindet ein Eintrag und kommt im selben Lauf
+// ein neuer dazu, mit gleicher Charakter-ID, gleichem Vornamen oder ohne je geladenes Profil, zieht nur der Stand um.
+async function updateGuildFeed(guild) {
+  const FEED_LIMIT = 800;
+  const MILESTONES = [20, 30, 40, 50, 60];
+  const EPIC = ['EPIC', 'LEGENDARY'];
+  const feed = await loadState('guild-feed', () => ({ members: null, snapshot: {}, events: [] }));
+  if (!process.env.GITHUB_ACTIONS) return feed;
+  const now = Date.now();
+  const add = (e) => feed.events.push(e);
+  const keys = guild.members.map((m) => m.key);
+
+  if (feed.members) {
+    const added = guild.members.filter((m) => !feed.members.includes(m.key));
+    const renamed = new Set();
+    const same = (a, b) => String(a ?? '').toLowerCase() === String(b ?? '').toLowerCase();
+    for (const k of feed.members) {
+      if (keys.includes(k)) continue;
+      const snap = feed.snapshot[k] ?? {};
+      const to = added.find((m) => !renamed.has(m.key) && ((snap.id && m.id === snap.id) || same(m.name, snap.name) || snap.level == null));
+      delete feed.snapshot[k];
+      if (to) {
+        renamed.add(to.key);
+        feed.snapshot[to.key] = snap;
+        console.log(`gilde   ${k} heißt jetzt ${to.key}`);
+        continue;
+      }
+      // Ein Eintrag ohne je geladenes Profil war nie sichtbar. Sein Wegfall ist kein Austritt.
+      if (snap.level == null) continue;
+      add({ t: now, key: k, type: 'leave', name: snap.name ?? k, surname: snap.surname ?? null, classId: snap.classId ?? null });
+    }
+    for (const m of added) if (!renamed.has(m.key)) add({ t: now, key: m.key, type: 'join', rank: m.rank });
+  }
+  feed.members = keys;
+
+  for (const m of guild.members) {
+    const old = feed.snapshot[m.key];
+    const snap = { ...old, id: m.id ?? old?.id ?? null, name: m.name, surname: m.surname ?? null, classId: m.classId ?? old?.classId ?? null, rank: m.rank };
+    if (!m.error && m.level) {
+      Object.assign(snap, {
+        level: m.level,
+        lastLogin: m.lastLogin ?? null,
+        epics: (m.items ?? []).filter((i) => i.id && EPIC.includes(i.quality)).map((i) => i.id),
+      });
+    }
+    feed.snapshot[m.key] = snap;
+    if (!old) continue;
+
+    const t = m.lastLogin && m.lastLogin > (old.lastLogin ?? 0) ? m.lastLogin : now;
+    if (old.rank && old.rank !== m.rank) add({ t: now, key: m.key, type: 'rank', from: old.rank, to: m.rank });
+    if (m.error || !m.level || old.level == null) continue;
+    const reached = MILESTONES.filter((l) => old.level < l && m.level >= l).at(-1);
+    if (reached) add({ t, key: m.key, type: 'milestone', level: reached, max: reached >= config.maxLevel });
+    for (const it of m.items ?? []) {
+      if (!it.id || !EPIC.includes(it.quality) || (old.epics ?? []).includes(it.id)) continue;
+      add({ t, key: m.key, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null });
+    }
+  }
+
+  feed.events.sort((a, b) => a.t - b.t);
+  feed.events = feed.events.slice(-FEED_LIMIT);
+  await saveState('guild-feed', feed);
   return feed;
 }
 
@@ -606,8 +1011,41 @@ function loadDotEnv(url) {
 // Demo-Daten
 
 function buildDemo() {
+  const chars = [
+    ['Thoradin', 60, 1, 'Krieger', 'Zwerg', 'ALLIANCE', 'Die Unbeugsamen', ['EPIC', 'RARE', 'RARE', 'EPIC']],
+    ['Lunaria', 58, 8, 'Magier', 'Gnom', 'ALLIANCE', 'Die Unbeugsamen', ['RARE', 'UNCOMMON', 'RARE']],
+    ['Kaelwyn', 47, 3, 'Jäger', 'Nachtelf', 'ALLIANCE', null, ['UNCOMMON', 'RARE', 'COMMON']],
+    ['Brumhild', 52, 2, 'Paladin', 'Mensch', 'ALLIANCE', 'Die Unbeugsamen', ['RARE', 'UNCOMMON']],
+    ['Schattenfell', 33, 4, 'Schurke', 'Mensch', 'ALLIANCE', null, ['UNCOMMON', 'COMMON']],
+  ];
+
+  return {
+    generatedAt: new Date().toISOString(),
+    title: config.title,
+    launch: config.launch ?? null,
+    era: 'classic',
+    modelEnv: config.modelEnv ?? 'classic',
+    wowhead: config.wowhead || 'classic',
+    maxLevel: 60,
+    characters: chars.map(([name, level, classId, className, race, faction, guild, q], i) => ({
+      key: `demo/${name.toLowerCase()}`,
+      demo: true,
+      name, realmName: 'Demo-Realm', level, classId, className, race, faction, guild,
+      avgIlvl: 30 + level / 2, equippedIlvl: 28 + level / 2,
+      lastLogin: Date.now() - i * 5 * 3600 * 1000,
+      avatar: null,
+      items: demoGear(q).slice(0, 15 - i),
+      professions: [{ name: 'Mining', kind: 'primary', skill: 150 + i * 20, max: 225 }, { name: 'Cooking', kind: 'secondary', skill: 75, max: 150 }],
+      talents: demoTalents(classId, level),
+      stats: demoStats(classId, level),
+    })),
+  };
+}
+
+// Ausrüstung für Beispiel-Charaktere: q gibt die Qualitäten reihum vor, base das niedrigste Itemlevel.
+function demoGear(q, base = 30) {
   const icon = (n) => `https://wow.zamimg.com/images/wow/icons/large/${n}.jpg`;
-  const gear = (q) => [
+  return [
     ['HEAD', 'Kopf', 'Helm der Wacht', 'inv_helmet_03'],
     ['NECK', 'Hals', 'Amulett des Morgens', 'inv_jewelry_necklace_01'],
     ['SHOULDER', 'Schultern', 'Schulterstücke des Sturms', 'inv_shoulder_02'],
@@ -624,60 +1062,46 @@ function buildDemo() {
     ['MAIN_HAND', 'Waffenhand', 'Klinge des Nordens', 'inv_sword_04'],
     ['OFF_HAND', 'Schildhand', 'Schild der Wacht', 'inv_shield_06'],
   ].map(([slot, slotName, name, ic], i) => ({
-    slot, slotName, id: null, name, quality: q[i % q.length], ilvl: 30 + i, enchants: i === 4 ? ['+4 Werte'] : [], icon: icon(ic),
+    slot, slotName, id: null, name, quality: q[i % q.length], ilvl: base + i, enchants: i === 4 ? ['+4 Werte'] : [], icon: icon(ic),
   }));
+}
 
-  const chars = [
-    ['Thoradin', 60, 1, 'Krieger', 'Zwerg', 'ALLIANCE', 'Die Unbeugsamen', ['EPIC', 'RARE', 'RARE', 'EPIC']],
-    ['Lunaria', 58, 8, 'Magier', 'Gnom', 'ALLIANCE', 'Die Unbeugsamen', ['RARE', 'UNCOMMON', 'RARE']],
-    ['Kaelwyn', 47, 3, 'Jäger', 'Nachtelf', 'ALLIANCE', null, ['UNCOMMON', 'RARE', 'COMMON']],
-    ['Brumhild', 52, 2, 'Paladin', 'Mensch', 'ALLIANCE', 'Die Unbeugsamen', ['RARE', 'UNCOMMON']],
-    ['Schattenfell', 33, 4, 'Schurke', 'Mensch', 'ALLIANCE', null, ['UNCOMMON', 'COMMON']],
-  ];
-
-  // Verteilt die Punkte von oben nach unten auf die echten Bäume, damit die Demo einen vollständigen Baum zeigt.
+// Talente für Beispiel-Charaktere. Verteilt die Punkte von oben nach unten auf die echten Bäume (60 / 40 / 0),
+// damit die Demo vollständige Bäume zeigt. main wählt den Baum mit den meisten Punkten.
+function demoTalents(classId, level, main = 0) {
   const layout = JSON.parse(readFileSync(new URL('../site/talents.json', import.meta.url), 'utf8')).classes;
-  const talents = (classId, level) => {
-    const points = Math.max(0, level - 9);
-    const split = [Math.ceil(points * 0.6), Math.floor(points * 0.4), 0];
-    const picks = [];
-    const trees = layout[classId].map((tree, i) => {
-      let left = split[i], spent = 0;
-      for (const t of tree.talents) {
-        if (!left || t.tier * 5 > spent) continue;
-        const rank = Math.min(t.ranks.length, left);
-        picks.push({ id: t.id, name: t.name, spell: t.ranks[rank - 1], rank, tree: tree.name });
-        left -= rank;
-        spent += rank;
-      }
-      return { name: tree.name, points: spent };
-    });
-    return { trees, hero: null, picks, total: points, calc: `https://www.wowhead.com/classic/talent-calc/${{ 1: 'warrior', 8: 'mage', 3: 'hunter', 2: 'paladin', 4: 'rogue' }[classId]}` };
-  };
-
-  return {
-    generatedAt: new Date().toISOString(),
-    title: config.title,
-    launch: config.launch ?? null,
-    era: 'classic',
-    modelEnv: 'classic',
-    wowhead: 'classic',
-    maxLevel: 60,
-    characters: chars.map(([name, level, classId, className, race, faction, guild, q], i) => ({
-      key: `demo/${name.toLowerCase()}`,
-      demo: true,
-      name, realmName: 'Demo-Realm', level, classId, className, race, faction, guild,
-      avgIlvl: 30 + level / 2, equippedIlvl: 28 + level / 2,
-      lastLogin: Date.now() - i * 5 * 3600 * 1000,
-      avatar: null,
-      items: gear(q).slice(0, 15 - i),
-      professions: [{ name: 'Mining', kind: 'primary', skill: 150 + i * 20, max: 225 }, { name: 'Cooking', kind: 'secondary', skill: 75, max: 150 }],
-      talents: talents(classId, level),
-    })),
-  };
+  const points = Math.max(0, level - 9);
+  const split = [0, 0, 0];
+  split[main] = Math.ceil(points * 0.6);
+  split[(main + 1) % 3] = Math.floor(points * 0.4);
+  const picks = [];
+  const trees = layout[classId].map((tree, i) => {
+    let left = split[i], spent = 0;
+    for (const t of tree.talents) {
+      if (!left || t.tier * 5 > spent) continue;
+      const rank = Math.min(t.ranks.length, left);
+      picks.push({ id: t.id, name: t.name, spell: t.ranks[rank - 1], rank, tree: tree.name });
+      left -= rank;
+      spent += rank;
+    }
+    return { name: tree.name, points: spent };
+  });
+  return { trees, hero: null, picks, total: points, calc: `https://www.wowhead.com/${config.wowhead || 'classic'}/talent-calc/${classSlug(classId)}` };
 }
 
 // Beispiel-Feed für die Demo: ein paar Tage mit Level-Ups, Items, Berufen und einer Session.
+async function withAchievements(feed, data) {
+  for (const c of data.characters) {
+    if (c.demo) continue;
+    for (const [id, at] of c.achievements ?? []) {
+      const e = await achievementEvent(c.key, id, at);
+      if (e) feed.events.push(e);
+    }
+  }
+  feed.events.sort((a, b) => a.t - b.t);
+  return feed;
+}
+
 function demoFeed(data) {
   const chars = data.characters;
   const h = 3600 * 1000;
@@ -694,4 +1118,85 @@ function demoFeed(data) {
   events.push({ t: start + 31 * h, key: chars[4].key, type: 'guild', guild: 'Die Unbeugsamen', from: null });
   events.push({ t: start + 70 * h, type: 'session', start: start + 66 * h, gain: 2.5, players: chars.slice(0, 4).map((c) => c.key) });
   return { era: 'classic', events: events.sort((a, b) => a.t - b.t) };
+}
+
+// Beispiel-Gilde: füllt members mit erfundenen Horde-Charakteren auf 15 Mitglieder auf (verändert die Liste).
+// Mit --demo gibt es nur Beispiel-Mitglieder, mit --guild-demo kommen sie zu den echten dazu.
+// Das Aussehen leihen sie sich von einem echten Mitglied gleichen Volks, sonst nur Volk und Geschlecht.
+// Zwei Mitglieder sind länger als 14 Tage offline, damit die Seite den Zustand „inaktiv“ zeigt.
+function buildDemoGuild(members) {
+  const h = 3600 * 1000;
+  const RACES = { 2: 'Orc', 5: 'Untoter', 6: 'Tauren', 8: 'Troll' };
+  const CLASS_NAMES = { 1: 'Krieger', 3: 'Jäger', 4: 'Schurke', 5: 'Priester', 7: 'Schamane', 8: 'Magier', 9: 'Hexenmeister', 11: 'Druide' };
+  const prof = (name, skill, kind = 'primary') => ({ name, kind, skill, max: skill < 75 ? 75 : skill < 150 ? 150 : 225 });
+  const list = [
+    ['Grimbart', 'Grollzahn', 1, 2, 0, 34, 'Offizier', 3, ['Mining', 160], ['Blacksmithing', 145], 2, ['RARE', 'UNCOMMON']],
+    ['Ilsa', 'Funkenschlag', 8, 8, 1, 41, 'Veteran', 20, ['Tailoring', 205], ['Enchanting', 180], 0, ['EPIC', 'RARE', 'UNCOMMON']],
+    ['Mira', 'Moorlicht', 5, 5, 1, 31, 'Mitglied', 6, ['Herbalism', 150], ['Alchemy', 140], 1, ['UNCOMMON', 'RARE']],
+    ['Tusk', 'Donnerhuf', 11, 6, 0, 29, 'Mitglied', 30, ['Skinning', 140], ['Leatherworking', 130], 2, ['UNCOMMON']],
+    ['Zalja', 'Knochenruf', 7, 8, 1, 27, 'Mitglied', 52, ['Mining', 120], ['Engineering', 110], 2, ['UNCOMMON', 'COMMON']],
+    ['Hogar', 'Hufschlag', 1, 6, 0, 15, 'Rekrut', 20 * 24, ['Mining', 60], ['Blacksmithing', 45], 0, ['COMMON']],
+    ['Nekra', 'Nachtsang', 4, 5, 1, 12, 'Mitglied', 35 * 24, ['Skinning', 40], ['Herbalism', 35], 1, ['COMMON']],
+    ['Vex', 'Schattenschritt', 9, 5, 0, 24, 'Mitglied', 75, ['Tailoring', 105], ['Enchanting', 90], 1, ['UNCOMMON', 'COMMON']],
+    ['Gromma', 'Gerstensaft', 7, 2, 1, 19, 'Rekrut', 110, ['Herbalism', 85], ['Alchemy', 70], 1, ['COMMON', 'UNCOMMON']],
+    ['Brakk', 'Eisenfaust', 3, 2, 0, 22, 'Rekrut', 400, ['Skinning', 100], ['Leatherworking', 95], 1, ['UNCOMMON', 'COMMON']],
+  ];
+  const models = members.filter((m) => m.model);
+  for (const [name, surname, classId, raceId, gender, level, rank, hoursAgo, p1, p2, main, q] of list) {
+    if (members.length >= 15) break;
+    const talents = demoTalents(classId, level, main);
+    const spec = [...talents.trees].sort((a, b) => b.points - a.points)[0]?.name ?? null;
+    const borrow = models.find((m) => m.model.race === raceId) ?? models[0];
+    const ilvl = Math.max(5, Math.round(level * 0.75));
+    members.push({
+      key: `demo/${name.toLowerCase()}-${surname.toLowerCase()}`,
+      demo: true,
+      name, surname, level, classId, className: CLASS_NAMES[classId], race: RACES[raceId],
+      gender: gender ? 'FEMALE' : 'MALE', faction: 'HORDE', rank,
+      avgIlvl: ilvl, equippedIlvl: ilvl,
+      lastLogin: Date.now() - hoursAgo * h,
+      spec, role: classicRole(classId, spec),
+      render: null,
+      items: demoGear(q, ilvl - 7).slice(0, 10 + (level % 6)),
+      professions: [prof(...p1), prof(...p2), prof('Cooking', Math.min(225, level * 4), 'secondary'), prof('First Aid', Math.min(225, level * 5), 'secondary')],
+      talents,
+      stats: demoStats(classId, level),
+      model: borrow ? { race: raceId, gender, options: borrow.model.race === raceId && borrow.model.gender === gender ? borrow.model.options : [], items: borrow.model.items } : null,
+    });
+  }
+  return guildMeta(members);
+}
+
+// Beispiel-Feed der Gilde: Beitritte, ein Austritt, ein Rangwechsel, Meilensteine und epische Items der letzten Tage.
+function demoGuildFeed(guild) {
+  const h = 3600 * 1000;
+  const now = Date.now();
+  const ok = guild.members.filter((m) => m.level);
+  const events = [];
+  ok.forEach((m, i) => {
+    const t = now - (i % 5) * 22 * h - (i + 1) * 1.3 * h;
+    const milestone = [60, 50, 40, 30, 20].find((l) => m.level >= l && m.level < l + 5);
+    if (milestone) events.push({ t, key: m.key, type: 'milestone', level: milestone, max: milestone >= 60 });
+    if (i % 3 === 2) events.push({ t: t - 30 * h, key: m.key, type: 'join', rank: m.rank });
+    const epic = (m.items ?? []).find((it) => it.quality === 'EPIC');
+    if (epic) events.push({ t: t + 0.5 * h, key: m.key, type: 'item', id: epic.id, name: epic.name, quality: epic.quality, icon: epic.icon, slot: epic.slotName });
+  });
+  const officer = ok.find((m) => m.rank === 'Offizier');
+  if (officer) events.push({ t: now - 26 * h, key: officer.key, type: 'rank', from: 'Veteran', to: 'Offizier' });
+  events.push({ t: now - 50 * h, key: 'demo/durotan-dauerafk', type: 'leave', name: 'Durotan', surname: 'Dauerafk', classId: 1 });
+  return { era: guild.era, events: events.sort((a, b) => a.t - b.t) };
+}
+
+// Werte für Beispiel-Charaktere: grob nach Level und Klasse, damit Loadout und Detail die Werte-Liste zeigen.
+function demoStats(classId, level) {
+  const caster = [5, 8, 9].includes(classId);
+  const power = { 1: 'Wut', 4: 'Energie' }[classId] ?? 'Mana';
+  const main = Math.round(20 + level * 2.2);
+  const low = Math.round(15 + level * 1.1);
+  return {
+    health: 60 + level * 32, power: power === 'Mana' ? 80 + level * 30 : 100, powerType: power,
+    strength: caster ? low : main, agility: [3, 4].includes(classId) ? main : low, intellect: caster ? main : low,
+    stamina: Math.round(20 + level * 1.8), spirit: low, armor: (caster ? 20 : 45) * level,
+    attackPower: caster ? 0 : level * 8, spellPower: caster ? level * 2 : 0, crit: 5 + level / 10, dodge: 3 + level / 20, defense: level * 5,
+  };
 }
