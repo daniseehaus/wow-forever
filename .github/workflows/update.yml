@@ -12,18 +12,21 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  actions: read   # deploy-pages ab v4 liest damit das Artefakt des Laufs
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
+# Alle Actions laufen mit Node 24. Der Runner ist fest auf Ubuntu 24.04: ubuntu-latest wechselt ab Oktober 2026 auf Ubuntu 26,
+# und „playwright install --with-deps“ (3D-Spiegelung) braucht eine Version, die Playwright kennt. Umstellen erst nach einem Testlauf.
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -33,7 +36,7 @@ jobs:
         run: npm ci
 
       - id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Charakterdaten abrufen
         run: node scripts/fetch.mjs
@@ -49,7 +52,7 @@ jobs:
         run: echo "hash=$(node scripts/mirror-models.mjs --hash)" >> "$GITHUB_OUTPUT"
 
       - name: 3D-Cache laden
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .model-cache
           key: models-${{ steps.models.outputs.hash }}
@@ -74,16 +77,16 @@ jobs:
           git add data/
           git diff --cached --quiet || (git commit -m "Verlauf aktualisieren" && git push)
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
