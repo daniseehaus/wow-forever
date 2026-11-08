@@ -9,3 +9,6 @@ site/modelviewer/
 site/renders/
 site/sessions.json
 site/feed.json
+site/guild.json
+site/guild-feed.json
+site/quest-log.json
