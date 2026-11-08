@@ -76,8 +76,8 @@
   },
   "wladimir-klatschko": {
    "level": 12,
-   "lastLogin": 1794173715000,
-   "guild": null,
+   "lastLogin": 1794176441000,
+   "guild": "Geilbleiber",
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
@@ -88,8 +88,8 @@
     "HANDS": 2653,
     "FINGER_1": 281268,
     "BACK": 4944,
-    "MAIN_HAND": 4932,
-    "OFF_HAND": 2212
+    "MAIN_HAND": 3489,
+    "OFF_HAND": 15014
    },
    "ilvls": {
     "SHIRT": 1,
@@ -101,12 +101,12 @@
     "HANDS": 4,
     "FINGER_1": 9,
     "BACK": 12,
-    "MAIN_HAND": 11,
-    "OFF_HAND": 6
+    "MAIN_HAND": 17,
+    "OFF_HAND": 17
    },
    "profs": {
-    "Mining": 66,
-    "Blacksmithing": 54,
+    "Mining": 72,
+    "Blacksmithing": 62,
     "Cooking": 1,
     "First Aid": 1
    },
@@ -286,6 +286,37 @@
   {
    "t": 1794175989000,
    "key": "heili-kabel",
+   "type": "guild",
+   "guild": "Geilbleiber",
+   "from": null
+  },
+  {
+   "t": 1794176441000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 3489,
+   "name": "Dicke Kriegsaxt",
+   "quality": "UNCOMMON",
+   "icon": "https://wow.zamimg.com/images/wow/icons/large/inv_throwingaxe_01.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 17,
+   "prev": 11
+  },
+  {
+   "t": 1794176441000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 15014,
+   "name": "Werwolf-Rundschild des Bären",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134955.jpg",
+   "slot": "Schildhand",
+   "ilvl": 17,
+   "prev": 6
+  },
+  {
+   "t": 1794176441000,
+   "key": "wladimir-klatschko",
    "type": "guild",
    "guild": "Geilbleiber",
    "from": null
