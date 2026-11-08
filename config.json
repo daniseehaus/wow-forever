@@ -34,7 +34,7 @@
     "modelEnv": "live",
     "sessionBaseline": { "count": 2, "levels": 9, "until": "2026-11-09T06:00:00+01:00" },
     "characters": [
-      { "name": "Daniel" },
+      { "name": "Wladimir", "surname": "Klatschko" },
       { "name": "Heili", "surname": "Kabel" },
       { "name": "Zukk", "surname": "Sturmzüngler" },
       { "name": "Pavel", "surname": "Plattenpapst" },
