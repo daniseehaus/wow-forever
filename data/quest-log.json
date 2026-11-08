@@ -411,127 +411,152 @@
   {
    "t": 1794173715000,
    "key": "wladimir-klatschko",
-   "id": 96874
+   "id": 96874,
+   "lv": 12
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 837
+   "id": 837,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 5652
+   "id": 5652,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 5654
+   "id": 5654,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 806
+   "id": 806,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 5653
+   "id": 5653,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 5656
+   "id": 5656,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 5655
+   "id": 5655,
+   "lv": 11
   },
   {
    "t": 1794175989000,
    "key": "heili-kabel",
-   "id": 5657
+   "id": 5657,
+   "lv": 11
   },
   {
    "t": 1794176441000,
    "key": "wladimir-klatschko",
-   "id": 1498
+   "id": 1498,
+   "lv": 12
   },
   {
    "t": 1794176441000,
    "key": "wladimir-klatschko",
-   "id": 1819
+   "id": 1819,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 1525
+   "id": 1525,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 837
+   "id": 837,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 842
+   "id": 842,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 97243
+   "id": 97243,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 1524
+   "id": 1524,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 1523
+   "id": 1523,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 806
+   "id": 806,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 96825
+   "id": 96825,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 840
+   "id": 840,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 2983
+   "id": 2983,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 1526
+   "id": 1526,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 2984
+   "id": 2984,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 1522
+   "id": 1522,
+   "lv": 12
   },
   {
    "t": 1794177693000,
    "key": "zukk-sturmzüngler",
-   "id": 1527
+   "id": 1527,
+   "lv": 12
   }
  ]
 }
