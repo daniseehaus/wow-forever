@@ -33,11 +33,14 @@
    "rank": "Mitglied"
   },
   "orkward-orkbert": {
-   "id": null,
+   "id": 12680483,
    "name": "Orkward",
    "surname": "Orkbert",
-   "classId": null,
-   "rank": "Mitglied"
+   "classId": 3,
+   "rank": "Mitglied",
+   "level": 11,
+   "lastLogin": 1794171705000,
+   "epics": []
   },
   "bernhard-backstab": {
    "id": 11267857,

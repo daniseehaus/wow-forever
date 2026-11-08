@@ -35,6 +35,44 @@
     "Cooking": 34,
     "Fishing": 1
    }
+  },
+  "orkward-orkbert": {
+   "level": 11,
+   "lastLogin": 1794171705000,
+   "guild": null,
+   "items": {
+    "SHIRT": 127,
+    "CHEST": 1364,
+    "WAIST": 1369,
+    "LEGS": 4921,
+    "FEET": 4942,
+    "WRIST": 4928,
+    "HANDS": 4940,
+    "FINGER_1": 281268,
+    "BACK": 4944,
+    "MAIN_HAND": 4923,
+    "RANGED": 4931,
+    "AMMO": 2512
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 5,
+    "WAIST": 5,
+    "LEGS": 5,
+    "FEET": 12,
+    "WRIST": 8,
+    "HANDS": 10,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 5,
+    "RANGED": 11,
+    "AMMO": 5
+   },
+   "profs": {
+    "Skinning": 75,
+    "Cooking": 1
+   },
+   "achs": []
   }
  },
  "events": []
