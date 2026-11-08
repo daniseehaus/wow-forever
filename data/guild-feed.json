@@ -1,6 +1,7 @@
 {
  "era": "classic",
  "members": [
+  "wladimir-klatschko",
   "heili-kabel",
   "zukk-sturmzüngler",
   "pavel-plattenpapst",
@@ -67,7 +68,21 @@
    "level": 17,
    "lastLogin": 1794144697000,
    "epics": []
+  },
+  "wladimir-klatschko": {
+   "id": null,
+   "name": "Wladimir",
+   "surname": "Klatschko",
+   "classId": null,
+   "rank": "Mitglied"
   }
  },
- "events": []
+ "events": [
+  {
+   "t": 1794148971182,
+   "key": "wladimir-klatschko",
+   "type": "join",
+   "rank": "Mitglied"
+  }
+ ]
 }
