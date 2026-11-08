@@ -12,18 +12,24 @@
  ],
  "snapshot": {
   "heili-kabel": {
-   "id": null,
+   "id": 8807228,
    "name": "Heili",
    "surname": "Kabel",
-   "classId": null,
-   "rank": "Mitglied"
+   "classId": 5,
+   "rank": "Mitglied",
+   "level": 11,
+   "lastLogin": 1794172165000,
+   "epics": []
   },
   "zukk-sturmzüngler": {
-   "id": null,
+   "id": 9512891,
    "name": "Zukk",
    "surname": "Sturmzüngler",
-   "classId": null,
-   "rank": "Mitglied"
+   "classId": 7,
+   "rank": "Mitglied",
+   "level": 11,
+   "lastLogin": 1794172387000,
+   "epics": []
   },
   "pavel-plattenpapst": {
    "id": null,
@@ -59,7 +65,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 31,
-   "lastLogin": 1794164549000,
+   "lastLogin": 1794172230000,
    "epics": []
   },
   "lokk-eidlöter": {
@@ -69,15 +75,18 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 18,
-   "lastLogin": 1794164559000,
+   "lastLogin": 1794172496000,
    "epics": []
   },
   "wladimir-klatschko": {
-   "id": null,
+   "id": 1582342,
    "name": "Wladimir",
    "surname": "Klatschko",
-   "classId": null,
-   "rank": "Mitglied"
+   "classId": 1,
+   "rank": "Mitglied",
+   "level": 12,
+   "lastLogin": 1794172528000,
+   "epics": []
   }
  },
  "events": [

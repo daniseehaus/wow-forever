@@ -73,6 +73,116 @@
     "Cooking": 1
    },
    "achs": []
+  },
+  "wladimir-klatschko": {
+   "level": 12,
+   "lastLogin": 1794172528000,
+   "guild": null,
+   "items": {
+    "SHIRT": 6125,
+    "CHEST": 10421,
+    "WAIST": 4935,
+    "LEGS": 2852,
+    "FEET": 3469,
+    "WRIST": 2853,
+    "HANDS": 2653,
+    "FINGER_1": 281268,
+    "BACK": 4944,
+    "MAIN_HAND": 4932,
+    "OFF_HAND": 2212
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 10,
+    "WAIST": 8,
+    "LEGS": 10,
+    "FEET": 10,
+    "WRIST": 7,
+    "HANDS": 4,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 11,
+    "OFF_HAND": 6
+   },
+   "profs": {
+    "Mining": 66,
+    "Blacksmithing": 54,
+    "Cooking": 1,
+    "First Aid": 1
+   },
+   "achs": []
+  },
+  "heili-kabel": {
+   "level": 11,
+   "lastLogin": 1794172165000,
+   "guild": null,
+   "items": {
+    "SHIRT": 53,
+    "CHEST": 6527,
+    "WAIST": 14093,
+    "LEGS": 1431,
+    "FEET": 4936,
+    "WRIST": 6062,
+    "FINGER_1": 281268,
+    "BACK": 4944,
+    "MAIN_HAND": 281274
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 13,
+    "WAIST": 9,
+    "LEGS": 8,
+    "FEET": 8,
+    "WRIST": 10,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 11
+   },
+   "profs": {
+    "Tailoring": 52,
+    "Enchanting": 32,
+    "Cooking": 1
+   },
+   "achs": [
+    61997,
+    769,
+    750
+   ]
+  },
+  "zukk-sturmzüngler": {
+   "level": 11,
+   "lastLogin": 1794172387000,
+   "guild": null,
+   "items": {
+    "SHIRT": 6134,
+    "CHEST": 4916,
+    "WAIST": 4919,
+    "LEGS": 1431,
+    "FEET": 1367,
+    "WRIST": 4928,
+    "HANDS": 4940,
+    "FINGER_1": 281268,
+    "BACK": 4944,
+    "MAIN_HAND": 4562
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 5,
+    "WAIST": 5,
+    "LEGS": 8,
+    "FEET": 3,
+    "WRIST": 8,
+    "HANDS": 10,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 10
+   },
+   "profs": {
+    "Alchemy": 18,
+    "Herbalism": 42,
+    "Cooking": 1
+   },
+   "achs": []
   }
  },
  "events": []
