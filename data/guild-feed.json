@@ -1,0 +1,73 @@
+{
+ "era": "classic",
+ "members": [
+  "heili-kabel",
+  "zukk-sturmzüngler",
+  "pavel-plattenpapst",
+  "orkward-orkbert",
+  "bernhard-backstab",
+  "hammer-hanno",
+  "lokk-eidlöter"
+ ],
+ "snapshot": {
+  "heili-kabel": {
+   "id": null,
+   "name": "Heili",
+   "surname": "Kabel",
+   "classId": null,
+   "rank": "Mitglied"
+  },
+  "zukk-sturmzüngler": {
+   "id": null,
+   "name": "Zukk",
+   "surname": "Sturmzüngler",
+   "classId": null,
+   "rank": "Mitglied"
+  },
+  "pavel-plattenpapst": {
+   "id": null,
+   "name": "Pavel",
+   "surname": "Plattenpapst",
+   "classId": null,
+   "rank": "Mitglied"
+  },
+  "orkward-orkbert": {
+   "id": null,
+   "name": "Orkward",
+   "surname": "Orkbert",
+   "classId": null,
+   "rank": "Mitglied"
+  },
+  "bernhard-backstab": {
+   "id": 11267857,
+   "name": "Bernhard",
+   "surname": "Backstab",
+   "classId": 4,
+   "rank": "Mitglied",
+   "level": 18,
+   "lastLogin": 1794096525000,
+   "epics": []
+  },
+  "hammer-hanno": {
+   "id": 8777565,
+   "name": "Hammer",
+   "surname": "Hanno",
+   "classId": 2,
+   "rank": "Mitglied",
+   "level": 28,
+   "lastLogin": 1794091973000,
+   "epics": []
+  },
+  "lokk-eidlöter": {
+   "id": 9959502,
+   "name": "Lokk",
+   "surname": "Eidlöter",
+   "classId": 2,
+   "rank": "Mitglied",
+   "level": 17,
+   "lastLogin": 1794144697000,
+   "epics": []
+  }
+ },
+ "events": []
+}
