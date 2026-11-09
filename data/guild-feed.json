@@ -337,7 +337,7 @@
    "classId": 9,
    "rank": "Mitglied",
    "level": 17,
-   "lastLogin": 1794182586000,
+   "lastLogin": 1794240106000,
    "items": {
     "SHIRT": 2579,
     "CHEST": 6527,
@@ -345,7 +345,7 @@
     "LEGS": 15449,
     "FEET": 6537,
     "WRIST": 15452,
-    "HANDS": 10637,
+    "HANDS": 281315,
     "BACK": 3449,
     "MAIN_HAND": 273003,
     "RANGED": 11287
@@ -357,14 +357,14 @@
     "LEGS": 18,
     "FEET": 15,
     "WRIST": 18,
-    "HANDS": 15,
+    "HANDS": 16,
     "BACK": 15,
     "MAIN_HAND": 18,
     "RANGED": 15
    },
    "profs": {
     "Tailoring": 65,
-    "Herbalism": 81,
+    "Herbalism": 84,
     "Cooking": 104,
     "Fishing": 82,
     "First Aid": 78
