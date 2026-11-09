@@ -157,7 +157,8 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
 - **Letzte Session:** Je Session eine Karte mit neuen Items (ab grün), Fortschritt auf dem Weg bis 60, Berufspunkten und Level pro Char.
   Dazu bis zu vier Auszeichnungen (z. B. Größtes Upgrade, Loot-Goblin, Licht aus). Die Werte je Spieler hält die Session in `stats` fest.
   Der Knopf „Teilen“ öffnet WhatsApp mit fertigem Text und Link.
-- **Loadout:** Kopf, Kennzahlen, Werte (aus `/statistics`) und Berufe, darunter Ausrüstung und Talentbäume. Werte und Berufe nutzen dieselben Bausteine wie das Gilden-Detail (`statRows`, `profRows` in `app.js`).
+- **Loadout:** startet eingeklappt. Ein Klick auf eine Kachel klappt es für diesen Charakter auf, ein zweiter Klick auf dieselbe Kachel klappt es ein.
+  Kopf, Kennzahlen, Werte (aus `/statistics`) und Berufe, darunter Ausrüstung und Talentbäume. Werte und Berufe nutzen dieselben Bausteine wie das Gilden-Detail (`statRows`, `profRows` in `app.js`).
   Die Kennzahl „Leere Slots“ zählt alle leeren Slots, ohne Schildhand. Eine leere Schildhand erscheint auch nicht als Karte (Zweihandwaffe, Jäger).
   Item-Namen dürfen zwei Zeilen haben. Vor der ersten gemeinsamen Session zeigt die Kopfzahl „Gemeinsame Sessions“ statt „Level pro Session“.
 - **Kopfzahlen Squad:** Level pro Session, Ø Level (Mitte) und Spielzeit bis 60. Auf dem Handy stehen die drei in einer Reihe.

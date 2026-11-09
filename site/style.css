@@ -275,6 +275,9 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
   background: radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--cls) 18%, transparent), transparent 55%), linear-gradient(120deg, var(--panel), #0b0e13);
   border: 1px solid var(--line);
 }
+.loadout.closed { padding: 18px 28px; background: linear-gradient(120deg, var(--panel), #0b0e13); }
+.lo-closed { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+.lo-closed p { margin: 0; color: var(--muted); font-size: 14px; }
 .lo-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 14px; }
 .lo-head .eyebrow { display: block; margin-bottom: 4px; }
 .lo-head h2 { margin: 0; font: 800 clamp(44px, 6vw, 72px)/.9 var(--display); text-transform: uppercase; color: var(--cls); text-shadow: 0 0 40px color-mix(in srgb, var(--cls) 45%, transparent); }

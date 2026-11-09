@@ -10,8 +10,8 @@ const SWAP_MS = 1700;
 const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 3, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
 let pref3d = null;
+// Das Loadout startet eingeklappt. Erst ein Klick auf eine Kachel wählt einen Charakter (select).
 try {
-  state.selected = localStorage.getItem('selected');
   pref3d = localStorage.getItem('use3d');
 } catch {}
 state.use3d = want3d();
@@ -47,7 +47,6 @@ async function init() {
 
   // Feste Reihenfolge wie in config.json (characters bzw. forever.characters).
   state.chars = [...state.data.characters];
-  if (!state.chars.some((c) => c.key === state.selected && c.level)) state.selected = state.chars.find((c) => c.level)?.key;
 
   const d = state.data;
   if (d.title) {
@@ -369,11 +368,18 @@ function hideBand(band) {
 }
 
 // Klick auf eine Kachel: Das Band startet sofort, während Scrollen und Aufbau im Hintergrund laufen.
+// Ein zweiter Klick auf die gewählte Kachel klappt das Loadout wieder ein.
 function select(key) {
   const el = document.getElementById('loadout');
-  if (key === state.selected) { el.scrollIntoView({ behavior: 'smooth' }); return; }
+  if (key === state.selected) {
+    state.selected = null;
+    document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.remove('selected'));
+    releaseHover(el);
+    el.classList.remove('swap');
+    renderLoadout();
+    return;
+  }
   state.selected = key;
-  try { localStorage.setItem('selected', key); } catch {}
   document.querySelectorAll('.tile[data-key]').forEach((t) => t.classList.toggle('selected', t.dataset.key === key));
   showSelectedTile(true);
   swapBand();
@@ -955,7 +961,13 @@ const ENCHANT_SLOTS = ['HEAD', 'SHOULDER', 'BACK', 'CHEST', 'WRIST', 'HANDS', 'L
 function renderLoadout() {
   const el = document.getElementById('loadout');
   const c = state.chars.find((x) => x.key === state.selected);
-  if (!c) { el.innerHTML = ''; return; }
+  // Eingeklappt: nur Überschrift und Hinweis. So hat der Link „Loadout“ in der Navigation ein Ziel.
+  el.classList.toggle('closed', !c);
+  if (!c) {
+    el.style.removeProperty('--cls');
+    el.innerHTML = `<div class="lo-closed"><span class="eyebrow">// LOADOUT</span><p>Charakter oben antippen: Ausrüstung, Werte, Berufe und Talente klappen hier auf.</p></div>`;
+    return;
+  }
 
   const items = new Map((c.items || []).map((i) => [i.slot, i]));
   const sets = countSets(c.items || []);
