@@ -13,7 +13,7 @@ const G = {
   query: '',
   open: null,
   viewer: null,
-  feedDays: 2,
+  feedDays: 3,
 };
 // Wer länger offline ist, steht blass am Ende der Liste.
 const INACTIVE_MS = 14 * 864e5;

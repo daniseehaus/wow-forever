@@ -7,7 +7,7 @@ const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
 // Das Namensband startet sofort beim Klick und deckt den Aufbau des Loadouts ab.
 const SWAP_MS = 1700;
 
-const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
+const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 3, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
 let pref3d = null;
 try {
