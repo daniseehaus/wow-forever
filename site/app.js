@@ -1452,6 +1452,8 @@ function feedItemHtml(e) {
       return row('ev-ach', ico, `erhält den Erfolg ${e.id ? `<a href="${wh(state.data.wowhead, `achievement=${e.id}`)}" target="_blank" rel="noopener">${name}</a>` : name}`,
         e.desc ? `${e.name}\n${e.desc}` : '');
     }
+    case 'found':
+      return `<li class="ev ev-guild ev-found"><time>${time}</time><span class="ev-ico">${feedIcon(FEED_ICONS.guild)}</span><span class="ev-txt"><strong>Gildengründung</strong> · &lt;${esc(e.guild ?? '')}&gt;</span></li>`;
     case 'guild':
       return row('ev-guild', feedIcon(FEED_ICONS.guild), e.guild ? `tritt <strong>&lt;${esc(e.guild)}&gt;</strong> bei` : `verlässt <strong>&lt;${esc(e.from ?? '')}&gt;</strong>`);
     case 'session': {

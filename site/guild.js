@@ -414,6 +414,8 @@ function guildEventHtml(e) {
   const ranks = G.guild.ranks ?? [];
 
   switch (e.type) {
+    case 'found':
+      return `<li class="ev ev-guild ev-found"><time>${time}</time><span class="ev-ico">${feedIcon(FEED_ICONS.guild)}</span><span class="ev-txt"><strong>Gildengründung</strong> · &lt;${esc(e.guild ?? G.guild.name ?? '')}&gt;</span></li>`;
     case 'join':
       return row('ev-guild', feedIcon(FEED_ICONS.guild), `tritt der Gilde bei${e.rank ? ` · ${esc(e.rank)}` : ''}`);
     case 'leave':

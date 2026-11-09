@@ -116,17 +116,59 @@
  },
  "events": [
   {
-   "t": 1794148971182,
-   "key": "wladimir-klatschko",
-   "type": "join",
-   "rank": "Mitglied"
+   "t": 1794171540000,
+   "type": "found",
+   "guild": "Geilbleiber"
   },
   {
-   "t": 1794164549000,
+   "t": 1794171600000,
+   "key": "wladimir-klatschko",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "heili-kabel",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "zukk-sturmzüngler",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "pavel-plattenpapst",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "orkward-orkbert",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "bernhard-backstab",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
    "key": "hammer-hanno",
-   "type": "milestone",
-   "level": 30,
-   "max": false
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "lokk-eidlöter",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "dennis-dotalot",
+   "type": "join"
+  },
+  {
+   "t": 1794171600000,
+   "key": "pawris-hilton",
+   "type": "join"
   },
   {
    "t": 1794183322000,
@@ -134,18 +176,6 @@
    "type": "milestone",
    "level": 20,
    "max": false
-  },
-  {
-   "t": 1794209048544,
-   "key": "dennis-dotalot",
-   "type": "join",
-   "rank": "Mitglied"
-  },
-  {
-   "t": 1794209048544,
-   "key": "pawris-hilton",
-   "type": "join",
-   "rank": "Mitglied"
   }
  ]
 }
