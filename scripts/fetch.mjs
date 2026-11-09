@@ -371,23 +371,28 @@ async function achievementEvent(key, id, t) {
 }
 
 // Inventartypen in der Zählung des Wowhead-Modellviewers.
-function modelSlot(type) {
+// Eine Funktion statt Konstante: Der Abruf läuft schon oben im Modul, bevor Konstanten weiter unten gesetzt sind.
+function modelSlotIds() {
   return {
     HEAD: 1, SHOULDER: 3, BODY: 4, CHEST: 5, WAIST: 6, LEGS: 7, FEET: 8, WRIST: 9, HAND: 10,
     WEAPON: 13, SHIELD: 14, RANGED: 15, CLOAK: 16, TWOHWEAPON: 17, TABARD: 19, ROBE: 20,
     WEAPONMAINHAND: 21, WEAPONOFFHAND: 22, HOLDABLE: 23, RANGEDRIGHT: 26,
-  }[type];
+  };
+}
+function modelSlot(type) {
+  return modelSlotIds()[type];
 }
 
 // Daten für das 3D-Modell: Rasse, Geschlecht, Aussehen und sichtbare Items (inklusive Transmog).
-// Die Display-IDs liefert Blizzard über die Item-Appearance-API.
+// Die Display-IDs liefert itemDisplay (Blizzard-Spieldaten, sonst Wowhead).
 async function modelData(api, appearance, cache) {
   if (!appearance?.playable_race?.id) return null;
   const items = [];
   for (const it of appearance.items ?? []) {
     if (!cache.has(it.id)) cache.set(it.id, itemDisplay(api, it.id));
     const display = await cache.get(it.id);
-    if (display) items.push(display);
+    // Eine Einhandwaffe (13) in der Nebenhand gehört auf den Nebenhand-Slot (22), sonst überdeckt sie die Haupthand.
+    if (display) items.push(it.slot?.type === 'OFF_HAND' && display[0] === 13 ? [22, display[1]] : display);
   }
   return {
     race: appearance.playable_race.id,
@@ -397,17 +402,39 @@ async function modelData(api, appearance, cache) {
   };
 }
 
+// Display-ID und Slot eines Items für das 3D-Modell, in dieser Reihenfolge:
+// 1. Spieldaten der Saison (Forever). Sie kennen nicht jedes Item (404 bei Questbelohnungen und neuen Forever-Items).
+// 2. Wowhead-XML (/forever/item=<id>&xml). Es kennt auch neue Forever-Items, die Display-IDs stimmen mit 1. überein.
+// 3. Retail-Spieldaten (static-<region>), falls Wowhead nicht antwortet.
 async function itemDisplay(api, id) {
-  try {
-    const item = await api(`/data/wow/item/${id}`, config.namespaces.static);
-    const slot = modelSlot(item.inventory_type?.type);
-    const appearanceId = item.appearances?.[0]?.id;
-    if (!slot || !appearanceId) return null;
-    const ap = await api(`/data/wow/item-appearance/${appearanceId}`, config.namespaces.static);
-    return ap.item_display_info_id ? [slot, ap.item_display_info_id] : null;
-  } catch {
-    return null;
-  }
+  const fromApi = async (ns) => {
+    try {
+      const item = await api(`/data/wow/item/${id}`, ns);
+      const slot = modelSlot(item.inventory_type?.type);
+      const appearanceId = item.appearances?.[0]?.id;
+      if (!slot) return false;
+      if (!appearanceId) return null;
+      const ap = await api(`/data/wow/item-appearance/${appearanceId}`, ns);
+      return ap.item_display_info_id ? [slot, ap.item_display_info_id] : null;
+    } catch {
+      return null;
+    }
+  };
+  const fromWowhead = async () => {
+    try {
+      const env = config.wowhead ? `${config.wowhead}/` : '';
+      const xml = await fetch(`https://www.wowhead.com/${env}item=${id}&xml`).then((r) => (r.ok ? r.text() : ''));
+      const display = Number(xml.match(/displayId="(\d+)"/)?.[1]);
+      const slot = Number(xml.match(/<inventorySlot id="(\d+)"/)?.[1]);
+      return display && Object.values(modelSlotIds()).includes(slot) ? [slot, display] : null;
+    } catch {
+      return null;
+    }
+  };
+  // false: Das Item ist nicht sichtbar (Ring, Hals, Schmuck). Dann ist keine weitere Quelle nötig.
+  const first = await fromApi(config.namespaces.static);
+  if (first !== null) return first || null;
+  return (await fromWowhead()) ?? (await fromApi(`static-${config.region}`)) ?? null;
 }
 
 // Retail liefert die aktive Spezialisierung samt Rolle. Classic kennt nur Talentbäume,
