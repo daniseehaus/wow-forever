@@ -64,7 +64,6 @@ async function init() {
   setup3dToggle();
   renderKpis();
   renderTiles();
-  renderGroup();
   renderCrafts();
   renderQuests();
   renderLoadout();
@@ -563,58 +562,6 @@ function calm(v) {
   window.Model3D.play(v, 'Stand');
 }
 
-
-// ---------------------------------------------------------------------------
-// Gruppe: Buffs und Tools
-
-// Buffs und Tools in einer Kachel: je Eintrag eine Zeile, rechts die Charaktere als Tags.
-// Berufe stehen hier nicht: Der Squad kennt sie, im Loadout stehen sie je Charakter.
-
-function renderGroup() {
-  const ok = state.chars.filter((c) => c.level);
-  const providers = (classes) => ok.filter((c) => classes.includes(c.classId));
-  const classNames = (ids) => ids.map((id) => M.CLASSES[id]?.name).join(', ');
-  const tag = (c, tip) => `<span class="tag" style="--cls:${classColor(c)}" tabindex="0" data-tip="${esc(tip)}">${esc(fullName(c))}</span>`;
-  const row = (name, sub, who, tags, attrs = '', tip = '') => `<div class="grow"${attrs}${tip ? ` data-tip="${esc(tip)}"` : ''} style="--hl:${classColor(who[0])}">
-    <span class="nm"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="tags">${tags}</span></div>`;
-
-  // Buffs und Tools: Tag-Tooltip nennt Klasse und Zauber des Charakters.
-  const spellTip = (entry, c) => {
-    const spells = entry.spells.filter(([, , cls]) => cls === c.classId).map(([, n]) => n);
-    return `${fullName(c)} · ${M.CLASSES[c.classId]?.name ?? ''}\n${spells.length ? spells.join(', ') : entry.name}`;
-  };
-  // Was niemand mitbringt, nennt der Tooltip am Zähler der Spalte, gruppiert nach der Klasse, die es mitbringt.
-  const entries = (list, sub) => {
-    const rows = [];
-    const miss = new Map();
-    list.forEach((entry) => {
-      const who = providers(entry.classes);
-      if (!who.length) {
-        const key = classNames(entry.classes);
-        miss.set(key, [...(miss.get(key) ?? []), entry.name]);
-        return;
-      }
-      const spells = [...new Set(entry.spells.map(([, n]) => n))].join(', ');
-      rows.push(row(entry.name, sub(entry), who, who.map((c) => tag(c, spellTip(entry, c))).join(''), ' tabindex="0"', `${entry.name}\n${entry.desc}${spells !== entry.name ? `\n${spells}` : ''}`));
-    });
-    rows.miss = [...miss].map(([cls, names]) => `${cls}: ${names.join(', ')}`);
-    return rows;
-  };
-  const buffs = entries(M.BUFFS, (e) => e.effect);
-  const tools = entries(M.TOOLS, (e) => classNames(e.classes));
-
-  const col = (title, rows, count, miss) => {
-    const tip = miss.length ? `Fehlt in der Gruppe\n${miss.join('\n')}` : 'Alles da';
-    return `<div class="gcol"><div class="gsec"><span>${title}</span><b class="gcount" tabindex="0" data-tip="${esc(tip)}" data-tip-plain>${count}</b></div>${rows.join('')}</div>`;
-  };
-
-  document.getElementById('group-count').textContent = `${buffs.length + tools.length} / ${M.BUFFS.length + M.TOOLS.length} abgedeckt`;
-  const el = document.getElementById('group');
-  el.innerHTML = `<div class="g3">
-      ${col('Buffs', buffs, `${buffs.length} / ${M.BUFFS.length}`, buffs.miss)}
-      ${col('Tools', tools, `${tools.length} / ${M.TOOLS.length}`, tools.miss)}
-    </div>`;
-}
 
 // ---------------------------------------------------------------------------
 // Herstellen: Was kann der Squad füreinander herstellen? Grundlage sind nur die gelernten Rezepte (state.data.crafts, buildCrafts in fetch.mjs).

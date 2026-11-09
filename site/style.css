@@ -249,11 +249,6 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .panel h3 { margin: 0; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
 /* Gruppe: Buffs und Tools in einer Kachel, gleiche Zeile für alles */
-.g3 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
-.gsec { display: flex; justify-content: space-between; padding: 0 2px 8px; border-bottom: 1px solid var(--line); font: 500 10px var(--mono); color: var(--dim); letter-spacing: .14em; text-transform: uppercase; }
-.gsec b { color: var(--dim); font-weight: 500; }
-.gcount { cursor: default; border-bottom: 1px dotted color-mix(in srgb, var(--dim) 60%, transparent); outline: none; }
-.gcount:hover, .gcount:focus-visible { border-bottom-style: solid; }
 .grow { display: flex; align-items: center; gap: 10px; padding: 7px 4px 7px 14px; border-bottom: 1px solid rgba(255,255,255,.03); border-radius: 6px; }
 .grow:hover, .grow:focus-visible { background: rgba(255,255,255,.04); outline: none; }
 .grow .nm { display: flex; flex-direction: column; flex: 1; min-width: 104px; }
@@ -637,7 +632,6 @@ a.place:hover { color: var(--accent-text); }
   .dcell { padding: 10px 12px; }
   .dcell b { font-size: 20px; }
 
-  .g3 { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .route-row { padding: 12px 4px 12px 12px; grid-template-columns: 44px minmax(0, 1fr); gap: 8px 12px; }
   .route-row .lv { font-size: 18px; white-space: nowrap; }
   .place-list { grid-template-columns: minmax(0, 1fr); }

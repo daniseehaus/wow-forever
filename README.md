@@ -23,7 +23,7 @@ Blizzard aktualisiert ein Profil erst nach dem Logout, häufiger abzufragen brin
 | `site/sounds/` | Bloodlust-Sound des Schamanen (Wowhead, Datei 568812, als MP3) |
 | `site/sounds/workers/` | Arbeiter-Stimmen aus Warcraft III, deutsch: Peon, Acolyte und Peasant (aus [Old German Voice Lines](https://www.hiveworkshop.com/threads/old-german-voice-lines-alte-deutsche-voice-lines.371972/), als MP3) |
 | `site/gilde.html`, `site/guild.js` | Gildenseite: Mitgliederliste, Filter, Detail mit 3D und Talenten, Gilden-Feed (nutzt die Hilfen aus `app.js`) |
-| `site/meta.js` | Spielwissen für Forever: Buffs, Tools, Berufe, Zonen, Dungeons, Raids, Stunden bis 60 |
+| `site/meta.js` | Spielwissen für Forever: Berufe, Zonen, Dungeons, Raids, Stunden bis 60 |
 | `data/history.json` | Tageswerte je Charakter, schreibt nur die Action |
 | `data/sessions.json` | Erkannte gemeinsame Sessions (ab 4 Spielern) mit Level-Zuwachs, schreibt nur die Action |
 | `data/feed.json` | Aktivitäts-Feed: Level-Ups (stundengenau), neue Items, Berufe, Gilde, Sessions; schreibt nur die Action |
@@ -160,8 +160,6 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   Die Kennzahl „Leere Slots“ zählt alle leeren Slots, ohne Schildhand. Eine leere Schildhand erscheint auch nicht als Karte (Zweihandwaffe, Jäger).
   Item-Namen dürfen zwei Zeilen haben. Vor der ersten gemeinsamen Session zeigt die Kopfzahl „Gemeinsame Sessions“ statt „Level pro Session“.
 - **Kopfzahlen Squad:** Level pro Session, Ø Level (Mitte) und Spielzeit bis 60. Auf dem Handy stehen die drei in einer Reihe.
-- **Squad:** Buffs und Tools der Gruppe, je Eintrag die Charaktere, die ihn mitbringen. Berufe stehen dort nicht mehr,
-  sie stehen im Loadout je Charakter.
 - **Crafting:** Was der Squad füreinander herstellen kann, nur aus gelernten Rezepten (`known_recipes` aller Berufe).
   Der Abruf holt zu jedem Rezept das Ergebnis aus den Spieldaten (`buildCrafts`, `recipeInfo` in `fetch.mjs`, Ablage `data/recipes.json`).
   - **Ausrüstung:** Die Seite vergleicht die Werte mit dem Item im Slot (`craftUpgrades` in `app.js`). Jeder Wert hat ein Gewicht je Spielweise

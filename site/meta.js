@@ -1,4 +1,4 @@
-// Spielwissen für die abgeleiteten Ansichten (Buffs, Tools, Berufe, Zonen, Dungeons).
+// Spielwissen für die abgeleiteten Ansichten (Berufe, Zonen, Dungeons, Klassenaufgaben).
 // Alles bezieht sich auf WoW Forever: 9 Klassen (Krieger, Paladin, Jäger, Schurke, Priester, Schamane,
 // Magier, Hexenmeister, Druide), Level 60. Paladin und Schamane gibt es in beiden Fraktionen.
 // Stand Forever 1.60.1 (geprüft am 08.11.2026): neue Zonen, Dungeons und Raids aus Wowhead Forever (IDs) und
@@ -22,54 +22,6 @@ window.META = (() => {
     12: { name: 'Dämonenjäger', color: '#A330C9' },
     13: { name: 'Rufer', color: '#33937F' },
   };
-
-  // spells: Zauber je Klasse mit Wowhead-ID, für Tooltip und Link.
-  // Forever: Segen der Könige, Göttlicher Willen und das verbesserte Mal der Wildnis sind keine Talente mehr. Schlachtruf wirkt auf den ganzen Schlachtzug.
-  const BUFFS = [
-    { name: 'Machtwort: Seelenstärke', effect: 'Ausdauer', classes: [5], spells: [[1243, 'Machtwort: Seelenstärke', 5]],
-      desc: 'Erhöht die Ausdauer des Ziels und damit die maximale Gesundheit. Hält 30 Minuten.' },
-    { name: 'Arkane Intelligenz', effect: 'Intelligenz', classes: [8], spells: [[1459, 'Arkane Intelligenz', 8]],
-      desc: 'Erhöht die Intelligenz und damit Mana und kritische Zaubertreffer. Hält 30 Minuten.' },
-    { name: 'Mal der Wildnis', effect: 'Alle Werte, Rüstung', classes: [11], spells: [[1126, 'Mal der Wildnis', 11]],
-      desc: 'Erhöht Rüstung, alle Attribute und alle Widerstände. In Forever immer in der verbesserten Stufe. Hält 30 Minuten.' },
-    { name: 'Segen der Macht', effect: 'Angriffskraft', classes: [2], spells: [[19740, 'Segen der Macht', 2]],
-      desc: 'Erhöht die Angriffskraft. Ideal für Nahkämpfer. Ein Paladin-Segen pro Ziel, hält 5 Minuten.' },
-    { name: 'Segen der Könige', effect: 'Alle Werte +10 %', classes: [2], spells: [[20217, 'Segen der Könige', 2]],
-      desc: 'Erhöht alle Attribute um 10 %. In Forever für jeden Paladin, kein Talent mehr. Ein Paladin-Segen pro Ziel.' },
-    { name: 'Schlachtruf', effect: 'Angriffskraft', classes: [1], spells: [[6673, 'Schlachtruf', 1]],
-      desc: 'Erhöht die Angriffskraft. In Forever wirkt er auf den ganzen Schlachtzug in der Nähe. Kostet Wut, hält 2 Minuten.' },
-    { name: 'Totem der Erdstärke', effect: 'Stärke', classes: [7], spells: [[8075, 'Totem der Erdstärke', 7]],
-      desc: 'Erhöht die Stärke der Gruppenmitglieder in der Nähe des Totems. Ein Erdtotem zur Zeit.' },
-    { name: 'Totem der luftgleichen Anmut', effect: 'Beweglichkeit', classes: [7], spells: [[8835, 'Totem der luftgleichen Anmut', 7]],
-      desc: 'Erhöht die Beweglichkeit der Gruppenmitglieder in der Nähe des Totems. Ein Lufttotem zur Zeit.' },
-    { name: 'Göttlicher Willen', effect: 'Willenskraft', classes: [5], spells: [[14752, 'Göttlicher Willen', 5]],
-      desc: 'Erhöht die Willenskraft und damit die Regeneration von Mana und Gesundheit. In Forever für jeden Priester ab Level 30.' },
-    { name: 'Blutpakt', effect: 'Ausdauer', classes: [9], spells: [[6307, 'Blutpakt', 9]],
-      desc: 'Aura des Wichtels: erhöht die Ausdauer der Gruppe. Wirkt, solange der Wichtel beschworen ist.' },
-  ];
-
-  const TOOLS = [
-    { name: 'Wiederbelebung', classes: [5, 2, 7], spells: [[2006, 'Auferstehung', 5], [7328, 'Erlösung', 2], [2008, 'Geist der Ahnen', 7]],
-      desc: 'Belebt einen toten Spieler außerhalb des Kampfes wieder. Spart den Weg vom Friedhof.' },
-    { name: 'Wiedergeburt im Kampf', classes: [11], spells: [[20484, 'Wiedergeburt', 11]],
-      desc: 'Belebt einen toten Spieler auch während des Kampfes wieder. Lange Abklingzeit.' },
-    { name: 'Seelenstein', classes: [9], spells: [[693, 'Seelenstein herstellen', 9]],
-      desc: 'Wer den Seelenstein trägt, kann sich nach dem Tod selbst wiederbeleben. Rettet Wipes.' },
-    { name: 'Beschwören', classes: [9], spells: [[698, 'Ritual der Beschwörung', 9]],
-      desc: 'Holt einen Spieler zur Gruppe. Braucht zwei weitere Helfer und einen Seelensplitter.' },
-    { name: 'Portale', classes: [8], spells: [[10059, 'Portal: Stormwind', 8]],
-      desc: 'Öffnet ein Portal in eine Hauptstadt für die ganze Gruppe. Braucht eine Rune.' },
-    { name: 'Essen und Wasser', classes: [8], spells: [[5504, 'Wasser herbeizaubern', 8], [587, 'Essen herbeizaubern', 8]],
-      desc: 'Erzeugt kostenlos Essen und Wasser. Spart Gold und Wartezeit zwischen den Kämpfen.' },
-    { name: 'Gift heilen', classes: [11, 7], spells: [[8946, 'Vergiftung heilen', 11]],
-      desc: 'Entfernt Gifteffekte. Der Schamane nutzt dafür ein Totem bzw. einen eigenen Zauber.' },
-    { name: 'Fluch aufheben', classes: [8, 11], spells: [[475, 'Geringen Fluch aufheben', 8], [2782, 'Fluch aufheben', 11]],
-      desc: 'Entfernt Flüche von Gruppenmitgliedern. In manchen Dungeons und Raids sehr wichtig.' },
-    { name: 'Krankheit heilen', classes: [5, 2, 7], spells: [[528, 'Krankheit heilen', 5]],
-      desc: 'Entfernt Krankheiten, zum Beispiel in den Pestländern oder in Stratholme.' },
-    { name: 'Massenkontrolle', classes: [8, 4, 3, 9], spells: [[118, 'Verwandlung', 8], [6770, 'Kopfnuss', 4], [1499, 'Eiskältefalle', 3], [710, 'Verbannen', 9]],
-      desc: 'Schaltet einen Gegner für eine Weile aus. Macht große Gegnergruppen in Dungeons beherrschbar.' },
-  ];
 
   const PROFESSIONS = {
     Alchemy: 'Alchemie', Blacksmithing: 'Schmiedekunst', Enchanting: 'Verzauberkunst', Engineering: 'Ingenieurskunst',
@@ -170,5 +122,5 @@ window.META = (() => {
   // Die Leveling-Route zeigt Zonen und Dungeons in dieser Reihenfolge.
   for (const list of [ZONES, DUNGEONS]) list.sort((a, b) => a.min - b.min || a.max - b.max);
 
-  return { CLASSES, BUFFS, TOOLS, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES, CLASS_TASKS, PROF_RANKS };
+  return { CLASSES, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES, CLASS_TASKS, PROF_RANKS };
 })();
