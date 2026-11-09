@@ -1,6 +1,7 @@
 // Baut die Icons der Seite aus site/icons/bloodlust.jpg: Favicon, Logo, Apple-Touch-Icon, Manifest-Icons und Link-Vorschau.
-// Das Quell-Icon von Wowhead hat nur 56 px. Die großen Formate setzen es deshalb mittig auf einen dunklen Grund mit rotem Schein.
-// Favicon und Logo nutzen site/icons/symbol.png: das Symbol ohne schwarzen Grund und Rahmen, freigestellt aus icon-512.png.
+// Das Quell-Icon von Wowhead hat nur 56 px und einen eigenen Rahmen. Nur die Link-Vorschau nutzt es noch.
+// Favicon, Logo und App-Icons nutzen site/icons/symbol.png: das Symbol ohne schwarzen Grund und Rahmen (278 px).
+// So sieht das App-Icon auf dem Home-Bildschirm aus wie das Logo der Seite.
 // Die Dateien liegen im Repo, das Skript läuft nur bei Bedarf (npm run build-icons).
 
 import { readFile } from 'node:fs/promises';
@@ -18,12 +19,13 @@ const BASE = `* { margin: 0; box-sizing: border-box; } body { background: #07090
 const symbol = (s) => `<style>${BASE} body { background: transparent; }
   .ico { width: ${s}px; height: ${s}px; background: url(${SYMBOL}) center / contain no-repeat; }</style><span class="ico"></span>`;
 
-// App-Icon: volle Fläche (iOS und Android runden selbst), Icon in der sicheren Zone für maskable.
-const app = (s) => `<style>${BASE}
+// App-Icon: volle Fläche im Dunkel der Seite, ohne eigenen Rahmen und ohne runde Ecken (iOS und Android runden selbst).
+// fill: Anteil des Symbols an der Kantenlänge. 0.8 für iOS und „any“, 0.6 für „maskable“ (Android schneidet bis zum Kreis mit 80 % zu).
+const app = (s, fill = 0.8) => `<style>${BASE}
   body { width: ${s}px; height: ${s}px; display: grid; place-items: center;
-    background: radial-gradient(circle, rgba(255,58,94,.45), transparent 62%), #07090c; }
-  .ico { width: ${s * 0.58}px; height: ${s * 0.58}px; border-radius: ${s * 0.1}px;
-    box-shadow: 0 0 0 ${s / 90}px rgba(255,58,94,.6), 0 0 ${s * 0.22}px rgba(255,58,94,.5); }</style><span class="ico"></span>`;
+    background: radial-gradient(circle, rgba(255,58,94,.22), transparent 70%), #07090c; }
+  .ico { width: ${s * fill}px; height: ${s * fill}px; background: url(${SYMBOL}) center / contain no-repeat;
+    filter: drop-shadow(0 0 ${s * 0.04}px rgba(255,58,94,.45)); }</style><span class="ico"></span>`;
 
 // Link-Vorschau (Open Graph), 1200 × 630.
 const og = `<link href="${FONTS}" rel="stylesheet"><style>${BASE}
@@ -44,6 +46,7 @@ const jobs = [
   ['apple-touch-icon.png', 180, 180, app(180)],
   ['icon-192.png', 192, 192, app(192)],
   ['icon-512.png', 512, 512, app(512)],
+  ['icon-maskable-512.png', 512, 512, app(512, 0.6)],
   ['og.jpg', 1200, 630, og],
 ];
 
