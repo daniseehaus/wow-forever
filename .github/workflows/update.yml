@@ -80,7 +80,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/
-          git diff --cached --quiet || (git commit -m "Verlauf aktualisieren" && git push)
+          git diff --cached --quiet && exit 0
+          git commit -m "Verlauf aktualisieren"
+          # Kam während des Laufs ein anderer Commit auf main (z. B. ein Code-Push), lehnt GitHub den Push ab.
+          # Dann den Verlauf auf den neuen Stand setzen und erneut pushen.
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase origin main
+          done
+          exit 1
 
       - uses: actions/upload-pages-artifact@v5
         with:
@@ -91,7 +99,18 @@ jobs:
     runs-on: ubuntu-24.04
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.retry.outputs.page_url }}
     steps:
+      # Pages lehnt ein Deployment manchmal ab, solange es das vorige intern noch verarbeitet
+      # („due to in progress deployment“, meist beim ersten Lauf nach einem neuen Commit). Dann nach einer Minute erneut.
       - id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+
+      - name: Warten vor neuem Versuch
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 60
+
+      - id: retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v5
