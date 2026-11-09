@@ -1431,29 +1431,38 @@ function renderRoute() {
 // Aktivität: Level-Ups, neue Items, Berufe, Gilde und gemeinsame Sessions, neueste zuerst
 
 function renderFeed() {
-  // Grüne Items zählen nur in „Letzte Session“.
-  const events = state.feed.events.filter((e) => !(e.type === 'item' && e.quality === 'UNCOMMON')).sort((a, b) => b.t - a.t);
+  const events = feedEvents(state.feed.events);
   document.getElementById('aktivitaet').hidden = !events.length;
   document.getElementById('nav-aktivitaet').hidden = !events.length;
   if (!events.length) return;
+  renderFeedList(events, {
+    list: document.getElementById('feed'), note: document.getElementById('feed-note'),
+    days: state.feedDays, itemHtml: feedItemHtml, more: () => { state.feedDays++; renderFeed(); },
+  });
+}
 
-  // Gezeigt wird der neueste Tag, ältere Tage kommen per Knopf dazu.
-  const days = new Map();
+// Ereignisse der Aktivität, neueste zuerst. Grüne Items zählen nur in „Letzte Session“.
+function feedEvents(events) {
+  return events.filter((e) => !(e.type === 'item' && e.quality === 'UNCOMMON')).sort((a, b) => b.t - a.t);
+}
+
+// Liste der Aktivität für Squad und Gilde. Gezeigt werden die neuesten Tage, ältere Tage kommen per Knopf dazu.
+function renderFeedList(events, { list, note, days, itemHtml, more }) {
+  const byDay = new Map();
   for (const e of events) {
     const day = new Date(e.t).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit' });
-    if (!days.has(day)) days.set(day, []);
-    days.get(day).push(e);
+    if (!byDay.has(day)) byDay.set(day, []);
+    byDay.get(day).push(e);
   }
-  const shown = [...days].slice(0, state.feedDays);
-  const rest = days.size - shown.length;
+  const shown = [...byDay].slice(0, days);
+  const rest = byDay.size - shown.length;
   const week = events.filter((e) => e.type === 'level' && Date.now() - e.t < 7 * 864e5).reduce((n, e) => n + (e.to - e.from), 0);
-  document.getElementById('feed-note').textContent = week ? `${week} LEVEL IN 7 TAGEN` : plural(events.length, 'EREIGNIS', 'EREIGNISSE');
+  note.textContent = week ? `${week} LEVEL IN 7 TAGEN` : plural(events.length, 'EREIGNIS', 'EREIGNISSE');
 
-  const el = document.getElementById('feed');
-  el.innerHTML = shown.map(([day, list]) => `<div class="feed-day"><h3>${day}<span>${plural(list.length, 'Ereignis', 'Ereignisse')}</span></h3><ul>${list.map(feedItemHtml).join('')}</ul></div>`).join('')
+  list.innerHTML = shown.map(([day, evs]) => `<div class="feed-day"><h3>${day}<span>${plural(evs.length, 'Ereignis', 'Ereignisse')}</span></h3><ul>${evs.map(itemHtml).join('')}</ul></div>`).join('')
     + (rest ? `<button type="button" class="chip-btn feed-more">Vorherigen Tag zeigen · noch ${rest}</button>` : '');
-  el.querySelectorAll('img').forEach(imgFallback);
-  el.querySelector('.feed-more')?.addEventListener('click', () => { state.feedDays++; renderFeed(); });
+  list.querySelectorAll('img').forEach(imgFallback);
+  list.querySelector('.feed-more')?.addEventListener('click', more);
   window.$WowheadPower?.refreshLinks?.();
 }
 

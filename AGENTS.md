@@ -40,6 +40,7 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-09: Die Aktivität der Gilde zeigt dasselbe wie der Squad (jedes Level-Up, Items ab Rar, Berufe, Erfolge), dazu Beitritt und Austritt. Die Gilde ist klein. Die Kennzahl „Aktiv in 7 Tagen“ entfällt.
 - 2026-11-09: Das Loadout startet eingeklappt und öffnet erst mit einem Klick auf eine Kachel. Die Seite merkt sich keine Auswahl mehr.
 - 2026-11-09: Squad-Charaktere gehören erst zur Gilde, wenn ihr Profil die Gilde nennt (Orkward ist noch nicht beigetreten). Aktivität zeigt mindestens 3 Tage. Crafting zeigt vorerst keine Verzauberungen.
 - 2026-11-09: Gilde gegründet am 08.11.2026 um 21:59, alle damaligen Mitglieder mit Beitritt um 22:00. Ereignisse davor stehen nicht im Feed. Die Gildenseite zeigt keine Ränge. Berufe in der Tabelle als zwei Spalten mit Balken. Volk „Himmelsgeborener der Windformer“ heißt kurz „Himmelsgeborener“.

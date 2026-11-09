@@ -96,12 +96,10 @@ function renderGuildKpis() {
   const all = G.guild.members;
   const ok = all.filter((m) => m.level);
   const avg = ok.length ? ok.reduce((s, m) => s + m.level, 0) / ok.length : 0;
-  const week = ok.filter((m) => m.lastLogin && Date.now() - m.lastLogin < 7 * 864e5).length;
   const max = ok.filter((m) => m.level >= (G.guild.maxLevel ?? 60)).length;
   document.getElementById('kpis').innerHTML = [
     kpi(all.length, 'Mitglieder'),
     kpi(ok.length ? fmtDec(avg) : '?', 'Ø Level'),
-    kpi(week, 'Aktiv in 7 Tagen'),
     kpi(max, `Auf Level ${G.guild.maxLevel ?? 60}`, max ? 'hot' : 'txt'),
   ].join('');
 }
@@ -379,57 +377,26 @@ function setupGuild3d() {
 }
 
 // ---------------------------------------------------------------------------
-// Gilden-Feed: Gründung, Beitritt, Austritt, Level-Meilensteine und epische Items, neueste zuerst.
-// Ränge zeigt die Seite nicht. Alte Rangwechsel im Feed bleiben unsichtbar.
+// Gilden-Feed wie die Aktivität des Squads (renderFeedList in app.js): Level-Ups, Items, Berufe, Erfolge,
+// dazu Gründung, Beitritt und Austritt. Ränge zeigt die Seite nicht.
 
 function renderGuildFeed() {
-  const events = [...G.events].sort((a, b) => b.t - a.t);
+  const events = feedEvents(G.events);
   document.getElementById('gildenfeed').hidden = !events.length;
   if (!events.length) return;
-
-  const days = new Map();
-  for (const e of events) {
-    const day = new Date(e.t).toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: '2-digit' });
-    if (!days.has(day)) days.set(day, []);
-    days.get(day).push(e);
-  }
-  const shown = [...days].slice(0, G.feedDays);
-  const rest = days.size - shown.length;
-  const week = events.filter((e) => Date.now() - e.t < 7 * 864e5).length;
-  document.getElementById('gfeed-note').textContent = `${plural(week, 'EREIGNIS', 'EREIGNISSE')} IN 7 TAGEN`;
-
-  const el = document.getElementById('gfeed');
-  el.innerHTML = shown.map(([day, list]) => `<div class="feed-day"><h3>${day}<span>${plural(list.length, 'Ereignis', 'Ereignisse')}</span></h3><ul>${list.map(guildEventHtml).join('')}</ul></div>`).join('')
-    + (rest ? `<button type="button" class="chip-btn feed-more">Vorherigen Tag zeigen · noch ${rest}</button>` : '');
-  el.querySelectorAll('img').forEach(imgFallback);
-  el.querySelector('.feed-more')?.addEventListener('click', () => { G.feedDays++; renderGuildFeed(); });
-  window.$WowheadPower?.refreshLinks?.();
+  renderFeedList(events, {
+    list: document.getElementById('gfeed'), note: document.getElementById('gfeed-note'),
+    days: G.feedDays, itemHtml: guildEventHtml, more: () => { G.feedDays++; renderGuildFeed(); },
+  });
 }
 
+// Beitritt und Austritt gibt es nur in der Gilde. Alles andere zeigt die Gilde wie der Squad (feedItemHtml).
 function guildEventHtml(e) {
+  if (e.type !== 'join' && e.type !== 'leave') return feedItemHtml(e);
   const time = new Date(e.t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
   // Ausgetretene stehen nicht mehr in der Liste. Ihr Name kommt aus dem Ereignis.
   const m = G.guild.members.find((x) => x.key === e.key) ?? { name: e.name ?? e.key, surname: e.surname, classId: e.classId };
   const color = classColor(m);
-  const who = `<b class="who" style="--cls:${color}">${esc(fullName(m))}</b>`;
-  const row = (cls, icon, text, tip = '') => `<li class="ev ${cls}" style="--cls:${color}"${tip ? ` data-tip="${esc(tip)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
-
-  switch (e.type) {
-    case 'found':
-      return `<li class="ev ev-guild ev-found"><time>${time}</time><span class="ev-ico">${feedIcon(FEED_ICONS.guild)}</span><span class="ev-txt"><strong>Gildengründung</strong> · &lt;${esc(e.guild ?? G.guild.name ?? '')}&gt;</span></li>`;
-    case 'join':
-      return row('ev-guild', feedIcon(FEED_ICONS.guild), 'tritt der Gilde bei');
-    case 'leave':
-      return row('ev-guild ev-leave', feedIcon(FEED_ICONS.leave), 'verlässt die Gilde');
-    case 'milestone':
-      if (e.max) return row('ev-max', feedIcon(FEED_ICONS.max, e.level), `erreicht <strong>Level ${e.level}</strong>, Max-Level!`);
-      return row('ev-level', feedIcon(FEED_ICONS.level, e.level), `erreicht <strong>Level ${e.level}</strong>${e.level === 40 ? ' · Reiten' : ''}`);
-    case 'item': {
-      const q = (e.quality || 'COMMON').toLowerCase();
-      const img = `<img class="ico sm b-${q}" src="${esc(e.icon || FALLBACK_ICON)}" alt="" loading="lazy">`;
-      return row('ev-item', img, `trägt ${link(e, `<span class="q-${q}">${esc(e.name)}</span>`)}`);
-    }
-    default:
-      return '';
-  }
+  const leave = e.type === 'leave';
+  return `<li class="ev ev-guild${leave ? ' ev-leave' : ''}" style="--cls:${color}"><time>${time}</time><span class="ev-ico">${feedIcon(leave ? FEED_ICONS.leave : FEED_ICONS.guild)}</span><span class="ev-txt"><b class="who" style="--cls:${color}">${esc(fullName(m))}</b> ${leave ? 'verlässt die Gilde' : 'tritt der Gilde bei'}</span></li>`;
 }

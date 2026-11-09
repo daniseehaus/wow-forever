@@ -27,7 +27,7 @@ Blizzard aktualisiert ein Profil erst nach dem Logout, häufiger abzufragen brin
 | `data/history.json` | Tageswerte je Charakter, schreibt nur die Action |
 | `data/sessions.json` | Erkannte gemeinsame Sessions (ab 4 Spielern) mit Level-Zuwachs, schreibt nur die Action |
 | `data/feed.json` | Aktivitäts-Feed: Level-Ups (stundengenau), neue Items, Berufe, Gilde, Sessions; schreibt nur die Action |
-| `data/guild-feed.json` | Gilden-Feed: Gründung, Beitritt, Austritt, Level-Meilensteine, epische Items; schreibt nur die Action |
+| `data/guild-feed.json` | Gilden-Feed: Gründung, Beitritt, Austritt, dazu Level-Ups, Items, Berufe und Erfolge wie im Squad; schreibt nur die Action |
 | `data/recipes.json` | Was die Rezepte des Squads herstellen (tragbare Items, Verzauberungen); schreibt nur die Action, neu je Patch |
 | `data/quests.json` | Titel und Zone der Quests im Squad (deutsch); schreibt nur die Action, neu je Patch |
 | `data/quest-log.json` | Wer wann welche Quest abgeschlossen hat (30 Tage), Grundlage für „Verpasst“; schreibt nur die Action |
@@ -84,7 +84,7 @@ Die Mitglieder stehen deshalb in `config.json` unter `guild`:
 
 Die Seite zeigt:
 
-- **Kennzahlen:** Mitglieder, Durchschnittslevel, aktiv in 7 Tagen, Anzahl auf Max-Level.
+- **Kennzahlen:** Mitglieder, Durchschnittslevel, Anzahl auf Max-Level.
 - **Tabelle:** Name, Klasse, Volk, Level, Itemlevel, Beruf 1, Beruf 2, zuletzt online. Je Beruf Icon, Name, Skill / Maximum und ein Balken.
   Beruf 1 ist der Hauptberuf mit dem höheren Skill. Ein Klick auf eine Spaltenüberschrift sortiert. Die Berufsspalten gruppieren nach Beruf, im selben Beruf steht der höchste Skill oben.
   Lange Volksnamen kürzt der Abruf (`raceName` in `fetch.mjs`: „Himmelsgeborener der Windformer“ → „Himmelsgeborener“).
@@ -93,7 +93,7 @@ Die Seite zeigt:
 - **Filter:** Klassen-Icons und „Suchen“ (findet Name, Klasse, Volk und Beruf).
 - **Detail:** Ein Klick auf eine Zeile klappt das Detail auf: links 3D-Modell, darunter Werte (aus `/statistics`) und alle Berufe, rechts Kennzahlen und Ausrüstung, darunter die drei Talentbäume. Es ist immer nur ein Detail offen, Escape schließt es.
   Ist 3D aus oder lädt nicht, steht der 2D-Render auf der Bühne (siehe „3D-Modelle“). Nur ohne jedes Bild erscheint das Klassen-Icon.
-- **Gilden-Feed:** Gildengründung, Beitritt, Austritt, Level 20, 30, 40, 50 und 60 sowie neue epische Items.
+- **Gilden-Feed:** Gildengründung, Beitritt, Austritt und dieselbe Aktivität wie im Squad: jedes Level-Up, neue Items ab Rar, Berufe und Erfolge.
   Gegründet am 08.11.2026 um 21:59, alle Mitglieder bis dahin mit Beitritt um 22:00 (auch in der Aktivität der Startseite).
 
 Den aktuellen Standort eines Charakters kennt die API nicht. Die Spalte „zuletzt online“ zeigt den letzten Logout.

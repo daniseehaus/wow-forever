@@ -10,8 +10,8 @@
 //
 // Gilde: Forever kennt keine Gilden in der API (kein Gildenfeld, kein Roster). Die Mitglieder stehen deshalb
 // in config.guild.members. Die Gilde umfasst diese Liste und alle Charaktere aus characters (ohne Platzhalter).
-// Der Abruf schreibt site/guild.json und hält Beitritte, Austritte, Rangwechsel, Level-Meilensteine
-// und epische Items in data/guild-feed.json fest.
+// Der Abruf schreibt site/guild.json und hält Beitritte, Austritte und die Aktivität wie im Squad
+// (Level-Ups, Items, Berufe, Erfolge) in data/guild-feed.json fest.
 //
 // Vorschau: Mit config.simulate wandelt der Abruf die echten Retail-Charaktere in Classic-Charaktere um
 // (Level, Talentbäume, Berufe, Werte, Itemlevel) und ergänzt einen Showcase-Verlauf für Aktivität und Sessions.
@@ -726,9 +726,58 @@ function sessionStats(before, now, levelBefore, c) {
   return { level: [levelBefore ?? c.level, c.level], ilvl: [before?.ilvl ?? now.ilvl, now.ilvl], prof: profGain, logout: c.lastLogin, respec };
 }
 
-// Aktivitäts-Feed: Jeder Abruf wird mit dem letzten Stand je Charakter verglichen (snapshot),
-// Änderungen werden Ereignisse. Sie bekommen den Zeitpunkt des Logouts, in dem sie passiert sind,
-// sonst den des Abrufs. Level-Ups sind damit auf die Stunde genau.
+// Stand eines Charakters für die Aktivität. Squad und Gilde vergleichen ihn bei jedem Abruf mit dem letzten Stand.
+// Fehlt die Liste der Erfolge (Abruf fehlgeschlagen), bleibt die alte. So meldet der nächste Lauf nicht alle Erfolge neu.
+function activitySnapshot(c, old) {
+  const items = (c.items ?? []).filter((i) => i.id);
+  return {
+    level: c.level,
+    lastLogin: c.lastLogin ?? null,
+    items: Object.fromEntries(items.map((i) => [i.slot, i.id])),
+    ilvls: Object.fromEntries(items.map((i) => [i.slot, i.ilvl ?? null])),
+    profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
+    achs: c.achievements ? c.achievements.map(([id]) => id) : old?.achs ?? null,
+  };
+}
+
+// Ereignisse aus dem Vergleich: Level-Ups, neue Items, Berufe und Erfolge.
+// Fehlt ein Teil im alten Stand, legt dieser Lauf ihn nur fest, ohne Ereignisse.
+// Ein Ereignis bekommt den Zeitpunkt des Logouts, in dem es passiert ist, sonst den des Abrufs.
+async function activityEvents(c, old, now, qualities) {
+  const out = [];
+  const t = c.lastLogin && c.lastLogin > (old.lastLogin ?? 0) ? c.lastLogin : now;
+  const base = { t, key: c.key };
+  if (old.level != null && c.level > old.level) out.push({ ...base, type: 'level', from: old.level, to: c.level, max: c.level >= config.maxLevel });
+  if (old.items) {
+    for (const it of c.items ?? []) {
+      if (!it.id || old.items[it.slot] === it.id || !qualities.includes(it.quality)) continue;
+      // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz.
+      if (Object.values(old.items).includes(it.id)) continue;
+      out.push({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null, prev: old.ilvls?.[it.slot] ?? null });
+    }
+  }
+  if (old.profs) {
+    for (const p of c.professions ?? []) {
+      const before = old.profs[p.name];
+      const skill = p.skill ?? 0;
+      // Meilensteine alle 75 Punkte (Classic-Stufen) und beim Erreichen des Maximums.
+      if (before == null) out.push({ ...base, type: 'prof', name: p.name, skill, learned: true });
+      else if (Math.floor(skill / 75) > Math.floor(before / 75) || (p.max && skill >= p.max && before < p.max)) out.push({ ...base, type: 'prof', name: p.name, skill });
+    }
+  }
+  // Neue Erfolge mit ihrem genauen Zeitpunkt.
+  if (old.achs && c.achievements) {
+    for (const [id, at] of c.achievements) {
+      if (old.achs.includes(id)) continue;
+      const e = await achievementEvent(c.key, id, at);
+      if (e) out.push(e);
+    }
+  }
+  return out;
+}
+
+// Aktivitäts-Feed des Squads: Jeder Abruf wird mit dem letzten Stand je Charakter verglichen (snapshot),
+// Änderungen werden Ereignisse (activityEvents). Dazu kommen Gildenwechsel und gemeinsame Sessions.
 async function updateFeed(data, sessions) {
   const FEED_LIMIT = 1500;
   // Grüne Items zählen nur für den Abend-Rückblick. Die Aktivität zeigt sie nicht.
@@ -740,48 +789,16 @@ async function updateFeed(data, sessions) {
 
   for (const c of data.characters) {
     if (c.error || !c.level) continue;
-    const snap = {
-      level: c.level,
-      lastLogin: c.lastLogin ?? null,
-      guild: c.guild ?? null,
-      items: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.id])),
-      ilvls: Object.fromEntries(c.items.filter((i) => i.id).map((i) => [i.slot, i.ilvl ?? null])),
-      profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
-      // Fehlt die Liste (Abruf fehlgeschlagen), bleibt die alte. So meldet der nächste Lauf nicht alle Erfolge neu.
-      achs: c.achievements ? c.achievements.map(([id]) => id) : feed.snapshot[c.key]?.achs ?? null,
-    };
     const old = feed.snapshot[c.key];
-    feed.snapshot[c.key] = snap;
+    feed.snapshot[c.key] = { ...activitySnapshot(c, old), guild: c.guild ?? null };
     if (!old) continue;
 
-    const t = c.lastLogin && c.lastLogin > (old.lastLogin ?? 0) ? c.lastLogin : now;
-    const base = { t, key: c.key };
-    if (c.level > old.level) add({ ...base, type: 'level', from: old.level, to: c.level, max: c.level >= config.maxLevel });
-    for (const it of c.items) {
-      if (!it.id || old.items[it.slot] === it.id || !FEED_QUALITIES.includes(it.quality)) continue;
-      // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz.
-      if (Object.values(old.items).includes(it.id)) continue;
-      add({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null, prev: old.ilvls?.[it.slot] ?? null });
-    }
-    for (const p of c.professions ?? []) {
-      const before = old.profs[p.name];
-      const skill = p.skill ?? 0;
-      // Meilensteine alle 75 Punkte (Classic-Stufen) und beim Erreichen des Maximums.
-      if (before == null) add({ ...base, type: 'prof', name: p.name, skill, learned: true });
-      else if (Math.floor(skill / 75) > Math.floor(before / 75) || (p.max && skill >= p.max && before < p.max)) add({ ...base, type: 'prof', name: p.name, skill });
-    }
+    for (const e of await activityEvents(c, old, now, FEED_QUALITIES)) add(e);
     // Steht derselbe Wechsel schon als letztes Gilden-Ereignis im Feed (Gildengründung von Hand eingetragen), kommt kein zweites.
     const lastGuild = feed.events.filter((e) => e.key === c.key && e.type === 'guild').at(-1);
     if ((c.guild ?? null) !== (old.guild ?? null) && (lastGuild?.guild ?? null) !== (c.guild ?? null)) {
-      add({ ...base, type: 'guild', guild: c.guild ?? null, from: old.guild ?? null });
-    }
-    // Neue Erfolge mit ihrem genauen Zeitpunkt. Der erste Lauf mit Erfolgen legt nur den Stand fest, ohne Ereignisse.
-    if (old.achs && c.achievements) {
-      for (const [id, at] of c.achievements) {
-        if (old.achs.includes(id)) continue;
-        const e = await achievementEvent(c.key, id, at);
-        if (e) add(e);
-      }
+      const t = c.lastLogin && c.lastLogin > (old.lastLogin ?? 0) ? c.lastLogin : now;
+      add({ t, key: c.key, type: 'guild', guild: c.guild ?? null, from: old.guild ?? null });
     }
   }
 
@@ -968,15 +985,15 @@ async function fillSquad(data, guild) {
   console.log(`Squad mit Test-Charakteren gefüllt: ${data.characters.map((c) => c.name).join(', ')}`);
 }
 
-// Gilden-Feed: Jeder Abruf vergleicht Mitgliederliste, Rang, Level und epische Items mit dem letzten Stand.
-// Level zählen nur als Meilenstein (20, 30, 40, 50, 60), einzelne Level-Ups wären bei einer ganzen Gilde zu viel.
+// Gilden-Feed: Jeder Abruf vergleicht die Mitgliederliste und je Mitglied den Stand wie im Squad (activityEvents):
+// jedes Level-Up, neue Items ab Rar, Berufe und Erfolge. Die Gilde ist klein, darum steht alles im Feed.
 // Wer aus config.guild.members verschwindet, gilt als ausgetreten. Das Ereignis trägt den Namen, weil der Eintrag fehlt.
 // Eine Namenskorrektur in config.json ist kein Austritt mit Beitritt: Verschwindet ein Eintrag und kommt im selben Lauf
 // ein neuer dazu, mit gleicher Charakter-ID, gleichem Vornamen oder ohne je geladenes Profil, zieht nur der Stand um.
 async function updateGuildFeed(guild) {
-  const FEED_LIMIT = 800;
-  const MILESTONES = [20, 30, 40, 50, 60];
-  const EPIC = ['EPIC', 'LEGENDARY'];
+  const FEED_LIMIT = 1500;
+  // Ohne grüne Items: Die Gilde hat keinen Abend-Rückblick, der sie braucht.
+  const FEED_QUALITIES = ['RARE', 'EPIC', 'LEGENDARY', 'ARTIFACT'];
   const feed = await loadState('guild-feed', () => ({ members: null, snapshot: {}, events: [] }));
   if (!process.env.GITHUB_ACTIONS) return feed;
   const now = Date.now();
@@ -1009,24 +1026,12 @@ async function updateGuildFeed(guild) {
   for (const m of guild.members) {
     const old = feed.snapshot[m.key];
     const snap = { ...old, id: m.id ?? old?.id ?? null, name: m.name, surname: m.surname ?? null, classId: m.classId ?? old?.classId ?? null, rank: m.rank };
-    if (!m.error && m.level) {
-      Object.assign(snap, {
-        level: m.level,
-        lastLogin: m.lastLogin ?? null,
-        epics: (m.items ?? []).filter((i) => i.id && EPIC.includes(i.quality)).map((i) => i.id),
-      });
-    }
+    // Ein Fehler oder ein alter Stand (stale) ändert nichts. Sonst kämen beim nächsten Abruf alte Änderungen erneut.
+    const fresh = !m.error && !m.stale && m.level;
+    if (fresh) Object.assign(snap, activitySnapshot(m, old));
     feed.snapshot[m.key] = snap;
-    if (!old) continue;
-
-    const t = m.lastLogin && m.lastLogin > (old.lastLogin ?? 0) ? m.lastLogin : now;
-    if (m.error || !m.level || old.level == null) continue;
-    const reached = MILESTONES.filter((l) => old.level < l && m.level >= l).at(-1);
-    if (reached) add({ t, key: m.key, type: 'milestone', level: reached, max: reached >= config.maxLevel });
-    for (const it of m.items ?? []) {
-      if (!it.id || !EPIC.includes(it.quality) || (old.epics ?? []).includes(it.id)) continue;
-      add({ t, key: m.key, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null });
-    }
+    if (!old || !fresh) continue;
+    for (const e of await activityEvents(m, old, now, FEED_QUALITIES)) add(e);
   }
 
   feed.events.sort((a, b) => a.t - b.t);
@@ -1225,7 +1230,7 @@ function buildDemoGuild(members) {
   return guildMeta(members);
 }
 
-// Beispiel-Feed der Gilde: Beitritte, ein Austritt, ein Rangwechsel, Meilensteine und epische Items der letzten Tage.
+// Beispiel-Feed der Gilde: Beitritte, ein Austritt, Level-Ups, Items und Berufe der letzten Tage.
 function demoGuildFeed(guild) {
   const h = 3600 * 1000;
   const now = Date.now();
@@ -1233,11 +1238,14 @@ function demoGuildFeed(guild) {
   const events = [];
   ok.forEach((m, i) => {
     const t = now - (i % 5) * 22 * h - (i + 1) * 1.3 * h;
-    const milestone = [60, 50, 40, 30, 20].find((l) => m.level >= l && m.level < l + 5);
-    if (milestone) events.push({ t, key: m.key, type: 'milestone', level: milestone, max: milestone >= 60 });
+    for (let lv = Math.max(1, m.level - 2); lv < m.level; lv++) {
+      events.push({ t: t - (m.level - lv) * 3 * h, key: m.key, type: 'level', from: lv, to: lv + 1, max: lv + 1 >= 60 });
+    }
     if (i % 3 === 2) events.push({ t: t - 30 * h, key: m.key, type: 'join' });
-    const epic = (m.items ?? []).find((it) => it.quality === 'EPIC');
-    if (epic) events.push({ t: t + 0.5 * h, key: m.key, type: 'item', id: epic.id, name: epic.name, quality: epic.quality, icon: epic.icon, slot: epic.slotName });
+    const it = (m.items ?? []).find((x) => x.quality === 'EPIC' || x.quality === 'RARE');
+    if (it) events.push({ t: t + 0.5 * h, key: m.key, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName });
+    const p = (m.professions ?? [])[0];
+    if (p && i % 2) events.push({ t: t + h, key: m.key, type: 'prof', name: p.name, skill: Math.floor((p.skill ?? 0) / 75) * 75 || p.skill });
   });
   events.push({ t: now - 50 * h, key: 'demo/durotan-dauerafk', type: 'leave', name: 'Durotan', surname: 'Dauerafk', classId: 1 });
   return { era: guild.era, events: events.sort((a, b) => a.t - b.t) };

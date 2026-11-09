@@ -20,7 +20,43 @@
    "rank": "Mitglied",
    "level": 11,
    "lastLogin": 1794212119000,
-   "epics": []
+   "items": {
+    "SHIRT": 53,
+    "CHEST": 6527,
+    "WAIST": 253887,
+    "LEGS": 4309,
+    "FEET": 2569,
+    "WRIST": 4308,
+    "HANDS": 4307,
+    "FINGER_1": 281268,
+    "BACK": 2580,
+    "MAIN_HAND": 281274,
+    "RANGED": 11287
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 13,
+    "WAIST": 15,
+    "LEGS": 14,
+    "FEET": 13,
+    "WRIST": 12,
+    "HANDS": 10,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 11,
+    "RANGED": 15
+   },
+   "profs": {
+    "Tailoring": 68,
+    "Enchanting": 35,
+    "Cooking": 1,
+    "First Aid": 1
+   },
+   "achs": [
+    61997,
+    769,
+    750
+   ]
   },
   "zukk-sturmzüngler": {
    "id": 9512891,
@@ -30,7 +66,38 @@
    "rank": "Mitglied",
    "level": 12,
    "lastLogin": 1794219520000,
-   "epics": []
+   "items": {
+    "SHIRT": 6134,
+    "CHEST": 4916,
+    "WAIST": 4919,
+    "LEGS": 1431,
+    "FEET": 4942,
+    "WRIST": 4928,
+    "HANDS": 4940,
+    "FINGER_1": 281268,
+    "BACK": 4944,
+    "MAIN_HAND": 4562,
+    "RANGED": 263412
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 5,
+    "WAIST": 5,
+    "LEGS": 8,
+    "FEET": 12,
+    "WRIST": 8,
+    "HANDS": 10,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 10,
+    "RANGED": 10
+   },
+   "profs": {
+    "Alchemy": 75,
+    "Herbalism": 87,
+    "Cooking": 2
+   },
+   "achs": []
   },
   "pavel-plattenpapst": {
    "id": 11114997,
@@ -40,7 +107,36 @@
    "rank": "Mitglied",
    "level": 11,
    "lastLogin": 1794178243000,
-   "epics": []
+   "items": {
+    "SHIRT": 6125,
+    "CHEST": 10421,
+    "WAIST": 15472,
+    "LEGS": 3473,
+    "FEET": 15473,
+    "WRIST": 281272,
+    "HANDS": 1734,
+    "BACK": 4944,
+    "MAIN_HAND": 6214
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 10,
+    "WAIST": 9,
+    "LEGS": 13,
+    "FEET": 10,
+    "WRIST": 10,
+    "HANDS": 11,
+    "BACK": 12,
+    "MAIN_HAND": 16
+   },
+   "profs": {
+    "Mining": 70,
+    "Engineering": 80,
+    "Cooking": 20,
+    "Fishing": 1,
+    "First Aid": 34
+   },
+   "achs": []
   },
   "bernhard-backstab": {
    "id": 11267857,
@@ -50,7 +146,47 @@
    "rank": "Mitglied",
    "level": 20,
    "lastLogin": 1794213265000,
-   "epics": []
+   "items": {
+    "SHOULDER": 5404,
+    "SHIRT": 2105,
+    "CHEST": 5957,
+    "WAIST": 4246,
+    "LEGS": 5327,
+    "FEET": 252425,
+    "WRIST": 7281,
+    "HANDS": 4239,
+    "FINGER_1": 281268,
+    "FINGER_2": 5351,
+    "BACK": 6585,
+    "MAIN_HAND": 6504,
+    "OFF_HAND": 6472,
+    "RANGED": 287060
+   },
+   "ilvls": {
+    "SHOULDER": 23,
+    "SHIRT": 1,
+    "CHEST": 10,
+    "WAIST": 16,
+    "LEGS": 18,
+    "FEET": 15,
+    "WRIST": 14,
+    "HANDS": 13,
+    "FINGER_1": 9,
+    "FINGER_2": 20,
+    "BACK": 20,
+    "MAIN_HAND": 24,
+    "OFF_HAND": 24,
+    "RANGED": 11
+   },
+   "profs": {
+    "Leatherworking": 85,
+    "Skinning": 137,
+    "Cooking": 1,
+    "First Aid": 80
+   },
+   "achs": [
+    728
+   ]
   },
   "hammer-hanno": {
    "id": 8777565,
@@ -60,7 +196,49 @@
    "rank": "Mitglied",
    "level": 32,
    "lastLogin": 1794219676000,
-   "epics": []
+   "items": {
+    "HEAD": 3732,
+    "NECK": 281265,
+    "SHOULDER": 270024,
+    "SHIRT": 6125,
+    "CHEST": 271205,
+    "WAIST": 273846,
+    "LEGS": 3751,
+    "FEET": 250620,
+    "WRIST": 286981,
+    "HANDS": 270038,
+    "FINGER_1": 17694,
+    "FINGER_2": 6414,
+    "BACK": 6314,
+    "MAIN_HAND": 267369
+   },
+   "ilvls": {
+    "HEAD": 30,
+    "NECK": 20,
+    "SHOULDER": 27,
+    "SHIRT": 1,
+    "CHEST": 20,
+    "WAIST": 30,
+    "LEGS": 30,
+    "FEET": 15,
+    "WRIST": 21,
+    "HANDS": 30,
+    "FINGER_1": 28,
+    "FINGER_2": 29,
+    "BACK": 27,
+    "MAIN_HAND": 31
+   },
+   "profs": {
+    "Mining": 122,
+    "Blacksmithing": 73,
+    "Cooking": 52,
+    "First Aid": 122
+   },
+   "achs": [
+    61997,
+    769,
+    750
+   ]
   },
   "lokk-eidlöter": {
    "id": 9959502,
@@ -70,7 +248,37 @@
    "rank": "Mitglied",
    "level": 18,
    "lastLogin": 1794212640000,
-   "epics": []
+   "items": {
+    "NECK": 281265,
+    "SHIRT": 6125,
+    "CHEST": 6336,
+    "WAIST": 2857,
+    "LEGS": 15451,
+    "FEET": 281285,
+    "WRIST": 14147,
+    "HANDS": 2980,
+    "BACK": 14149,
+    "MAIN_HAND": 15424
+   },
+   "ilvls": {
+    "NECK": 20,
+    "SHIRT": 1,
+    "CHEST": 13,
+    "WAIST": 18,
+    "LEGS": 18,
+    "FEET": 11,
+    "WRIST": 18,
+    "HANDS": 15,
+    "BACK": 18,
+    "MAIN_HAND": 18
+   },
+   "profs": {
+    "Mining": 79,
+    "Blacksmithing": 66,
+    "Cooking": 1,
+    "First Aid": 40
+   },
+   "achs": []
   },
   "wladimir-klatschko": {
    "id": 1582342,
@@ -80,7 +288,39 @@
    "rank": "Mitglied",
    "level": 12,
    "lastLogin": 1794176441000,
-   "epics": []
+   "items": {
+    "SHIRT": 6125,
+    "CHEST": 10421,
+    "WAIST": 4935,
+    "LEGS": 2852,
+    "FEET": 3469,
+    "WRIST": 2853,
+    "HANDS": 2653,
+    "FINGER_1": 281268,
+    "BACK": 4944,
+    "MAIN_HAND": 3489,
+    "OFF_HAND": 15014
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 10,
+    "WAIST": 8,
+    "LEGS": 10,
+    "FEET": 10,
+    "WRIST": 7,
+    "HANDS": 4,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 17,
+    "OFF_HAND": 17
+   },
+   "profs": {
+    "Mining": 72,
+    "Blacksmithing": 62,
+    "Cooking": 1,
+    "First Aid": 1
+   },
+   "achs": []
   },
   "dennis-dotalot": {
    "id": 14098039,
@@ -90,7 +330,38 @@
    "rank": "Mitglied",
    "level": 17,
    "lastLogin": 1794182586000,
-   "epics": []
+   "items": {
+    "SHIRT": 2579,
+    "CHEST": 6527,
+    "WAIST": 253885,
+    "LEGS": 15449,
+    "FEET": 6537,
+    "WRIST": 15452,
+    "HANDS": 10637,
+    "BACK": 3449,
+    "MAIN_HAND": 273003,
+    "RANGED": 11287
+   },
+   "ilvls": {
+    "SHIRT": 14,
+    "CHEST": 13,
+    "WAIST": 15,
+    "LEGS": 18,
+    "FEET": 15,
+    "WRIST": 18,
+    "HANDS": 15,
+    "BACK": 15,
+    "MAIN_HAND": 18,
+    "RANGED": 15
+   },
+   "profs": {
+    "Tailoring": 65,
+    "Herbalism": 81,
+    "Cooking": 104,
+    "Fishing": 82,
+    "First Aid": 78
+   },
+   "achs": []
   },
   "pawris-hilton": {
    "id": 7346576,
@@ -100,7 +371,34 @@
    "rank": "Mitglied",
    "level": 12,
    "lastLogin": 1794177975000,
-   "epics": []
+   "items": {
+    "SHIRT": 271668,
+    "CHEST": 5957,
+    "WAIST": 263335,
+    "LEGS": 2303,
+    "FEET": 1367,
+    "WRIST": 263338,
+    "HANDS": 263414,
+    "BACK": 257943,
+    "MAIN_HAND": 257343
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 10,
+    "WAIST": 13,
+    "LEGS": 10,
+    "FEET": 3,
+    "WRIST": 13,
+    "HANDS": 8,
+    "BACK": 8,
+    "MAIN_HAND": 13
+   },
+   "profs": {
+    "Leatherworking": 33,
+    "Skinning": 68,
+    "Cooking": 1
+   },
+   "achs": []
   }
  },
  "events": [
@@ -155,10 +453,69 @@
    "type": "join"
   },
   {
+   "t": 1794175989000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 253887,
+   "name": "Schärpe des inbrünstigen Novizen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236918.jpg",
+   "slot": "Taille",
+   "ilvl": 15,
+   "prev": 9
+  },
+  {
+   "t": 1794175989000,
+   "key": "heili-kabel",
+   "type": "prof",
+   "name": "First Aid",
+   "skill": 1,
+   "learned": true
+  },
+  {
+   "t": 1794177693000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 11,
+   "to": 12,
+   "max": false
+  },
+  {
+   "t": 1794179193000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 18,
+   "to": 19,
+   "max": false
+  },
+  {
    "t": 1794183322000,
    "key": "bernhard-backstab",
-   "type": "milestone",
-   "level": 20,
+   "type": "level",
+   "from": 19,
+   "to": 20,
+   "max": false
+  },
+  {
+   "t": 1794219520000,
+   "key": "zukk-sturmzüngler",
+   "type": "prof",
+   "name": "Alchemy",
+   "skill": 75
+  },
+  {
+   "t": 1794219520000,
+   "key": "zukk-sturmzüngler",
+   "type": "prof",
+   "name": "Herbalism",
+   "skill": 87
+  },
+  {
+   "t": 1794219676000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 31,
+   "to": 32,
    "max": false
   }
  ]
