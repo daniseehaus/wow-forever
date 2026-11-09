@@ -39,7 +39,6 @@
   "orkward-orkbert": {
    "level": 11,
    "lastLogin": 1794171705000,
-   "guild": null,
    "items": {
     "SHIRT": 127,
     "CHEST": 1364,
@@ -72,12 +71,12 @@
     "Skinning": 75,
     "Cooking": 1
    },
-   "achs": []
+   "achs": [],
+   "guild": null
   },
   "wladimir-klatschko": {
    "level": 12,
    "lastLogin": 1794176441000,
-   "guild": "Geilbleiber",
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
@@ -110,12 +109,12 @@
     "Cooking": 1,
     "First Aid": 1
    },
-   "achs": []
+   "achs": [],
+   "guild": "Geilbleiber"
   },
   "heili-kabel": {
    "level": 11,
    "lastLogin": 1794212119000,
-   "guild": "Geilbleiber",
    "items": {
     "SHIRT": 53,
     "CHEST": 6527,
@@ -152,12 +151,12 @@
     61997,
     769,
     750
-   ]
+   ],
+   "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
    "level": 12,
    "lastLogin": 1794219520000,
-   "guild": "Geilbleiber",
    "items": {
     "SHIRT": 6134,
     "CHEST": 4916,
@@ -189,12 +188,12 @@
     "Herbalism": 87,
     "Cooking": 2
    },
-   "achs": []
+   "achs": [],
+   "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
    "level": 11,
    "lastLogin": 1794178243000,
-   "guild": "Geilbleiber",
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
@@ -224,7 +223,8 @@
     "Fishing": 1,
     "First Aid": 34
    },
-   "achs": []
+   "achs": [],
+   "guild": "Geilbleiber"
   }
  },
  "events": [
