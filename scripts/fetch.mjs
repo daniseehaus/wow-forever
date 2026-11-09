@@ -770,7 +770,11 @@ async function updateFeed(data, sessions) {
       if (before == null) add({ ...base, type: 'prof', name: p.name, skill, learned: true });
       else if (Math.floor(skill / 75) > Math.floor(before / 75) || (p.max && skill >= p.max && before < p.max)) add({ ...base, type: 'prof', name: p.name, skill });
     }
-    if ((c.guild ?? null) !== (old.guild ?? null)) add({ ...base, type: 'guild', guild: c.guild ?? null, from: old.guild ?? null });
+    // Steht derselbe Wechsel schon als letztes Gilden-Ereignis im Feed (Gildengründung von Hand eingetragen), kommt kein zweites.
+    const lastGuild = feed.events.filter((e) => e.key === c.key && e.type === 'guild').at(-1);
+    if ((c.guild ?? null) !== (old.guild ?? null) && (lastGuild?.guild ?? null) !== (c.guild ?? null)) {
+      add({ ...base, type: 'guild', guild: c.guild ?? null, from: old.guild ?? null });
+    }
     // Neue Erfolge mit ihrem genauen Zeitpunkt. Der erste Lauf mit Erfolgen legt nur den Stand fest, ohne Ereignisse.
     if (old.achs && c.achievements) {
       for (const [id, at] of c.achievements) {
