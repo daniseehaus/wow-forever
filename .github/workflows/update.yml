@@ -3,7 +3,7 @@ name: Daten holen und Seite veröffentlichen
 on:
   schedule:
     - cron: '17 * * * *'   # Reserve, stündlich. GitHub startet geplante Läufe oft verspätet oder gar nicht.
-  # Den eigentlichen Takt gibt der Pi vor: wow-anstossen.timer in pi-homeserver stößt alle 15 Minuten an (Minute 5, 20, 35, 50).
+  # Den eigentlichen Takt gibt der Pi vor: wow-anstossen.timer in pi-homeserver stößt alle 5 Minuten an.
   workflow_dispatch:        # Button "Run workflow" für sofortige Aktualisierung, auch der Anstoß vom Pi
   push:
     branches: [main]

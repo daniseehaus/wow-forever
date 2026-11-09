@@ -1,7 +1,7 @@
 # WoW Forever · Gruppenübersicht
 
 Statische Seite mit Level, Klasse, Itemlevel und Ausrüstung unserer Charaktere.
-Eine GitHub Action holt die Daten alle 15 Minuten von der Battle.net API und veröffentlicht die Seite auf GitHub Pages.
+Eine GitHub Action holt die Daten alle 5 Minuten von der Battle.net API und veröffentlicht die Seite auf GitHub Pages.
 Den Takt gibt der Pi vor (`wow-anstossen.timer` in `pi-homeserver`, Minute 5, 20, 35, 50), der Zeitplan von GitHub ist nur die stündliche Reserve.
 Blizzard aktualisiert ein Profil erst nach dem Logout, häufiger abzufragen bringt darum wenig.
 
@@ -32,7 +32,7 @@ Blizzard aktualisiert ein Profil erst nach dem Logout, häufiger abzufragen brin
 | `data/quests.json` | Titel und Zone der Quests im Squad (deutsch); schreibt nur die Action, neu je Patch |
 | `data/quest-log.json` | Wer wann welche Quest abgeschlossen hat (30 Tage), Grundlage für „Verpasst“; schreibt nur die Action |
 | `data/archive/` | Verlauf, Sessions und Feed der vorherigen Spielversion |
-| `.github/workflows/update.yml` | Abruf alle 15 Minuten, 3D-Spiegelung und Deployment |
+| `.github/workflows/update.yml` | Abruf alle 5 Minuten, 3D-Spiegelung und Deployment |
 
 ## Charaktere eintragen
 
