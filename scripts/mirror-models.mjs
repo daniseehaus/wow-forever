@@ -8,6 +8,7 @@
 // Aufruf:
 //   node scripts/mirror-models.mjs            spiegeln (nach scripts/fetch.mjs)
 //   node scripts/mirror-models.mjs --hash     Kennung des aktuellen 3D-Stands ausgeben
+//   node scripts/mirror-models.mjs --window   Nummer des aktuellen 6-Stunden-Fensters ausgeben (Teil des Cache-Schlüssels)
 //   node scripts/mirror-models.mjs --restore  Dateien ohne Browser aus .model-cache/ übernehmen,
 //                                             wenn sich am 3D-Stand nichts geändert hat
 //
@@ -40,6 +41,11 @@ const ANIMATIONS = ['Stand', 'EmoteWave', 'EmoteCheer', 'EmoteDance', 'EmoteLaug
 const MANIFEST = new URL('.model-cache/manifest.json', root);
 // Erhöhen, wenn sich die Schnappschüsse ändern sollen. Ändert den 3D-Stand und erzwingt ein neues Spiegeln.
 const SNAP_VERSION = 1;
+// Fehlten beim Spiegeln Dateien, gibt es je 6-Stunden-Fenster einen neuen Versuch.
+// Das Fenster steht auch im Cache-Schlüssel der Action. Ein exakter Treffer speichert den Cache nie neu,
+// ohne neues Fenster bliebe das alte Manifest stehen und jeder Lauf würde neu spiegeln.
+const RETRY_MS = 6 * 3600 * 1000;
+const retryWindow = (t) => Math.floor(t / RETRY_MS);
 
 // Gruppe und Gilde. Gruppen-Charaktere stehen in beiden Dateien, sie zählen einmal.
 const dataFile = new URL('site/data.json', root);
@@ -50,6 +56,11 @@ const hash = stateHash();
 
 if (process.argv.includes('--hash')) {
   console.log(hash);
+  process.exit(0);
+}
+
+if (process.argv.includes('--window')) {
+  console.log(retryWindow(Date.now()));
   process.exit(0);
 }
 
@@ -130,8 +141,8 @@ async function restore() {
     console.log('3D-Stand hat sich geändert, neu spiegeln.');
     return false;
   }
-  // Fehlten beim letzten Spiegeln Dateien, gibt es alle 6 Stunden einen neuen Versuch.
-  if (manifest.failed && Date.now() - (manifest.created ?? 0) > 6 * 3600 * 1000) {
+  // Fehlten beim letzten Spiegeln Dateien, gibt es im nächsten 6-Stunden-Fenster einen neuen Versuch.
+  if (manifest.failed && retryWindow(manifest.created ?? 0) !== retryWindow(Date.now())) {
     console.log(`Beim letzten Spiegeln fehlten ${manifest.failed} Dateien, neuer Versuch.`);
     return false;
   }

@@ -47,16 +47,21 @@ jobs:
 
       # Der 3D-Stand (Aussehen, Items, Animationen) ändert sich selten. Bleibt er gleich,
       # kommen die Dateien aus dem Cache und Browser-Installation und Spiegelung entfallen.
+      # Das 6-Stunden-Fenster im Schlüssel sorgt dafür, dass ein neuer Versuch (fehlende Dateien) im Cache landet.
       - name: 3D-Stand prüfen
         id: models
-        run: echo "hash=$(node scripts/mirror-models.mjs --hash)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "hash=$(node scripts/mirror-models.mjs --hash)" >> "$GITHUB_OUTPUT"
+          echo "window=$(node scripts/mirror-models.mjs --window)" >> "$GITHUB_OUTPUT"
 
       - name: 3D-Cache laden
         uses: actions/cache@v6
         with:
           path: .model-cache
-          key: models-${{ steps.models.outputs.hash }}
-          restore-keys: models-
+          key: models-${{ steps.models.outputs.hash }}-${{ steps.models.outputs.window }}
+          restore-keys: |
+            models-${{ steps.models.outputs.hash }}-
+            models-
 
       - name: 3D-Dateien aus dem Cache übernehmen
         id: restore
