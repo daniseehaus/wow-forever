@@ -246,8 +246,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 18,
-   "lastLogin": 1794212640000,
+   "level": 19,
+   "lastLogin": 1794225645000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
@@ -256,7 +256,8 @@
     "LEGS": 15451,
     "FEET": 281285,
     "WRIST": 14147,
-    "HANDS": 2980,
+    "HANDS": 276723,
+    "FINGER_1": 3235,
     "BACK": 14149,
     "MAIN_HAND": 15424
    },
@@ -268,17 +269,20 @@
     "LEGS": 18,
     "FEET": 11,
     "WRIST": 18,
-    "HANDS": 15,
+    "HANDS": 18,
+    "FINGER_1": 20,
     "BACK": 18,
     "MAIN_HAND": 18
    },
    "profs": {
-    "Mining": 79,
-    "Blacksmithing": 66,
+    "Mining": 82,
+    "Blacksmithing": 70,
     "Cooking": 1,
     "First Aid": 40
    },
-   "achs": []
+   "achs": [
+    769
+   ]
   },
   "wladimir-klatschko": {
    "id": 1582342,
@@ -519,11 +523,28 @@
    "max": false
   },
   {
+   "t": 1794223929000,
+   "key": "lokk-eidlöter",
+   "type": "achievement",
+   "id": 769,
+   "name": "Erforscht den Silberwald",
+   "desc": "Erforscht den Silberwald und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236830.jpg"
+  },
+  {
    "t": 1794225187000,
    "key": "bernhard-backstab",
    "type": "level",
    "from": 20,
    "to": 21,
+   "max": false
+  },
+  {
+   "t": 1794225645000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 18,
+   "to": 19,
    "max": false
   }
  ]
