@@ -679,7 +679,7 @@ function craftUpgrades() {
     });
     // Verbesserungen nur für angelegte Items ohne Verzauberung, je Slot mit allen Möglichkeiten. Ein Item mit Mindestlevel zählt erst ab diesem Level.
     const enhance = new Map();
-    for (const cr of crafts.filter((x) => x.enhance && x.enhance.kind !== enchant)) {
+    for (const cr of crafts.filter((x) => x.enhance && x.enhance.kind !== 'enchant')) {
       if ((cr.enhance.req ?? 0) > c.level) continue;
       for (const slot of cr.enhance.slots) {
         const cur = items.get(slot);
@@ -866,7 +866,9 @@ function renderQuests() {
     }
     const block = ([z, qs]) => `<div class="q-zone"><span class="q-zname">${esc(z)}</span>${qs.map(row).join('')}</div>`;
     const rest = hidden.reduce((n, [, qs]) => n + qs.length, 0);
-    return `<article class="q-card" style="--cls:${classColor(c)}">
+    // data-w: geschätzte Höhe in Zeilen (Kopf, Zonen, Quests). Danach verteilt fitQuestColumns die Karten.
+    const weight = 2 + shown.length + shown.reduce((n, [, qs]) => n + qs.length, 0) + (rest ? 1 : 0);
+    return `<article class="q-card" data-w="${weight}" style="--cls:${classColor(c)}">
       <header><b>${esc(c.name)}</b><span>${plural(list.length, 'Quest', 'Quests')} verpasst</span><small>offline ${ago(since)}</small></header>
       <div class="q-body">${shown.map(block).join('')}</div>
       ${rest ? `<details class="q-more"><summary>${plural(rest, 'weitere Quest', 'weitere Quests')}</summary><div class="q-body">${hidden.map(block).join('')}</div></details>` : ''}
@@ -879,15 +881,26 @@ function renderQuests() {
 }
 
 // Spalten der Quest-Karten: so viele, wie Karten da sind und nebeneinander passen (je mindestens 380 px).
-// Die Karten fließen als Mauerwerk durch die Spalten (CSS columns), kurze Karten lassen keine Lücke darunter.
-// Eine einzelne Karte nutzt die ganze Breite, ihre Zonen stehen dann selbst in Spalten (.q-body).
+// Mauerwerk: Jede Karte kommt in der Reihenfolge der Liste in die bisher kürzeste Spalte (Gewicht data-w).
+// So bleibt unter kurzen Karten keine Lücke. Eine einzelne Karte nutzt die ganze Breite, ihre Zonen stehen dann in Spalten (.q-body).
 let questResize = null;
 function fitQuestColumns(box, count) {
   questResize?.disconnect();
   if (!box) return;
+  const cards = [...box.querySelectorAll('.q-card')];
   const fit = () => {
     const cols = Math.max(1, Math.min(count, Math.floor((box.clientWidth + 12) / (380 + 12))));
+    if (Number(box.dataset.cols) === cols) return;
+    box.dataset.cols = cols;
     box.style.setProperty('--qcols', cols);
+    const columns = Array.from({ length: cols }, () => Object.assign(document.createElement('div'), { className: 'q-col' }));
+    const heights = new Array(cols).fill(0);
+    for (const card of cards) {
+      const i = heights.indexOf(Math.min(...heights));
+      columns[i].append(card);
+      heights[i] += Number(card.dataset.w) || 1;
+    }
+    box.replaceChildren(...columns);
   };
   fit();
   questResize = new ResizeObserver(fit);
