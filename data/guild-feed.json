@@ -248,37 +248,39 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 19,
-   "lastLogin": 1794225645000,
+   "level": 21,
+   "lastLogin": 1794235467000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
     "CHEST": 6336,
-    "WAIST": 2857,
-    "LEGS": 15451,
+    "WAIST": 271201,
+    "LEGS": 271209,
     "FEET": 281285,
     "WRIST": 14147,
-    "HANDS": 276723,
+    "HANDS": 271208,
     "FINGER_1": 3235,
+    "FINGER_2": 279867,
     "BACK": 14149,
-    "MAIN_HAND": 15424
+    "MAIN_HAND": 286977
    },
    "ilvls": {
     "NECK": 20,
     "SHIRT": 1,
     "CHEST": 13,
-    "WAIST": 18,
-    "LEGS": 18,
+    "WAIST": 20,
+    "LEGS": 21,
     "FEET": 11,
     "WRIST": 18,
-    "HANDS": 18,
+    "HANDS": 22,
     "FINGER_1": 20,
+    "FINGER_2": 23,
     "BACK": 18,
-    "MAIN_HAND": 18
+    "MAIN_HAND": 23
    },
    "profs": {
-    "Mining": 82,
-    "Blacksmithing": 70,
+    "Mining": 98,
+    "Blacksmithing": 72,
     "Cooking": 1,
     "First Aid": 40
    },
@@ -557,6 +559,62 @@
    "from": 18,
    "to": 19,
    "max": false
+  },
+  {
+   "t": 1794235467000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 19,
+   "to": 21,
+   "max": false
+  },
+  {
+   "t": 1794235467000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 271201,
+   "name": "Atrophischer Gurt",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132510.jpg",
+   "slot": "Taille",
+   "ilvl": 20,
+   "prev": 18
+  },
+  {
+   "t": 1794235467000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 271209,
+   "name": "Knochenrostgamaschen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134653.jpg",
+   "slot": "Beine",
+   "ilvl": 21,
+   "prev": 18
+  },
+  {
+   "t": 1794235467000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 271208,
+   "name": "Griff der Angst",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132938.jpg",
+   "slot": "Hände",
+   "ilvl": 22,
+   "prev": 18
+  },
+  {
+   "t": 1794235467000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 286977,
+   "name": "Schwert der Gefallenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 23,
+   "prev": 18
   }
  ]
 }
