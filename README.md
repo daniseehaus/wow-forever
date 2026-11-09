@@ -175,8 +175,9 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
     Verbrauchsgüter (Tränke, Essen, Verbände) zeigt die Seite vorerst nicht, der Abruf speichert sie nicht.
   Das Loadout markiert Slots mit Upgrade und nennt den wichtigsten Gewinn.
 - **Quests:** nur „Verpasst“, alles andere stimmt der Squad live ab (`renderQuests` in `app.js`). Je Charakter, der etwas verpasst hat,
-  eine Karte mit den Quests, die andere abgeschlossen haben, seit er zuletzt online war. Nach Zonen gruppiert, ab 8 Quests klappt der
-  Rest auf. Daneben steht, wer die Quest erledigt hat. Hat niemand etwas verpasst, steht dort nur eine Zeile.
+  eine Karte mit den Quests, die mindestens 2 andere abgeschlossen haben, seit er zuletzt online war. Nach Zonen gruppiert, ab 8 Quests klappt der
+  Rest auf. Die Karten stehen als Mauerwerk in so vielen Spalten, wie Karten da sind und nebeneinander passen (`fitQuestColumns`).
+  In einer breiten Karte fließen die Zonen selbst in Spalten. Daneben steht, wer die Quest erledigt hat. Hat niemand etwas verpasst, steht dort nur eine Zeile.
   Mit × lässt sich eine Quest je Charakter ignorieren, „wieder zeigen“ holt alle zurück. Das merkt sich nur der eigene Browser
   (localStorage `questIgnore`), die Seite hat keinen Server.
   Grundlage ist der Quest-Verlauf der Action (`data/quest-log.json`). Quests ohne Zone (meist Klassen- und Berufsquests) zählen nicht,

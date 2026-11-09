@@ -867,13 +867,30 @@ function renderQuests() {
     const rest = hidden.reduce((n, [, qs]) => n + qs.length, 0);
     return `<article class="q-card" style="--cls:${classColor(c)}">
       <header><b>${esc(c.name)}</b><span>${plural(list.length, 'Quest', 'Quests')} verpasst</span><small>offline ${ago(since)}</small></header>
-      ${shown.map(block).join('')}
-      ${rest ? `<details class="q-more"><summary>${plural(rest, 'weitere Quest', 'weitere Quests')}</summary>${hidden.map(block).join('')}</details>` : ''}
+      <div class="q-body">${shown.map(block).join('')}</div>
+      ${rest ? `<details class="q-more"><summary>${plural(rest, 'weitere Quest', 'weitere Quests')}</summary><div class="q-body">${hidden.map(block).join('')}</div></details>` : ''}
     </article>`;
   };
   el.innerHTML = `<div class="q-cards">${missed.map(card).join('')}</div>${restore}`;
+  fitQuestColumns(el.querySelector('.q-cards'), missed.length);
   bind();
   window.$WowheadPower?.refreshLinks?.();
+}
+
+// Spalten der Quest-Karten: so viele, wie Karten da sind und nebeneinander passen (je mindestens 380 px).
+// Die Karten fließen als Mauerwerk durch die Spalten (CSS columns), kurze Karten lassen keine Lücke darunter.
+// Eine einzelne Karte nutzt die ganze Breite, ihre Zonen stehen dann selbst in Spalten (.q-body).
+let questResize = null;
+function fitQuestColumns(box, count) {
+  questResize?.disconnect();
+  if (!box) return;
+  const fit = () => {
+    const cols = Math.max(1, Math.min(count, Math.floor((box.clientWidth + 12) / (380 + 12))));
+    box.style.setProperty('--qcols', cols);
+  };
+  fit();
+  questResize = new ResizeObserver(fit);
+  questResize.observe(box);
 }
 
 // Hover-Tooltip für alles mit data-tip: Maus zeigt beim Überfahren, Touch und Tastatur per Tippen bzw. Fokus.

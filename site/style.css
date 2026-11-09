@@ -434,13 +434,19 @@ a.place:hover { color: var(--accent-text); }
 .task.done { background: none; color: var(--dim); padding-left: 0; }
 
 /* Quests: je Charakter, der etwas verpasst hat, eine Karte. Die Karten teilen sich die Breite. */
-.q-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap: 12px; align-items: start; }
-.q-card { padding: 12px 14px 8px; border-radius: 12px; border: 1px solid var(--line); border-top: 2px solid var(--cls); background: linear-gradient(180deg, color-mix(in srgb, var(--cls) 6%, transparent), transparent 70px), rgba(255,255,255,.02); }
+/* Mauerwerk: Spaltenzahl aus fitQuestColumns (app.js). Jede Karte bleibt ganz in ihrer Spalte. */
+.q-cards { columns: var(--qcols, 1); column-gap: 12px; }
+.q-card { display: inline-block; width: 100%; margin-bottom: 12px; break-inside: avoid; padding: 12px 14px 8px; border-radius: 12px; border: 1px solid var(--line); border-top: 2px solid var(--cls); background: linear-gradient(180deg, color-mix(in srgb, var(--cls) 6%, transparent), transparent 70px), rgba(255,255,255,.02); }
 .q-card header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin-bottom: 6px; font-size: 13px; color: var(--muted); }
 .q-card header span { white-space: nowrap; }
 .q-card header b { color: var(--cls); font-size: 15px; }
 .q-card header small { margin-left: auto; font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; }
+/* Zonen in Spalten, sobald die Karte breit genug ist (eine Karte allein über die ganze Breite). */
+.q-body { columns: 260px; column-gap: 24px; }
 .q-zone { margin: 4px 0 6px; }
+/* Die Zeilen einer Zone dürfen über Spalten fließen. Die Überschrift bleibt bei ihrer ersten Zeile. */
+.q-zname { break-after: avoid; }
+.q-row { break-inside: avoid; }
 .q-zname { display: block; padding: 4px 0 2px; font: 600 10px var(--mono); color: var(--dim); letter-spacing: .1em; text-transform: uppercase; }
 .q-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.03); font-size: 13px; }
 .q-row > a { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); transition: color .15s; }
