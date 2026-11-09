@@ -196,50 +196,55 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 32,
-   "lastLogin": 1794219676000,
+   "level": 34,
+   "lastLogin": 1794251064000,
    "items": {
     "HEAD": 3732,
     "NECK": 281265,
-    "SHOULDER": 270024,
+    "SHOULDER": 273028,
     "SHIRT": 6125,
-    "CHEST": 271205,
+    "CHEST": 273035,
     "WAIST": 273846,
     "LEGS": 3751,
     "FEET": 250620,
-    "WRIST": 286981,
-    "HANDS": 270038,
+    "WRIST": 15459,
+    "HANDS": 16978,
     "FINGER_1": 17694,
     "FINGER_2": 6414,
+    "TRINKET_1": 280766,
+    "TRINKET_2": 276895,
     "BACK": 6314,
     "MAIN_HAND": 267369
    },
    "ilvls": {
     "HEAD": 30,
     "NECK": 20,
-    "SHOULDER": 27,
+    "SHOULDER": 33,
     "SHIRT": 1,
-    "CHEST": 20,
+    "CHEST": 32,
     "WAIST": 30,
     "LEGS": 30,
     "FEET": 15,
-    "WRIST": 21,
-    "HANDS": 30,
+    "WRIST": 28,
+    "HANDS": 27,
     "FINGER_1": 28,
     "FINGER_2": 29,
+    "TRINKET_1": 33,
+    "TRINKET_2": 30,
     "BACK": 27,
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 122,
+    "Mining": 124,
     "Blacksmithing": 73,
-    "Cooking": 52,
+    "Cooking": 63,
     "First Aid": 122
    },
    "achs": [
     61997,
     769,
-    750
+    750,
+    62031
    ]
   },
   "lokk-eidlöter": {
@@ -249,7 +254,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 21,
-   "lastLogin": 1794237289000,
+   "lastLogin": 1794251075000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
@@ -561,6 +566,15 @@
    "max": false
   },
   {
+   "t": 1794227640000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 62031,
+   "name": "Novize: Dungeonerforscher",
+   "desc": "Schließt die folgenden Dungeons ab.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
+  },
+  {
    "t": 1794235467000,
    "key": "lokk-eidlöter",
    "type": "level",
@@ -627,6 +641,50 @@
    "slot": "Waffenhand",
    "ilvl": 24,
    "prev": 23
+  },
+  {
+   "t": 1794251064000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 32,
+   "to": 34,
+   "max": false
+  },
+  {
+   "t": 1794251064000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 273028,
+   "name": "Reliquiarmantelung",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135058.jpg",
+   "slot": "Schultern",
+   "ilvl": 33,
+   "prev": 27
+  },
+  {
+   "t": 1794251064000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 273035,
+   "name": "Manaverformtes Kettenhemd",
+   "quality": "RARE",
+   "icon": "https://wow.zamimg.com/images/wow/icons/large/inv_chest_chain_04.jpg",
+   "slot": "Brust",
+   "ilvl": 32,
+   "prev": 20
+  },
+  {
+   "t": 1794251064000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 16978,
+   "name": "Warsongstulpen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132949.jpg",
+   "slot": "Hände",
+   "ilvl": 27,
+   "prev": 30
   }
  ]
 }
