@@ -196,12 +196,12 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 11,
-   "lastLogin": 1794178243000,
+   "level": 12,
+   "lastLogin": 1794266796000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
-    "WAIST": 15472,
+    "WAIST": 286731,
     "LEGS": 3473,
     "FEET": 15473,
     "WRIST": 281272,
@@ -212,7 +212,7 @@
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 10,
-    "WAIST": 9,
+    "WAIST": 12,
     "LEGS": 13,
     "FEET": 10,
     "WRIST": 10,
@@ -221,7 +221,7 @@
     "MAIN_HAND": 16
    },
    "profs": {
-    "Mining": 70,
+    "Mining": 71,
     "Engineering": 80,
     "Cooking": 20,
     "Fishing": 1,
@@ -485,6 +485,26 @@
    "slot": "Waffenhand",
    "ilvl": 13,
    "prev": 11
+  },
+  {
+   "t": 1794266796000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 11,
+   "to": 12,
+   "max": false
+  },
+  {
+   "t": 1794266796000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286731,
+   "name": "Aggors umgearbeiteter Gürtel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132498.jpg",
+   "slot": "Taille",
+   "ilvl": 12,
+   "prev": 9
   }
  ]
 }
