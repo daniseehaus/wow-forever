@@ -103,9 +103,13 @@ jobs:
     steps:
       # Pages lehnt ein Deployment manchmal ab, solange es das vorige intern noch verarbeitet
       # („due to in progress deployment“, meist beim ersten Lauf nach einem neuen Commit). Dann nach einer Minute erneut.
+      # Ein Deployment dauert sonst rund 10 Sekunden. Hängt Pages bei „syncing_files“, bricht der Versuch nach 2 statt 10 Minuten ab,
+      # damit die folgenden Läufe nicht in der Warteschlange verfallen.
       - id: deployment
         uses: actions/deploy-pages@v5
         continue-on-error: true
+        with:
+          timeout: 120000
 
       - name: Warten vor neuem Versuch
         if: steps.deployment.outcome == 'failure'
@@ -114,3 +118,5 @@ jobs:
       - id: retry
         if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v5
+        with:
+          timeout: 120000
