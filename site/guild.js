@@ -375,7 +375,6 @@ function setupGuild3d() {
     try { localStorage.setItem('use3d', pref3d); } catch {}
     apply(pref3d === '1');
   });
-  narrow.addEventListener('change', () => apply(want3d()));
 }
 
 // ---------------------------------------------------------------------------

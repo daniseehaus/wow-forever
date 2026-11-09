@@ -92,7 +92,7 @@ Die Seite zeigt:
   stehen ganz unten unter „Ohne Profil“. Die Spaltenbreiten sind je Bildschirmbreite gemessen. Unter 900 px zeigen die Berufe nur Icon und Skill.
 - **Filter:** Klassen-Icons und „Suchen“ (findet Name, Klasse, Volk, Rang und Beruf).
 - **Detail:** Ein Klick auf eine Zeile klappt das Detail auf: links 3D-Modell, darunter Werte (aus `/statistics`) und alle Berufe, rechts Kennzahlen und Ausrüstung, darunter die drei Talentbäume. Es ist immer nur ein Detail offen, Escape schließt es.
-  Ohne 2D-Render (3D aus, Handy) steht das Klassen-Icon auf der Bühne.
+  Ist 3D aus oder lädt nicht, steht der 2D-Render auf der Bühne (siehe „3D-Modelle“). Nur ohne jedes Bild erscheint das Klassen-Icon.
 - **Gilden-Feed:** Beitritt, Austritt, Rangwechsel, Level 20, 30, 40, 50 und 60 sowie neue epische Items.
   Ein Rang außerhalb von `ranks` erscheint ohne Richtung („ist jetzt …“), nicht als Beförderung.
 
@@ -226,12 +226,16 @@ Die Charakterkacheln erscheinen, sobald `data.json` geladen ist. Sessions, Aktiv
 ## 3D-Modelle
 
 Die animierten Modelle nutzen den Modellviewer von Wowhead. Die Daten dafür kommen von Blizzard:
-Aussehen und Transmog über `/appearance`, die Display-IDs über `/item-appearance`.
+Aussehen und Transmog über `/appearance`, die Display-IDs über `/item-appearance`. Kennen die Forever-Spieldaten ein Item nicht (404),
+kommt die Display-ID aus dem Wowhead-XML (`/forever/item=<id>&xml`), danach aus den Retail-Spieldaten.
 Wowhead erlaubt keinen direkten Abruf aus fremden Seiten. Die Action spiegelt deshalb alle benötigten
 Dateien (etwa 70 MB für 5 Charaktere) nach GitHub Pages. Ändert sich am Aussehen nichts, übernimmt sie die Dateien aus dem Cache
-und überspringt Browser-Installation und Spiegelung (`mirror-models.mjs --hash` und `--restore`). Auf schmalen Bildschirmen und ohne WebGL zeigt
-die Seite immer die 2D-Renders, auf Handys gibt es den Schalter „3D an/aus“ nicht. Tablets (Touch) und „Daten sparen“ starten mit 2D,
-der Schalter schaltet 3D dort ein. Sonst gilt die letzte Wahl am Schalter.
+und überspringt Browser-Installation und Spiegelung (`mirror-models.mjs --hash` und `--restore`). 3D läuft auf allen Geräten, auch auf Handys.
+Ohne WebGL zeigt die Seite die 2D-Renders. „Daten sparen“ startet mit 2D, der Schalter „3D an/aus“ schaltet 3D ein. Sonst gilt die letzte Wahl.
+
+2D-Ersatz: Blizzard liefert nicht für jeden Charakter einen 2D-Render (Media-API 404). Beim Spiegeln fotografiert `mirror-models.mjs`
+jedes Modell in der Grundhaltung (transparent, zugeschnitten, WebP). Charaktere ohne Blizzard-Render bekommen dieses Bild
+(`render`, `renderSnap` in `data.json` und `guild.json`). Neue Schnappschüsse für alle: `SNAP_VERSION` erhöhen.
 
 Jeder Viewer zeichnet in einer eigenen Schleife. Damit fünf Modelle den Hauptthread nicht füllen, begrenzt `pace()` in `model3d.js`
 die Bildrate auf 60 Bilder pro Sekunde (auch auf 120-Hz-Displays) und lässt Modelle aus, die weit außerhalb des Bildes liegen.

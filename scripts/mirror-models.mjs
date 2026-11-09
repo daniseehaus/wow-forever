@@ -13,6 +13,11 @@
 //
 // Bereits geladene Dateien liegen in .model-cache/ und werden nicht erneut geholt.
 // .model-cache/manifest.json merkt sich, welche Dateien zu welchem 3D-Stand gehören.
+//
+// 2D-Ersatz: Blizzard liefert nicht für jeden Charakter einen 2D-Render (Media-API 404).
+// Das Skript fotografiert darum jedes Modell in der Grundhaltung (transparenter Hintergrund)
+// und trägt das Bild bei Charakteren ohne Render in data.json und guild.json ein (render, renderSnap).
+// Die Seite zeigt es, wenn 3D aus ist oder nicht lädt.
 
 import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 import { existsSync, appendFileSync } from 'node:fs';
@@ -33,8 +38,11 @@ const HEADERS = {
 // Diese Animationen bietet die Seite an. Der Viewer lädt manche davon erst beim Abspielen.
 const ANIMATIONS = ['Stand', 'EmoteWave', 'EmoteCheer', 'EmoteDance', 'EmoteLaugh', 'EmoteRoar', 'Run'];
 const MANIFEST = new URL('.model-cache/manifest.json', root);
+// Erhöhen, wenn sich die Schnappschüsse ändern sollen. Ändert den 3D-Stand und erzwingt ein neues Spiegeln.
+const SNAP_VERSION = 1;
 
 // Gruppe und Gilde. Gruppen-Charaktere stehen in beiden Dateien, sie zählen einmal.
+const dataFile = new URL('site/data.json', root);
 const guildFile = new URL('site/guild.json', root);
 const guild = existsSync(guildFile) ? JSON.parse(await readFile(guildFile, 'utf8')) : { members: [] };
 const models = [...new Map([...data.characters, ...guild.members].filter((c) => c.model).map((c) => [c.key, { key: c.key, ...c.model }])).values()];
@@ -64,7 +72,8 @@ let failed = 0;
 let lastRequest = Date.now();
 
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
-const page = await browser.newPage({ viewport: { width: 1200, height: 800 } });
+// Doppelte Pixeldichte: Der Schnappschuss bleibt auch auf Handys scharf.
+const page = await browser.newPage({ viewport: { width: 1200, height: 800 }, deviceScaleFactor: 2 });
 page.on('pageerror', (e) => console.warn('Seitenfehler:', e.message));
 
 await page.route(`${ORIGIN}/**`, async (route) => {
@@ -79,10 +88,16 @@ await page.route(`${ORIGIN}/**`, async (route) => {
 await page.goto(`${ORIGIN}/`);
 await page.waitForFunction(() => typeof window.ZamModelViewer === 'function', null, { timeout: 60000 });
 
+const snaps = {};
 for (const m of models) {
   console.log(`Modell ${m.key}`);
   await page.evaluate(async (m) => window.buildModel(m), m);
   await settle();
+  try {
+    snaps[m.key] = await snapshot(m);
+  } catch (err) {
+    console.warn(`Schnappschuss ${m.key} fehlgeschlagen: ${err.message}`);
+  }
   for (const anim of ANIMATIONS) {
     await page.evaluate((a) => window.playAnimation(a), anim);
     await settle(1500);
@@ -91,15 +106,16 @@ for (const m of models) {
 
 await browser.close();
 await mkdir(new URL('.model-cache/', root), { recursive: true });
-await writeFile(MANIFEST, JSON.stringify({ hash, created: Date.now(), failed, files: [...files].sort() }, null, 1) + '\n');
+await writeFile(MANIFEST, JSON.stringify({ hash, created: Date.now(), failed, files: [...files].sort(), snaps }, null, 1) + '\n');
 console.log(`Spiegelung fertig: ${saved} Dateien gespeichert (${fetched} neu geladen, ${failed} nicht gefunden).`);
+await applySnaps(snaps);
 
 // ---------------------------------------------------------------------------
 
 // Kennung des 3D-Stands: ändert sich, sobald ein Charakter anders aussieht, andere Items trägt
 // oder die Seite andere Animationen anbietet.
 function stateHash() {
-  const state = { env, animations: ANIMATIONS, models: [...models].sort((a, b) => a.key.localeCompare(b.key)) };
+  const state = { env, animations: ANIMATIONS, snap: SNAP_VERSION, models: [...models].sort((a, b) => a.key.localeCompare(b.key)) };
   return createHash('sha256').update(JSON.stringify(state)).digest('hex').slice(0, 16);
 }
 
@@ -130,7 +146,53 @@ async function restore() {
     await copyFile(new URL(`.model-cache${p}`, root), out);
   }
   console.log(`3D-Stand unverändert, ${manifest.files.length} Dateien aus dem Cache übernommen.`);
+  await applySnaps(manifest.snaps ?? {});
   return true;
+}
+
+// Fotografiert das Modell in der Grundhaltung. Das Feld ist quadratisch, damit Waffen und Schilde nicht abgeschnitten werden. Ablage: .model-cache/snaps/ (Cache) und site/renders/ (Seite).
+// Der Name enthält einen Hash des Modells: Ändert sich das Aussehen, ändert sich der Name, und kein Cache zeigt das alte Bild.
+async function snapshot(m) {
+  await page.evaluate((a) => window.playAnimation(a), 'Stand');
+  await new Promise((r) => setTimeout(r, 1500));
+  const png = await page.locator('#mv').screenshot({ omitBackground: true, type: 'png' });
+  const id = createHash('sha1').update(JSON.stringify(m)).digest('hex').slice(0, 8);
+  const base = `3d-${m.key.replace(/[^a-z0-9]+/gi, '-')}-${id}`;
+  let file = `${base}.png`;
+  let body = png;
+  try {
+    const sharp = (await import('sharp')).default;
+    body = await sharp(png).trim({ threshold: 0 }).webp({ quality: 82, alphaQuality: 90, effort: 6 }).toBuffer();
+    file = `${base}.webp`;
+  } catch {
+    // ohne sharp bleibt das PNG
+  }
+  await mkdir(new URL('.model-cache/snaps/', root), { recursive: true });
+  await writeFile(new URL(`.model-cache/snaps/${file}`, root), body);
+  return file;
+}
+
+// Trägt die Schnappschüsse bei Charakteren ohne Blizzard-Render ein und kopiert sie nach site/renders/.
+async function applySnaps(snaps) {
+  let used = 0;
+  await mkdir(new URL('site/renders/', root), { recursive: true });
+  for (const [file, json, list] of [[dataFile, data, 'characters'], [guildFile, guild, 'members']]) {
+    if (!existsSync(file)) continue;
+    let changed = false;
+    for (const c of json[list] ?? []) {
+      const snap = snaps[c.key];
+      if (!snap || (c.render && !c.renderSnap)) continue;
+      const src = new URL(`.model-cache/snaps/${snap}`, root);
+      if (!existsSync(src)) continue;
+      await copyFile(src, new URL(`site/renders/${snap}`, root));
+      c.render = `renders/${snap}`;
+      c.renderSnap = true;
+      changed = true;
+      used++;
+    }
+    if (changed) await writeFile(file, JSON.stringify(json, null, 2) + '\n');
+  }
+  console.log(`2D-Ersatz: ${used} Schnappschüsse eingetragen.`);
 }
 
 // Wartet, bis der Viewer eine Weile keine Datei mehr anfordert.
@@ -171,12 +233,12 @@ window.WH = { debug() {}, defaultAnimation: 'Stand', WebP: { getImageExtension: 
   Wow: { Item: { INVENTORY_TYPE_SHOULDERS: 3, INVENTORY_TYPE_ROBE: 20, INVENTORY_TYPE_CHEST: 5 } } };
 </script>
 <script src="${ORIGIN}/modelviewer/${env}/viewer/viewer.min.js"></script>
-</head><body><div id="mv" style="width:400px;height:600px"></div>
+</head><body><div id="mv" style="width:600px;height:600px"></div>
 <script>
 window.buildModel = async (m) => {
   if (window.viewer) { try { window.viewer.destroy(); } catch {} document.getElementById('mv').innerHTML = ''; }
   window.viewer = await new ZamModelViewer({
-    type: 2, contentPath: window.CONTENT_PATH, container: jQuery('#mv'), aspect: 0.66, hd: ${env === 'live'},
+    type: 2, contentPath: window.CONTENT_PATH, container: jQuery('#mv'), aspect: 1, hd: ${env === 'live'},
     ${env === 'classic' ? "dataEnv: 'classic', env: 'classic', gameDataEnv: 'classic'," : ''}
     models: { id: m.race * 2 - 1 + m.gender, type: 16 },
     charCustomization: { options: m.options }, items: m.items,

@@ -9,7 +9,6 @@ const SWAP_MS = 1700;
 
 const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 1, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
-const narrow = matchMedia('(max-width: 760px)');
 let pref3d = null;
 try {
   state.selected = localStorage.getItem('selected');
@@ -20,12 +19,12 @@ state.use3d = want3d();
 // Modelldateien und Renders ändern sich nie. Der Service Worker hält sie über den Besuch hinaus vor (sw.js).
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
-// Auf Handys bleibt es bei den 2D-Renders, der Schalter ist dort ausgeblendet (siehe style.css).
-// Tablets und „Daten sparen“ starten mit 2D, dort schaltet der Schalter 3D ein. Sonst gilt die letzte Wahl.
+// 3D läuft auch auf Handys. Nur „Daten sparen“ startet mit 2D, der Schalter schaltet 3D ein. Sonst gilt die letzte Wahl.
+// Ohne 3D zeigt die Bühne den 2D-Render (von Blizzard oder als Schnappschuss des 3D-Modells, mirror-models.mjs).
 function want3d() {
-  if (!window.Model3D.supported() || narrow.matches) return false;
+  if (!window.Model3D.supported()) return false;
   if (pref3d) return pref3d === '1';
-  return !matchMedia('(pointer: coarse)').matches && !navigator.connection?.saveData;
+  return !navigator.connection?.saveData;
 }
 
 // Die Gildenseite (gilde.html) nutzt die Hilfen dieser Datei und startet mit guild.js selbst.
@@ -171,8 +170,6 @@ function setup3dToggle() {
     try { localStorage.setItem('use3d', pref3d); } catch {}
     apply(pref3d === '1');
   });
-  // Wird das Fenster schmal oder wieder breit, gilt dieselbe Regel wie beim Laden.
-  narrow.addEventListener('change', () => apply(want3d()));
 }
 
 // ---------------------------------------------------------------------------
@@ -340,10 +337,11 @@ async function mountTiles() {
   }
 }
 
-// Bild auf der Bühne: der 2D-Render, ohne Render das große Klassen-Icon. So bleibt die Bühne nie leer (3D aus, Handy).
+// Bild auf der Bühne: der 2D-Render, ohne Render das große Klassen-Icon. So bleibt die Bühne nie leer (3D aus oder lädt nicht).
+// renderSnap: Schnappschuss des 3D-Modells (mirror-models.mjs), eng zugeschnitten. Er braucht eine eigene Platzierung (snap in style.css).
 function stageImg(c, attrs = '') {
   return c.render
-    ? `<img class="render" src="${esc(c.render)}" alt="" ${attrs}>`
+    ? `<img class="render${c.renderSnap ? ' snap' : ''}" src="${esc(c.render)}" alt="" ${attrs}>`
     : `<img class="stage-icon" src="${classIcon(c.classId, 'large')}" alt="" ${attrs}>`;
 }
 

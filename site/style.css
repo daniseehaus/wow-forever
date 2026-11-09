@@ -135,6 +135,8 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile .stage { position: absolute; left: 0; right: 0; top: 40px; bottom: 112px; z-index: 2; }
 .tile .stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.7); filter: drop-shadow(0 12px 24px rgba(0,0,0,.9)); }
 .tile .stage.loading-3d img.render { visibility: hidden; }
+/* Schnappschuss des 3D-Modells (renderSnap): eng zugeschnitten, steht unten auf der Bühne wie das 3D-Modell. */
+.tile .stage img.render.snap, .gd-stage img.render.snap { inset: 12% 10% 6%; width: 80%; height: 82%; object-fit: contain; object-position: 50% 100%; transform: none; }
 /* Ohne 2D-Render steht das Klassen-Icon groß auf der Bühne (stageImg in app.js). */
 img.stage-icon { position: absolute; left: 50%; top: 50%; width: 96px; height: 96px; translate: -50% -50%; border-radius: 20px; border: 2px solid color-mix(in srgb, var(--cls) 60%, #000); box-shadow: 0 0 40px color-mix(in srgb, var(--cls) 35%, transparent); opacity: .9; }
 .loading-3d img.stage-icon { visibility: hidden; }
@@ -575,9 +577,7 @@ a.place:hover { color: var(--accent-text); }
   .nav-links.fade-l.fade-r { -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
   .nav-links a { flex: none; padding: 7px 12px; font-size: 12px; }
 }
-/* 3D läuft auf Handys nicht zuverlässig. Dort gibt es nur die 2D-Renders und keinen Schalter. */
 @media (max-width: 760px) {
-  #toggle-3d { display: none; }
   /* Talentbäume nebeneinander zum Wischen. Der nächste Baum ragt ins Bild, so sieht man, dass es weitergeht. */
   .ttrees { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 58%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .ttrees::-webkit-scrollbar { display: none; }
@@ -596,7 +596,8 @@ a.place:hover { color: var(--accent-text); }
   .hero { padding: 22px 0 18px; gap: 18px; }
   .hero h1 { font-size: clamp(40px, 12.5vw, 64px); }
   .kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 100%; padding: 0; align-items: stretch; }
-  .kpi { justify-content: flex-end; }
+  /* Zahlen oben bündig: Ein Label über zwei Zeilen verschiebt die Zahl daneben nicht. */
+  .kpi { justify-content: flex-start; }
   .kpi { padding: 10px; border-radius: var(--radius-sm); background: rgba(255,255,255,.03); border: 1px solid var(--line); }
   .kpi b { font-size: 28px; }
   .kpi > span { font-size: 10px; letter-spacing: .08em; }

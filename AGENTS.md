@@ -40,6 +40,8 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-09: Abschnitt Squad (Buffs und Tools) entfällt. 3D läuft auch auf Handys. Ohne 3D zeigt die Bühne den 2D-Render, bei fehlendem Blizzard-Render einen Schnappschuss des 3D-Modells, nicht das Klassen-Icon.
+- 2026-11-09: Forever-API: Das Charakterprofil nennt jetzt die Gilde (`guild`), eine Mitgliederliste (Roster) gibt es weiter nicht (404). Mitglieder bleiben in `config.json` unter `guild`.
 - 2026-11-09: Der Pi stößt den Abruf alle 5 statt 15 Minuten an.
 - 2026-11-09: „Verpasst“ zeigt eine Quest nur, wenn mindestens 2 andere Squad-Charaktere sie abgeschlossen haben. Keine Klassenquests (höchstens 3 Klassen erlaubt). Quests 5 oder mehr Level unter dem eigenen Level fallen weg. Die API kennt kein Quest-Level, als Ersatz gilt das niedrigste Level der Abschließenden beim Abschluss.
 - 2026-11-08: Neue Baseline für Sessions: 2 gemeinsame Sessions (die letzte und heute, Level 1 bis 10). Die automatische Erkennung beginnt danach (`sessionBaseline` in `config.json`).
