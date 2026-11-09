@@ -156,7 +156,7 @@
   },
   "zukk-sturmzüngler": {
    "level": 12,
-   "lastLogin": 1794177693000,
+   "lastLogin": 1794219520000,
    "guild": "Geilbleiber",
    "items": {
     "SHIRT": 6134,
@@ -185,8 +185,8 @@
     "RANGED": 10
    },
    "profs": {
-    "Alchemy": 36,
-    "Herbalism": 62,
+    "Alchemy": 75,
+    "Herbalism": 87,
     "Cooking": 2
    },
    "achs": []
@@ -396,6 +396,20 @@
    "slot": "Distanzwaffe",
    "ilvl": 10,
    "prev": null
+  },
+  {
+   "t": 1794219520000,
+   "key": "zukk-sturmzüngler",
+   "type": "prof",
+   "name": "Alchemy",
+   "skill": 75
+  },
+  {
+   "t": 1794219520000,
+   "key": "zukk-sturmzüngler",
+   "type": "prof",
+   "name": "Herbalism",
+   "skill": 87
   }
  ]
 }
