@@ -39,7 +39,7 @@
   "orkward-orkbert": {
    "level": 11,
    "lastLogin": 1794171705000,
-   "guild": "Geilbleiber",
+   "guild": null,
    "items": {
     "SHIRT": 127,
     "CHEST": 1364,
@@ -114,7 +114,7 @@
   },
   "heili-kabel": {
    "level": 11,
-   "lastLogin": 1794208884000,
+   "lastLogin": 1794212119000,
    "guild": "Geilbleiber",
    "items": {
     "SHIRT": 53,
@@ -403,6 +403,13 @@
    "slot": "Distanzwaffe",
    "ilvl": 10,
    "prev": null
+  },
+  {
+   "t": 1794212307154,
+   "key": "orkward-orkbert",
+   "type": "guild",
+   "guild": null,
+   "from": "Geilbleiber"
   }
  ]
 }
