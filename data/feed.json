@@ -75,16 +75,16 @@
    "guild": null
   },
   "wladimir-klatschko": {
-   "level": 12,
-   "lastLogin": 1794176441000,
+   "level": 14,
+   "lastLogin": 1794267518000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
-    "WAIST": 4935,
-    "LEGS": 2852,
-    "FEET": 3469,
-    "WRIST": 2853,
-    "HANDS": 2653,
+    "WAIST": 2857,
+    "LEGS": 3282,
+    "FEET": 250621,
+    "WRIST": 2854,
+    "HANDS": 3472,
     "FINGER_1": 281268,
     "BACK": 4944,
     "MAIN_HAND": 3489,
@@ -93,23 +93,25 @@
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 10,
-    "WAIST": 8,
-    "LEGS": 10,
-    "FEET": 10,
-    "WRIST": 7,
-    "HANDS": 4,
+    "WAIST": 18,
+    "LEGS": 12,
+    "FEET": 15,
+    "WRIST": 19,
+    "HANDS": 12,
     "FINGER_1": 9,
     "BACK": 12,
     "MAIN_HAND": 17,
     "OFF_HAND": 17
    },
    "profs": {
-    "Mining": 72,
-    "Blacksmithing": 62,
+    "Mining": 77,
+    "Blacksmithing": 70,
     "Cooking": 1,
     "First Aid": 1
    },
-   "achs": [],
+   "achs": [
+    728
+   ],
    "guild": "Geilbleiber"
   },
   "heili-kabel": {
@@ -443,6 +445,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
   },
   {
+   "t": 1794253297000,
+   "key": "wladimir-klatschko",
+   "type": "achievement",
+   "id": 728,
+   "name": "Erforscht Durotar",
+   "desc": "Erforscht Durotar und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
+  },
+  {
    "t": 1794259650000,
    "key": "heili-kabel",
    "type": "level",
@@ -505,6 +516,81 @@
    "slot": "Taille",
    "ilvl": 12,
    "prev": 9
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 12,
+   "to": 14,
+   "max": false
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 2857,
+   "name": "Runenverzierter Kupfergürtel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132492.jpg",
+   "slot": "Taille",
+   "ilvl": 18,
+   "prev": 8
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 3282,
+   "name": "Kampfkettenhose",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134583.jpg",
+   "slot": "Beine",
+   "ilvl": 12,
+   "prev": 10
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 250621,
+   "name": "Seltsame Bronzestiefel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132582.jpg",
+   "slot": "Füße",
+   "ilvl": 15,
+   "prev": 10
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 2854,
+   "name": "Runenverzierte Kupferarmschienen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132602.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 19,
+   "prev": 7
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 3472,
+   "name": "Runenverzierte Kupferstulpen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132938.jpg",
+   "slot": "Hände",
+   "ilvl": 12,
+   "prev": 4
+  },
+  {
+   "t": 1794267518000,
+   "key": "wladimir-klatschko",
+   "type": "prof",
+   "name": "Mining",
+   "skill": 77
   }
  ]
 }
