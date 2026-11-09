@@ -565,7 +565,8 @@ function calm(v) {
 // Herstellen: Was kann der Squad füreinander herstellen? Grundlage sind nur die gelernten Rezepte (state.data.crafts, buildCrafts in fetch.mjs).
 // 1. Ausrüstung: Ein Item zählt, wenn der Charakter es tragen kann und seine Werte für Klasse und Rolle besser sind als im Slot.
 //    Liegt das Mindestlevel bis zu 3 Level über dem Charakter, steht es als „bald“ in der Liste.
-// 2. Verbesserungen: Verzauberungen, Rüstungssets und Zielfernrohre für angelegte Items ohne Verzauberung.
+// 2. Verbesserungen: Rüstungssets und Zielfernrohre für angelegte Items ohne Verzauberung.
+//    Verzauberungen (enhance.kind „enchant“, etwa Ausdauer auf Brust) zeigt die Liste vorerst nicht.
 
 // Inventartyp des Items → Slots der Ausrüstung.
 const CRAFT_SLOTS = {
@@ -678,7 +679,7 @@ function craftUpgrades() {
     });
     // Verbesserungen nur für angelegte Items ohne Verzauberung, je Slot mit allen Möglichkeiten. Ein Item mit Mindestlevel zählt erst ab diesem Level.
     const enhance = new Map();
-    for (const cr of crafts.filter((x) => x.enhance)) {
+    for (const cr of crafts.filter((x) => x.enhance && x.enhance.kind !== enchant)) {
       if ((cr.enhance.req ?? 0) > c.level) continue;
       for (const slot of cr.enhance.slots) {
         const cur = items.get(slot);
