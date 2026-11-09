@@ -8,7 +8,9 @@
   "orkward-orkbert",
   "bernhard-backstab",
   "hammer-hanno",
-  "lokk-eidlöter"
+  "lokk-eidlöter",
+  "dennis-dotalot",
+  "pawris-hilton"
  ],
  "snapshot": {
   "heili-kabel": {
@@ -18,7 +20,7 @@
    "classId": 5,
    "rank": "Mitglied",
    "level": 11,
-   "lastLogin": 1794175989000,
+   "lastLogin": 1794208884000,
    "epics": []
   },
   "zukk-sturmzüngler": {
@@ -78,7 +80,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 18,
-   "lastLogin": 1794178629000,
+   "lastLogin": 1794208994000,
    "epics": []
   },
   "wladimir-klatschko": {
@@ -89,6 +91,26 @@
    "rank": "Mitglied",
    "level": 12,
    "lastLogin": 1794176441000,
+   "epics": []
+  },
+  "dennis-dotalot": {
+   "id": 14098039,
+   "name": "Dennis",
+   "surname": "Dotalot",
+   "classId": 9,
+   "rank": "Mitglied",
+   "level": 17,
+   "lastLogin": 1794182586000,
+   "epics": []
+  },
+  "pawris-hilton": {
+   "id": 7346576,
+   "name": "Pawris",
+   "surname": "Hilton",
+   "classId": 11,
+   "rank": "Mitglied",
+   "level": 12,
+   "lastLogin": 1794177975000,
    "epics": []
   }
  },
@@ -112,6 +134,18 @@
    "type": "milestone",
    "level": 20,
    "max": false
+  },
+  {
+   "t": 1794209048544,
+   "key": "dennis-dotalot",
+   "type": "join",
+   "rank": "Mitglied"
+  },
+  {
+   "t": 1794209048544,
+   "key": "pawris-hilton",
+   "type": "join",
+   "rank": "Mitglied"
   }
  ]
 }
