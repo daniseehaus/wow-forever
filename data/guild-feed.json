@@ -249,7 +249,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 21,
-   "lastLogin": 1794235467000,
+   "lastLogin": 1794237289000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
@@ -262,7 +262,7 @@
     "FINGER_1": 3235,
     "FINGER_2": 279867,
     "BACK": 14149,
-    "MAIN_HAND": 286977
+    "MAIN_HAND": 251533
    },
    "ilvls": {
     "NECK": 20,
@@ -276,7 +276,7 @@
     "FINGER_1": 20,
     "FINGER_2": 23,
     "BACK": 18,
-    "MAIN_HAND": 23
+    "MAIN_HAND": 24
    },
    "profs": {
     "Mining": 98,
@@ -615,6 +615,18 @@
    "slot": "Waffenhand",
    "ilvl": 23,
    "prev": 18
+  },
+  {
+   "t": 1794237289000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 251533,
+   "name": "Großaxt des Verlassenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 24,
+   "prev": 23
   }
  ]
 }
