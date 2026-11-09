@@ -775,9 +775,9 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 /* Feste Spalten in Prozent: Die Tabelle passt bei jeder Breite, das Detail macht sie nie breiter. Inhalte brechen in der Zelle um. */
 .gtable { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
 /* Die Breiten sind gemessen: Bei jeder Breite passen Klassenname, Spaltenköpfe samt Pfeil und zwei Berufe in eine Zeile. */
-.gtable th.c-name { width: 15%; } .gtable th.c-class { width: 14%; } .gtable th.c-race { width: 7%; }
-.gtable th.c-level { width: 7%; } .gtable th.c-rank { width: 9%; } .gtable th.c-ilvl { width: 5%; }
-.gtable th.c-profs { width: 31%; } .gtable th.c-last { width: 12%; }
+.gtable th.c-name { width: 15%; } .gtable th.c-class { width: 13%; } .gtable th.c-race { width: 12%; }
+.gtable th.c-level { width: 7%; } .gtable th.c-ilvl { width: 5%; }
+.gtable th.c-prof1, .gtable th.c-prof2 { width: 18%; } .gtable th.c-last { width: 12%; }
 .gtable th { padding: 0; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .gtable th button {
   display: inline-flex; align-items: center; gap: 4px; width: 100%; padding: 0 8px 8px; overflow: hidden; border: 0; background: none; cursor: pointer;
@@ -802,13 +802,18 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 .gclass { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; color: var(--muted); }
 .gclass img { flex: none; width: 22px; height: 22px; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--cls) 60%, #000); }
 .gclass span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.c-race, .c-rank, .c-last { color: var(--muted); }
+.c-race, .c-last { color: var(--muted); }
 .c-level b { font: 800 22px/1 var(--display); color: var(--text); }
 .c-ilvl { font: 800 18px/1 var(--display); color: var(--accent-text); }
 .c-last { white-space: nowrap; }
-.gprof { display: inline-flex; align-items: center; gap: 5px; margin: 2px 8px 2px 0; color: var(--muted); font-size: 12px; white-space: nowrap; }
+/* Beruf je Zelle: Icon, Name und Skill in einer Zeile, darunter der Balken über die ganze Zelle. */
+.gprof { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: center; gap: 5px 6px; margin-right: 12px; color: var(--muted); font-size: 12px; white-space: nowrap; }
 .gprof img { width: 16px; height: 16px; border-radius: 4px; }
+.gprof .pn { overflow: hidden; text-overflow: ellipsis; }
 .gprof b { color: var(--text); font: 500 11px var(--mono); }
+.gprof b small { color: var(--dim); font-size: 10px; }
+.gprof .bar { grid-column: 1 / -1; display: block; height: 3px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
+.gprof .bar i { display: block; height: 100%; border-radius: 99px; background: var(--cls); }
 .gnone { font: 500 11px var(--mono); color: var(--dim); }
 /* Länger als 14 Tage offline: blass, steht unten. Ohne Profil: nur Name und Hinweis. */
 .grow-m.inactive > td { opacity: .42; }
@@ -853,26 +858,27 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
   .gtable th .sm { display: inline; }
 }
 @media (max-width: 1100px) {
-  .c-race, .c-rank { display: none; }
+  .c-race { display: none; }
   .gclass span { display: none; }
   .gtable th.c-name { width: 18%; } .gtable th.c-class { width: 8%; } .gtable th.c-level { width: 8%; }
-  .gtable th.c-ilvl { width: 7%; } .gtable th.c-profs { width: 42%; } .gtable th.c-last { width: 17%; }
+  .gtable th.c-ilvl { width: 7%; } .gtable th.c-prof1, .gtable th.c-prof2 { width: 21%; } .gtable th.c-last { width: 17%; }
   .gname .surname { display: block; margin-left: 0; }
   .gd-top { grid-template-columns: 230px minmax(0, 1fr); }
   .gd-stage { height: 260px; }
   .gd-stats { grid-template-columns: minmax(0, 1fr); }
   .gd .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-/* Ab 900 px zeigen die Berufe nur Icon und Skill. Den Namen nennt der Tooltip. */
+/* Ab 900 px zeigen die Berufe nur Icon, Skill und Balken. Den Namen nennt der Tooltip. */
 @media (max-width: 900px) {
-  .gprof .pn { display: none; }
+  .gprof { grid-template-columns: 16px auto; justify-content: start; }
+  .gprof .pn, .gprof b small { display: none; }
   .gtable th.c-name { width: 24%; } .gtable th.c-class { width: 10%; } .gtable th.c-level { width: 10%; }
-  .gtable th.c-ilvl { width: 8%; } .gtable th.c-profs { width: 26%; } .gtable th.c-last { width: 22%; }
+  .gtable th.c-ilvl { width: 8%; } .gtable th.c-prof1, .gtable th.c-prof2 { width: 13%; } .gtable th.c-last { width: 22%; }
 }
 @media (max-width: 760px) {
   .c-ilvl { display: none; }
   .gtable th.c-name { width: 26%; } .gtable th.c-class { width: 13%; } .gtable th.c-level { width: 13%; }
-  .gtable th.c-profs { width: 26%; } .gtable th.c-last { width: 22%; }
+  .gtable th.c-prof1, .gtable th.c-prof2 { width: 13%; } .gtable th.c-last { width: 22%; }
   .gtable td.c-last { white-space: normal; }
   /* Eine Spalte: Porträt, Name, Kennzahlen, Werte, Berufe, Ausrüstung. Die beiden Spalten lösen sich dafür auf. */
   .gd-top { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
@@ -893,7 +899,7 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
   /* Alle neun Klassen-Icons passen in eine Zeile. */
   .gf-classes { gap: 4px; }
   .gf-cls { width: 31px; height: 31px; }
-  .c-profs { display: none; }
+  .c-prof1, .c-prof2 { display: none; }
   .gtable td { padding: 9px 6px; }
   .gtable th button { padding: 0 6px 8px; }
   .gtable th.c-name { width: 36%; } .gtable th.c-class { width: 18%; } .gtable th.c-level { width: 19%; } .gtable th.c-last { width: 27%; }

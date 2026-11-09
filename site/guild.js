@@ -22,9 +22,9 @@ const COLUMNS = [
   ['class', 'Klasse'],
   ['race', 'Volk'],
   ['level', 'Level'],
-  ['rank', 'Rang'],
   ['ilvl', 'iLvl'],
-  ['profs', 'Berufe'],
+  ['prof1', 'Beruf 1'],
+  ['prof2', 'Beruf 2'],
   ['last', '<span class="lg">Zuletzt online</span><span class="sm">Online</span>'],
 ];
 
@@ -107,7 +107,7 @@ function renderGuildKpis() {
 }
 
 // ---------------------------------------------------------------------------
-// Filter: Klassen-Icons und Suche. Berufe findet man über die Sortierung der Spalte Berufe.
+// Filter: Klassen-Icons und Suche. Berufe findet man über die Sortierung der Spalten Beruf 1 und Beruf 2.
 
 function renderFilters() {
   const ok = G.guild.members.filter((m) => m.level);
@@ -118,7 +118,7 @@ function renderFilters() {
       ${classes.map((id) => `<button type="button" class="gf-cls" data-cls="${id}" style="--cls:${M.CLASSES[id]?.color}" aria-pressed="false" title="${esc(M.CLASSES[id]?.name ?? '')}">
         <img src="${classIcon(id)}" alt="${esc(M.CLASSES[id]?.name ?? '')}"></button>`).join('')}
     </div>
-    <label class="gf-search"><span class="sr">Mitglieder suchen: Name, Klasse, Volk, Rang oder Beruf</span><input id="gf-q" type="search" placeholder="Suchen" autocomplete="off"></label>`;
+    <label class="gf-search"><span class="sr">Mitglieder suchen: Name, Klasse, Volk oder Beruf</span><input id="gf-q" type="search" placeholder="Suchen" autocomplete="off"></label>`;
   el.querySelectorAll('img').forEach(imgFallback);
 
   el.querySelectorAll('.gf-cls').forEach((b) => b.addEventListener('click', () => {
@@ -183,11 +183,11 @@ function renderRoster(focusSort = null) {
   });
 }
 
-// Die Suche findet Name, Klasse, Volk, Rang und Berufe.
+// Die Suche findet Name, Klasse, Volk und Berufe.
 function visible(m) {
   if (G.classes.size && !G.classes.has(m.classId)) return false;
   if (!G.query) return true;
-  const text = [fullName(m), m.className, m.race, m.rank, ...(m.professions ?? []).map((p) => profName(p.name))].join(' ').toLowerCase();
+  const text = [fullName(m), m.className, m.race, ...(m.professions ?? []).map((p) => profName(p.name))].join(' ').toLowerCase();
   return text.includes(G.query);
 }
 
@@ -212,14 +212,11 @@ function sortValue(m) {
     case 'class': return m.className ?? '';
     case 'race': return m.race ?? '';
     case 'level': return m.level ?? null;
-    case 'rank': {
-      const i = (G.guild.ranks ?? []).indexOf(m.rank);
-      return i < 0 ? 99 : i;
-    }
     case 'ilvl': return m.equippedIlvl ?? null;
-    // Gruppiert nach Hauptberuf (alphabetisch), im selben Beruf der höchste Skill zuerst.
-    case 'profs': {
-      const p = [...primaries(m)].sort((a, b) => profName(a.name).localeCompare(profName(b.name), 'de'))[0];
+    // Gruppiert nach Beruf (alphabetisch), im selben Beruf der höchste Skill zuerst. Ohne Beruf ganz unten.
+    case 'prof1':
+    case 'prof2': {
+      const p = primaries(m)[G.sort.key === 'prof1' ? 0 : 1];
       return p ? `${profName(p.name)} ${String(999 - (p.skill ?? 0)).padStart(3, '0')}` : '\uffff';
     }
     case 'last': return m.lastLogin ?? null;
@@ -232,30 +229,34 @@ function rowHtml(m) {
   if (!m.level) {
     return `<tr class="grow-m missing" style="--cls:${color}">
       <td class="c-name"><span class="gname">${nameHtml(m)}</span></td>
-      <td colspan="${COLUMNS.length - 1}" class="c-missing"><span data-tip="${esc(fullName(m))}\n${esc(m.error ?? 'Keine Daten')}" data-tip-plain tabindex="0">Profil noch nicht sichtbar</span>${m.rank ? ` · ${esc(m.rank)}` : ''}</td></tr>`;
+      <td colspan="${COLUMNS.length - 1}" class="c-missing"><span data-tip="${esc(fullName(m))}\n${esc(m.error ?? 'Keine Daten')}" data-tip-plain tabindex="0">Profil noch nicht sichtbar</span></td></tr>`;
   }
   const active = isActive(m);
-  const profs = [...primaries(m)].sort((a, b) => profName(a.name).localeCompare(profName(b.name), 'de'));
+  const profs = primaries(m);
   return `<tr class="grow-m${active ? '' : ' inactive'}" data-key="${esc(m.key)}" tabindex="0" aria-expanded="false" aria-label="${esc(fullName(m))}, Details aufklappen" style="--cls:${color}">
     <td class="c-name"><span class="gname">${nameHtml(m)}</span>${m.stale ? '<small class="gstale">alter Stand</small>' : ''}</td>
     <td class="c-class"><span class="gclass"><img src="${classIcon(m.classId)}" alt="" loading="lazy"><span>${esc(m.className ?? '')}</span></span></td>
     <td class="c-race">${esc(m.race ?? '')}</td>
     <td class="c-level"><b>${m.level}</b></td>
-    <td class="c-rank">${esc(m.rank ?? '')}</td>
     <td class="c-ilvl">${m.equippedIlvl ?? '?'}</td>
-    <td class="c-profs">${profs.length ? profs.map((p) => profChip(m, p)).join('') : '<span class="gnone">keine</span>'}</td>
+    <td class="c-prof c-prof1">${profs[0] ? profCell(profs[0]) : '<span class="gnone">keiner</span>'}</td>
+    <td class="c-prof c-prof2">${profs[1] ? profCell(profs[1]) : ''}</td>
     <td class="c-last"${m.lastLogin ? ` title="${esc(`${fmtDay(m.lastLogin)}, ${fmtTime(m.lastLogin)}`)}"` : ''}>${m.lastLogin ? ago(m.lastLogin) : '?'}</td>
   </tr>`;
 }
 
-function profChip(m, p) {
+// Ein Hauptberuf je Spalte: Icon, Name, Skill / Maximum und Fortschrittsbalken in Klassenfarbe.
+function profCell(p) {
   const name = profName(p.name);
+  const pct = p.max ? Math.min(100, Math.round(((p.skill ?? 0) / p.max) * 100)) : 0;
   // title statt data-tip: Der Tooltip von app.js fängt den Klick ab, die Zeile soll aber aufklappen.
   return `<span class="gprof" title="${esc(`${name} ${p.skill ?? '?'} / ${p.max ?? '?'}`)}">
-    <img src="https://wow.zamimg.com/images/wow/icons/small/${FEED_ICONS.prof[name] ?? 'inv_misc_note_01'}.jpg" alt="${esc(name)}" loading="lazy"><span class="pn">${esc(name)}</span> <b>${p.skill ?? '?'}</b></span>`;
+    <img src="https://wow.zamimg.com/images/wow/icons/small/${FEED_ICONS.prof[name] ?? 'inv_misc_note_01'}.jpg" alt="${esc(name)}" loading="lazy"><span class="pn">${esc(name)}</span><b>${p.skill ?? '?'}<small> / ${p.max ?? '?'}</small></b>
+    <i class="bar"><i style="width:${pct}%"></i></i></span>`;
 }
 
-function primaries(m) { return (m.professions ?? []).filter((p) => p.kind === 'primary'); }
+// Hauptberufe, der höhere Skill zuerst (Beruf 1).
+function primaries(m) { return (m.professions ?? []).filter((p) => p.kind === 'primary').sort((a, b) => (b.skill ?? 0) - (a.skill ?? 0)); }
 
 // ---------------------------------------------------------------------------
 // Detail: Klick auf eine Zeile klappt darunter Modell, Ausrüstung, Berufe und Talentbäume auf.
@@ -316,7 +317,7 @@ function detailHtml(m) {
         <div class="lo-head">
           <div>
             <h2>${esc(m.name)}${m.surname ? ` <span class="surname">${esc(m.surname)}</span>` : ''}</h2>
-            <p>${esc(m.race || '')} · ${esc(m.spec || '')} ${esc(m.className || '')}${m.rank ? ` · ${esc(m.rank)}` : ''}</p>
+            <p>${esc(m.race || '')} · ${esc(m.spec || '')} ${esc(m.className || '')}</p>
           </div>
           <div class="chips">
             <span class="chip role-chip">${role.label}</span>
@@ -378,7 +379,8 @@ function setupGuild3d() {
 }
 
 // ---------------------------------------------------------------------------
-// Gilden-Feed: Beitritt, Austritt, Rangwechsel, Level-Meilensteine und epische Items, neueste zuerst
+// Gilden-Feed: Gründung, Beitritt, Austritt, Level-Meilensteine und epische Items, neueste zuerst.
+// Ränge zeigt die Seite nicht. Alte Rangwechsel im Feed bleiben unsichtbar.
 
 function renderGuildFeed() {
   const events = [...G.events].sort((a, b) => b.t - a.t);
@@ -411,22 +413,14 @@ function guildEventHtml(e) {
   const color = classColor(m);
   const who = `<b class="who" style="--cls:${color}">${esc(fullName(m))}</b>`;
   const row = (cls, icon, text, tip = '') => `<li class="ev ${cls}" style="--cls:${color}"${tip ? ` data-tip="${esc(tip)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
-  const ranks = G.guild.ranks ?? [];
 
   switch (e.type) {
     case 'found':
       return `<li class="ev ev-guild ev-found"><time>${time}</time><span class="ev-ico">${feedIcon(FEED_ICONS.guild)}</span><span class="ev-txt"><strong>Gildengründung</strong> · &lt;${esc(e.guild ?? G.guild.name ?? '')}&gt;</span></li>`;
     case 'join':
-      return row('ev-guild', feedIcon(FEED_ICONS.guild), `tritt der Gilde bei${e.rank ? ` · ${esc(e.rank)}` : ''}`);
+      return row('ev-guild', feedIcon(FEED_ICONS.guild), 'tritt der Gilde bei');
     case 'leave':
       return row('ev-guild ev-leave', feedIcon(FEED_ICONS.leave), 'verlässt die Gilde');
-    case 'rank': {
-      // Oben in der Rangliste steht der höchste Rang. Fehlt ein Rang in der Liste, ist die Richtung unbekannt.
-      const [to, from] = [ranks.indexOf(e.to), ranks.indexOf(e.from)];
-      const dir = to < 0 || from < 0 ? 0 : from - to;
-      const text = dir > 0 ? `wird zum <strong>${esc(e.to)}</strong> befördert` : dir < 0 ? `wird zum <strong>${esc(e.to)}</strong> zurückgestuft` : `ist jetzt <strong>${esc(e.to)}</strong>`;
-      return row('ev-rank', feedIcon(dir < 0 ? 'inv_misc_note_01' : 'inv_misc_note_02'), text, `Rangwechsel\n${e.from} → ${e.to}`);
-    }
     case 'milestone':
       if (e.max) return row('ev-max', feedIcon(FEED_ICONS.max, e.level), `erreicht <strong>Level ${e.level}</strong>, Max-Level!`);
       return row('ev-level', feedIcon(FEED_ICONS.level, e.level), `erreicht <strong>Level ${e.level}</strong>${e.level === 40 ? ' · Reiten' : ''}`);

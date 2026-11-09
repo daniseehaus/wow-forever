@@ -76,8 +76,7 @@ Die Mitglieder stehen deshalb in `config.json` unter `guild`:
 ```
 
 - Zur Gilde gehören alle Charaktere aus `characters` (ohne Platzhalter) und alle Einträge in `members`.
-- Ein Eintrag in `members` mit dem Namen eines Gruppen-Charakters setzt nur dessen Rang. Ohne Rang gilt „Mitglied“.
-- `ranks` legt die Reihenfolge der Ränge fest (oben der höchste). Danach sortiert die Spalte „Rang“.
+- `rank` und `ranks` stehen noch in `config.json`, die Seite zeigt Ränge aber nicht (die API kennt keine).
 - Wer aus `members` verschwindet, gilt im Gilden-Feed als ausgetreten. Ein neuer Eintrag gilt als Beitritt.
 - Eine Namenskorrektur ist kein Austritt mit Beitritt. Verschwindet ein Eintrag und kommt im selben Lauf ein neuer dazu, zieht nur der Stand um.
   Bedingung: gleiche Charakter-ID bei Blizzard, gleicher Vorname oder ein alter Eintrag, der nie ein Profil hatte.
@@ -86,11 +85,12 @@ Die Mitglieder stehen deshalb in `config.json` unter `guild`:
 Die Seite zeigt:
 
 - **Kennzahlen:** Mitglieder, Durchschnittslevel, aktiv in 7 Tagen, Anzahl auf Max-Level.
-- **Tabelle:** Name, Klasse, Volk, Level, Rang, Itemlevel, Hauptberufe, zuletzt online.
-  Ein Klick auf eine Spaltenüberschrift sortiert. „Berufe“ gruppiert nach Hauptberuf, im selben Beruf steht der höchste Skill oben.
+- **Tabelle:** Name, Klasse, Volk, Level, Itemlevel, Beruf 1, Beruf 2, zuletzt online. Je Beruf Icon, Name, Skill / Maximum und ein Balken.
+  Beruf 1 ist der Hauptberuf mit dem höheren Skill. Ein Klick auf eine Spaltenüberschrift sortiert. Die Berufsspalten gruppieren nach Beruf, im selben Beruf steht der höchste Skill oben.
+  Lange Volksnamen kürzt der Abruf (`raceName` in `fetch.mjs`: „Himmelsgeborener der Windformer“ → „Himmelsgeborener“).
   Wer länger als 14 Tage offline ist, steht blass am Ende unter der Trennzeile „Inaktiv“. Mitglieder ohne sichtbares Profil (unter Level 10)
-  stehen ganz unten unter „Ohne Profil“. Die Spaltenbreiten sind je Bildschirmbreite gemessen. Unter 900 px zeigen die Berufe nur Icon und Skill.
-- **Filter:** Klassen-Icons und „Suchen“ (findet Name, Klasse, Volk, Rang und Beruf).
+  stehen ganz unten unter „Ohne Profil“. Die Spaltenbreiten sind je Bildschirmbreite gemessen. Unter 900 px zeigen die Berufe nur Icon, Skill und Balken, unter 600 px gar nicht.
+- **Filter:** Klassen-Icons und „Suchen“ (findet Name, Klasse, Volk und Beruf).
 - **Detail:** Ein Klick auf eine Zeile klappt das Detail auf: links 3D-Modell, darunter Werte (aus `/statistics`) und alle Berufe, rechts Kennzahlen und Ausrüstung, darunter die drei Talentbäume. Es ist immer nur ein Detail offen, Escape schließt es.
   Ist 3D aus oder lädt nicht, steht der 2D-Render auf der Bühne (siehe „3D-Modelle“). Nur ohne jedes Bild erscheint das Klassen-Icon.
 - **Gilden-Feed:** Gildengründung, Beitritt, Austritt, Level 20, 30, 40, 50 und 60 sowie neue epische Items.

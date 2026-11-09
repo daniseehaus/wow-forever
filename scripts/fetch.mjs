@@ -222,7 +222,7 @@ async function fetchCharacter(api, entry, caches) {
     level: summary.level,
     classId: summary.character_class?.id,
     className: summary.character_class?.name,
-    race: summary.race?.name,
+    race: raceName(summary.race?.name),
     gender: summary.gender?.type ?? null,
     faction: summary.faction?.type,
     guild: summary.guild?.name ?? null,
@@ -371,6 +371,11 @@ async function achievementEvent(key, id, t) {
 }
 
 // Inventartypen in der Zählung des Wowhead-Modellviewers.
+// Lange Volksnamen kürzen, damit sie in die Tabelle passen: „Himmelsgeborener der Windformer“ → „Himmelsgeborener“.
+function raceName(name) {
+  return name ? name.replace(/^(Himmelsgeboren\S*) der .+$/, '$1') : name;
+}
+
 // Eine Funktion statt Konstante: Der Abruf läuft schon oben im Modul, bevor Konstanten weiter unten gesetzt sind.
 function modelSlotIds() {
   return {
@@ -983,7 +988,7 @@ async function updateGuildFeed(guild) {
       if (snap.level == null) continue;
       add({ t: now, key: k, type: 'leave', name: snap.name ?? k, surname: snap.surname ?? null, classId: snap.classId ?? null });
     }
-    for (const m of added) if (!renamed.has(m.key)) add({ t: now, key: m.key, type: 'join', rank: m.rank });
+    for (const m of added) if (!renamed.has(m.key)) add({ t: now, key: m.key, type: 'join' });
   }
   feed.members = keys;
 
@@ -1001,7 +1006,6 @@ async function updateGuildFeed(guild) {
     if (!old) continue;
 
     const t = m.lastLogin && m.lastLogin > (old.lastLogin ?? 0) ? m.lastLogin : now;
-    if (old.rank && old.rank !== m.rank) add({ t: now, key: m.key, type: 'rank', from: old.rank, to: m.rank });
     if (m.error || !m.level || old.level == null) continue;
     const reached = MILESTONES.filter((l) => old.level < l && m.level >= l).at(-1);
     if (reached) add({ t, key: m.key, type: 'milestone', level: reached, max: reached >= config.maxLevel });
@@ -1217,12 +1221,10 @@ function demoGuildFeed(guild) {
     const t = now - (i % 5) * 22 * h - (i + 1) * 1.3 * h;
     const milestone = [60, 50, 40, 30, 20].find((l) => m.level >= l && m.level < l + 5);
     if (milestone) events.push({ t, key: m.key, type: 'milestone', level: milestone, max: milestone >= 60 });
-    if (i % 3 === 2) events.push({ t: t - 30 * h, key: m.key, type: 'join', rank: m.rank });
+    if (i % 3 === 2) events.push({ t: t - 30 * h, key: m.key, type: 'join' });
     const epic = (m.items ?? []).find((it) => it.quality === 'EPIC');
     if (epic) events.push({ t: t + 0.5 * h, key: m.key, type: 'item', id: epic.id, name: epic.name, quality: epic.quality, icon: epic.icon, slot: epic.slotName });
   });
-  const officer = ok.find((m) => m.rank === 'Offizier');
-  if (officer) events.push({ t: now - 26 * h, key: officer.key, type: 'rank', from: 'Veteran', to: 'Offizier' });
   events.push({ t: now - 50 * h, key: 'demo/durotan-dauerafk', type: 'leave', name: 'Durotan', surname: 'Dauerafk', classId: 1 });
   return { era: guild.era, events: events.sort((a, b) => a.t - b.t) };
 }
