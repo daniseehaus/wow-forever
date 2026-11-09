@@ -59,10 +59,9 @@ Ein Eintrag nur mit Namen (`{ "name": "Daniel" }`) ist ein Platzhalter. Die Seit
 Die Gildenseite liegt unter `gilde.html`. Beide Seiten haben dieselbe Navigation: die Abschnitte der Startseite und „Guild“ am Ende.
 Auf der Gildenseite führen die Abschnitte zur Startseite, „Guild“ ist aktiv.
 
-Forever kennt in der API keine Gilden: Das Profil hat kein Gildenfeld, und es gibt keinen Roster-Endpunkt (geprüft am 08.11.2026).
-Zu dem Zeitpunkt war noch kein Charakter in einer Gilde. Das Profil hat auch kein Realm-Feld, und `/data/wow/guild/...` sowie
-`/data/wow/realm/index` antworten mit 404. Steht die Gilde im Spiel, erneut prüfen: Liefert das Profil dann ein Feld `guild` mit Link,
-kann der Abruf die Mitglieder vielleicht selbst lesen. `fetch.mjs` liest `guild` schon heute mit.
+Forever kennt in der API keine Mitgliederliste (geprüft am 09.11.2026). Das Profil nennt die Gilde (Feld `guild` mit Link),
+der Link selbst und alle Gilden-Endpunkte (`/data/wow/guild/...`, Roster, Aktivität) antworten aber mit 404.
+Die Gildenseite der Armory (`/forever/eu/armory/guild/...`) meldet 500, die Suche der Armory nennt keine Gilde.
 Die Mitglieder stehen deshalb in `config.json` unter `guild`:
 
 ```json
@@ -75,7 +74,8 @@ Die Mitglieder stehen deshalb in `config.json` unter `guild`:
 }
 ```
 
-- Zur Gilde gehören alle Charaktere aus `characters` (ohne Platzhalter) und alle Einträge in `members`.
+- Zur Gilde gehören alle Einträge in `members` und die Charaktere aus `characters`, deren Profil die Gilde nennt (`guild`).
+  Das Profil zeigt die Gilde erst nach dem nächsten Logout. Bis dahin fehlt ein neuer Squad-Charakter auf der Gildenseite.
 - `rank` und `ranks` stehen noch in `config.json`, die Seite zeigt Ränge aber nicht (die API kennt keine).
 - Wer aus `members` verschwindet, gilt im Gilden-Feed als ausgetreten. Ein neuer Eintrag gilt als Beitritt.
 - Eine Namenskorrektur ist kein Austritt mit Beitritt. Verschwindet ein Eintrag und kommt im selben Lauf ein neuer dazu, zieht nur der Stand um.
@@ -153,6 +153,7 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   Neue Erfolge erscheinen mit ihrem genauen Zeitpunkt, ohne Punkte. Das Profil nennt die Erfolge nur englisch, Name, Beschreibung
   und Icon kommen deutsch aus den Spieldaten von Forever (`/data/wow/achievement`, `/data/wow/media/achievement`), nur für neue Erfolge.
   Der erste Lauf nach der Umstellung legt nur den Stand fest, ohne Ereignisse.
+  Die Liste zeigt die letzten 3 Tage mit Ereignissen, ältere Tage klappt „Vorherigen Tag zeigen“ auf (auf der Gildenseite ebenso).
 - **Letzte Session:** Je Session eine Karte mit neuen Items (ab grün), Fortschritt auf dem Weg bis 60, Berufspunkten und Level pro Char.
   Dazu bis zu vier Auszeichnungen (z. B. Größtes Upgrade, Loot-Goblin, Licht aus). Die Werte je Spieler hält die Session in `stats` fest.
   Der Knopf „Teilen“ öffnet WhatsApp mit fertigem Text und Link.
@@ -166,8 +167,9 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
     (Stärke, Beweglichkeit, Jäger, Zauber, Heiler, Tank, aus Klasse, Rolle und Spezialisierung, `STAT_WEIGHTS`). Dazu zählen Rüstung und
     Waffenschaden pro Sekunde. Ein Item zählt, wenn es tragbar ist (Rüstungsart und Waffenfertigkeit wie in Classic) und mindestens einen
     halben Punkt Hauptwert bringt. Die Zeile zeigt die zwei wichtigsten Unterschiede, der Tooltip alle. Bis 3 Level zu früh steht es blass.
-  - **Verbesserungen:** Verzauberungen (erkannt am Namen „Armschiene - Ausdauer“) und dauerhafte Verbesserungen wie Rüstungssets und
-    Zielfernrohre (erkannt an den Slots in der Beschreibung), nur für angelegte Items ohne Verzauberung. Gleiche Möglichkeiten für mehrere
+  - **Verbesserungen:** dauerhafte Verbesserungen wie Rüstungssets und Zielfernrohre (erkannt an den Slots in der Beschreibung),
+    nur für angelegte Items ohne Verzauberung. Verzauberungen (erkannt am Namen „Armschiene - Ausdauer“) speichert der Abruf,
+    die Seite zeigt sie vorerst nicht. Gleiche Möglichkeiten für mehrere
     Slots stehen in einer Zeile, die beste zuerst.
   - **Anzeige:** eine Liste gleich großer Zeilen, links Hersteller und Empfänger („Bernhard → Lokk“, „Lokk → selbst“,
     „Bernhard → alle“), rechts Item und Unterschied der Werte.
@@ -176,8 +178,9 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   Das Loadout markiert Slots mit Upgrade und nennt den wichtigsten Gewinn.
 - **Quests:** nur „Verpasst“, alles andere stimmt der Squad live ab (`renderQuests` in `app.js`). Je Charakter, der etwas verpasst hat,
   eine Karte mit den Quests, die mindestens 2 andere abgeschlossen haben, seit er zuletzt online war. Nach Zonen gruppiert, ab 8 Quests klappt der
-  Rest auf. Die Karten stehen als Mauerwerk in so vielen Spalten, wie Karten da sind und nebeneinander passen (`fitQuestColumns`).
-  In einer breiten Karte fließen die Zonen selbst in Spalten. Daneben steht, wer die Quest erledigt hat. Hat niemand etwas verpasst, steht dort nur eine Zeile.
+  Rest auf. Die Karten stehen als Mauerwerk in so vielen Spalten, wie Karten da sind und nebeneinander passen (`fitQuestColumns`):
+  Jede Karte kommt in die bisher kürzeste Spalte. In einer breiten Karte fließen die Zonen selbst in Spalten.
+  Lange Quest-Titel brechen um statt abgekürzt zu werden. Daneben steht, wer die Quest erledigt hat. Hat niemand etwas verpasst, steht dort nur eine Zeile.
   Mit × lässt sich eine Quest je Charakter ignorieren, „wieder zeigen“ holt alle zurück. Das merkt sich nur der eigene Browser
   (localStorage `questIgnore`), die Seite hat keinen Server.
   Grundlage ist der Quest-Verlauf der Action (`data/quest-log.json`). Quests ohne Zone (meist Klassen- und Berufsquests) zählen nicht,

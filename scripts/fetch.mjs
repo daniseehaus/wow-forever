@@ -799,18 +799,23 @@ async function updateFeed(data, sessions) {
 // ---------------------------------------------------------------------------
 // Gilde
 
-// Mitglieder: alle Charaktere aus characters (ohne Platzhalter) und config.guild.members.
-// Ein Eintrag in members mit gleichem Namen wie ein Gruppen-Charakter setzt nur dessen Rang.
+// Mitglieder: config.guild.members und die Charaktere aus characters (ohne Platzhalter), die laut Profil in der Gilde sind.
+// Ein Gruppen-Charakter zählt erst, wenn sein Profil die Gilde nennt (Feld guild, siehe buildGuild).
+// Ein Eintrag in members mit gleichem Namen wie ein Gruppen-Charakter nimmt ihn fest auf.
 // Gruppen-Charaktere ruft der Abruf nicht zweimal ab. Schlägt ein Mitglied fehl, bleibt sein letzter Stand.
 function guildEntries() {
   const g = config.guild;
   const ranks = g.ranks ?? [];
   const fallback = ranks.includes('Mitglied') ? 'Mitglied' : ranks.at(-1) ?? 'Mitglied';
   const list = new Map();
-  for (const e of [...config.characters, ...(g.members ?? [])]) {
+  for (const e of config.characters) {
+    if (!e.realm && !e.surname) continue;
+    list.set(charKey(e), { ...e, squadOnly: true, rank: e.rank ?? fallback });
+  }
+  for (const e of g.members ?? []) {
     if (!e.realm && !e.surname) continue;
     const key = charKey(e);
-    list.set(key, { ...list.get(key), ...e, rank: e.rank ?? list.get(key)?.rank ?? fallback });
+    list.set(key, { ...list.get(key), ...e, squadOnly: false, rank: e.rank ?? list.get(key)?.rank ?? fallback });
   }
   return [...list.values()];
 }
@@ -838,6 +843,11 @@ async function buildGuild(data) {
       // Gruppen-Charaktere kommen aus data.json, auch ihr Fehler. Kein zweiter Abruf.
       // Hat data.json einen alten Stand (stale), gilt dieser auch hier. Sonst greift der letzte Stand der Gilde.
       const squad = group.get(key);
+      // Gruppen-Charakter ohne Gilde im Profil: (noch) kein Mitglied. Das Profil zeigt die Gilde erst nach dem nächsten Logout.
+      if (entry.squadOnly && (!squad?.level || (squad.guild ?? null) !== (config.guild.name ?? config.title))) {
+        console.log(`gilde   ${key} nicht in der Gilde (Profil: ${squad?.guild ?? 'keine'})`);
+        continue;
+      }
       if (squad?.error && !squad.level) throw new Error(squad.error);
       const c = squad ?? (await fetchCharacter(ctx.api, entry, ctx.caches));
       members.push({ ...c, rank: entry.rank });

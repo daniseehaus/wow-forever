@@ -5,7 +5,6 @@
   "heili-kabel",
   "zukk-sturmzüngler",
   "pavel-plattenpapst",
-  "orkward-orkbert",
   "bernhard-backstab",
   "hammer-hanno",
   "lokk-eidlöter",
@@ -41,16 +40,6 @@
    "rank": "Mitglied",
    "level": 11,
    "lastLogin": 1794178243000,
-   "epics": []
-  },
-  "orkward-orkbert": {
-   "id": 12680483,
-   "name": "Orkward",
-   "surname": "Orkbert",
-   "classId": 3,
-   "rank": "Mitglied",
-   "level": 11,
-   "lastLogin": 1794171705000,
    "epics": []
   },
   "bernhard-backstab": {
@@ -138,11 +127,6 @@
   {
    "t": 1794171600000,
    "key": "pavel-plattenpapst",
-   "type": "join"
-  },
-  {
-   "t": 1794171600000,
-   "key": "orkward-orkbert",
    "type": "join"
   },
   {
