@@ -144,8 +144,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": "Mitglied",
-   "level": 20,
-   "lastLogin": 1794213265000,
+   "level": 21,
+   "lastLogin": 1794225187000,
    "items": {
     "SHOULDER": 5404,
     "SHIRT": 2105,
@@ -179,9 +179,9 @@
     "RANGED": 11
    },
    "profs": {
-    "Leatherworking": 85,
-    "Skinning": 137,
-    "Cooking": 1,
+    "Leatherworking": 91,
+    "Skinning": 140,
+    "Cooking": 60,
     "First Aid": 80
    },
    "achs": [
@@ -516,6 +516,14 @@
    "type": "level",
    "from": 31,
    "to": 32,
+   "max": false
+  },
+  {
+   "t": 1794225187000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 20,
+   "to": 21,
    "max": false
   }
  ]
