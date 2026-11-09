@@ -961,11 +961,11 @@ const ENCHANT_SLOTS = ['HEAD', 'SHOULDER', 'BACK', 'CHEST', 'WRIST', 'HANDS', 'L
 function renderLoadout() {
   const el = document.getElementById('loadout');
   const c = state.chars.find((x) => x.key === state.selected);
-  // Eingeklappt: nur Überschrift und Hinweis. So hat der Link „Loadout“ in der Navigation ein Ziel.
+  // Eingeklappt: nur die Überschrift. So hat der Link „Loadout“ in der Navigation ein Ziel.
   el.classList.toggle('closed', !c);
   if (!c) {
     el.style.removeProperty('--cls');
-    el.innerHTML = `<div class="lo-closed"><span class="eyebrow">// LOADOUT</span><p>Charakter oben antippen: Ausrüstung, Werte, Berufe und Talente klappen hier auf.</p></div>`;
+    el.innerHTML = `<div class="lo-closed"><span class="eyebrow">// LOADOUT</span></div>`;
     return;
   }
 
