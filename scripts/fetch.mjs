@@ -737,7 +737,7 @@ function activitySnapshot(c, old) {
     lastLogin: c.lastLogin ?? null,
     items: Object.fromEntries(items.map((i) => [i.slot, i.id])),
     ilvls: Object.fromEntries(items.map((i) => [i.slot, i.ilvl ?? null])),
-    // Namen für „Vorher“ im Tooltip zum größten Upgrade (prevName in den Item-Ereignissen).
+    // Namen der angelegten Items. Ein neues Item merkt sich so den Namen des alten (prevName im Ereignis), die Seite zeigt ihn derzeit nicht.
     names: Object.fromEntries(items.map((i) => [i.slot, i.name ?? null])),
     profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
     achs: c.achievements ? c.achievements.map(([id]) => id) : old?.achs ?? null,

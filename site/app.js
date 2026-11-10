@@ -1272,13 +1272,12 @@ function recapCardHtml(s, list) {
   </article>`;
 }
 
-// Unterzeile einer Auszeichnung. Beim größten Upgrade: neues Item mit Wowhead-Tooltip, darunter Gewinn und altes Item.
+// Unterzeile einer Auszeichnung. Beim größten Upgrade: das neue Item als Link mit Wowhead-Tooltip.
 function awardDetail(a) {
   const it = a.item;
   if (!it) return `<small>${esc(a.detail)}</small>`;
   const q = (it.quality || 'COMMON').toLowerCase();
-  const was = `+${it.ilvl - it.prev} iLvl · statt ${it.prevName ?? `iLvl ${it.prev}`}`;
-  return `<small class="aw-item">${link(it, `<span class="q-${q}">${esc(it.name)}</span>`)}</small><small title="${esc(was)}">${esc(was)}</small>`;
+  return `<small class="aw-item">${link(it, `<span class="q-${q}">${esc(it.name)}</span>`)}</small>`;
 }
 
 // Je Spieler eine Zeile unter den Kacheln, Spalte für Spalte bündig: Name, Level, Berufspunkte, Itemlevel. Größter Levelgewinn zuerst.
@@ -1333,7 +1332,7 @@ function awards(s, list) {
   const bestUp = top((k) => Math.max(-1, ...ups.filter((e) => e.key === k).map((e) => e.ilvl - e.prev)));
   const upItem = ups.find((e) => bestUp.who.includes(e.key) && e.ilvl - e.prev === bestUp.best);
   add('Größtes Upgrade', bestUp, (v) => `${upItem?.slot ?? 'Item'} +${v} iLvl`);
-  // Das neue Item als Link mit Wowhead-Tooltip, darunter das alte Item. Den Namen des alten Items kennen Ereignisse ab dem 10.11.2026 (prevName).
+  // Die Karte zeigt statt des Texts das neue Item als Link mit Wowhead-Tooltip (awardDetail).
   if (upItem && out.at(-1)?.title === 'Größtes Upgrade') out.at(-1).item = upItem;
   add('Loot-Goblin', top((k) => itemsOf(k).length, 2), (v) => `${v} neue Items`);
   add('Berufs-Streber', top((k) => st[k]?.prof, 10), (v) => `+${v} Punkte`);
