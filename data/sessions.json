@@ -1,53 +1,53 @@
 {
  "era": "classic",
- "lastEnd": 1794178243000,
+ "lastEnd": 1794289739000,
  "levels": {
-  "wladimir-klatschko": 12,
-  "heili-kabel": 11,
-  "zukk-sturmzüngler": 12,
-  "pavel-plattenpapst": 11,
+  "wladimir-klatschko": 14,
+  "heili-kabel": 13,
+  "zukk-sturmzüngler": 14,
+  "pavel-plattenpapst": 12,
   "orkward-orkbert": 11
  },
  "base": {
   "wladimir-klatschko": {
-   "ilvl": 5,
+   "ilvl": 8,
    "profs": {
-    "Mining": 72,
-    "Blacksmithing": 62,
+    "Mining": 77,
+    "Blacksmithing": 70,
     "Cooking": 1,
     "First Aid": 1
    },
    "talents": {
-    "135507": 3
+    "135507": 5
    }
   },
   "heili-kabel": {
-   "ilvl": 7,
+   "ilvl": 8,
    "profs": {
-    "Tailoring": 68,
-    "Enchanting": 35,
+    "Tailoring": 72,
+    "Enchanting": 42,
     "Cooking": 1,
-    "First Aid": 1
+    "First Aid": 20
    },
    "talents": {
-    "142601": 2
+    "142601": 4
    }
   },
   "zukk-sturmzüngler": {
-   "ilvl": 5,
+   "ilvl": 8,
    "profs": {
-    "Alchemy": 36,
-    "Herbalism": 62,
-    "Cooking": 2
+    "Alchemy": 88,
+    "Herbalism": 101,
+    "Cooking": 21
    },
    "talents": {
-    "134214": 3
+    "134214": 5
    }
   },
   "pavel-plattenpapst": {
-   "ilvl": 4,
+   "ilvl": 5,
    "profs": {
-    "Mining": 70,
+    "Mining": 71,
     "Engineering": 80,
     "Cooking": 20,
     "Fishing": 1,
@@ -64,5 +64,71 @@
    "talents": {}
   }
  },
- "list": []
+ "list": [
+  {
+   "start": 1794264324000,
+   "end": 1794289739000,
+   "gain": 1.75,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst"
+   ],
+   "stats": {
+    "wladimir-klatschko": {
+     "level": [
+      12,
+      14
+     ],
+     "ilvl": [
+      5,
+      8
+     ],
+     "prof": 13,
+     "logout": 1794267518000,
+     "respec": false
+    },
+    "heili-kabel": {
+     "level": [
+      11,
+      13
+     ],
+     "ilvl": [
+      7,
+      8
+     ],
+     "prof": 30,
+     "logout": 1794264324000,
+     "respec": false
+    },
+    "zukk-sturmzüngler": {
+     "level": [
+      12,
+      14
+     ],
+     "ilvl": [
+      5,
+      8
+     ],
+     "prof": 110,
+     "logout": 1794289739000,
+     "respec": false
+    },
+    "pavel-plattenpapst": {
+     "level": [
+      11,
+      12
+     ],
+     "ilvl": [
+      4,
+      5
+     ],
+     "prof": 1,
+     "logout": 1794266796000,
+     "respec": false
+    }
+   }
+  }
+ ]
 }
