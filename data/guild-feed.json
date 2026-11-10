@@ -188,19 +188,19 @@
    "classId": 4,
    "rank": "Mitglied",
    "level": 22,
-   "lastLogin": 1794326463000,
+   "lastLogin": 1794331408000,
    "items": {
     "SHOULDER": 5404,
     "SHIRT": 2105,
     "CHEST": 5957,
     "WAIST": 4246,
-    "LEGS": 5327,
+    "LEGS": 5961,
     "FEET": 252425,
     "WRIST": 7281,
     "HANDS": 4239,
     "FINGER_1": 281268,
     "FINGER_2": 5351,
-    "BACK": 5314,
+    "BACK": 285329,
     "MAIN_HAND": 6504,
     "OFF_HAND": 6472,
     "RANGED": 287060
@@ -210,19 +210,19 @@
     "SHIRT": 1,
     "CHEST": 10,
     "WAIST": 16,
-    "LEGS": 18,
+    "LEGS": 23,
     "FEET": 15,
     "WRIST": 14,
     "HANDS": 13,
     "FINGER_1": 9,
     "FINGER_2": 20,
-    "BACK": 20,
+    "BACK": 21,
     "MAIN_HAND": 24,
     "OFF_HAND": 24,
     "RANGED": 11
    },
    "profs": {
-    "Leatherworking": 99,
+    "Leatherworking": 102,
     "Skinning": 142,
     "Cooking": 60,
     "First Aid": 80
@@ -235,13 +235,13 @@
     "SHIRT": "Rohlingshemd",
     "CHEST": "Handgenähte Lederweste",
     "WAIST": "Feiner Ledergürtel",
-    "LEGS": "Schmierige Tüftlerhose",
+    "LEGS": "Dunkle Lederhose",
     "FEET": "Dunkle Lederstiefel",
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Kopfgeldjägerring",
-    "BACK": "Eberjägercape",
+    "BACK": "Raptorbalgumhang",
     "MAIN_HAND": "Flügelklinge",
     "OFF_HAND": "Stechviper",
     "RANGED": "Rezlaks Ersatzmesser"
@@ -1000,6 +1000,19 @@
    "from": 21,
    "to": 22,
    "max": false
+  },
+  {
+   "t": 1794331408000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 285329,
+   "name": "Raptorbalgumhang",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133769.jpg",
+   "slot": "Rücken",
+   "ilvl": 21,
+   "prev": 20,
+   "prevName": "Eberjägercape"
   }
  ]
 }
