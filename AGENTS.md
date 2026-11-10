@@ -40,6 +40,8 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-10: Leveling: Die Zone mit den meisten offenen Quests der Gruppe gilt als aktuelle Zone und bleibt der Tipp, solange das Level passt. Zonen, die nicht über ihre Stufe hinausgehen (Silberwald neben Brachland), fallen als Tipp weg.
+- 2026-11-10: Session ohne „Teilen“ und ohne Streifen oben (auch Loadout). Datum und Schluss stehen im Kopf des Abschnitts. Die Kopfleiste zeigt keinen Untertitel und keinen Sync mehr, der Stand steht in der Fußzeile.
 - 2026-11-09: Die Aktivität der Gilde zeigt dasselbe wie der Squad (jedes Level-Up, Items ab Rar, Berufe, Erfolge), dazu Beitritt und Austritt. Die Gilde ist klein. Die Kennzahl „Aktiv in 7 Tagen“ entfällt.
 - 2026-11-09: Das Loadout startet eingeklappt und öffnet erst mit einem Klick auf eine Kachel. Die Seite merkt sich keine Auswahl mehr.
 - 2026-11-09: Squad-Charaktere gehören erst zur Gilde, wenn ihr Profil die Gilde nennt (Orkward ist noch nicht beigetreten). Aktivität zeigt mindestens 3 Tage. Crafting zeigt vorerst keine Verzauberungen.
