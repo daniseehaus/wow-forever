@@ -253,8 +253,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 34,
-   "lastLogin": 1794264529000,
+   "level": 35,
+   "lastLogin": 1794351913000,
    "items": {
     "HEAD": 3732,
     "NECK": 281265,
@@ -292,7 +292,7 @@
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 124,
+    "Mining": 128,
     "Blacksmithing": 73,
     "Cooking": 63,
     "First Aid": 122
@@ -1035,6 +1035,14 @@
    "name": "First Aid",
    "skill": 12,
    "learned": true
+  },
+  {
+   "t": 1794351913000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 34,
+   "to": 35,
+   "max": false
   }
  ]
 }
