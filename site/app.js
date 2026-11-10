@@ -40,8 +40,8 @@ async function init() {
   try {
     state.data = await fetch(`data.json?t=${Date.now()}`).then((r) => r.json());
   } catch (err) {
-    document.getElementById('sync').textContent = 'Daten fehlen';
-    document.querySelector('.sync').classList.add('stale');
+    document.getElementById('foot-stamp').textContent = 'Daten fehlen';
+    document.getElementById('foot-stamp').classList.add('stale');
     return;
   }
 
@@ -54,7 +54,6 @@ async function init() {
     document.querySelectorAll('.title-text').forEach((el) => { el.textContent = d.title; });
     document.getElementById('brand').textContent = d.title.toUpperCase();
   }
-  document.getElementById('brand-sub').textContent = `${d.simulated ? 'VORSCHAU' : d.era === 'retail' ? 'RETAIL' : 'FOREVER'} · EU · ${state.chars.length} SPIELER`;
   renderSync();
   setInterval(renderSync, 60000);
 
@@ -92,17 +91,13 @@ async function init() {
   });
 }
 
-// Stand der Daten. Der Punkt ist grün, solange der Abruf (alle 15 Minuten) läuft, und rot ab 2 Stunden Rückstand.
-// Ältere Stände zeigen das Datum, damit sie nicht aktuell wirken.
+// Stand der Daten, nur in der Fußzeile. Rot ab 2 Stunden ohne neuen Abruf.
 function renderSync() {
   const t = new Date(state.data.generatedAt);
-  const today = t.toDateString() === new Date().toDateString();
-  const stamp = today ? fmtTime(t) : `${t.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' })} ${fmtTime(t)}`;
-  const box = document.querySelector('.sync');
-  box.classList.toggle('stale', Date.now() - t > 2 * 36e5);
-  box.title = `Stand ${fmtDay(t)}, ${fmtTime(t)} (${ago(t.getTime())})`;
-  document.getElementById('sync').textContent = `SYNC ${stamp}`;
-  document.getElementById('foot-stamp').textContent = `Stand ${fmtDay(t)}, ${fmtTime(t)}`;
+  const el = document.getElementById('foot-stamp');
+  el.classList.toggle('stale', Date.now() - t > 2 * 36e5);
+  el.title = ago(t.getTime());
+  el.textContent = `Stand ${fmtDay(t)}, ${fmtTime(t)}`;
 }
 
 // ---------------------------------------------------------------------------

@@ -42,8 +42,8 @@ async function initGuild() {
   try {
     G.guild = await fetch(`guild.json?t=${Date.now()}`).then((r) => r.json());
   } catch {
-    document.getElementById('sync').textContent = 'Daten fehlen';
-    document.querySelector('.sync').classList.add('stale');
+    document.getElementById('foot-stamp').textContent = 'Daten fehlen';
+    document.getElementById('foot-stamp').classList.add('stale');
     return;
   }
 
@@ -53,7 +53,6 @@ async function initGuild() {
   document.title = `${g.name} · Gilde · WoW Forever`;
   document.querySelectorAll('.title-text').forEach((el) => { el.textContent = g.name; });
   document.getElementById('brand').textContent = g.name.toUpperCase();
-  document.getElementById('brand-sub').textContent = `FOREVER · EU · ${g.members.length} MITGLIEDER`;
   renderSync();
   setInterval(renderSync, 60000);
 
