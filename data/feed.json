@@ -67,12 +67,6 @@
     "RANGED": 11,
     "AMMO": 5
    },
-   "profs": {
-    "Skinning": 75,
-    "Cooking": 1
-   },
-   "achs": [],
-   "guild": null,
    "names": {
     "SHIRT": "Fallenstellerhemd",
     "CHEST": "Struppige Lederweste",
@@ -86,7 +80,13 @@
     "MAIN_HAND": "Primitives Kriegsbeil",
     "RANGED": "Hickory-Kurzbogen",
     "AMMO": "Rauer Pfeil"
-   }
+   },
+   "profs": {
+    "Skinning": 75,
+    "Cooking": 1
+   },
+   "achs": [],
+   "guild": null
   },
   "wladimir-klatschko": {
    "level": 14,
@@ -117,16 +117,6 @@
     "MAIN_HAND": 17,
     "OFF_HAND": 17
    },
-   "profs": {
-    "Mining": 77,
-    "Blacksmithing": 70,
-    "Cooking": 1,
-    "First Aid": 1
-   },
-   "achs": [
-    728
-   ],
-   "guild": "Geilbleiber",
    "names": {
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Raue Kupferweste",
@@ -139,7 +129,17 @@
     "BACK": "Handgenähter Umhang",
     "MAIN_HAND": "Dicke Kriegsaxt",
     "OFF_HAND": "Werwolf-Rundschild des Bären"
-   }
+   },
+   "profs": {
+    "Mining": 77,
+    "Blacksmithing": 70,
+    "Cooking": 1,
+    "First Aid": 1
+   },
+   "achs": [
+    728
+   ],
+   "guild": "Geilbleiber"
   },
   "heili-kabel": {
    "level": 13,
@@ -170,6 +170,19 @@
     "MAIN_HAND": 13,
     "RANGED": 15
    },
+   "names": {
+    "SHIRT": "Neophytenhemd",
+    "CHEST": "Vorfahren-Robe",
+    "WAIST": "Schärpe des inbrünstigen Novizen",
+    "LEGS": "Handgenähte Leinenkniehosen",
+    "FEET": "Leinenschuhe mit weichen Sohlen",
+    "WRIST": "Grüne Leinenarmschienen",
+    "HANDS": "Schwere Leinenhandschuhe",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Ernte-Umhang",
+    "MAIN_HAND": "Stab des Höllenwirkers",
+    "RANGED": "Geringer Magiezauberstab"
+   },
    "profs": {
     "Tailoring": 72,
     "Enchanting": 42,
@@ -183,20 +196,7 @@
     62031,
     728
    ],
-   "guild": "Geilbleiber",
-   "names": {
-    "SHIRT": "Neophytenhemd",
-    "CHEST": "Vorfahren-Robe",
-    "WAIST": "Schärpe des inbrünstigen Novizen",
-    "LEGS": "Handgenähte Leinenkniehosen",
-    "FEET": "Leinenschuhe mit weichen Sohlen",
-    "WRIST": "Grüne Leinenarmschienen",
-    "HANDS": "Schwere Leinenhandschuhe",
-    "FINGER_1": "Ausgelaugter Ritualring",
-    "BACK": "Ernte-Umhang",
-    "MAIN_HAND": "Stab des Höllenwirkers",
-    "RANGED": "Geringer Magiezauberstab"
-   }
+   "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
    "level": 14,
@@ -227,16 +227,6 @@
     "MAIN_HAND": 16,
     "RANGED": 10
    },
-   "profs": {
-    "Alchemy": 88,
-    "Herbalism": 101,
-    "Cooking": 21
-   },
-   "achs": [
-    769,
-    728
-   ],
-   "guild": "Geilbleiber",
    "names": {
     "SHIRT": "Primitiver Mantel",
     "CHEST": "Urzeitliche Wickeltücher des Wolfs",
@@ -249,7 +239,17 @@
     "BACK": "Rathorians Cape",
     "MAIN_HAND": "Schwerer Kupferschlägel",
     "RANGED": "Totem der Geladenen Flammen"
-   }
+   },
+   "profs": {
+    "Alchemy": 88,
+    "Herbalism": 101,
+    "Cooking": 21
+   },
+   "achs": [
+    769,
+    728
+   ],
+   "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
    "level": 12,
@@ -276,15 +276,6 @@
     "BACK": 12,
     "MAIN_HAND": 16
    },
-   "profs": {
-    "Mining": 71,
-    "Engineering": 80,
-    "Cooking": 20,
-    "Fishing": 1,
-    "First Aid": 34
-   },
-   "achs": [],
-   "guild": "Geilbleiber",
    "names": {
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Raue Kupferweste",
@@ -295,7 +286,16 @@
     "HANDS": "Abgenutzte Panzerhandschuhe",
     "BACK": "Handgenähter Umhang",
     "MAIN_HAND": "Schwerer Kupferschlägel"
-   }
+   },
+   "profs": {
+    "Mining": 71,
+    "Engineering": 80,
+    "Cooking": 20,
+    "Fishing": 1,
+    "First Aid": 34
+   },
+   "achs": [],
+   "guild": "Geilbleiber"
   }
  },
  "events": [

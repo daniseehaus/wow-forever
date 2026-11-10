@@ -58,7 +58,20 @@
     750,
     62031,
     728
-   ]
+   ],
+   "names": {
+    "SHIRT": "Neophytenhemd",
+    "CHEST": "Vorfahren-Robe",
+    "WAIST": "Schärpe des inbrünstigen Novizen",
+    "LEGS": "Handgenähte Leinenkniehosen",
+    "FEET": "Leinenschuhe mit weichen Sohlen",
+    "WRIST": "Grüne Leinenarmschienen",
+    "HANDS": "Schwere Leinenhandschuhe",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Ernte-Umhang",
+    "MAIN_HAND": "Stab des Höllenwirkers",
+    "RANGED": "Geringer Magiezauberstab"
+   }
   },
   "zukk-sturmzüngler": {
    "id": 9512891,
@@ -102,7 +115,20 @@
    "achs": [
     769,
     728
-   ]
+   ],
+   "names": {
+    "SHIRT": "Primitiver Mantel",
+    "CHEST": "Urzeitliche Wickeltücher des Wolfs",
+    "WAIST": "Ureinwohnerschärpe des Naturschutzes",
+    "LEGS": "Einfacher Kilt",
+    "FEET": "Leinenschuhe mit weichen Sohlen",
+    "WRIST": "Thras Freundschaftsband",
+    "HANDS": "Verhüllter Handschutz",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Rathorians Cape",
+    "MAIN_HAND": "Schwerer Kupferschlägel",
+    "RANGED": "Totem der Geladenen Flammen"
+   }
   },
   "pavel-plattenpapst": {
    "id": 11114997,
@@ -141,7 +167,18 @@
     "Fishing": 1,
     "First Aid": 34
    },
-   "achs": []
+   "achs": [],
+   "names": {
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Raue Kupferweste",
+    "WAIST": "Aggors umgearbeiteter Gürtel",
+    "LEGS": "Runenverzierte Kupferhose",
+    "FEET": "Stürmerstiefel",
+    "WRIST": "Brogs Freundschaftsband",
+    "HANDS": "Abgenutzte Panzerhandschuhe",
+    "BACK": "Handgenähter Umhang",
+    "MAIN_HAND": "Schwerer Kupferschlägel"
+   }
   },
   "bernhard-backstab": {
    "id": 11267857,
@@ -191,7 +228,23 @@
    },
    "achs": [
     728
-   ]
+   ],
+   "names": {
+    "SHOULDER": "Schlangen-Schultern",
+    "SHIRT": "Rohlingshemd",
+    "CHEST": "Handgenähte Lederweste",
+    "WAIST": "Feiner Ledergürtel",
+    "LEGS": "Schmierige Tüftlerhose",
+    "FEET": "Dunkle Lederstiefel",
+    "WRIST": "Leichte Lederarmschienen",
+    "HANDS": "Geprägte Lederhandschuhe",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "FINGER_2": "Kopfgeldjägerring",
+    "BACK": "Späherumhang der Ausdauer",
+    "MAIN_HAND": "Flügelklinge",
+    "OFF_HAND": "Stechviper",
+    "RANGED": "Rezlaks Ersatzmesser"
+   }
   },
   "hammer-hanno": {
    "id": 8777565,
@@ -249,7 +302,25 @@
     750,
     62031,
     728
-   ]
+   ],
+   "names": {
+    "HEAD": "Kapuzenkutte",
+    "NECK": "Selbstvertrauen des Wegwächters",
+    "SHOULDER": "Reliquiarmantelung",
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Manaverformtes Kettenhemd",
+    "WAIST": "Twilightfürstgurt",
+    "LEGS": "Söldnergamaschen",
+    "FEET": "Edelsteinbesetzte Kupferstiefel",
+    "WRIST": "Handgelenksschutz des dunklen Tributs",
+    "HANDS": "Warsongstulpen",
+    "FINGER_1": "Band der Faust",
+    "FINGER_2": "Siegel von Sylvanas",
+    "TRINKET_1": "Tränketasche",
+    "TRINKET_2": "Transformativer Kokon",
+    "BACK": "Wolfmeister Cape",
+    "MAIN_HAND": "Wolfsbann"
+   }
   },
   "lokk-eidlöter": {
    "id": 9959502,
@@ -295,7 +366,21 @@
    },
    "achs": [
     769
-   ]
+   ],
+   "names": {
+    "NECK": "Selbstvertrauen des Wegwächters",
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Infanterietunika des Falken",
+    "WAIST": "Atrophischer Gurt",
+    "LEGS": "Knochenrostgamaschen",
+    "FEET": "Flossenschuppensohlen",
+    "WRIST": "Höhlenbewohner-Armschienen",
+    "HANDS": "Griff der Angst",
+    "FINGER_1": "Ring der Verachtung",
+    "FINGER_2": "Siegelring des getöteten Barons",
+    "BACK": "Unterirdisches Cape",
+    "MAIN_HAND": "Großaxt des Verlassenen"
+   }
   },
   "wladimir-klatschko": {
    "id": 1582342,
@@ -339,7 +424,20 @@
    },
    "achs": [
     728
-   ]
+   ],
+   "names": {
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Raue Kupferweste",
+    "WAIST": "Runenverzierter Kupfergürtel",
+    "LEGS": "Kampfkettenhose",
+    "FEET": "Seltsame Bronzestiefel",
+    "WRIST": "Runenverzierte Kupferarmschienen",
+    "HANDS": "Runenverzierte Kupferstulpen",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Handgenähter Umhang",
+    "MAIN_HAND": "Dicke Kriegsaxt",
+    "OFF_HAND": "Werwolf-Rundschild des Bären"
+   }
   },
   "dennis-dotalot": {
    "id": 14098039,
@@ -380,7 +478,19 @@
     "Fishing": 82,
     "First Aid": 78
    },
-   "achs": []
+   "achs": [],
+   "names": {
+    "SHIRT": "Grünes Leinenhemd",
+    "CHEST": "Vorfahren-Robe",
+    "WAIST": "Schärpe des Novizenarkanisten",
+    "LEGS": "Garstige Beinkleider",
+    "FEET": "Weidenstiefel des Adlers",
+    "WRIST": "Federleichte Armschienen",
+    "HANDS": "Faulfellhandschuhe",
+    "BACK": "Mystikerschal",
+    "MAIN_HAND": "Sengender Dolch",
+    "RANGED": "Geringer Magiezauberstab"
+   }
   },
   "pawris-hilton": {
    "id": 7346576,
@@ -417,7 +527,18 @@
     "Skinning": 68,
     "Cooking": 1
    },
-   "achs": []
+   "achs": [],
+   "names": {
+    "SHIRT": "Hemd des Überlebenskünstlers von Thendal",
+    "CHEST": "Handgenähte Lederweste",
+    "WAIST": "Kordel des Jägers",
+    "LEGS": "Handgenähte Lederhose",
+    "FEET": "Struppige Lederstiefel",
+    "WRIST": "Armschienen des Verteidigers",
+    "HANDS": "Wickel des Reisenden",
+    "BACK": "Einfacher Umhang des Jägers",
+    "MAIN_HAND": "Ausbalancierter Bauernstecken"
+   }
   }
  },
  "events": [
