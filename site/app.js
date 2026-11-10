@@ -1414,12 +1414,16 @@ function renderRoute() {
   const inside = (x) => ok.filter((c) => c.level >= x.min && c.level <= x.max).length;
   const gap = (x) => Math.abs((x.min + x.max) / 2 - (lo + hi) / 2);
   const best = (list) => list.filter(forAll).sort((x, y) => inside(y) - inside(x) || gap(x) - gap(y))[0];
-  const tips = new Set(classicLevels && ok.length ? [best(M.ZONES), best(M.DUNGEONS)].filter(Boolean) : []);
+  // Steht die Gruppe schon in einer Zone (offene Quests), bleibt sie der Tipp, solange das Level passt.
+  // Zonen, die nicht über ihre Stufe hinausgehen (Brachland: Silberwald), fallen als Tipp ganz weg.
+  const inZone = classicLevels ? currentZone(ok) : null;
+  const zoneTip = inZone && lo <= inZone.max ? inZone : best(inZone ? M.ZONES.filter((z) => z.max > inZone.max) : M.ZONES);
+  const tips = new Set(classicLevels && ok.length ? [zoneTip, best(M.DUNGEONS)].filter(Boolean) : []);
 
   // Ohne Wowhead-ID (neuer Raid ohne Eintrag) steht der Ort ohne Link.
   const place = (x, range, mark = false) => {
     const next = mark && tips.has(x);
-    const inner = `<i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? '<em>Als Nächstes</em>' : ''}<span class="rg">${range}</span>`;
+    const inner = `<i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? `<em>${x === inZone ? 'Aktuell' : 'Als Nächstes'}</em>` : ''}<span class="rg">${range}</span>`;
     return x.id
       ? `<a class="place${next ? ' next' : ''}" href="${wh(state.data.wowhead || 'classic', `zone=${x.id}`)}" target="_blank" rel="noopener">${inner}</a>`
       : `<span class="place">${inner}</span>`;
@@ -1457,6 +1461,19 @@ function renderRoute() {
     </div>
     ${hidden ? `<button type="button" class="chip-btn route-more">${state.routeAll ? 'Nur aktuelle Stufen zeigen' : `Ganze Route zeigen · ${plural(hidden, 'weitere Stufe', 'weitere Stufen')}`}</button>` : ''}`;
   el.querySelector('.route-more')?.addEventListener('click', () => { state.routeAll = !state.routeAll; renderRoute(); });
+}
+
+// Aktuelle Zone der Gruppe: die Zone mit den meisten offenen Quests im Questlog aller Charaktere.
+// Erst ab 5 offenen Quests, damit ein einzelner Auftrag aus einer anderen Zone nicht zählt.
+function currentZone(chars) {
+  const info = state.data.questInfo ?? {};
+  const count = new Map();
+  for (const c of chars) for (const id of c.quests?.open ?? []) {
+    const z = M.ZONES.find((x) => x.name === info[id]?.z);
+    if (z) count.set(z, (count.get(z) ?? 0) + 1);
+  }
+  const [zone, n] = [...count].sort((a, b) => b[1] - a[1])[0] ?? [];
+  return n >= 5 ? zone : null;
 }
 
 // ---------------------------------------------------------------------------
