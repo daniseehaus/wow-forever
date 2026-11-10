@@ -602,7 +602,7 @@ const SLOT_LABELS = Object.fromEntries([...SLOTS_LEFT, ...SLOTS_RIGHT]);
 const STAT_SHORT = { STRENGTH: 'Stä', AGILITY: 'Bew', STAMINA: 'Aus', INTELLECT: 'Int', SPIRIT: 'Wil', ATTACK_POWER: 'AP', SPELL_POWER: 'ZM', SPELL_DAMAGE_DONE: 'ZS', SPELL_HEALING_DONE: 'Heil', armor: 'Rüst', dps: 'DPS' };
 
 function playstyle(c) {
-  if (c.role === 'HEALING') return 'healer';
+  if (c.role === 'HEALER') return 'healer';
   if (c.role === 'TANK') return 'tank';
   const spec = (c.spec ?? '').toLowerCase();
   if (c.classId === 3) return 'hunter';
