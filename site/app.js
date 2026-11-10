@@ -85,8 +85,9 @@ async function init() {
   });
   // Prep braucht die letzte Session, darum erst nach sessions.json.
   sessionsReady.then(() => renderPrep());
-  Promise.all([sessionsReady, feedReady]).then(() => renderRecap());
-  questLogPromise.then((log) => { state.questLog = log.events ?? []; renderQuests(); });
+  const questsReady = questLogPromise.then((log) => { state.questLog = log.events ?? []; renderQuests(); });
+  // Die Session-Karte zählt Items aus dem Feed und Quests aus dem Quest-Verlauf.
+  Promise.all([sessionsReady, feedReady, questsReady]).then(() => renderRecap());
   talentsPromise.then((talents) => {
     state.talents = talents.classes ?? {};
     refreshTalents();
@@ -1195,7 +1196,9 @@ function sessionList() {
   return (state.sessions?.list ?? []).map((s, i, all) => {
     const from = i ? all[i - 1].end : s.start - 6 * 36e5;
     const items = state.feed.events.filter((e) => e.type === 'item' && e.t > from && e.t <= s.end && s.players.includes(e.key));
-    return { ...s, nr: offset + i + 1, idx: i, items };
+    // Quests im selben Zeitraum. Der Quest-Verlauf reicht 30 Tage zurück, ältere Sessions zeigen darum weniger.
+    const quests = state.questLog.filter((e) => e.t > from && e.t <= s.end && s.players.includes(e.key));
+    return { ...s, nr: offset + i + 1, idx: i, items, quests };
   });
 }
 
@@ -1229,19 +1232,16 @@ function recapCardHtml(s, list) {
   const stats = Object.values(s.stats ?? {});
   const byQ = Object.entries(QUALITY_NAMES).map(([q, n]) => [s.items.filter((e) => e.quality === q).length, n]).filter(([k]) => k);
   const avg = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null);
-  const prof = stats.reduce((a, x) => a + (x.prof ?? 0), 0);
-  // Ältere Sessions kennen nur die Summe der Berufspunkte, ohne Aufteilung nach Beruf (profs).
-  const profNames = new Set(stats.flatMap((x) => Object.keys(x.profs ?? {})));
   const lvlTo = avg(stats.map((x) => x.level?.[1]).filter(Boolean));
   const ilvls = stats.filter((x) => x.ilvl?.[1] != null);
   const ilvlGain = avg(ilvls.map((x) => x.ilvl[1] - (x.ilvl[0] ?? x.ilvl[1])));
   const ilvlTo = avg(ilvls.map((x) => x.ilvl[1]));
 
-  // Vier Kacheln in derselben Reihenfolge wie die Spalten der Spielerzeilen darunter: Items, Level, Berufe, Itemlevel.
+  // Vier Kacheln in derselben Reihenfolge wie die Spalten der Spielerzeilen darunter: Items, Level, Quests, Itemlevel.
   const tiles = [
     [s.items.length, 'Neue Items', byQ.map(([k, n]) => `${k} ${n}`).join(' · ') || 'keine', 'items'],
     [fmtGain(s.gain), 'Level', lvlTo ? `Ø ${Math.round(lvlTo)} · Weg bis 60: ${Math.round(progress(lvlTo))} %` : ''],
-    [`+${prof}`, 'Berufspunkte', profNames.size ? `in ${profNames.size} ${profNames.size === 1 ? 'Beruf' : 'Berufen'}` : ''],
+    [s.quests.length, 'Quests', topZone(s.quests) ? `meist ${topZone(s.quests)}` : ''],
     [ilvlGain != null ? fmtGain(ilvlGain) : '?', 'Itemlevel', ilvlTo != null ? `jetzt Ø ${Math.round(ilvlTo)}` : ''],
   ];
 
@@ -1266,7 +1266,7 @@ function recapCardHtml(s, list) {
     ${unlocks.length ? `<div class="recap-unlock">${unlocks.map((u) => `<span>${u}</span>`).join('')}</div>` : ''}
     ${recapPlayersHtml(s)}
     ${aw.length ? `<div class="recap-label">Auszeichnungen</div>
-    <div class="awards">${aw.map((a) => `<div class="award"><span class="aw-title">${a.title}</span>
+    <div class="awards">${aw.map((a) => `<div class="award"${a.tip ? ` tabindex="0" data-tip-plain data-tip="${esc(a.tip)}"` : ''}><span class="aw-title">${a.title}</span>
       <b>${a.who.map((k) => `<span style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>`).join(', ')}</b>${awardDetail(a)}</div>`).join('')}</div>` : ''}
     </div>${lootHtml}</div>
   </article>`;
@@ -1280,22 +1280,35 @@ function awardDetail(a) {
   return `<small class="aw-item">${link(it, `<span class="q-${q}">${esc(it.name)}</span>`)}</small>`;
 }
 
-// Je Spieler eine Zeile unter den Kacheln, Spalte für Spalte bündig: Name, Level, Berufspunkte, Itemlevel. Größter Levelgewinn zuerst.
+// Häufigste Zone in einer Liste von Quests (Zone aus questInfo). Ohne bekannte Zone null.
+function topZone(quests) {
+  return questZones(quests)[0]?.[0] ?? null;
+}
+// Quests je Zone, meiste zuerst. Quests ohne bekannte Zone zählen nicht.
+function questZones(quests) {
+  const info = state.data.questInfo ?? {};
+  const count = new Map();
+  for (const e of quests) { const z = info[e.id]?.z; if (z) count.set(z, (count.get(z) ?? 0) + 1); }
+  return [...count].sort((a, b) => b[1] - a[1]);
+}
+
+// Je Spieler eine Zeile unter den Kacheln, Spalte für Spalte bündig: Name, Level, Quests, Itemlevel. Größter Levelgewinn zuerst.
 function recapPlayersHtml(s) {
   const rows = Object.entries(s.stats ?? {}).sort(([, a], [, b]) => (b.level[1] - b.level[0]) - (a.level[1] - a.level[0]) || b.level[1] - a.level[1]);
   if (!rows.length) return '';
   const span = ([a, b]) => (a === b ? `${b}` : `${a} → <b>${b}</b>`);
-  // Die Berufspunkte zeigen im Tooltip die Aufteilung nach Beruf.
-  const profCell = (x) => {
-    if (!x.prof) return '<span class="mono">–</span>';
-    const list = Object.entries(x.profs ?? {}).sort(([, a], [, b]) => b - a);
-    const tip = list.length ? ` tabindex="0" data-tip-plain data-tip="${esc(['Berufspunkte', ...list.map(([n, g]) => `${profName(n)} +${g}`)].join('\n'))}"` : '';
-    return `<span class="mono${tip ? ' rp-tip' : ''}"${tip}>+${x.prof}</span>`;
+  // Die Quests zeigen im Tooltip die Aufteilung nach Zone.
+  const questCell = (k) => {
+    const mine = s.quests.filter((e) => e.key === k);
+    if (!mine.length) return '<span class="mono">–</span>';
+    const zones = questZones(mine);
+    const tip = zones.length ? ` tabindex="0" data-tip-plain data-tip="${esc(['Quests', ...zones.map(([z, n]) => `${z} ${n}`)].join('\n'))}"` : '';
+    return `<span class="mono${tip ? ' rp-tip' : ''}"${tip}>${mine.length} Quests</span>`;
   };
   return `<div class="recap-players">${rows.map(([k, x]) => `<div class="rp">
     <span class="rp-name" style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>
     <span class="mono">Lv ${span(x.level)}</span>
-    ${profCell(x)}
+    ${questCell(k)}
     <span class="mono">iLvl ${span(x.ilvl.map((v) => Math.round(v ?? 0)))}</span></div>`).join('')}</div>`;
 }
 
@@ -1336,6 +1349,12 @@ function awards(s, list) {
   if (upItem && out.at(-1)?.title === 'Größtes Upgrade') out.at(-1).item = upItem;
   add('Loot-Goblin', top((k) => itemsOf(k).length, 2), (v) => `${v} neue Items`);
   add('Berufs-Streber', top((k) => st[k]?.prof, 10), (v) => `+${v} Punkte`);
+  // Tooltip mit den Punkten je Beruf. Ältere Sessions kennen nur die Summe (ohne profs).
+  const streber = out.at(-1)?.title === 'Berufs-Streber' ? out.at(-1) : null;
+  if (streber) {
+    const lines = streber.who.map((k) => Object.entries(st[k]?.profs ?? {}).sort(([, a], [, b]) => b - a).map(([n, g]) => `${profName(n)} +${g}`).join(', ')).filter(Boolean);
+    if (lines.length) streber.tip = ['Berufspunkte', ...lines].join('\n');
+  }
   const respec = players.filter((k) => st[k]?.respec);
   if (respec.length) out.push({ title: 'Umskiller', who: respec, detail: 'Talente neu verteilt' });
   if (s.items.length) add('Pechvogel', { who: players.filter((k) => !itemsOf(k).length) }, () => 'kein neues Item');
