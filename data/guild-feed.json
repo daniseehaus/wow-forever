@@ -66,41 +66,42 @@
    "surname": "Sturmzüngler",
    "classId": 7,
    "rank": "Mitglied",
-   "level": 12,
-   "lastLogin": 1794229597000,
+   "level": 14,
+   "lastLogin": 1794289739000,
    "items": {
     "SHIRT": 6134,
-    "CHEST": 4916,
-    "WAIST": 4919,
-    "LEGS": 1431,
-    "FEET": 4942,
-    "WRIST": 4928,
+    "CHEST": 15010,
+    "WAIST": 14113,
+    "LEGS": 10047,
+    "FEET": 4312,
+    "WRIST": 281270,
     "HANDS": 4940,
     "FINGER_1": 281268,
-    "BACK": 4944,
-    "MAIN_HAND": 4562,
+    "BACK": 5111,
+    "MAIN_HAND": 6214,
     "RANGED": 263412
    },
    "ilvls": {
     "SHIRT": 1,
-    "CHEST": 5,
-    "WAIST": 5,
-    "LEGS": 8,
-    "FEET": 12,
-    "WRIST": 8,
+    "CHEST": 11,
+    "WAIST": 15,
+    "LEGS": 15,
+    "FEET": 16,
+    "WRIST": 10,
     "HANDS": 10,
     "FINGER_1": 9,
-    "BACK": 12,
-    "MAIN_HAND": 10,
+    "BACK": 17,
+    "MAIN_HAND": 16,
     "RANGED": 10
    },
    "profs": {
-    "Alchemy": 84,
-    "Herbalism": 93,
+    "Alchemy": 88,
+    "Herbalism": 101,
     "Cooking": 21
    },
    "achs": [
-    769
+    769,
+    728
    ]
   },
   "pavel-plattenpapst": {
@@ -719,6 +720,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
   },
   {
+   "t": 1794253291000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 728,
+   "name": "Erforscht Durotar",
+   "desc": "Erforscht Durotar und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
+  },
+  {
    "t": 1794253297000,
    "key": "wladimir-klatschko",
    "type": "achievement",
@@ -769,6 +779,14 @@
    "type": "prof",
    "name": "Mining",
    "skill": 77
+  },
+  {
+   "t": 1794289739000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 12,
+   "to": 14,
+   "max": false
   }
  ]
 }
