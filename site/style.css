@@ -434,6 +434,10 @@ a.place:hover { color: var(--accent-text); }
 .task { padding: 6px 9px; border-radius: 7px; background: rgba(255,255,255,.05); color: #c9d1d9; font-size: 12px; line-height: 1.35; }
 .task.hot { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent-text); }
 .task.done { background: none; color: var(--dim); padding-left: 0; }
+/* Aufgaben mit Ziel auf Wowhead (Quest, Lehrer und Ort). */
+a.task { text-decoration: none; transition: background .2s; }
+a.task:hover { background: rgba(255,255,255,.1); }
+a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent); }
 
 /* Quests: je Charakter, der etwas verpasst hat, eine Karte. Die Karten teilen sich die Breite. */
 /* Mauerwerk: Spalten und Verteilung aus fitQuestColumns (app.js). */

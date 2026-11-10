@@ -1368,7 +1368,9 @@ function renderPrep() {
   document.getElementById('prep').style.setProperty('--n', tasks.length);
   document.getElementById('prep').innerHTML = tasks.map(([c, list]) => `<div class="prep-col" style="--cls:${classColor(c)}">
     <b>${esc(fullName(c))}</b>
-    ${list.length ? list.map(([text, hot]) => `<span class="task${hot ? ' hot' : ''}">${esc(text)}</span>`).join('') : '<span class="task done">nichts offen</span>'}
+    ${list.length ? list.map(([text, hot, path]) => (path
+      ? `<a class="task${hot ? ' hot' : ''}" href="${wh(state.data.wowhead || 'classic', path)}" target="_blank" rel="noopener">${esc(text)} ↗</a>`
+      : `<span class="task${hot ? ' hot' : ''}">${esc(text)}</span>`)).join('') : '<span class="task done">nichts offen</span>'}
   </div>`).join('');
 }
 
@@ -1376,13 +1378,14 @@ function prepTasks(c, range) {
   const [from, to] = range ?? [c.level, c.level];
   const crossed = (lv) => from < lv && to >= lv;
   const out = [];
-  for (const [lv, text, hot] of M.CLASS_TASKS[c.classId] ?? []) if (crossed(lv)) out.push([text, hot]);
+  for (const [lv, text, hot, path] of M.CLASS_TASKS[c.classId] ?? []) if (crossed(lv)) out.push([text, hot, path]);
   // Forever: Mit dem Reiten gibt es das Reittier dazu. Ab 40 auch die zweite Talentverteilung (Dualspezialisierung).
   if (crossed(40)) out.push(['Reiten lernen', true], ['Dualspezialisierung freischalten', false]);
   for (const p of c.professions ?? []) {
     const next = M.PROF_RANKS[p.max];
     if (!next || p.skill < p.max - 25 || c.level < next[1]) continue;
-    out.push([`${profName(p.name)}: ${next[0]} lernen`, p.skill >= p.max]);
+    const spell = M.PROF_RANK_SPELLS[p.name]?.[p.max];
+    out.push([`${profName(p.name)}: ${next[0]} lernen`, p.skill >= p.max, spell ? `spell=${spell}#taught-by-npc` : null]);
   }
   // Neue Zauber gibt es in Classic auf geraden Leveln.
   for (let lv = to; lv > from; lv--) if (lv % 2 === 0) { out.push([`Lehrer: Level ${lv}`, false]); break; }

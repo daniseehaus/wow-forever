@@ -99,28 +99,37 @@ window.META = (() => {
     DAMAGE: { label: 'DPS', order: 2 },
   };
 
-  // Klassenquests und Lehrer-Meilensteine: Level, Aufgabe. Die Vorbereitung zeigt sie,
+  // Klassenquests und Lehrer-Meilensteine: Level, Aufgabe, Rot, Wowhead-Ziel. Die Vorbereitung zeigt sie,
   // wenn der letzte Abend das Level erreicht hat. Rot (hot) heißt: Quest oder Kauf mit Aufwand.
   // Forever: Priester lernen Furchtzauberschutz (jedes Volk) und Göttlicher Willen beim Lehrer,
   // Schamanen bekommen die Totemleisten Ruf der Elemente, der Geister und der Ahnen.
+  // Das Wowhead-Ziel ist der Zauber oder das Item, das die Quest bringt. Die Seite dort zeigt Quest, Lehrer und Ort (IDs geprüft am 10.11.2026).
   const CLASS_TASKS = {
-    1: [[10, 'Klassenquest: Verteidigungshaltung', true], [30, 'Klassenquest: Berserkerhaltung', true], [30, 'Klassenquest: Wirbelwindaxt', true]],
-    2: [[12, 'Klassenquest: Erlösung', true], [40, 'Schlachtross beim Lehrer', true], [60, 'Klassenquest: Streitross', true]],
-    3: [[10, 'Klassenquest: Begleiter zähmen', true]],
-    4: [[16, 'Klassenquest: Schlossknacken', true], [20, 'Klassenquest: Gifte', true]],
-    5: [[20, 'Lehrer: Furchtzauberschutz', false], [30, 'Lehrer: Göttlicher Willen', false]],
-    7: [[4, 'Klassenquest: Totem der Erde', true], [10, 'Klassenquest: Totem des Feuers', true], [20, 'Klassenquest: Totem des Wassers', true], [30, 'Klassenquest: Totem der Luft', true],
+    1: [[10, 'Klassenquest: Verteidigungshaltung', true, 'spell=71'], [30, 'Klassenquest: Berserkerhaltung', true, 'spell=2458'], [30, 'Klassenquest: Wirbelwindaxt', true, 'item=6975']],
+    2: [[12, 'Klassenquest: Erlösung', true, 'spell=7328'], [40, 'Schlachtross beim Lehrer', true, 'spell=13819'], [60, 'Klassenquest: Streitross', true, 'spell=23214']],
+    3: [[10, 'Klassenquest: Begleiter zähmen', true, 'spell=1515']],
+    4: [[16, 'Klassenquest: Schlossknacken', true, 'spell=1804'], [20, 'Klassenquest: Gifte', true, 'spell=2842']],
+    5: [[20, 'Lehrer: Furchtzauberschutz', false, 'spell=6346'], [30, 'Lehrer: Göttlicher Willen', false]],
+    7: [[4, 'Klassenquest: Totem der Erde', true, 'item=5175'], [10, 'Klassenquest: Totem des Feuers', true, 'item=5176'], [20, 'Klassenquest: Totem des Wassers', true, 'item=5177'], [30, 'Klassenquest: Totem der Luft', true, 'item=5178'],
       [20, 'Lehrer: Ruf der Elemente', false], [30, 'Lehrer: Ruf der Geister', false], [40, 'Lehrer: Ruf der Ahnen', false]],
-    9: [[10, 'Klassenquest: Leerwandler', true], [20, 'Klassenquest: Sukkubus', true], [30, 'Klassenquest: Teufelsjäger', true], [40, 'Teufelsross beim Lehrer', true], [60, 'Klassenquest: Schreckensross', true]],
-    11: [[10, 'Klassenquest: Bärengestalt', true], [14, 'Klassenquest: Vergiftung heilen', true], [16, 'Klassenquest: Wassergestalt', true]],
+    9: [[10, 'Klassenquest: Leerwandler', true, 'spell=697'], [20, 'Klassenquest: Sukkubus', true, 'spell=712'], [30, 'Klassenquest: Teufelsjäger', true, 'spell=691'], [40, 'Teufelsross beim Lehrer', true, 'spell=5784'], [60, 'Klassenquest: Schreckensross', true, 'spell=23161']],
+    11: [[10, 'Klassenquest: Bärengestalt', true, 'spell=5487'], [14, 'Klassenquest: Vergiftung heilen', true, 'spell=8946'], [16, 'Klassenquest: Wassergestalt', true, 'spell=1066']],
   };
 
   // Berufsstufen (Classic und Forever, Skill bis 300): Maximalwert der Stufe, nächste Stufe, Mindestlevel dafür.
   // Ab 25 Punkten unter dem Maximum lässt sich die nächste Stufe lernen.
   const PROF_RANKS = { 75: ['Geselle', 10], 150: ['Experte', 20], 225: ['Fachmann', 35] };
+  // Zauber der nächsten Stufe je Beruf (Schlüssel: Maximalwert der aktuellen Stufe). Die Wowhead-Seite listet unter „Gelehrt von“ die Lehrer mit Ort.
+  // Geprüft am 10.11.2026 über die Wowhead-Tooltips (Forever): Potenzial 150, 225, 300. Angeln fehlt, die Tooltips nennen kein Potenzial.
+  const PROF_RANK_SPELLS = {
+    Skinning: { 75: 8617, 150: 8618, 225: 10768 }, Mining: { 75: 2576, 150: 3564, 225: 10248 }, Herbalism: { 75: 2368, 150: 3570, 225: 11993 },
+    Alchemy: { 75: 3101, 150: 3464, 225: 11611 }, Blacksmithing: { 75: 3100, 150: 3538, 225: 9785 }, Enchanting: { 75: 7412, 150: 7413, 225: 13920 },
+    Engineering: { 75: 4037, 150: 4038, 225: 12656 }, Leatherworking: { 75: 3104, 150: 3811, 225: 10662 }, Tailoring: { 75: 3909, 150: 3910, 225: 12180 },
+    Cooking: { 75: 3102, 150: 3413, 225: 18260 }, 'First Aid': { 75: 3274, 150: 7924, 225: 10846 },
+  };
 
   // Die Leveling-Route zeigt Zonen und Dungeons in dieser Reihenfolge.
   for (const list of [ZONES, DUNGEONS]) list.sort((a, b) => a.min - b.min || a.max - b.max);
 
-  return { CLASSES, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES, CLASS_TASKS, PROF_RANKS };
+  return { CLASSES, PROFESSIONS, PRIMARY_PROFESSIONS, ZONES, DUNGEONS, RAIDS, LEVEL_HOURS, ROLES, CLASS_TASKS, PROF_RANKS, PROF_RANK_SPELLS };
 })();
