@@ -38,7 +38,7 @@
   },
   "orkward-orkbert": {
    "level": 14,
-   "lastLogin": 1794312326000,
+   "lastLogin": 1794325469000,
    "items": {
     "SHIRT": 127,
     "CHEST": 15010,
@@ -82,8 +82,8 @@
     "AMMO": "Rauer Pfeil"
    },
    "profs": {
-    "Leatherworking": 51,
-    "Skinning": 93,
+    "Leatherworking": 53,
+    "Skinning": 99,
     "Cooking": 7,
     "Fishing": 1
    },
