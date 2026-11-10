@@ -187,8 +187,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": "Mitglied",
-   "level": 21,
-   "lastLogin": 1794231250000,
+   "level": 22,
+   "lastLogin": 1794326463000,
    "items": {
     "SHOULDER": 5404,
     "SHIRT": 2105,
@@ -200,7 +200,7 @@
     "HANDS": 4239,
     "FINGER_1": 281268,
     "FINGER_2": 5351,
-    "BACK": 6585,
+    "BACK": 5314,
     "MAIN_HAND": 6504,
     "OFF_HAND": 6472,
     "RANGED": 287060
@@ -222,8 +222,8 @@
     "RANGED": 11
    },
    "profs": {
-    "Leatherworking": 91,
-    "Skinning": 140,
+    "Leatherworking": 99,
+    "Skinning": 142,
     "Cooking": 60,
     "First Aid": 80
    },
@@ -241,7 +241,7 @@
     "HANDS": "Geprägte Lederhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Kopfgeldjägerring",
-    "BACK": "Späherumhang der Ausdauer",
+    "BACK": "Eberjägercape",
     "MAIN_HAND": "Flügelklinge",
     "OFF_HAND": "Stechviper",
     "RANGED": "Rezlaks Ersatzmesser"
@@ -988,6 +988,14 @@
   {
    "t": 1794323446000,
    "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 21,
+   "to": 22,
+   "max": false
+  },
+  {
+   "t": 1794326463000,
+   "key": "bernhard-backstab",
    "type": "level",
    "from": 21,
    "to": 22,
