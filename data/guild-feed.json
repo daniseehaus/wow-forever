@@ -329,8 +329,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 21,
-   "lastLogin": 1794311891000,
+   "level": 22,
+   "lastLogin": 1794323446000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
@@ -984,6 +984,14 @@
    "t": 1794296505190,
    "key": "orkward-orkbert",
    "type": "join"
+  },
+  {
+   "t": 1794323446000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 21,
+   "to": 22,
+   "max": false
   }
  ]
 }
