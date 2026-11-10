@@ -382,7 +382,7 @@ a.place:hover { color: var(--accent-text); }
 .share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; transition: .2s; }
 .share:hover { color: var(--accent-text); }
 .recap { display: flex; flex-direction: column; gap: 8px; }
-.recap-card { padding: 20px 22px; border-radius: var(--radius-sm); border: 1px solid var(--line); animation: rise .3s both; }
+.recap-card { padding: 20px 22px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(255,255,255,.02); animation: rise .3s both; }
 .recap-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .recap-top h3 { margin: 0; font: 800 36px/1 var(--display); text-transform: uppercase; color: var(--text); letter-spacing: .01em; }
 .recap-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 34%); gap: 28px; }
@@ -516,16 +516,17 @@ a.place:hover { color: var(--accent-text); }
 /* Highlight-Farbe in drei Stufen. Jedes Element setzt nur --hl.
    Kachel: Oberkante mit Schein. Zeile in einer Liste: Leiste links. Hover und Auswahl: Rand rundum.
    Klassenfarbe, wenn das Element einem Charakter gehört, sonst der Akzent.
-   Die Charakter-Kachel folgt derselben Regel, behält aber ihren eigenen 2px-Rahmen. */
-.recap-card, .recap-row, .route-row.now, .ev-session { --hl: var(--accent); }
-.prep-col, .ttree, .loadout { --hl: var(--cls); }
+   Die Charakter-Kachel folgt derselben Regel, behält aber ihren eigenen 2px-Rahmen.
+   Große Karten (Session, Loadout) haben keine Oberkante, nur den Rahmen wie die übrigen Abschnitte. */
+.recap-row, .route-row.now, .ev-session { --hl: var(--accent); }
+.prep-col, .ttree { --hl: var(--cls); }
 .ttree.empty { --hl: var(--dim); }
 
-.recap-card, .prep-col, .ttree, .loadout {
+.prep-col, .ttree {
   border-top: 2px solid var(--hl);
   box-shadow: 0 -10px 24px -16px var(--hl);
 }
-.recap-card, .prep-col, .ttree {
+.prep-col, .ttree {
   background: linear-gradient(180deg, color-mix(in srgb, var(--hl) 6%, transparent), transparent 90px), rgba(255,255,255,.02);
 }
 
