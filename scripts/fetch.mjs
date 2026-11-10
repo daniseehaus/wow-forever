@@ -735,6 +735,8 @@ function activitySnapshot(c, old) {
     lastLogin: c.lastLogin ?? null,
     items: Object.fromEntries(items.map((i) => [i.slot, i.id])),
     ilvls: Object.fromEntries(items.map((i) => [i.slot, i.ilvl ?? null])),
+    // Namen für „Vorher“ im Tooltip zum größten Upgrade (prevName in den Item-Ereignissen).
+    names: Object.fromEntries(items.map((i) => [i.slot, i.name ?? null])),
     profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
     achs: c.achievements ? c.achievements.map(([id]) => id) : old?.achs ?? null,
   };
@@ -753,7 +755,7 @@ async function activityEvents(c, old, now, qualities) {
       if (!it.id || old.items[it.slot] === it.id || !qualities.includes(it.quality)) continue;
       // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz.
       if (Object.values(old.items).includes(it.id)) continue;
-      out.push({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null, prev: old.ilvls?.[it.slot] ?? null });
+      out.push({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null, prev: old.ilvls?.[it.slot] ?? null, prevName: old.names?.[it.slot] ?? null });
     }
   }
   if (old.profs) {

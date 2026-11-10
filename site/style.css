@@ -408,6 +408,12 @@ a.place:hover { color: var(--accent-text); }
 .rstat small { font: 500 11px var(--mono); color: var(--muted); }
 .recap-unlock { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .recap-unlock span { padding: 7px 12px; border-radius: 8px; background: color-mix(in srgb, var(--accent) 9%, transparent); color: var(--accent-text); font-size: 13px; font-weight: 600; }
+.recap-players { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 6px 10px; margin-bottom: 18px; }
+.rp { display: contents; }
+.rp-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rp .mono { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.rp .mono b { color: var(--text); font-weight: 700; }
+.award[data-tip] small { text-decoration: underline dotted; text-underline-offset: 3px; }
 .recap-label { font: 500 11px var(--mono); letter-spacing: .15em; color: var(--dim); text-transform: uppercase; padding-top: 14px; margin-bottom: 12px; border-top: 1px solid var(--line); }
 .award { display: flex; flex-direction: column; gap: 2px; }
 .aw-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
@@ -538,14 +544,14 @@ a.place:hover { color: var(--accent-text); }
 }
 
 
+/* Rot ab 2 Stunden ohne neuen Abruf (renderSync in app.js). */
+#foot-stamp.stale { color: var(--accent-text); }
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--dim); font: 500 11px var(--mono); padding-top: 40px; padding-bottom: 40px; }
 
 /* Zwischen 1100 und 1320 px passt die Navigation nur mit engeren Links in eine Zeile. */
 @media (min-width: 1101px) and (max-width: 1320px) {
   .nav-links a { padding: 8px 11px; letter-spacing: .07em; }
 }
-/* Rot ab 2 Stunden ohne neuen Abruf (renderSync in app.js). */
-#foot-stamp.stale { color: var(--accent-text); }
 @media (max-width: 1100px) {
   html { scroll-padding-top: 116px; }
   .hero, .kpis { flex-wrap: wrap; }
@@ -645,6 +651,8 @@ a.place:hover { color: var(--accent-text); }
   .recap-card { padding: 16px; }
   .rstat b { font-size: 32px; }
   .recap-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
+  .recap-players { grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 6px 8px; }
+  .rp .mono { font-size: 11px; }
   .recap-row { padding: 10px 12px; }
   .ev { grid-template-columns: 40px 26px minmax(0, 1fr); gap: 8px; }
   .foot { flex-direction: column; }

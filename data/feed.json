@@ -72,7 +72,21 @@
     "Cooking": 1
    },
    "achs": [],
-   "guild": null
+   "guild": null,
+   "names": {
+    "SHIRT": "Fallenstellerhemd",
+    "CHEST": "Struppige Lederweste",
+    "WAIST": "Struppiger Ledergürtel",
+    "LEGS": "Staubbedeckte Gamaschen",
+    "FEET": "Tigerbalg-Stiefel",
+    "WRIST": "Sandläuferhandgelenksschützer",
+    "HANDS": "Verhüllter Handschutz",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Handgenähter Umhang",
+    "MAIN_HAND": "Primitives Kriegsbeil",
+    "RANGED": "Hickory-Kurzbogen",
+    "AMMO": "Rauer Pfeil"
+   }
   },
   "wladimir-klatschko": {
    "level": 14,
@@ -112,7 +126,20 @@
    "achs": [
     728
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "names": {
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Raue Kupferweste",
+    "WAIST": "Runenverzierter Kupfergürtel",
+    "LEGS": "Kampfkettenhose",
+    "FEET": "Seltsame Bronzestiefel",
+    "WRIST": "Runenverzierte Kupferarmschienen",
+    "HANDS": "Runenverzierte Kupferstulpen",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Handgenähter Umhang",
+    "MAIN_HAND": "Dicke Kriegsaxt",
+    "OFF_HAND": "Werwolf-Rundschild des Bären"
+   }
   },
   "heili-kabel": {
    "level": 13,
@@ -156,7 +183,20 @@
     62031,
     728
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "names": {
+    "SHIRT": "Neophytenhemd",
+    "CHEST": "Vorfahren-Robe",
+    "WAIST": "Schärpe des inbrünstigen Novizen",
+    "LEGS": "Handgenähte Leinenkniehosen",
+    "FEET": "Leinenschuhe mit weichen Sohlen",
+    "WRIST": "Grüne Leinenarmschienen",
+    "HANDS": "Schwere Leinenhandschuhe",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Ernte-Umhang",
+    "MAIN_HAND": "Stab des Höllenwirkers",
+    "RANGED": "Geringer Magiezauberstab"
+   }
   },
   "zukk-sturmzüngler": {
    "level": 14,
@@ -196,7 +236,20 @@
     769,
     728
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "names": {
+    "SHIRT": "Primitiver Mantel",
+    "CHEST": "Urzeitliche Wickeltücher des Wolfs",
+    "WAIST": "Ureinwohnerschärpe des Naturschutzes",
+    "LEGS": "Einfacher Kilt",
+    "FEET": "Leinenschuhe mit weichen Sohlen",
+    "WRIST": "Thras Freundschaftsband",
+    "HANDS": "Verhüllter Handschutz",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Rathorians Cape",
+    "MAIN_HAND": "Schwerer Kupferschlägel",
+    "RANGED": "Totem der Geladenen Flammen"
+   }
   },
   "pavel-plattenpapst": {
    "level": 12,
@@ -231,7 +284,18 @@
     "First Aid": 34
    },
    "achs": [],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "names": {
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Raue Kupferweste",
+    "WAIST": "Aggors umgearbeiteter Gürtel",
+    "LEGS": "Runenverzierte Kupferhose",
+    "FEET": "Stürmerstiefel",
+    "WRIST": "Brogs Freundschaftsband",
+    "HANDS": "Abgenutzte Panzerhandschuhe",
+    "BACK": "Handgenähter Umhang",
+    "MAIN_HAND": "Schwerer Kupferschlägel"
+   }
   }
  },
  "events": [
@@ -278,7 +342,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236918.jpg",
    "slot": "Taille",
    "ilvl": 15,
-   "prev": 9
+   "prev": 9,
+   "prevName": "Perlenkordel"
   },
   {
    "t": 1794175989000,
@@ -290,7 +355,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134587.jpg",
    "slot": "Beine",
    "ilvl": 14,
-   "prev": 8
+   "prev": 8,
+   "prevName": "Flickwerkhose"
   },
   {
    "t": 1794175989000,
@@ -302,7 +368,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132543.jpg",
    "slot": "Füße",
    "ilvl": 13,
-   "prev": 8
+   "prev": 8,
+   "prevName": "Schmutzstarrende Stiefel"
   },
   {
    "t": 1794175989000,
@@ -314,7 +381,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132611.jpg",
    "slot": "Handgelenke",
    "ilvl": 12,
-   "prev": 10
+   "prev": 10,
+   "prevName": "Schwere Kordel-Armschienen"
   },
   {
    "t": 1794175989000,
@@ -338,7 +406,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133759.jpg",
    "slot": "Rücken",
    "ilvl": 12,
-   "prev": 12
+   "prev": 12,
+   "prevName": "Handgenähter Umhang"
   },
   {
    "t": 1794175989000,
@@ -370,7 +439,8 @@
    "icon": "https://wow.zamimg.com/images/wow/icons/large/inv_throwingaxe_01.jpg",
    "slot": "Waffenhand",
    "ilvl": 17,
-   "prev": 11
+   "prev": 11,
+   "prevName": "Harpyienflügelstutzer"
   },
   {
    "t": 1794176441000,
@@ -382,7 +452,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134955.jpg",
    "slot": "Schildhand",
    "ilvl": 17,
-   "prev": 6
+   "prev": 6,
+   "prevName": "Gesprungener Rundschild"
   },
   {
    "t": 1794177693000,
@@ -481,7 +552,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132543.jpg",
    "slot": "Füße",
    "ilvl": 16,
-   "prev": 13
+   "prev": 13,
+   "prevName": "Leinenstiefel"
   },
   {
    "t": 1794259650000,
@@ -493,7 +565,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133762.jpg",
    "slot": "Rücken",
    "ilvl": 17,
-   "prev": 12
+   "prev": 12,
+   "prevName": "Verstärktes Leinencape"
   },
   {
    "t": 1794259650000,
@@ -505,7 +578,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135147.jpg",
    "slot": "Waffenhand",
    "ilvl": 13,
-   "prev": 11
+   "prev": 11,
+   "prevName": "Behelfsmäßiger Sturmrufer"
   },
   {
    "t": 1794266796000,
@@ -525,7 +599,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132498.jpg",
    "slot": "Taille",
    "ilvl": 12,
-   "prev": 9
+   "prev": 9,
+   "prevName": "Stürmergürtel"
   },
   {
    "t": 1794267518000,
@@ -545,7 +620,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132492.jpg",
    "slot": "Taille",
    "ilvl": 18,
-   "prev": 8
+   "prev": 8,
+   "prevName": "Breiter Metallgurt"
   },
   {
    "t": 1794267518000,
@@ -557,7 +633,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134583.jpg",
    "slot": "Beine",
    "ilvl": 12,
-   "prev": 10
+   "prev": 10,
+   "prevName": "Kupferne Kettenhose"
   },
   {
    "t": 1794267518000,
@@ -569,7 +646,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132582.jpg",
    "slot": "Füße",
    "ilvl": 15,
-   "prev": 10
+   "prev": 10,
+   "prevName": "Kupferne Kettenstiefel"
   },
   {
    "t": 1794267518000,
@@ -581,7 +659,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132602.jpg",
    "slot": "Handgelenke",
    "ilvl": 19,
-   "prev": 7
+   "prev": 7,
+   "prevName": "Kupferarmschienen"
   },
   {
    "t": 1794267518000,
@@ -593,7 +672,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132938.jpg",
    "slot": "Hände",
    "ilvl": 12,
-   "prev": 4
+   "prev": 4,
+   "prevName": "Sehr leichte Kettenhandschuhe"
   },
   {
    "t": 1794267518000,
@@ -620,7 +700,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132719.jpg",
    "slot": "Brust",
    "ilvl": 11,
-   "prev": 5
+   "prev": 5,
+   "prevName": "Weiche Wollweste"
   },
   {
    "t": 1794289739000,
@@ -632,7 +713,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132494.jpg",
    "slot": "Taille",
    "ilvl": 15,
-   "prev": 5
+   "prev": 5,
+   "prevName": "Weicher Wollgürtel"
   },
   {
    "t": 1794289739000,
@@ -644,7 +726,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134591.jpg",
    "slot": "Beine",
    "ilvl": 15,
-   "prev": 8
+   "prev": 8,
+   "prevName": "Flickwerkhose"
   },
   {
    "t": 1794289739000,
@@ -656,7 +739,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132543.jpg",
    "slot": "Füße",
    "ilvl": 16,
-   "prev": 12
+   "prev": 12,
+   "prevName": "Tigerbalg-Stiefel"
   },
   {
    "t": 1794289739000,
@@ -668,7 +752,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132609.jpg",
    "slot": "Handgelenke",
    "ilvl": 10,
-   "prev": 8
+   "prev": 8,
+   "prevName": "Sandläuferhandgelenksschützer"
   },
   {
    "t": 1794289739000,
@@ -680,7 +765,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133150.jpg",
    "slot": "Rücken",
    "ilvl": 17,
-   "prev": 12
+   "prev": 12,
+   "prevName": "Handgenähter Umhang"
   },
   {
    "t": 1794289739000,

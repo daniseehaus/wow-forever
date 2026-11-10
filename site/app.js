@@ -83,6 +83,8 @@ async function init() {
     state.feed = { events: feed.events ?? [] };
     renderFeed();
   });
+  // Prep braucht die letzte Session, darum erst nach sessions.json.
+  sessionsReady.then(() => renderPrep());
   Promise.all([sessionsReady, feedReady]).then(() => renderRecap());
   questLogPromise.then((log) => { state.questLog = log.events ?? []; renderQuests(); });
   talentsPromise.then((talents) => {
@@ -1258,11 +1260,24 @@ function recapCardHtml(s, list) {
     <div class="recap-body${loot.length ? '' : ' solo'}"><div class="recap-main">
     <div class="recap-stats">${tiles.map(([v, l, sub, cls]) => `<div class="rstat ${cls ?? ''}"><b>${v}</b><span>${l}</span><small>${esc(sub)}</small></div>`).join('')}</div>
     ${unlocks.length ? `<div class="recap-unlock">${unlocks.map((u) => `<span>${u}</span>`).join('')}</div>` : ''}
+    ${recapPlayersHtml(s)}
     ${aw.length ? `<div class="recap-label">Auszeichnungen</div>
-    <div class="awards">${aw.map((a) => `<div class="award"><span class="aw-title">${a.title}</span>
+    <div class="awards">${aw.map((a) => `<div class="award"${a.tip ? ` tabindex="0" data-tip="${esc(a.tip)}"` : ''}><span class="aw-title">${a.title}</span>
       <b>${a.who.map((k) => `<span style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>`).join(', ')}</b><small>${esc(a.detail)}</small></div>`).join('')}</div>` : ''}
     </div>${lootHtml}</div>
   </article>`;
+}
+
+// Je Spieler eine Zeile: Level, Itemlevel und Berufspunkte vor und nach der Session. Größter Levelgewinn zuerst.
+function recapPlayersHtml(s) {
+  const rows = Object.entries(s.stats ?? {}).sort(([, a], [, b]) => (b.level[1] - b.level[0]) - (a.level[1] - a.level[0]) || b.level[1] - a.level[1]);
+  if (!rows.length) return '';
+  const span = ([a, b]) => (a === b ? `${b}` : `${a} → <b>${b}</b>`);
+  return `<div class="recap-players">${rows.map(([k, x]) => `<div class="rp">
+    <span class="rp-name" style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>
+    <span class="mono">Lv ${span(x.level)}</span>
+    <span class="mono">iLvl ${span(x.ilvl.map((v) => Math.round(v ?? 0)))}</span>
+    <span class="mono">${x.prof ? `+${x.prof} Beruf` : ''}</span></div>`).join('')}</div>`;
 }
 
 // Neu in Reichweite: Dungeons, deren Mindestlevel die Gruppe in dieser Session erreicht hat. Dazu Meilensteine.
@@ -1298,6 +1313,11 @@ function awards(s, list) {
   const bestUp = top((k) => Math.max(-1, ...ups.filter((e) => e.key === k).map((e) => e.ilvl - e.prev)));
   const upItem = ups.find((e) => bestUp.who.includes(e.key) && e.ilvl - e.prev === bestUp.best);
   add('Größtes Upgrade', bestUp, (v) => `${upItem?.slot ?? 'Item'} +${v} iLvl`);
+  // Tooltip mit dem alten und dem neuen Item. Den Namen des alten Items kennen erst Ereignisse ab dem 10.11.2026 (prevName).
+  if (upItem && out.at(-1)?.title === 'Größtes Upgrade') {
+    out.at(-1).tip = [`${upItem.slot ?? 'Item'} +${upItem.ilvl - upItem.prev} iLvl`,
+      `Vorher: ${upItem.prevName ?? 'altes Item'} (iLvl ${upItem.prev})`, `Nachher: ${upItem.name} (iLvl ${upItem.ilvl})`].join('\n');
+  }
   add('Loot-Goblin', top((k) => itemsOf(k).length, 2), (v) => `${v} neue Items`);
   add('Berufs-Streber', top((k) => st[k]?.prof, 10), (v) => `+${v} Punkte`);
   const respec = players.filter((k) => st[k]?.respec);
