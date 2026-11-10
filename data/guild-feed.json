@@ -330,7 +330,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 21,
-   "lastLogin": 1794251075000,
+   "lastLogin": 1794311891000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
@@ -360,13 +360,14 @@
     "MAIN_HAND": 24
    },
    "profs": {
-    "Mining": 98,
+    "Mining": 100,
     "Blacksmithing": 72,
     "Cooking": 1,
     "First Aid": 40
    },
    "achs": [
-    769
+    769,
+    728
    ],
    "names": {
     "NECK": "Selbstvertrauen des Wegwächters",
@@ -886,6 +887,15 @@
   {
    "t": 1794253260000,
    "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 728,
+   "name": "Erforscht Durotar",
+   "desc": "Erforscht Durotar und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
+  },
+  {
+   "t": 1794253260000,
+   "key": "lokk-eidlöter",
    "type": "achievement",
    "id": 728,
    "name": "Erforscht Durotar",
