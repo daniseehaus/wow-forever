@@ -720,10 +720,12 @@ function sessionBase(c) {
 }
 
 // Werte eines Spielers für eine Session. Umskillen heißt: Ein Talent hat danach weniger Ränge als vorher.
+// profs: Punkte je Beruf (nur mit Zuwachs), für die Kachel Berufspunkte und den Tooltip je Spieler.
 function sessionStats(before, now, levelBefore, c) {
-  const profGain = Object.entries(now.profs).reduce((a, [n, v]) => a + Math.max(0, v - (before?.profs?.[n] ?? v)), 0);
+  const profs = Object.fromEntries(Object.entries(now.profs).map(([n, v]) => [n, Math.max(0, v - (before?.profs?.[n] ?? v))]).filter(([, g]) => g > 0));
+  const profGain = Object.values(profs).reduce((a, g) => a + g, 0);
   const respec = Object.entries(before?.talents ?? {}).some(([id, r]) => (now.talents[id] ?? 0) < r);
-  return { level: [levelBefore ?? c.level, c.level], ilvl: [before?.ilvl ?? now.ilvl, now.ilvl], prof: profGain, logout: c.lastLogin, respec };
+  return { level: [levelBefore ?? c.level, c.level], ilvl: [before?.ilvl ?? now.ilvl, now.ilvl], prof: profGain, profs, logout: c.lastLogin, respec };
 }
 
 // Stand eines Charakters für die Aktivität. Squad und Gilde vergleichen ihn bei jedem Abruf mit dem letzten Stand.

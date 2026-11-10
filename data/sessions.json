@@ -87,7 +87,11 @@
      ],
      "prof": 13,
      "logout": 1794267518000,
-     "respec": false
+     "respec": false,
+     "profs": {
+      "Mining": 5,
+      "Blacksmithing": 8
+     }
     },
     "heili-kabel": {
      "level": [
@@ -100,7 +104,12 @@
      ],
      "prof": 30,
      "logout": 1794264324000,
-     "respec": false
+     "respec": false,
+     "profs": {
+      "Tailoring": 4,
+      "Enchanting": 7,
+      "First Aid": 19
+     }
     },
     "zukk-sturmzüngler": {
      "level": [
@@ -113,7 +122,12 @@
      ],
      "prof": 110,
      "logout": 1794289739000,
-     "respec": false
+     "respec": false,
+     "profs": {
+      "Alchemy": 52,
+      "Herbalism": 39,
+      "Cooking": 19
+     }
     },
     "pavel-plattenpapst": {
      "level": [
@@ -126,7 +140,10 @@
      ],
      "prof": 1,
      "logout": 1794266796000,
-     "respec": false
+     "respec": false,
+     "profs": {
+      "Mining": 1
+     }
     }
    }
   }

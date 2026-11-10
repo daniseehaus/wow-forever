@@ -379,8 +379,6 @@ a.place:hover { color: var(--accent-text); }
 .tal:hover img { filter: none; transform: scale(1.06); }
 
 /* Abend-Rückblick */
-.share { font: 400 12px var(--mono); color: var(--dim); letter-spacing: .04em; text-transform: uppercase; transition: .2s; }
-.share:hover { color: var(--accent-text); }
 .recap { display: flex; flex-direction: column; gap: 8px; }
 .recap-card { padding: 20px 22px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(255,255,255,.02); animation: rise .3s both; }
 .recap-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
@@ -408,17 +406,21 @@ a.place:hover { color: var(--accent-text); }
 .rstat small { font: 500 11px var(--mono); color: var(--muted); }
 .recap-unlock { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .recap-unlock span { padding: 7px 12px; border-radius: 8px; background: color-mix(in srgb, var(--accent) 9%, transparent); color: var(--accent-text); font-size: 13px; font-weight: 600; }
-.recap-players { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); gap: 6px 10px; margin-bottom: 18px; }
+/* Dieselben Spalten wie .recap-stats, damit Werte und Kacheln bündig stehen. */
+.recap-players { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px 10px; margin-bottom: 18px; }
 .rp { display: contents; }
 .rp-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .rp .mono { font-size: 12px; color: var(--muted); white-space: nowrap; }
 .rp .mono b { color: var(--text); font-weight: 700; }
-.award[data-tip] small { text-decoration: underline dotted; text-underline-offset: 3px; }
+.rp-tip { justify-self: start; text-decoration: underline dotted; text-underline-offset: 3px; }
 .recap-label { font: 500 11px var(--mono); letter-spacing: .15em; color: var(--dim); text-transform: uppercase; padding-top: 14px; margin-bottom: 12px; border-top: 1px solid var(--line); }
 .award { display: flex; flex-direction: column; gap: 2px; }
 .aw-title { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .award b { font-size: 15px; font-weight: 700; }
 .award small { font: 500 11px var(--mono); color: var(--dim); }
+.award { min-width: 0; }
+.award small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.award .aw-item { font-family: inherit; font-size: 12px; font-weight: 700; }
 .recap-older { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .recap-row { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.02); font: inherit; color: inherit; cursor: pointer; text-align: left; transition: border-color .2s, box-shadow .2s; }
 .recap-row-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; }

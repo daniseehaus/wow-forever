@@ -1217,8 +1217,9 @@ function renderRecap() {
     </button>`;
   }).join('')}</div>` : '');
 
-  const share = document.getElementById('recap-share');
-  share.href = `https://wa.me/?text=${encodeURIComponent(shareText(s, list))}`;
+  // Datum und Schluss der gezeigten Session stehen oben rechts im Kopf des Abschnitts.
+  const end = sessionEnd(s);
+  document.getElementById('recap-when').textContent = `${fmtDay(end)} · Schluss ${fmtTime(end)}`;
   document.querySelectorAll('#recap .recap-row').forEach((b) => b.addEventListener('click', () => { state.recapIdx = Number(b.dataset.idx); renderRecap(); }));
   document.querySelectorAll('#recap img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
@@ -1228,18 +1229,21 @@ function recapCardHtml(s, list) {
   const stats = Object.values(s.stats ?? {});
   const byQ = Object.entries(QUALITY_NAMES).map(([q, n]) => [s.items.filter((e) => e.quality === q).length, n]).filter(([k]) => k);
   const avg = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : null);
-  const lvlFrom = avg(stats.map((x) => x.level?.[0]).filter(Boolean));
   const prof = stats.reduce((a, x) => a + (x.prof ?? 0), 0);
-  const profNames = new Set(state.feed.events.filter((e) => e.type === 'prof' && s.players.includes(e.key) && e.t > s.start - 6 * 36e5 && e.t <= s.end).map((e) => e.name));
+  // Ältere Sessions kennen nur die Summe der Berufspunkte, ohne Aufteilung nach Beruf (profs).
+  const profNames = new Set(stats.flatMap((x) => Object.keys(x.profs ?? {})));
   const lvlTo = avg(stats.map((x) => x.level?.[1]).filter(Boolean));
-  const end = Math.max(...stats.map((x) => x.logout ?? 0), s.end);
+  const ilvls = stats.filter((x) => x.ilvl?.[1] != null);
+  const ilvlGain = avg(ilvls.map((x) => x.ilvl[1] - (x.ilvl[0] ?? x.ilvl[1])));
+  const ilvlTo = avg(ilvls.map((x) => x.ilvl[1]));
 
+  // Vier Kacheln in derselben Reihenfolge wie die Spalten der Spielerzeilen darunter: Items, Level, Berufe, Itemlevel.
   const tiles = [
     [s.items.length, 'Neue Items', byQ.map(([k, n]) => `${k} ${n}`).join(' · ') || 'keine', 'items'],
-    lvlTo ? [`+${Math.round(progress(lvlTo) - progress(lvlFrom ?? lvlTo))} %`, 'Weg bis 60', `jetzt ${Math.round(progress(lvlTo))} % geschafft`] : null,
-    [`+${prof}`, 'Berufspunkte', profNames.size ? `${profNames.size} ${profNames.size === 1 ? 'Beruf' : 'Berufe'}` : ''],
-    [fmtGain(s.gain), 'Level', lvlTo ? `jetzt Level ${Math.round(lvlTo)}` : ''],
-  ].filter(Boolean);
+    [fmtGain(s.gain), 'Level', lvlTo ? `Ø ${Math.round(lvlTo)} · Weg bis 60: ${Math.round(progress(lvlTo))} %` : ''],
+    [`+${prof}`, 'Berufspunkte', profNames.size ? `in ${profNames.size} ${profNames.size === 1 ? 'Beruf' : 'Berufen'}` : ''],
+    [ilvlGain != null ? fmtGain(ilvlGain) : '?', 'Itemlevel', ilvlTo != null ? `jetzt Ø ${Math.round(ilvlTo)}` : ''],
+  ];
 
   const unlocks = recapUnlocks(s);
   const aw = awards(s, list).slice(0, 4);
@@ -1256,28 +1260,44 @@ function recapCardHtml(s, list) {
   }).join('')}</ul>${loot.length > lootShown.length ? `<span class="mono loot-more">+${loot.length - lootShown.length} weitere</span>` : ''}</div>` : '';
 
   return `<article class="recap-card">
-    <div class="recap-top"><h3>Session ${s.nr}</h3><span class="mono">${fmtDay(end)} · Schluss ${fmtTime(end)}</span></div>
+    <div class="recap-top"><h3>Session ${s.nr}</h3></div>
     <div class="recap-body${loot.length ? '' : ' solo'}"><div class="recap-main">
     <div class="recap-stats">${tiles.map(([v, l, sub, cls]) => `<div class="rstat ${cls ?? ''}"><b>${v}</b><span>${l}</span><small>${esc(sub)}</small></div>`).join('')}</div>
     ${unlocks.length ? `<div class="recap-unlock">${unlocks.map((u) => `<span>${u}</span>`).join('')}</div>` : ''}
     ${recapPlayersHtml(s)}
     ${aw.length ? `<div class="recap-label">Auszeichnungen</div>
-    <div class="awards">${aw.map((a) => `<div class="award"${a.tip ? ` tabindex="0" data-tip="${esc(a.tip)}"` : ''}><span class="aw-title">${a.title}</span>
-      <b>${a.who.map((k) => `<span style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>`).join(', ')}</b><small>${esc(a.detail)}</small></div>`).join('')}</div>` : ''}
+    <div class="awards">${aw.map((a) => `<div class="award"><span class="aw-title">${a.title}</span>
+      <b>${a.who.map((k) => `<span style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>`).join(', ')}</b>${awardDetail(a)}</div>`).join('')}</div>` : ''}
     </div>${lootHtml}</div>
   </article>`;
 }
 
-// Je Spieler eine Zeile: Level, Itemlevel und Berufspunkte vor und nach der Session. Größter Levelgewinn zuerst.
+// Unterzeile einer Auszeichnung. Beim größten Upgrade: neues Item mit Wowhead-Tooltip, darunter Gewinn und altes Item.
+function awardDetail(a) {
+  const it = a.item;
+  if (!it) return `<small>${esc(a.detail)}</small>`;
+  const q = (it.quality || 'COMMON').toLowerCase();
+  const was = `+${it.ilvl - it.prev} iLvl · statt ${it.prevName ?? `iLvl ${it.prev}`}`;
+  return `<small class="aw-item">${link(it, `<span class="q-${q}">${esc(it.name)}</span>`)}</small><small title="${esc(was)}">${esc(was)}</small>`;
+}
+
+// Je Spieler eine Zeile unter den Kacheln, Spalte für Spalte bündig: Name, Level, Berufspunkte, Itemlevel. Größter Levelgewinn zuerst.
 function recapPlayersHtml(s) {
   const rows = Object.entries(s.stats ?? {}).sort(([, a], [, b]) => (b.level[1] - b.level[0]) - (a.level[1] - a.level[0]) || b.level[1] - a.level[1]);
   if (!rows.length) return '';
   const span = ([a, b]) => (a === b ? `${b}` : `${a} → <b>${b}</b>`);
+  // Die Berufspunkte zeigen im Tooltip die Aufteilung nach Beruf.
+  const profCell = (x) => {
+    if (!x.prof) return '<span class="mono">–</span>';
+    const list = Object.entries(x.profs ?? {}).sort(([, a], [, b]) => b - a);
+    const tip = list.length ? ` tabindex="0" data-tip-plain data-tip="${esc(['Berufspunkte', ...list.map(([n, g]) => `${profName(n)} +${g}`)].join('\n'))}"` : '';
+    return `<span class="mono${tip ? ' rp-tip' : ''}"${tip}>+${x.prof}</span>`;
+  };
   return `<div class="recap-players">${rows.map(([k, x]) => `<div class="rp">
     <span class="rp-name" style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>
     <span class="mono">Lv ${span(x.level)}</span>
-    <span class="mono">iLvl ${span(x.ilvl.map((v) => Math.round(v ?? 0)))}</span>
-    <span class="mono">${x.prof ? `+${x.prof} Beruf` : ''}</span></div>`).join('')}</div>`;
+    ${profCell(x)}
+    <span class="mono">iLvl ${span(x.ilvl.map((v) => Math.round(v ?? 0)))}</span></div>`).join('')}</div>`;
 }
 
 // Neu in Reichweite: Dungeons, deren Mindestlevel die Gruppe in dieser Session erreicht hat. Dazu Meilensteine.
@@ -1313,11 +1333,8 @@ function awards(s, list) {
   const bestUp = top((k) => Math.max(-1, ...ups.filter((e) => e.key === k).map((e) => e.ilvl - e.prev)));
   const upItem = ups.find((e) => bestUp.who.includes(e.key) && e.ilvl - e.prev === bestUp.best);
   add('Größtes Upgrade', bestUp, (v) => `${upItem?.slot ?? 'Item'} +${v} iLvl`);
-  // Tooltip mit dem alten und dem neuen Item. Den Namen des alten Items kennen erst Ereignisse ab dem 10.11.2026 (prevName).
-  if (upItem && out.at(-1)?.title === 'Größtes Upgrade') {
-    out.at(-1).tip = [`${upItem.slot ?? 'Item'} +${upItem.ilvl - upItem.prev} iLvl`,
-      `Vorher: ${upItem.prevName ?? 'altes Item'} (iLvl ${upItem.prev})`, `Nachher: ${upItem.name} (iLvl ${upItem.ilvl})`].join('\n');
-  }
+  // Das neue Item als Link mit Wowhead-Tooltip, darunter das alte Item. Den Namen des alten Items kennen Ereignisse ab dem 10.11.2026 (prevName).
+  if (upItem && out.at(-1)?.title === 'Größtes Upgrade') out.at(-1).item = upItem;
   add('Loot-Goblin', top((k) => itemsOf(k).length, 2), (v) => `${v} neue Items`);
   add('Berufs-Streber', top((k) => st[k]?.prof, 10), (v) => `+${v} Punkte`);
   const respec = players.filter((k) => st[k]?.respec);
@@ -1331,11 +1348,8 @@ function awards(s, list) {
   return out;
 }
 
-function shareText(s, list) {
-  const aw = awards(s, list).slice(0, 3).map((a) => `${a.title}: ${a.who.map(charName).join(', ')}`);
-  const url = `${location.origin}${location.pathname}#rueckblick`;
-  return [`Session ${s.nr} im Kasten: ${s.items.length} neue Items, ${fmtGain(s.gain)} Level.`, ...aw, url].join('\n');
-}
+// Schluss einer Session: der letzte Logout der Spieler.
+function sessionEnd(s) { return Math.max(...Object.values(s.stats ?? {}).map((x) => x.logout ?? 0), s.end); }
 
 // ---------------------------------------------------------------------------
 // Vor dem nächsten Abend: offene Punkte je Charakter aus dem letzten Abend und dem aktuellen Stand.
