@@ -38,26 +38,26 @@
   },
   "orkward-orkbert": {
    "level": 14,
-   "lastLogin": 1794325469000,
+   "lastLogin": 1794346450000,
    "items": {
     "SHIRT": 127,
-    "CHEST": 15010,
+    "CHEST": 4243,
     "WAIST": 4237,
-    "LEGS": 2303,
-    "FEET": 2309,
+    "LEGS": 4242,
+    "FEET": 252425,
     "WRIST": 7281,
     "HANDS": 4239,
     "FINGER_1": 281268,
     "BACK": 2310,
     "MAIN_HAND": 286730,
-    "RANGED": 4931,
+    "RANGED": 8180,
     "AMMO": 2512
    },
    "ilvls": {
     "SHIRT": 1,
-    "CHEST": 11,
+    "CHEST": 17,
     "WAIST": 10,
-    "LEGS": 10,
+    "LEGS": 15,
     "FEET": 15,
     "WRIST": 14,
     "HANDS": 13,
@@ -69,23 +69,24 @@
    },
    "names": {
     "SHIRT": "Fallenstellerhemd",
-    "CHEST": "Urzeitliche Wickeltücher der Beweglichkeit",
+    "CHEST": "Feine Ledertunika",
     "WAIST": "Handgenähter Ledergürtel",
-    "LEGS": "Handgenähte Lederhose",
-    "FEET": "Geprägte Lederstiefel",
+    "LEGS": "Geprägte Lederhose",
+    "FEET": "Dunkle Lederstiefel",
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Geprägter Lederumhang",
     "MAIN_HAND": "Makelloser Orcdolch",
-    "RANGED": "Hickory-Kurzbogen",
+    "RANGED": "Jagdbogen",
     "AMMO": "Rauer Pfeil"
    },
    "profs": {
-    "Leatherworking": 53,
-    "Skinning": 99,
-    "Cooking": 7,
-    "Fishing": 1
+    "Leatherworking": 69,
+    "Skinning": 110,
+    "Cooking": 23,
+    "Fishing": 1,
+    "First Aid": 12
    },
    "achs": [
     728
@@ -939,6 +940,66 @@
    "type": "guild",
    "guild": "Geilbleiber",
    "from": null
+  },
+  {
+   "t": 1794346450000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 4243,
+   "name": "Feine Ledertunika",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132724.jpg",
+   "slot": "Brust",
+   "ilvl": 17,
+   "prev": 11,
+   "prevName": "Urzeitliche Wickeltücher der Beweglichkeit"
+  },
+  {
+   "t": 1794346450000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 4242,
+   "name": "Geprägte Lederhose",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134582.jpg",
+   "slot": "Beine",
+   "ilvl": 15,
+   "prev": 10,
+   "prevName": "Handgenähte Lederhose"
+  },
+  {
+   "t": 1794346450000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 252425,
+   "name": "Dunkle Lederstiefel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132539.jpg",
+   "slot": "Füße",
+   "ilvl": 15,
+   "prev": 15,
+   "prevName": "Geprägte Lederstiefel"
+  },
+  {
+   "t": 1794346450000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 8180,
+   "name": "Jagdbogen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135491.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 11,
+   "prev": 11,
+   "prevName": "Hickory-Kurzbogen"
+  },
+  {
+   "t": 1794346450000,
+   "key": "orkward-orkbert",
+   "type": "prof",
+   "name": "First Aid",
+   "skill": 12,
+   "learned": true
   }
  ]
 }
