@@ -5,6 +5,7 @@
   "heili-kabel",
   "zukk-sturmzüngler",
   "pavel-plattenpapst",
+  "orkward-orkbert",
   "bernhard-backstab",
   "hammer-hanno",
   "lokk-eidlöter",
@@ -539,6 +540,66 @@
     "BACK": "Einfacher Umhang des Jägers",
     "MAIN_HAND": "Ausbalancierter Bauernstecken"
    }
+  },
+  "orkward-orkbert": {
+   "id": 12680483,
+   "name": "Orkward",
+   "surname": "Orkbert",
+   "classId": 3,
+   "rank": "Mitglied",
+   "level": 14,
+   "lastLogin": 1794296269000,
+   "items": {
+    "SHIRT": 127,
+    "CHEST": 15010,
+    "WAIST": 4237,
+    "LEGS": 2303,
+    "FEET": 2309,
+    "WRIST": 7281,
+    "HANDS": 4239,
+    "FINGER_1": 281268,
+    "BACK": 2310,
+    "MAIN_HAND": 286730,
+    "RANGED": 4931,
+    "AMMO": 2512
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 11,
+    "WAIST": 10,
+    "LEGS": 10,
+    "FEET": 15,
+    "WRIST": 14,
+    "HANDS": 13,
+    "FINGER_1": 9,
+    "BACK": 13,
+    "MAIN_HAND": 12,
+    "RANGED": 11,
+    "AMMO": 5
+   },
+   "names": {
+    "SHIRT": "Fallenstellerhemd",
+    "CHEST": "Urzeitliche Wickeltücher der Beweglichkeit",
+    "WAIST": "Handgenähter Ledergürtel",
+    "LEGS": "Handgenähte Lederhose",
+    "FEET": "Geprägte Lederstiefel",
+    "WRIST": "Leichte Lederarmschienen",
+    "HANDS": "Geprägte Lederhandschuhe",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Geprägter Lederumhang",
+    "MAIN_HAND": "Makelloser Orcdolch",
+    "RANGED": "Hickory-Kurzbogen",
+    "AMMO": "Rauer Pfeil"
+   },
+   "profs": {
+    "Leatherworking": 51,
+    "Skinning": 93,
+    "Cooking": 7,
+    "Fishing": 1
+   },
+   "achs": [
+    728
+   ]
   }
  },
  "events": [
@@ -908,6 +969,11 @@
    "from": 12,
    "to": 14,
    "max": false
+  },
+  {
+   "t": 1794296505190,
+   "key": "orkward-orkbert",
+   "type": "join"
   }
  ]
 }
