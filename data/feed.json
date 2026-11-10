@@ -693,6 +693,18 @@
    "slot": "Waffenhand",
    "ilvl": 16,
    "prev": 10
+  },
+  {
+   "t": 1794289739000,
+   "type": "session",
+   "start": 1794264324000,
+   "gain": 1.75,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst"
+   ]
   }
  ]
 }
