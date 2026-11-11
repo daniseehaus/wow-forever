@@ -187,12 +187,13 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": "Mitglied",
-   "level": 22,
-   "lastLogin": 1794331408000,
+   "level": 23,
+   "lastLogin": 1794398232000,
    "items": {
+    "HEAD": 279391,
     "SHOULDER": 5404,
     "SHIRT": 2105,
-    "CHEST": 5957,
+    "CHEST": 5317,
     "WAIST": 4246,
     "LEGS": 5961,
     "FEET": 252425,
@@ -206,9 +207,10 @@
     "RANGED": 287060
    },
    "ilvls": {
+    "HEAD": 23,
     "SHOULDER": 23,
     "SHIRT": 1,
-    "CHEST": 10,
+    "CHEST": 25,
     "WAIST": 16,
     "LEGS": 23,
     "FEET": 15,
@@ -223,7 +225,7 @@
    },
    "profs": {
     "Leatherworking": 102,
-    "Skinning": 142,
+    "Skinning": 152,
     "Cooking": 60,
     "First Aid": 80
    },
@@ -231,9 +233,10 @@
     728
    ],
    "names": {
+    "HEAD": "Stirnband aus Taurajo",
     "SHOULDER": "Schlangen-Schultern",
     "SHIRT": "Rohlingshemd",
-    "CHEST": "Handgenähte Lederweste",
+    "CHEST": "Trockenmoostunika",
     "WAIST": "Feiner Ledergürtel",
     "LEGS": "Dunkle Lederhose",
     "FEET": "Dunkle Lederstiefel",
@@ -1067,6 +1070,21 @@
    "from": 22,
    "to": 23,
    "max": false
+  },
+  {
+   "t": 1794398232000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 22,
+   "to": 23,
+   "max": false
+  },
+  {
+   "t": 1794398232000,
+   "key": "bernhard-backstab",
+   "type": "prof",
+   "name": "Skinning",
+   "skill": 152
   }
  ]
 }
