@@ -333,32 +333,34 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 23,
-   "lastLogin": 1794393446000,
+   "lastLogin": 1794432475000,
    "items": {
     "NECK": 281265,
+    "SHOULDER": 270024,
     "SHIRT": 6125,
     "CHEST": 6336,
     "WAIST": 271201,
     "LEGS": 271209,
-    "FEET": 281285,
-    "WRIST": 14147,
+    "FEET": 9784,
+    "WRIST": 4534,
     "HANDS": 271208,
     "FINGER_1": 281673,
-    "FINGER_2": 279867,
+    "FINGER_2": 6414,
     "BACK": 14149,
     "MAIN_HAND": 251533
    },
    "ilvls": {
     "NECK": 20,
+    "SHOULDER": 27,
     "SHIRT": 1,
     "CHEST": 13,
     "WAIST": 20,
     "LEGS": 21,
-    "FEET": 11,
-    "WRIST": 18,
+    "FEET": 19,
+    "WRIST": 28,
     "HANDS": 22,
     "FINGER_1": 28,
-    "FINGER_2": 23,
+    "FINGER_2": 29,
     "BACK": 18,
     "MAIN_HAND": 24
    },
@@ -374,15 +376,16 @@
    ],
    "names": {
     "NECK": "Selbstvertrauen des Wegwächters",
+    "SHOULDER": "Talmischulterschutz",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Infanterietunika des Falken",
     "WAIST": "Atrophischer Gurt",
     "LEGS": "Knochenrostgamaschen",
-    "FEET": "Flossenschuppensohlen",
-    "WRIST": "Höhlenbewohner-Armschienen",
+    "FEET": "Räuber-Stiefel der Eule",
+    "WRIST": "Stahlschnallenarmschienen",
     "HANDS": "Griff der Angst",
     "FINGER_1": "Schleife der Aufopferung",
-    "FINGER_2": "Siegelring des getöteten Barons",
+    "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Unterirdisches Cape",
     "MAIN_HAND": "Großaxt des Verlassenen"
    }
@@ -1099,6 +1102,19 @@
    "type": "prof",
    "name": "Leatherworking",
    "skill": 79
+  },
+  {
+   "t": 1794432475000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 6414,
+   "name": "Siegel von Sylvanas",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133357.jpg",
+   "slot": "Ring 2",
+   "ilvl": 29,
+   "prev": 23,
+   "prevName": "Siegelring des getöteten Barons"
   }
  ]
 }
