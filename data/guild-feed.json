@@ -548,8 +548,8 @@
    "surname": "Orkbert",
    "classId": 3,
    "rank": "Mitglied",
-   "level": 14,
-   "lastLogin": 1794346450000,
+   "level": 15,
+   "lastLogin": 1794389438000,
    "items": {
     "SHIRT": 127,
     "CHEST": 4243,
@@ -593,9 +593,9 @@
     "AMMO": "Rauer Pfeil"
    },
    "profs": {
-    "Leatherworking": 69,
-    "Skinning": 110,
-    "Cooking": 23,
+    "Leatherworking": 72,
+    "Skinning": 112,
+    "Cooking": 26,
     "Fishing": 1,
     "First Aid": 12
    },
@@ -1050,6 +1050,14 @@
    "type": "level",
    "from": 12,
    "to": 14,
+   "max": false
+  },
+  {
+   "t": 1794389438000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 14,
+   "to": 15,
    "max": false
   }
  ]
