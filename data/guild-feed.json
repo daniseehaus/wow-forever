@@ -187,17 +187,17 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": "Mitglied",
-   "level": 23,
-   "lastLogin": 1794411119000,
+   "level": 25,
+   "lastLogin": 1794435282000,
    "items": {
     "HEAD": 279391,
     "SHOULDER": 5404,
     "SHIRT": 2105,
-    "CHEST": 5317,
+    "CHEST": 271212,
     "WAIST": 4246,
     "LEGS": 5961,
     "FEET": 252425,
-    "WRIST": 7281,
+    "WRIST": 279875,
     "HANDS": 5299,
     "FINGER_1": 281268,
     "FINGER_2": 5351,
@@ -210,11 +210,11 @@
     "HEAD": 23,
     "SHOULDER": 23,
     "SHIRT": 1,
-    "CHEST": 25,
+    "CHEST": 22,
     "WAIST": 16,
     "LEGS": 23,
     "FEET": 15,
-    "WRIST": 14,
+    "WRIST": 24,
     "HANDS": 20,
     "FINGER_1": 9,
     "FINGER_2": 20,
@@ -230,17 +230,18 @@
     "First Aid": 80
    },
    "achs": [
-    728
+    728,
+    62003
    ],
    "names": {
     "HEAD": "Stirnband aus Taurajo",
     "SHOULDER": "Schlangen-Schultern",
     "SHIRT": "Rohlingshemd",
-    "CHEST": "Trockenmoostunika",
+    "CHEST": "Blutige Brustwickel",
     "WAIST": "Feiner Ledergürtel",
     "LEGS": "Dunkle Lederhose",
     "FEET": "Dunkle Lederstiefel",
-    "WRIST": "Leichte Lederarmschienen",
+    "WRIST": "Ersatzteilbindungen",
     "HANDS": "Handschuhe des Mondes",
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Kopfgeldjägerring",
@@ -1201,6 +1202,36 @@
    "type": "prof",
    "name": "Tailoring",
    "skill": 86
+  },
+  {
+   "t": 1794435120000,
+   "key": "bernhard-backstab",
+   "type": "achievement",
+   "id": 62003,
+   "name": "Novize: Schurke",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Schurken.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626005.jpg"
+  },
+  {
+   "t": 1794435282000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 23,
+   "to": 25,
+   "max": false
+  },
+  {
+   "t": 1794435282000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 271212,
+   "name": "Blutige Brustwickel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133684.jpg",
+   "slot": "Brust",
+   "ilvl": 22,
+   "prev": 25,
+   "prevName": "Trockenmoostunika"
   }
  ]
 }
