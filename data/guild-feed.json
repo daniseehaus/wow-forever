@@ -329,8 +329,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 22,
-   "lastLogin": 1794388864000,
+   "level": 23,
+   "lastLogin": 1794393446000,
    "items": {
     "NECK": 281265,
     "SHIRT": 6125,
@@ -340,7 +340,7 @@
     "FEET": 281285,
     "WRIST": 14147,
     "HANDS": 271208,
-    "FINGER_1": 3235,
+    "FINGER_1": 281673,
     "FINGER_2": 279867,
     "BACK": 14149,
     "MAIN_HAND": 251533
@@ -354,13 +354,13 @@
     "FEET": 11,
     "WRIST": 18,
     "HANDS": 22,
-    "FINGER_1": 20,
+    "FINGER_1": 28,
     "FINGER_2": 23,
     "BACK": 18,
     "MAIN_HAND": 24
    },
    "profs": {
-    "Mining": 100,
+    "Mining": 103,
     "Blacksmithing": 72,
     "Cooking": 1,
     "First Aid": 40
@@ -378,7 +378,7 @@
     "FEET": "Flossenschuppensohlen",
     "WRIST": "Höhlenbewohner-Armschienen",
     "HANDS": "Griff der Angst",
-    "FINGER_1": "Ring der Verachtung",
+    "FINGER_1": "Schleife der Aufopferung",
     "FINGER_2": "Siegelring des getöteten Barons",
     "BACK": "Unterirdisches Cape",
     "MAIN_HAND": "Großaxt des Verlassenen"
@@ -1058,6 +1058,14 @@
    "type": "level",
    "from": 14,
    "to": 15,
+   "max": false
+  },
+  {
+   "t": 1794393446000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 22,
+   "to": 23,
    "max": false
   }
  ]
