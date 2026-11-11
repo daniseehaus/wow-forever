@@ -258,7 +258,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 35,
-   "lastLogin": 1794351913000,
+   "lastLogin": 1794438001000,
    "items": {
     "HEAD": 3732,
     "NECK": 281265,
@@ -275,7 +275,7 @@
     "TRINKET_1": 280766,
     "TRINKET_2": 276895,
     "BACK": 6314,
-    "MAIN_HAND": 267369
+    "MAIN_HAND": 271766
    },
    "ilvls": {
     "HEAD": 30,
@@ -293,10 +293,10 @@
     "TRINKET_1": 33,
     "TRINKET_2": 30,
     "BACK": 27,
-    "MAIN_HAND": 31
+    "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 128,
+    "Mining": 133,
     "Blacksmithing": 73,
     "Cooking": 63,
     "First Aid": 122
@@ -324,7 +324,7 @@
     "TRINKET_1": "Tränketasche",
     "TRINKET_2": "Transformativer Kokon",
     "BACK": "Wolfmeister Cape",
-    "MAIN_HAND": "Wolfsbann"
+    "MAIN_HAND": "Wuchthammer"
    }
   },
   "lokk-eidlöter": {
@@ -1232,6 +1232,19 @@
    "ilvl": 22,
    "prev": 25,
    "prevName": "Trockenmoostunika"
+  },
+  {
+   "t": 1794438001000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 271766,
+   "name": "Wuchthammer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133046.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 33,
+   "prev": 31,
+   "prevName": "Wolfsbann"
   }
  ]
 }
