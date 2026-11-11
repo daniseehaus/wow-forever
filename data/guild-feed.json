@@ -81,7 +81,7 @@
    "classId": 7,
    "rank": "Mitglied",
    "level": 14,
-   "lastLogin": 1794402329000,
+   "lastLogin": 1794405536000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 15010,
@@ -109,8 +109,8 @@
     "RANGED": 10
    },
    "profs": {
-    "Alchemy": 88,
-    "Herbalism": 101,
+    "Alchemy": 93,
+    "Herbalism": 105,
     "Cooking": 21
    },
    "achs": [
