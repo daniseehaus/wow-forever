@@ -473,6 +473,13 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
 
 /* Crafting: eine Liste gleich großer Zeilen, die sich auf zwei oder drei Spalten verteilt. Links Hersteller → Empfänger,
    rechts das Item und der Unterschied der wichtigsten Werte (grün mehr, rot weniger). Blass, was erst bald geht. */
+/* Filter über der Liste: Spieler links (in Klassenfarbe, wenn gewählt), Richtung rechts. */
+.craft-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 14px; }
+.craft-players, .craft-dir { display: flex; flex-wrap: wrap; gap: 6px; }
+.craft-dir { margin-left: auto; }
+.craft-pl small { margin-left: 6px; color: var(--dim); }
+.craft-pl[aria-pressed="true"] { color: var(--cls); border-color: color-mix(in srgb, var(--cls) 50%, transparent); background: color-mix(in srgb, var(--cls) 12%, transparent); }
+.craft-more { margin-top: 12px; }
 .craft-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 8px 14px; }
 .craft { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: center; gap: 12px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.035); outline: none; transition: background .15s; }
 .craft:hover, .craft:focus-visible { background: rgba(255,255,255,.07); }

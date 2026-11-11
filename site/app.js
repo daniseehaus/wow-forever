@@ -7,7 +7,7 @@ const BAND_TEX = '<i class="band-tex" aria-hidden="true"></i>';
 // Das Namensband startet sofort beim Klick und deckt den Aufbau des Loadouts ab.
 const SWAP_MS = 1700;
 
-const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 3, routeAll: false, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
+const state = { data: null, talents: {}, sessions: null, feed: { events: [] }, questLog: [], feedDays: 3, routeAll: false, craft: { who: null, dir: 'to', all: false }, recapIdx: null, chars: [], selected: null, use3d: true, tileViewers: [] };
 
 let pref3d = null;
 // Das Loadout startet eingeklappt. Erst ein Klick auf eine Kachel wählt einen Charakter (select).
@@ -585,16 +585,26 @@ const WEAPON_SKILLS = {
   1: [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 15, 16, 18], 2: [0, 1, 4, 5, 6, 7, 8], 3: [0, 1, 2, 3, 6, 7, 8, 10, 13, 15, 16, 18],
   4: [2, 3, 4, 7, 13, 15, 16, 18], 5: [4, 10, 15, 19], 7: [0, 1, 4, 5, 10, 13, 15], 8: [7, 10, 15, 19], 9: [7, 10, 15, 19], 11: [4, 5, 10, 13, 15],
 };
-// Gewichte der Werte je Spielweise: Wie viel ist 1 Punkt wert, gemessen an 1 Punkt des Hauptwerts. Grobe Erfahrungswerte fürs Leveln.
-// Rüstung zählt wenig, Waffenschaden pro Sekunde (dps) viel. Unbekannte Werte zählen nicht.
+// Gewichte der Werte je Spielweise: Wie viel ist 1 Punkt wert, gemessen an 1 Punkt des Hauptwerts. Grobe Erfahrungswerte fürs Leveln,
+// angelehnt an die Classic-Umrechnung (Krieger: 1 Stärke = 2 AP, Jäger und Schurke: 1 Beweglichkeit = 2 AP plus Krit).
+// Rüstung zählt wenig. Waffenschaden pro Sekunde: dps für Nahkampfwaffen, rdps für den Fernkampf-Slot (Bogen, Gewehr, Zauberstab).
+// Krieger, Paladine und Schurken ziehen mit der Fernkampfwaffe nur, Jäger machen damit ihren Schaden, Stoffträger nutzen den Zauberstab.
+// Unbekannte Werte und Effekte (Krit, Trefferchance, „Bei Treffer“) zählen nicht.
 const STAT_WEIGHTS = {
-  str: { STRENGTH: 1, AGILITY: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.05, SPIRIT: 0.05, armor: 0.01, dps: 3 },
-  tank: { STRENGTH: 0.7, AGILITY: 0.6, STAMINA: 1, ATTACK_POWER: 0.3, INTELLECT: 0.05, SPIRIT: 0.05, EXTRA_ARMOR: 0.05, armor: 0.04, dps: 2 },
-  agi: { AGILITY: 1, STRENGTH: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.1, SPIRIT: 0.05, armor: 0.01, dps: 3 },
-  hunter: { AGILITY: 1, INTELLECT: 0.4, STAMINA: 0.5, ATTACK_POWER: 0.45, STRENGTH: 0.1, SPIRIT: 0.1, armor: 0.01, dps: 1.5 },
-  caster: { INTELLECT: 1, SPIRIT: 0.6, STAMINA: 0.5, SPELL_POWER: 1.2, SPELL_DAMAGE_DONE: 1.2, SPELL_HEALING_DONE: 0.3, armor: 0.005, dps: 0.2 },
-  healer: { INTELLECT: 1, SPIRIT: 0.8, STAMINA: 0.4, SPELL_HEALING_DONE: 1, SPELL_POWER: 1, SPELL_DAMAGE_DONE: 0.3, armor: 0.005, dps: 0.2 },
+  str: { STRENGTH: 1, AGILITY: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.05, SPIRIT: 0.05, armor: 0.01, dps: 3, rdps: 0.2 },
+  tank: { STRENGTH: 0.7, AGILITY: 0.6, STAMINA: 1, ATTACK_POWER: 0.3, INTELLECT: 0.05, SPIRIT: 0.05, EXTRA_ARMOR: 0.05, armor: 0.04, dps: 2, rdps: 0.2 },
+  agi: { AGILITY: 1, STRENGTH: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.1, SPIRIT: 0.05, armor: 0.01, dps: 3, rdps: 0.3 },
+  hunter: { AGILITY: 1, INTELLECT: 0.4, STAMINA: 0.5, ATTACK_POWER: 0.45, STRENGTH: 0.1, SPIRIT: 0.1, armor: 0.01, dps: 0.7, rdps: 3 },
+  caster: { INTELLECT: 1, SPIRIT: 0.6, STAMINA: 0.5, SPELL_POWER: 1.2, SPELL_DAMAGE_DONE: 1.2, SPELL_HEALING_DONE: 0.3, armor: 0.005, dps: 0.2, rdps: 1 },
+  healer: { INTELLECT: 1, SPIRIT: 0.8, STAMINA: 0.4, SPELL_HEALING_DONE: 1, SPELL_POWER: 1, SPELL_DAMAGE_DONE: 0.3, armor: 0.005, dps: 0.2, rdps: 0.5 },
 };
+// Fernkampf-Slot: angelegt (slot) oder herstellbar (inv).
+const isRanged = (it) => it?.slot === 'RANGED' || ['RANGED', 'RANGEDRIGHT', 'THROWN'].includes(it?.inv);
+// Gewichte für ein Item: dps je nach Slot aus dps oder rdps.
+function weightsFor(c, it) {
+  const w = STAT_WEIGHTS[playstyle(c)];
+  return isRanged(it) ? { ...w, dps: w.rdps } : w;
+}
 const SLOT_LABELS = Object.fromEntries([...SLOTS_LEFT, ...SLOTS_RIGHT]);
 // Diese Werte zeigt die Seite als Unterschied. Rüstung nur, wenn sie für die Spielweise zählt.
 const STAT_SHORT = { STRENGTH: 'Stä', AGILITY: 'Bew', STAMINA: 'Aus', INTELLECT: 'Int', SPIRIT: 'Wil', ATTACK_POWER: 'AP', SPELL_POWER: 'ZM', SPELL_DAMAGE_DONE: 'ZS', SPELL_HEALING_DONE: 'Heil', armor: 'Rüst', dps: 'DPS' };
@@ -615,7 +625,7 @@ function playstyle(c) {
 function itemScore(c, it) {
   if (!it) return 0;
   if (!it.stats) return it.ilvl ?? 0;
-  const w = STAT_WEIGHTS[playstyle(c)];
+  const w = weightsFor(c, it);
   let score = (it.armor ?? 0) * (w.armor ?? 0) + (it.dps ?? 0) * (w.dps ?? 0);
   for (const [k, v] of Object.entries(it.stats)) score += v * (w[k] ?? 0);
   return score;
@@ -623,7 +633,7 @@ function itemScore(c, it) {
 
 // Unterschied neu minus alt je Wert, nur Werte, die für die Spielweise zählen. Größter Gewinn zuerst.
 function statDiff(c, neu, alt) {
-  const w = STAT_WEIGHTS[playstyle(c)];
+  const w = weightsFor(c, neu);
   const keys = new Set([...Object.keys(neu.stats ?? {}), ...Object.keys(alt?.stats ?? {}), 'armor', 'dps']);
   const out = [];
   for (const k of keys) {
@@ -706,7 +716,8 @@ function craftUpgrades() {
 }
 
 // Crafting als eine Liste gleich großer Zeilen. Jede Zeile beginnt mit dem Hersteller, dann der Empfänger: „Bernhard → Lokk“.
-// Sortiert nach Hersteller, dann nach Gewinn. Verbesserungen, die mehrere bekommen können (Rüstungsset), stehen einmal mit allen Empfängern.
+// Sortiert nach Gewinn (größtes Upgrade zuerst), „bald“ und Verbesserungen am Ende.
+// Verbesserungen, die mehrere bekommen können (Rüstungsset), stehen einmal mit allen Empfängern.
 function craftRows() {
   const order = new Map(state.chars.map((c, i) => [c.key, i]));
   const rows = [];
@@ -725,18 +736,44 @@ function craftRows() {
   // Wer selbst herstellen kann, steht als Hersteller vorne. So gruppiert die Liste nach dem, der die Arbeit macht.
   const lead = (r) => (r.kind === 'item' && r.by.includes(r.to[0]) ? r.to[0] : [...r.by].sort((x, y) => order.get(x) - order.get(y))[0]);
   return rows.map((r) => ({ ...r, lead: lead(r) }))
-    .sort((a, b) => order.get(a.lead) - order.get(b.lead) || a.soon - b.soon || (a.kind === 'enhance') - (b.kind === 'enhance') || b.gain - a.gain);
+    .sort((a, b) => a.soon - b.soon || (a.kind === 'enhance') - (b.kind === 'enhance') || b.gain - a.gain || order.get(a.lead) - order.get(b.lead));
 }
 
+// Filter: ein Spieler, dann „bekommt“ (Empfänger) oder „stellt her“ (Hersteller). Ohne Filter nur die größten Upgrades, der Rest auf Klick.
+// Die Seite merkt sich die Auswahl nicht (wie beim Loadout).
+const CRAFT_TOP = 8;
 function renderCrafts() {
-  const rows = craftRows();
-  const now = rows.filter((r) => !r.soon).length;
-  document.getElementById('craft-count').textContent = now ? plural(now, 'Upgrade', 'Upgrades') : 'nichts offen';
+  const all = craftRows();
+  const f = state.craft;
   const el = document.getElementById('crafts');
-  if (!rows.length) {
+  if (!all.length) {
+    document.getElementById('craft-count').textContent = 'nichts offen';
     el.innerHTML = `<p class="craft-none">${(state.data.crafts ?? []).length ? 'Im Moment kann niemand im Squad einen Slot verbessern.' : 'Noch kann niemand im Squad tragbare Ausrüstung herstellen.'}</p>`;
     return;
   }
+  const side = (r) => (f.dir === 'by' ? r.by : r.to);
+  let rows = f.who ? all.filter((r) => side(r).includes(f.who)) : all;
+  // Im Blick „stellt her“ steht der gewählte Spieler als Hersteller vorne. Im Blick „bekommt“ nennt ein Rüstungsset nur ihn als Empfänger.
+  if (f.who && f.dir === 'by') rows = rows.map((r) => ({ ...r, lead: f.who }));
+  if (f.who && f.dir === 'to') rows = rows.map((r) => (r.kind === 'enhance' ? { ...r, to: [f.who] } : r));
+  const now = rows.filter((r) => !r.soon).length;
+  document.getElementById('craft-count').textContent = now ? plural(now, 'Upgrade', 'Upgrades') : 'nichts offen';
+  const hidden = !f.who && !f.all ? Math.max(0, rows.length - CRAFT_TOP) : 0;
+  const shown = hidden ? rows.slice(0, CRAFT_TOP) : rows;
+
+  const squadChars = state.chars.filter((c) => c.level);
+  const nTo = (key) => all.filter((r) => !r.soon && r.to.includes(key)).length;
+  const filter = `<div class="craft-filter">
+    <div class="craft-players" role="group" aria-label="Spieler">
+      <button type="button" class="chip-btn" data-who="" aria-pressed="${!f.who}">Alle</button>
+      ${squadChars.map((c) => `<button type="button" class="chip-btn craft-pl" data-who="${esc(c.key)}" style="--cls:${classColor(c)}" aria-pressed="${f.who === c.key}">${esc(c.name)}<small>${nTo(c.key)}</small></button>`).join('')}
+    </div>
+    ${f.who ? `<div class="craft-dir" role="group" aria-label="Richtung">
+      <button type="button" class="chip-btn" data-dir="to" aria-pressed="${f.dir === 'to'}">bekommt</button>
+      <button type="button" class="chip-btn" data-dir="by" aria-pressed="${f.dir === 'by'}">stellt her</button>
+    </div>` : ''}
+  </div>`;
+
   const tag = (key) => { const c = charByKey(key); return `<span class="tag" style="--cls:${classColor(c)}">${esc(c.name ?? key)}</span>`; };
   const icon = (it) => link(it, `<img class="ico sm b-${(it.quality || 'COMMON').toLowerCase()}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">`);
   const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
@@ -753,6 +790,7 @@ function renderCrafts() {
     const q = (it.quality || 'COMMON').toLowerCase();
     const tip = [it.name, [it.subName, `iLvl ${it.ilvl}`, `ab Level ${it.req}`].filter(Boolean).join(' · '),
       r.diff.length ? `Gegenüber jetzt: ${r.diff.map(([k, d]) => `${fmt(d)} ${statName(k)}`).join(', ')}` : '',
+      `Upgrade-Wert: etwa ${r.gain.toLocaleString('de-DE', { maximumFractionDigits: 1 })} Punkte Hauptwert`,
       r.cur ? `Jetzt: ${r.cur.name} (iLvl ${r.cur.ilvl ?? '?'})` : 'Jetzt: leer', `Material: ${r.craft.reagents.map(([n, k]) => `${k}× ${n}`).join(', ')}`,
       r.others.length ? `Auch möglich: ${r.others.map((o) => o.craft.item.name).join(', ')}` : ''].filter(Boolean).join('\n');
     const chips = r.diff.slice(0, 2).map(([k, d]) => `<span class="${d > 0 ? 'up' : 'down'}">${fmt(d)} ${STAT_SHORT[k] ?? statName(k)}</span>`).join('');
@@ -772,7 +810,18 @@ function renderCrafts() {
       <span class="craft-item">${ico}<span class="craft-txt"><span>${esc(best.name)}</span>
         <small>${esc(slots.join(', '))}${r.opts.length > 1 ? ` · ${plural(r.opts.length - 1, 'weitere Möglichkeit', 'weitere Möglichkeiten')}` : ''}</small></span></span></div>`;
   };
-  el.innerHTML = `<div class="craft-list">${rows.map((r) => (r.kind === 'item' ? itemRow(r) : enhanceRow(r))).join('')}</div>`;
+  const who0 = f.who ? charByKey(f.who).name : '';
+  const empty = `<p class="craft-none">${f.dir === 'by' ? `${esc(who0)} kann im Moment niemandem etwas Besseres herstellen.` : `Für ${esc(who0)} kann im Moment niemand etwas Besseres herstellen.`}</p>`;
+  el.innerHTML = filter + (shown.length ? `<div class="craft-list">${shown.map((r) => (r.kind === 'item' ? itemRow(r) : enhanceRow(r))).join('')}</div>` : empty)
+    + (hidden || (f.all && !f.who && rows.length > CRAFT_TOP)
+      ? `<button type="button" class="chip-btn craft-more">${f.all ? 'Nur die größten Upgrades zeigen' : `Alle zeigen · noch ${hidden}`}</button>` : '');
+  el.querySelectorAll('[data-who]').forEach((b) => b.addEventListener('click', () => {
+    const key = b.dataset.who || null;
+    state.craft.who = key && key !== f.who ? key : null;
+    renderCrafts();
+  }));
+  el.querySelectorAll('[data-dir]').forEach((b) => b.addEventListener('click', () => { state.craft.dir = b.dataset.dir; renderCrafts(); }));
+  el.querySelector('.craft-more')?.addEventListener('click', () => { state.craft.all = !state.craft.all; renderCrafts(); });
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
 }
