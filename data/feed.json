@@ -38,12 +38,12 @@
   },
   "orkward-orkbert": {
    "level": 15,
-   "lastLogin": 1794396295000,
+   "lastLogin": 1794412841000,
    "items": {
     "SHIRT": 127,
     "CHEST": 4243,
-    "WAIST": 4237,
-    "LEGS": 4242,
+    "WAIST": 4246,
+    "LEGS": 7282,
     "FEET": 252425,
     "WRIST": 7281,
     "HANDS": 4239,
@@ -56,8 +56,8 @@
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 17,
-    "WAIST": 10,
-    "LEGS": 15,
+    "WAIST": 16,
+    "LEGS": 19,
     "FEET": 15,
     "WRIST": 14,
     "HANDS": 13,
@@ -70,8 +70,8 @@
    "names": {
     "SHIRT": "Fallenstellerhemd",
     "CHEST": "Feine Ledertunika",
-    "WAIST": "Handgenähter Ledergürtel",
-    "LEGS": "Geprägte Lederhose",
+    "WAIST": "Feiner Ledergürtel",
+    "LEGS": "Leichte Lederhose",
     "FEET": "Dunkle Lederstiefel",
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
@@ -82,9 +82,9 @@
     "AMMO": "Rauer Pfeil"
    },
    "profs": {
-    "Leatherworking": 72,
-    "Skinning": 112,
-    "Cooking": 26,
+    "Leatherworking": 79,
+    "Skinning": 115,
+    "Cooking": 43,
     "Fishing": 1,
     "First Aid": 12
    },
@@ -1114,6 +1114,39 @@
    "type": "prof",
    "name": "Mining",
    "skill": 76
+  },
+  {
+   "t": 1794412841000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 4246,
+   "name": "Feiner Ledergürtel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132493.jpg",
+   "slot": "Taille",
+   "ilvl": 16,
+   "prev": 10,
+   "prevName": "Handgenähter Ledergürtel"
+  },
+  {
+   "t": 1794412841000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 7282,
+   "name": "Leichte Lederhose",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134582.jpg",
+   "slot": "Beine",
+   "ilvl": 19,
+   "prev": 15,
+   "prevName": "Geprägte Lederhose"
+  },
+  {
+   "t": 1794412841000,
+   "key": "orkward-orkbert",
+   "type": "prof",
+   "name": "Leatherworking",
+   "skill": 79
   }
  ]
 }
