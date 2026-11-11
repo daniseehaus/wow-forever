@@ -257,17 +257,17 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 12,
-   "lastLogin": 1794266796000,
+   "level": 14,
+   "lastLogin": 1794356818000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
     "WAIST": 286731,
     "LEGS": 3473,
-    "FEET": 15473,
+    "FEET": 281285,
     "WRIST": 281272,
     "HANDS": 1734,
-    "BACK": 4944,
+    "BACK": 286744,
     "MAIN_HAND": 6214
    },
    "ilvls": {
@@ -275,10 +275,10 @@
     "CHEST": 10,
     "WAIST": 12,
     "LEGS": 13,
-    "FEET": 10,
+    "FEET": 11,
     "WRIST": 10,
     "HANDS": 11,
-    "BACK": 12,
+    "BACK": 13,
     "MAIN_HAND": 16
    },
    "names": {
@@ -286,10 +286,10 @@
     "CHEST": "Raue Kupferweste",
     "WAIST": "Aggors umgearbeiteter Gürtel",
     "LEGS": "Runenverzierte Kupferhose",
-    "FEET": "Stürmerstiefel",
+    "FEET": "Flossenschuppensohlen",
     "WRIST": "Brogs Freundschaftsband",
     "HANDS": "Abgenutzte Panzerhandschuhe",
-    "BACK": "Handgenähter Umhang",
+    "BACK": "Dreifach genähtes Fleisch",
     "MAIN_HAND": "Schwerer Kupferschlägel"
    },
    "profs": {
@@ -1000,6 +1000,40 @@
    "name": "First Aid",
    "skill": 12,
    "learned": true
+  },
+  {
+   "t": 1794356818000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 12,
+   "to": 14,
+   "max": false
+  },
+  {
+   "t": 1794356818000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 281285,
+   "name": "Flossenschuppensohlen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132535.jpg",
+   "slot": "Füße",
+   "ilvl": 11,
+   "prev": 10,
+   "prevName": "Stürmerstiefel"
+  },
+  {
+   "t": 1794356818000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286744,
+   "name": "Dreifach genähtes Fleisch",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133759.jpg",
+   "slot": "Rücken",
+   "ilvl": 13,
+   "prev": 12,
+   "prevName": "Handgenähter Umhang"
   }
  ]
 }

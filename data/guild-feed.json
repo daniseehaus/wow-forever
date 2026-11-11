@@ -137,17 +137,17 @@
    "surname": "Plattenpapst",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 12,
-   "lastLogin": 1794266796000,
+   "level": 14,
+   "lastLogin": 1794356818000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
     "WAIST": 286731,
     "LEGS": 3473,
-    "FEET": 15473,
+    "FEET": 281285,
     "WRIST": 281272,
     "HANDS": 1734,
-    "BACK": 4944,
+    "BACK": 286744,
     "MAIN_HAND": 6214
    },
    "ilvls": {
@@ -155,10 +155,10 @@
     "CHEST": 10,
     "WAIST": 12,
     "LEGS": 13,
-    "FEET": 10,
+    "FEET": 11,
     "WRIST": 10,
     "HANDS": 11,
-    "BACK": 12,
+    "BACK": 13,
     "MAIN_HAND": 16
    },
    "profs": {
@@ -174,10 +174,10 @@
     "CHEST": "Raue Kupferweste",
     "WAIST": "Aggors umgearbeiteter Gürtel",
     "LEGS": "Runenverzierte Kupferhose",
-    "FEET": "Stürmerstiefel",
+    "FEET": "Flossenschuppensohlen",
     "WRIST": "Brogs Freundschaftsband",
     "HANDS": "Abgenutzte Panzerhandschuhe",
-    "BACK": "Handgenähter Umhang",
+    "BACK": "Dreifach genähtes Fleisch",
     "MAIN_HAND": "Schwerer Kupferschlägel"
    }
   },
@@ -1042,6 +1042,14 @@
    "type": "level",
    "from": 34,
    "to": 35,
+   "max": false
+  },
+  {
+   "t": 1794356818000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 12,
+   "to": 14,
    "max": false
   }
  ]
