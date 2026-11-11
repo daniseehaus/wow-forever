@@ -138,33 +138,33 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 14,
-   "lastLogin": 1794356818000,
+   "lastLogin": 1794401832000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
-    "WAIST": 286731,
-    "LEGS": 3473,
-    "FEET": 281285,
-    "WRIST": 281272,
-    "HANDS": 1734,
+    "WAIST": 2857,
+    "LEGS": 9789,
+    "FEET": 6350,
+    "WRIST": 2854,
+    "HANDS": 9787,
     "BACK": 286744,
     "MAIN_HAND": 6214
    },
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 10,
-    "WAIST": 12,
-    "LEGS": 13,
-    "FEET": 11,
-    "WRIST": 10,
-    "HANDS": 11,
+    "WAIST": 18,
+    "LEGS": 19,
+    "FEET": 18,
+    "WRIST": 19,
+    "HANDS": 19,
     "BACK": 13,
     "MAIN_HAND": 16
    },
    "profs": {
-    "Mining": 71,
+    "Mining": 76,
     "Engineering": 80,
-    "Cooking": 20,
+    "Cooking": 36,
     "Fishing": 1,
     "First Aid": 34
    },
@@ -172,11 +172,11 @@
    "names": {
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Raue Kupferweste",
-    "WAIST": "Aggors umgearbeiteter Gürtel",
-    "LEGS": "Runenverzierte Kupferhose",
-    "FEET": "Flossenschuppensohlen",
-    "WRIST": "Brogs Freundschaftsband",
-    "HANDS": "Abgenutzte Panzerhandschuhe",
+    "WAIST": "Runenverzierter Kupfergürtel",
+    "LEGS": "Räuber-Beinschützer der Macht",
+    "FEET": "Raue bronzene Stiefel",
+    "WRIST": "Runenverzierte Kupferarmschienen",
+    "HANDS": "Räuber-Stulpen des Wals",
     "BACK": "Dreifach genähtes Fleisch",
     "MAIN_HAND": "Schwerer Kupferschlägel"
    }
@@ -1085,6 +1085,13 @@
    "type": "prof",
    "name": "Skinning",
    "skill": 152
+  },
+  {
+   "t": 1794401832000,
+   "key": "pavel-plattenpapst",
+   "type": "prof",
+   "name": "Mining",
+   "skill": 76
   }
  ]
 }
