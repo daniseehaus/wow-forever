@@ -40,6 +40,7 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-11: Listen laufen spaltenweise (erst links runter, dann rechts) und zeigen links ihren Sortierwert: Aktivität die Uhrzeit, Crafting den Upgrade-Wert, Quests die Anzahl je Zone, Leveling die Levelspanne. Crafting zeigt altes Item → neues Item, der Tooltip nur die beiden Items ohne Material.
 - 2026-11-11: Crafting sortiert nach dem größten Upgrade und hat einen Spielerfilter („bekommt“ oder „stellt her“). Ohne Filter stehen nur die 8 größten Upgrades da, der Rest auf Klick. Fernkampfwaffen zählen nur für Jäger voll, für Stoffträger der Zauberstab, für Nahkämpfer kaum.
 - 2026-11-10: Leveling: Die Zone mit den meisten offenen Quests der Gruppe gilt als aktuelle Zone und bleibt der Tipp, solange das Level passt. Zonen, die nicht über ihre Stufe hinausgehen (Silberwald neben Brachland), fallen als Tipp weg.
 - 2026-11-10: Session ohne „Teilen“ und ohne Streifen oben (auch Loadout). Datum und Schluss stehen im Kopf des Abschnitts. Die Kopfleiste zeigt keinen Untertitel und keinen Sync mehr, der Stand steht in der Fußzeile.

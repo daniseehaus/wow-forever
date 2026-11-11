@@ -775,7 +775,10 @@ function renderCrafts() {
   </div>`;
 
   const tag = (key) => { const c = charByKey(key); return `<span class="tag" style="--cls:${classColor(c)}">${esc(c.name ?? key)}</span>`; };
-  const icon = (it) => link(it, `<img class="ico sm b-${(it.quality || 'COMMON').toLowerCase()}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">`);
+  // Die Icons verlinken auf Wowhead, der Wowhead-Tooltip ist hier aus. Den Vergleich zeigt der eigene Tooltip der Zeile.
+  const icon = (it) => link(it, `<img class="ico sm b-${(it.quality || 'COMMON').toLowerCase()}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">`)
+    .replace('<a ', '<a data-disable-wowhead-tooltip="true" ');
+  const val = (r) => `<span class="craft-val">${r.kind === 'item' ? `+${r.gain.toLocaleString('de-DE', { maximumFractionDigits: 1 })}` : ''}</span>`;
   const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
   // Hersteller links, Empfänger rechts vom Pfeil: „Bernhard → Lokk“, „Lokk → selbst“, „Bernhard → alle“ (alle im Squad).
   const squad = state.chars.filter((c) => c.level).length;
@@ -785,18 +788,16 @@ function renderCrafts() {
       : r.to.length === squad && squad > 2 ? '<span class="tag craft-all">alle</span>' : r.to.map(tag).join('');
     return `<span class="craft-who">${tag(r.lead)}<span class="craft-arrow">→</span>${to}</span>`;
   };
-  const itemRow = (r) => {
+  const itemRow = (r, i) => {
     const it = r.craft.item;
     const q = (it.quality || 'COMMON').toLowerCase();
-    const tip = [it.name, [it.subName, `iLvl ${it.ilvl}`, `ab Level ${it.req}`].filter(Boolean).join(' · '),
-      r.diff.length ? `Gegenüber jetzt: ${r.diff.map(([k, d]) => `${fmt(d)} ${statName(k)}`).join(', ')}` : '',
-      `Upgrade-Wert: etwa ${r.gain.toLocaleString('de-DE', { maximumFractionDigits: 1 })} Punkte Hauptwert`,
-      r.cur ? `Jetzt: ${r.cur.name} (iLvl ${r.cur.ilvl ?? '?'})` : 'Jetzt: leer', `Material: ${r.craft.reagents.map(([n, k]) => `${k}× ${n}`).join(', ')}`,
-      r.others.length ? `Auch möglich: ${r.others.map((o) => o.craft.item.name).join(', ')}` : ''].filter(Boolean).join('\n');
+    const key = `html:craft-${i}`;
+    tipHtml.set(key, `${tipItem(r.cur, 'Jetzt', r.cur ? SLOT_LABELS[r.slot] ?? r.slot : '')}<span class="tc-arrow">→</span>${tipItem(it, 'Neu', it.subName)}`);
     const chips = r.diff.slice(0, 2).map(([k, d]) => `<span class="${d > 0 ? 'up' : 'down'}">${fmt(d)} ${STAT_SHORT[k] ?? statName(k)}</span>`).join('');
-    return `<div class="craft${r.soon ? ' soon' : ''}" tabindex="0" data-tip="${esc(tip)}">
-      ${who(r)}
-      <span class="craft-item">${icon(it)}<span class="craft-txt"><span class="q-${q}">${esc(it.name)}</span>
+    const old = r.cur ? `<span class="craft-old">${icon(r.cur)}</span>` : '<span class="craft-old empty" aria-label="leer"></span>';
+    return `<div class="craft${r.soon ? ' soon' : ''}" tabindex="0" data-tip="${key}">
+      ${val(r)}${who(r)}
+      <span class="craft-item">${old}<span class="craft-arrow">→</span>${icon(it)}<span class="craft-txt"><span class="q-${q}">${esc(it.name)}</span>
         <small>${esc(SLOT_LABELS[r.slot] ?? r.slot)}${r.soon ? ` · ab Level ${it.req}` : ''}</small></span><span class="craft-diff">${chips}</span></span></div>`;
   };
   const enhanceRow = (r) => {
@@ -806,13 +807,13 @@ function renderCrafts() {
       ...r.opts.slice(0, 6).map((o) => `${o.name}${o.desc ? `: ${o.desc.replace(/^Benutzen: /, '').replace(/ \(.*?Abklingzeit\)/, '')}` : ''}`)].join('\n');
     const ico = best.icon ? icon(best) : `<span class="ench-ico">${feedIcon(FEED_ICONS.prof.Verzauberkunst)}</span>`;
     return `<div class="craft ench" tabindex="0" data-tip="${esc(tip)}">
-      ${who(r)}
-      <span class="craft-item">${ico}<span class="craft-txt"><span>${esc(best.name)}</span>
+      ${val(r)}${who(r)}
+      <span class="craft-item"><span class="craft-old"></span><span></span>${ico}<span class="craft-txt"><span>${esc(best.name)}</span>
         <small>${esc(slots.join(', '))}${r.opts.length > 1 ? ` · ${plural(r.opts.length - 1, 'weitere Möglichkeit', 'weitere Möglichkeiten')}` : ''}</small></span></span></div>`;
   };
   const who0 = f.who ? charByKey(f.who).name : '';
   const empty = `<p class="craft-none">${f.dir === 'by' ? `${esc(who0)} kann im Moment niemandem etwas Besseres herstellen.` : `Für ${esc(who0)} kann im Moment niemand etwas Besseres herstellen.`}</p>`;
-  el.innerHTML = filter + (shown.length ? `<div class="craft-list">${shown.map((r) => (r.kind === 'item' ? itemRow(r) : enhanceRow(r))).join('')}</div>` : empty)
+  el.innerHTML = filter + (shown.length ? `<div class="craft-list">${shown.map((r, i) => (r.kind === 'item' ? itemRow(r, i) : enhanceRow(r))).join('')}</div>` : empty)
     + (hidden || (f.all && !f.who && rows.length > CRAFT_TOP)
       ? `<button type="button" class="chip-btn craft-more">${f.all ? 'Nur die größten Upgrades zeigen' : `Alle zeigen · noch ${hidden}`}</button>` : '');
   el.querySelectorAll('[data-who]').forEach((b) => b.addEventListener('click', () => {
@@ -824,6 +825,20 @@ function renderCrafts() {
   el.querySelector('.craft-more')?.addEventListener('click', () => { state.craft.all = !state.craft.all; renderCrafts(); });
   el.querySelectorAll('img').forEach(imgFallback);
   window.$WowheadPower?.refreshLinks?.();
+}
+
+// Ein Item im Vergleichs-Tooltip: Name in Qualitätsfarbe, Art und Itemlevel, Rüstung, Schaden, Werte und Verzauberung.
+function tipItem(it, label, kind) {
+  if (!it) return `<div class="tc-item"><small>${label}</small><b class="tc-empty">leer</b></div>`;
+  const n = (v, d = 0) => v.toLocaleString('de-DE', { maximumFractionDigits: d });
+  const lines = [
+    it.armor ? `${n(it.armor)} Rüstung` : '',
+    it.dps ? `${n(it.dps, 1)} Schaden pro Sekunde` : '',
+    ...Object.entries(it.stats ?? {}).map(([k, v]) => `${v > 0 ? '+' : '−'}${n(Math.abs(v))} ${statName(k)}`),
+  ].filter(Boolean);
+  return `<div class="tc-item"><small>${label}</small><b class="q-${(it.quality || 'COMMON').toLowerCase()}">${esc(it.name)}</b>
+    <span class="tc-meta">${esc([kind, it.ilvl ? `iLvl ${it.ilvl}` : ''].filter(Boolean).join(' · '))}</span>
+    ${lines.map((l) => `<span>${esc(l)}</span>`).join('')}${(it.enchants ?? []).map((e) => `<span class="tc-ench">${esc(e)}</span>`).join('')}</div>`;
 }
 
 // Hinweis auf der Karte im Loadout: Diesen Slot kann jemand im Squad besser herstellen. Nennt den größten Gewinn.
@@ -917,7 +932,9 @@ function renderQuests() {
       if (n) shown.push([z, qs.slice(0, n)]);
       if (qs.length > n) hidden.push([z, qs.slice(n)]);
     }
-    const block = ([z, qs]) => `<div class="q-zone"><span class="q-zname">${esc(z)}</span>${qs.map(row).join('')}</div>`;
+    // Die Zahl hinter der Zone zeigt die Sortierung: Zonen mit den meisten Quests zuerst.
+    const count = new Map(groups.map(([z, qs]) => [z, qs.length]));
+    const block = ([z, qs]) => `<div class="q-zone"><span class="q-zname">${esc(z)}<i>${count.get(z)}</i></span>${qs.map(row).join('')}</div>`;
     const rest = hidden.reduce((n, [, qs]) => n + qs.length, 0);
     // data-w: geschätzte Höhe in Zeilen (Kopf, Zonen, Quests). Danach verteilt fitQuestColumns die Karten.
     const weight = 2 + shown.length + shown.reduce((n, [, qs]) => n + qs.length, 0) + (rest ? 1 : 0);
@@ -962,14 +979,22 @@ function fitQuestColumns(box, count) {
 
 // Hover-Tooltip für alles mit data-tip: Maus zeigt beim Überfahren, Touch und Tastatur per Tippen bzw. Fokus.
 let tipEl = null;
+// Ein Tooltip mit eigenem HTML (Vergleich im Crafting) liegt in tipHtml, data-tip nennt dann den Schlüssel als „html:…“.
+const tipHtml = new Map();
 function showTip(anchor) {
   hideTip();
-  const [head, ...rest] = anchor.dataset.tip.split('\n');
   tipEl = document.createElement('div');
   tipEl.className = 'tip';
   tipEl.setAttribute('role', 'tooltip');
-  // Bei mehreren Zeilen ist die letzte der Hinweis (Zauber, nächster Schritt) und steht farbig.
-  tipEl.innerHTML = `<b>${esc(head)}</b>${rest.map((l, i) => `<span${rest.length > 1 && i === rest.length - 1 && !anchor.hasAttribute('data-tip-plain') ? ' class="tip-foot"' : ''}>${esc(l)}</span>`).join('')}`;
+  const html = tipHtml.get(anchor.dataset.tip);
+  if (html) {
+    tipEl.classList.add('tip-cmp');
+    tipEl.innerHTML = html;
+  } else {
+    const [head, ...rest] = anchor.dataset.tip.split('\n');
+    // Bei mehreren Zeilen ist die letzte der Hinweis (Zauber, nächster Schritt) und steht farbig.
+    tipEl.innerHTML = `<b>${esc(head)}</b>${rest.map((l, i) => `<span${rest.length > 1 && i === rest.length - 1 && !anchor.hasAttribute('data-tip-plain') ? ' class="tip-foot"' : ''}>${esc(l)}</span>`).join('')}`;
+  }
   document.body.append(tipEl);
   const r = anchor.getBoundingClientRect();
   const w = tipEl.offsetWidth;
