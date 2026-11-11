@@ -778,7 +778,8 @@ function renderCrafts() {
   // Die Icons verlinken auf Wowhead, der Wowhead-Tooltip ist hier aus. Den Vergleich zeigt der eigene Tooltip der Zeile.
   const icon = (it) => link(it, `<img class="ico sm b-${(it.quality || 'COMMON').toLowerCase()}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">`)
     .replace('<a ', '<a data-disable-wowhead-tooltip="true" ');
-  const val = (r) => `<span class="craft-val">${r.kind === 'item' ? `+${r.gain.toLocaleString('de-DE', { maximumFractionDigits: 1 })}` : ''}</span>`;
+  // Rang links wie die Uhrzeit in der Aktivität: 1 ist das größte Upgrade. Verbesserungen (Rüstungsset) haben keinen Rang.
+  const val = (r, i) => `<span class="craft-val">${r.kind === 'item' ? `${i + 1}.` : ''}</span>`;
   const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
   // Hersteller links, Empfänger rechts vom Pfeil: „Bernhard → Lokk“, „Lokk → selbst“, „Bernhard → alle“ (alle im Squad).
   const squad = state.chars.filter((c) => c.level).length;
@@ -796,7 +797,7 @@ function renderCrafts() {
     const chips = r.diff.slice(0, 2).map(([k, d]) => `<span class="${d > 0 ? 'up' : 'down'}">${fmt(d)} ${STAT_SHORT[k] ?? statName(k)}</span>`).join('');
     const old = r.cur ? `<span class="craft-old">${icon(r.cur)}</span>` : '<span class="craft-old empty" aria-label="leer"></span>';
     return `<div class="craft${r.soon ? ' soon' : ''}" tabindex="0" data-tip="${key}">
-      ${val(r)}${who(r)}
+      ${val(r, i)}${who(r)}
       <span class="craft-item">${old}<span class="craft-arrow">→</span>${icon(it)}<span class="craft-txt"><span class="q-${q}">${esc(it.name)}</span>
         <small>${esc(SLOT_LABELS[r.slot] ?? r.slot)}${r.soon ? ` · ab Level ${it.req}` : ''}</small></span><span class="craft-diff">${chips}</span></span></div>`;
   };
@@ -807,7 +808,7 @@ function renderCrafts() {
       ...r.opts.slice(0, 6).map((o) => `${o.name}${o.desc ? `: ${o.desc.replace(/^Benutzen: /, '').replace(/ \(.*?Abklingzeit\)/, '')}` : ''}`)].join('\n');
     const ico = best.icon ? icon(best) : `<span class="ench-ico">${feedIcon(FEED_ICONS.prof.Verzauberkunst)}</span>`;
     return `<div class="craft ench" tabindex="0" data-tip="${esc(tip)}">
-      ${val(r)}${who(r)}
+      ${val(r, 0)}${who(r)}
       <span class="craft-item"><span class="craft-old"></span><span></span>${ico}<span class="craft-txt"><span>${esc(best.name)}</span>
         <small>${esc(slots.join(', '))}${r.opts.length > 1 ? ` · ${plural(r.opts.length - 1, 'weitere Möglichkeit', 'weitere Möglichkeiten')}` : ''}</small></span></span></div>`;
   };
@@ -938,7 +939,9 @@ function renderQuests() {
     const rest = hidden.reduce((n, [, qs]) => n + qs.length, 0);
     // data-w: geschätzte Höhe in Zeilen (Kopf, Zonen, Quests). Danach verteilt fitQuestColumns die Karten.
     const weight = 2 + shown.length + shown.reduce((n, [, qs]) => n + qs.length, 0) + (rest ? 1 : 0);
-    return `<article class="q-card" data-w="${weight}" style="--cls:${classColor(c)}">
+    // Höchstens eine Spalte je 4 Quests in der Karte. So steht eine Zonen-Überschrift nie allein in einer Spalte.
+    const bodyCols = Math.min(3, Math.ceil(Math.min(list.length, 8) / 4));
+    return `<article class="q-card" data-w="${weight}" data-n="${list.length}" style="--cls:${classColor(c)};--qb:${bodyCols}">
       <header><b>${esc(c.name)}</b><span>${plural(list.length, 'Quest', 'Quests')} verpasst</span><small>offline ${ago(since)}</small></header>
       <div class="q-body">${shown.map(block).join('')}</div>
       ${rest ? `<details class="q-more"><summary>${plural(rest, 'weitere Quest', 'weitere Quests')}</summary><div class="q-body">${hidden.map(block).join('')}</div></details>` : ''}
@@ -952,14 +955,17 @@ function renderQuests() {
 
 // Spalten der Quest-Karten: so viele, wie Karten da sind und nebeneinander passen (je mindestens 380 px).
 // Mauerwerk: Jede Karte kommt in der Reihenfolge der Liste in die bisher kürzeste Spalte (Gewicht data-w).
-// So bleibt unter kurzen Karten keine Lücke. Eine einzelne Karte nutzt die ganze Breite, ihre Zonen stehen dann in Spalten (.q-body).
+// So bleibt unter kurzen Karten keine Lücke. Eine einzelne Karte nutzt die ganze Breite nur ab 5 Quests, ihre Zonen stehen dann in Spalten (.q-body).
+// Mit bis zu 4 Quests ist sie so breit wie eine Karte unter mehreren, sonst stünden Titel und Tags weit auseinander.
 let questResize = null;
 function fitQuestColumns(box, count) {
   questResize?.disconnect();
   if (!box) return;
   const cards = [...box.querySelectorAll('.q-card')];
   const fit = () => {
-    const cols = Math.max(1, Math.min(count, Math.floor((box.clientWidth + 12) / (380 + 12))));
+    const byWidth = Math.max(1, Math.floor((box.clientWidth + 12) / (380 + 12)));
+    const small = count === 1 && Number(cards[0]?.dataset.n) <= 4;
+    const cols = small ? byWidth : Math.min(count, byWidth);
     if (Number(box.dataset.cols) === cols) return;
     box.dataset.cols = cols;
     box.style.setProperty('--qcols', cols);

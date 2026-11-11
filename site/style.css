@@ -460,7 +460,7 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
 .q-card header b { color: var(--cls); font-size: 15px; }
 .q-card header small { margin-left: auto; font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; }
 /* Zonen in Spalten, sobald die Karte breit genug ist (eine Karte allein über die ganze Breite). */
-.q-body { columns: 340px; column-gap: 28px; }
+.q-body { columns: var(--qb, 3) 340px; column-gap: 28px; }
 .q-zone { margin: 2px 0 4px; }
 .q-zname i { margin-left: 8px; font-style: normal; color: var(--muted); }
 /* Die Zeilen einer Zone dürfen über Spalten fließen. Die Überschrift bleibt bei ihrer ersten Zeile. */
@@ -494,13 +494,13 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
 /* Spaltenweise wie Quests und Aktivität: erst die linke Spalte von oben nach unten, dann die rechte. */
 .craft-list { columns: 440px; column-gap: 14px; }
 .craft-list > .craft { break-inside: avoid; margin-bottom: 8px; }
-.craft { display: grid; grid-template-columns: 34px minmax(0, 2fr) minmax(0, 3.4fr); align-items: center; gap: 12px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.035); outline: none; transition: background .15s; }
+.craft { display: grid; grid-template-columns: 22px minmax(0, 2fr) minmax(0, 3.4fr); align-items: center; gap: 12px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.035); outline: none; transition: background .15s; }
 .craft:hover, .craft:focus-visible { background: rgba(255,255,255,.07); }
 .craft-who { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-width: 0; }
 .craft-arrow { font: 600 11px var(--mono); color: var(--dim); padding: 0 2px; }
 .tag.craft-all, .tag.craft-self { --cls: var(--muted); }
 .craft-item { display: grid; grid-template-columns: 22px 10px 26px minmax(0, 1fr) auto; align-items: center; gap: 6px; min-width: 0; }
-/* Wert des Upgrades links wie die Uhrzeit in der Aktivität: danach ist die Liste sortiert. */
+/* Rang des Upgrades links wie die Uhrzeit in der Aktivität: danach ist die Liste sortiert. */
 .craft-val { font: 600 11px var(--mono); color: var(--muted); text-align: right; }
 /* Das alte Item kleiner und blasser, ein leerer Slot als gestricheltes Feld. */
 .craft-old { display: block; line-height: 0; opacity: .6; }
@@ -518,7 +518,7 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
 .craft.ench .craft-txt > span { color: #7be07b; }
 .craft-none { margin: 0; font: 500 12px var(--mono); color: var(--dim); }
 @media (max-width: 600px) {
-  .craft { grid-template-columns: 34px minmax(0, 1fr); gap: 6px 10px; }
+  .craft { grid-template-columns: 22px minmax(0, 1fr); gap: 6px 10px; }
   .craft > .craft-item { grid-column: 2; }
 }
 .card .craft-hint { font: 500 10px var(--mono); color: var(--q-uncommon); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
