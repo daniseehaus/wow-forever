@@ -262,7 +262,7 @@ function pickAchievements(a) {
 
 async function buildCrafts(chars) {
   // Format der Datei. Ändert sich das, was recipeInfo speichert, die Zahl erhöhen.
-  const RECIPE_VERSION = 3;
+  const RECIPE_VERSION = 4;
   const file = new URL('data/recipes.json', root);
   const ns = config.namespaces.static;
   const stored = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
@@ -344,6 +344,8 @@ async function recipeInfo(id) {
       stats: statMap(p.stats),
       armor: p.armor?.value ?? null,
       dps: p.weapon?.dps?.value ?? null,
+      // Bindung: ON_ACQUIRE (beim Aufheben) bindet an den Hersteller, das Item lässt sich nicht weitergeben. ON_EQUIP erst beim Anlegen.
+      bind: p.binding?.type ?? null,
     },
     reagents,
   };

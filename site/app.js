@@ -569,6 +569,7 @@ function calm(v) {
 // Herstellen: Was kann der Squad füreinander herstellen? Grundlage sind nur die gelernten Rezepte (state.data.crafts, buildCrafts in fetch.mjs).
 // 1. Ausrüstung: Ein Item zählt, wenn der Charakter es tragen kann und seine Werte für Klasse und Rolle besser sind als im Slot.
 //    Liegt das Mindestlevel bis zu 3 Level über dem Charakter, steht es als „bald“ in der Liste.
+//    Items, die beim Aufheben binden (bind „ON_ACQUIRE“), zählen nur für den Hersteller selbst.
 // 2. Verbesserungen: Rüstungssets und Zielfernrohre für angelegte Items ohne Verzauberung.
 //    Verzauberungen (enhance.kind „enchant“, etwa Ausdauer auf Brust) zeigt die Liste vorerst nicht.
 
@@ -672,6 +673,8 @@ function craftUpgrades() {
     for (const cr of crafts.filter((x) => x.item)) {
       const it = cr.item;
       if (!canWear(c, it) || it.req > c.level + 3) continue;
+      // Beim Aufheben gebunden: Nur der Hersteller selbst kann das Item tragen.
+      if (it.bind === 'ON_ACQUIRE' && cr.by !== c.key) continue;
       if (it.inv === 'TWOHWEAPON' && items.has('OFF_HAND')) continue;
       // Ringe und Schmuck: der schwächere der beiden Slots. Schurken tragen zwei Waffen, dort zählt die schwächere Hand.
       let slots = CRAFT_SLOTS[it.inv] ?? [];
@@ -839,7 +842,7 @@ function tipItem(it, label, kind) {
   ].filter(Boolean);
   return `<div class="tc-item"><small>${label}</small><b class="q-${(it.quality || 'COMMON').toLowerCase()}">${esc(it.name)}</b>
     <span class="tc-meta">${esc([kind, it.ilvl ? `iLvl ${it.ilvl}` : ''].filter(Boolean).join(' · '))}</span>
-    ${lines.map((l) => `<span>${esc(l)}</span>`).join('')}${(it.enchants ?? []).map((e) => `<span class="tc-ench">${esc(e)}</span>`).join('')}</div>`;
+    ${it.bind === 'ON_ACQUIRE' ? '<span>Beim Aufheben gebunden</span>' : ''}${lines.map((l) => `<span>${esc(l)}</span>`).join('')}${(it.enchants ?? []).map((e) => `<span class="tc-ench">${esc(e)}</span>`).join('')}</div>`;
 }
 
 // Hinweis auf der Karte im Loadout: Diesen Slot kann jemand im Squad besser herstellen. Nennt den größten Gewinn.
