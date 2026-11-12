@@ -455,9 +455,10 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": "Mitglied",
-   "level": 21,
-   "lastLogin": 1794515600000,
+   "level": 22,
+   "lastLogin": 1794525261000,
    "items": {
+    "NECK": 281265,
     "SHOULDER": 4314,
     "SHIRT": 2579,
     "CHEST": 271206,
@@ -470,9 +471,10 @@
     "FINGER_2": 281673,
     "BACK": 14167,
     "MAIN_HAND": 251534,
-    "RANGED": 11287
+    "RANGED": 5252
    },
    "ilvls": {
+    "NECK": 20,
     "SHOULDER": 22,
     "SHIRT": 14,
     "CHEST": 20,
@@ -485,17 +487,18 @@
     "FINGER_2": 28,
     "BACK": 19,
     "MAIN_HAND": 24,
-    "RANGED": 15
+    "RANGED": 21
    },
    "profs": {
     "Tailoring": 90,
-    "Herbalism": 94,
-    "Cooking": 113,
-    "Fishing": 91,
+    "Herbalism": 110,
+    "Cooking": 126,
+    "Fishing": 109,
     "First Aid": 86
    },
    "achs": [],
    "names": {
+    "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Doppelt genähte Wollschultern",
     "SHIRT": "Grünes Leinenhemd",
     "CHEST": "Monstrositätenhautreste",
@@ -508,7 +511,7 @@
     "FINGER_2": "Schleife der Aufopferung",
     "BACK": "Bukanier-Cape des Adlers",
     "MAIN_HAND": "Knorriger Stab des Totenbeschwörers",
-    "RANGED": "Geringer Magiezauberstab"
+    "RANGED": "Zauberstab des Verfalls"
    }
   },
   "pawris-hilton": {
@@ -1336,6 +1339,14 @@
    "type": "prof",
    "name": "Blacksmithing",
    "skill": 75
+  },
+  {
+   "t": 1794525261000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 21,
+   "to": 22,
+   "max": false
   }
  ]
 }
