@@ -333,13 +333,13 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 24,
-   "lastLogin": 1794490092000,
+   "level": 25,
+   "lastLogin": 1794519172000,
    "items": {
     "NECK": 281265,
     "SHOULDER": 270024,
     "SHIRT": 6125,
-    "CHEST": 6336,
+    "CHEST": 3733,
     "WAIST": 271201,
     "LEGS": 271209,
     "FEET": 9784,
@@ -348,13 +348,13 @@
     "FINGER_1": 281673,
     "FINGER_2": 6414,
     "BACK": 14149,
-    "MAIN_HAND": 251533
+    "MAIN_HAND": 267369
    },
    "ilvls": {
     "NECK": 20,
     "SHOULDER": 27,
     "SHIRT": 1,
-    "CHEST": 13,
+    "CHEST": 23,
     "WAIST": 20,
     "LEGS": 21,
     "FEET": 19,
@@ -363,23 +363,24 @@
     "FINGER_1": 28,
     "FINGER_2": 29,
     "BACK": 18,
-    "MAIN_HAND": 24
+    "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 103,
+    "Mining": 107,
     "Blacksmithing": 72,
     "Cooking": 1,
     "First Aid": 40
    },
    "achs": [
     769,
-    728
+    728,
+    61997
    ],
    "names": {
     "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Talmischulterschutz",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Infanterietunika des Falken",
+    "CHEST": "Orc-Kriegskette",
     "WAIST": "Atrophischer Gurt",
     "LEGS": "Knochenrostgamaschen",
     "FEET": "Räuber-Stiefel der Eule",
@@ -388,7 +389,7 @@
     "FINGER_1": "Schleife der Aufopferung",
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Unterirdisches Cape",
-    "MAIN_HAND": "Großaxt des Verlassenen"
+    "MAIN_HAND": "Wolfsbann"
    }
   },
   "wladimir-klatschko": {
@@ -1264,6 +1265,36 @@
    "from": 20,
    "to": 21,
    "max": false
+  },
+  {
+   "t": 1794516900000,
+   "key": "lokk-eidlöter",
+   "type": "achievement",
+   "id": 61997,
+   "name": "Novize: Paladin",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
+   "t": 1794519172000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 24,
+   "to": 25,
+   "max": false
+  },
+  {
+   "t": 1794519172000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 267369,
+   "name": "Wolfsbann",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 31,
+   "prev": 24,
+   "prevName": "Großaxt des Verlassenen"
   }
  ]
 }
