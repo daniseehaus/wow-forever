@@ -454,8 +454,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": "Mitglied",
-   "level": 20,
-   "lastLogin": 1794434326000,
+   "level": 21,
+   "lastLogin": 1794515600000,
    "items": {
     "SHOULDER": 4314,
     "SHIRT": 2579,
@@ -466,7 +466,8 @@
     "WRIST": 15452,
     "HANDS": 286979,
     "FINGER_1": 279867,
-    "BACK": 3449,
+    "FINGER_2": 281673,
+    "BACK": 14167,
     "MAIN_HAND": 251534,
     "RANGED": 11287
    },
@@ -480,15 +481,16 @@
     "WRIST": 18,
     "HANDS": 22,
     "FINGER_1": 23,
-    "BACK": 15,
+    "FINGER_2": 28,
+    "BACK": 19,
     "MAIN_HAND": 24,
     "RANGED": 15
    },
    "profs": {
-    "Tailoring": 86,
-    "Herbalism": 87,
-    "Cooking": 110,
-    "Fishing": 89,
+    "Tailoring": 90,
+    "Herbalism": 94,
+    "Cooking": 113,
+    "Fishing": 91,
     "First Aid": 86
    },
    "achs": [],
@@ -502,7 +504,8 @@
     "WRIST": "Federleichte Armschienen",
     "HANDS": "Handschuhe des Fäulnisheilers",
     "FINGER_1": "Siegelring des getöteten Barons",
-    "BACK": "Mystikerschal",
+    "FINGER_2": "Schleife der Aufopferung",
+    "BACK": "Bukanier-Cape des Adlers",
     "MAIN_HAND": "Knorriger Stab des Totenbeschwörers",
     "RANGED": "Geringer Magiezauberstab"
    }
@@ -1252,6 +1255,14 @@
    "type": "level",
    "from": 23,
    "to": 24,
+   "max": false
+  },
+  {
+   "t": 1794515600000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 20,
+   "to": 21,
    "max": false
   }
  ]
