@@ -333,8 +333,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 23,
-   "lastLogin": 1794432475000,
+   "level": 24,
+   "lastLogin": 1794473147000,
    "items": {
     "NECK": 281265,
     "SHOULDER": 270024,
@@ -1245,6 +1245,14 @@
    "ilvl": 33,
    "prev": 31,
    "prevName": "Wolfsbann"
+  },
+  {
+   "t": 1794473147000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 23,
+   "to": 24,
+   "max": false
   }
  ]
 }
