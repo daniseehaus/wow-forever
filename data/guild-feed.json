@@ -257,16 +257,16 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": "Mitglied",
-   "level": 35,
-   "lastLogin": 1794438001000,
+   "level": 36,
+   "lastLogin": 1794524010000,
    "items": {
     "HEAD": 3732,
     "NECK": 281265,
-    "SHOULDER": 273028,
+    "SHOULDER": 279842,
     "SHIRT": 6125,
     "CHEST": 273035,
     "WAIST": 273846,
-    "LEGS": 3751,
+    "LEGS": 273048,
     "FEET": 250620,
     "WRIST": 15459,
     "HANDS": 16978,
@@ -280,11 +280,11 @@
    "ilvls": {
     "HEAD": 30,
     "NECK": 20,
-    "SHOULDER": 33,
+    "SHOULDER": 36,
     "SHIRT": 1,
     "CHEST": 32,
     "WAIST": 30,
-    "LEGS": 30,
+    "LEGS": 33,
     "FEET": 15,
     "WRIST": 28,
     "HANDS": 27,
@@ -296,10 +296,10 @@
     "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 133,
-    "Blacksmithing": 73,
+    "Mining": 139,
+    "Blacksmithing": 75,
     "Cooking": 63,
-    "First Aid": 122
+    "First Aid": 129
    },
    "achs": [
     61997,
@@ -311,11 +311,11 @@
    "names": {
     "HEAD": "Kapuzenkutte",
     "NECK": "Selbstvertrauen des Wegwächters",
-    "SHOULDER": "Reliquiarmantelung",
+    "SHOULDER": "Kampfschiftung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Twilightfürstgurt",
-    "LEGS": "Söldnergamaschen",
+    "LEGS": "Lichtbrechende Schuppengamaschen",
     "FEET": "Edelsteinbesetzte Kupferstiefel",
     "WRIST": "Handgelenksschutz des dunklen Tributs",
     "HANDS": "Warsongstulpen",
@@ -1295,6 +1295,47 @@
    "ilvl": 31,
    "prev": 24,
    "prevName": "Großaxt des Verlassenen"
+  },
+  {
+   "t": 1794524010000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 35,
+   "to": 36,
+   "max": false
+  },
+  {
+   "t": 1794524010000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 279842,
+   "name": "Kampfschiftung",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135054.jpg",
+   "slot": "Schultern",
+   "ilvl": 36,
+   "prev": 33,
+   "prevName": "Reliquiarmantelung"
+  },
+  {
+   "t": 1794524010000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 273048,
+   "name": "Lichtbrechende Schuppengamaschen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134664.jpg",
+   "slot": "Beine",
+   "ilvl": 33,
+   "prev": 30,
+   "prevName": "Söldnergamaschen"
+  },
+  {
+   "t": 1794524010000,
+   "key": "hammer-hanno",
+   "type": "prof",
+   "name": "Blacksmithing",
+   "skill": 75
   }
  ]
 }
