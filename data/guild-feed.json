@@ -80,11 +80,11 @@
    "surname": "Sturmzüngler",
    "classId": 7,
    "rank": "Mitglied",
-   "level": 14,
-   "lastLogin": 1794490603000,
+   "level": 15,
+   "lastLogin": 1794603564000,
    "items": {
     "SHIRT": 6134,
-    "CHEST": 15010,
+    "CHEST": 4243,
     "WAIST": 4246,
     "LEGS": 7282,
     "FEET": 4312,
@@ -97,7 +97,7 @@
    },
    "ilvls": {
     "SHIRT": 1,
-    "CHEST": 11,
+    "CHEST": 17,
     "WAIST": 16,
     "LEGS": 19,
     "FEET": 16,
@@ -109,17 +109,18 @@
     "RANGED": 10
    },
    "profs": {
-    "Alchemy": 93,
-    "Herbalism": 106,
+    "Alchemy": 94,
+    "Herbalism": 107,
     "Cooking": 21
    },
    "achs": [
     769,
-    728
+    728,
+    61997
    ],
    "names": {
     "SHIRT": "Primitiver Mantel",
-    "CHEST": "Urzeitliche Wickeltücher des Wolfs",
+    "CHEST": "Feine Ledertunika",
     "WAIST": "Feiner Ledergürtel",
     "LEGS": "Leichte Lederhose",
     "FEET": "Leinenschuhe mit weichen Sohlen",
@@ -331,7 +332,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 26,
-   "lastLogin": 1794567837000,
+   "lastLogin": 1794603648000,
    "items": {
     "NECK": 281265,
     "SHOULDER": 270024,
@@ -363,7 +364,7 @@
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 111,
+    "Mining": 112,
     "Blacksmithing": 81,
     "Cooking": 1,
     "First Aid": 40
@@ -1276,6 +1277,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
   },
   {
+   "t": 1794516900000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 61997,
+   "name": "Novize: Paladin",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
    "t": 1794519172000,
    "key": "lokk-eidlöter",
    "type": "level",
@@ -1374,6 +1384,14 @@
    "type": "prof",
    "name": "Cooking",
    "skill": 109
+  },
+  {
+   "t": 1794603564000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 14,
+   "to": 15,
+   "max": false
   }
  ]
 }
