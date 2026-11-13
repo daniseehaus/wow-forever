@@ -187,8 +187,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": "Mitglied",
-   "level": 25,
-   "lastLogin": 1794567106000,
+   "level": 26,
+   "lastLogin": 1794571704000,
    "items": {
     "HEAD": 279391,
     "SHOULDER": 5404,
@@ -199,7 +199,7 @@
     "FEET": 252425,
     "WRIST": 279875,
     "HANDS": 5299,
-    "FINGER_1": 281268,
+    "FINGER_1": 281252,
     "FINGER_2": 5351,
     "BACK": 285329,
     "MAIN_HAND": 6504,
@@ -216,7 +216,7 @@
     "FEET": 15,
     "WRIST": 24,
     "HANDS": 20,
-    "FINGER_1": 9,
+    "FINGER_1": 26,
     "FINGER_2": 20,
     "BACK": 21,
     "MAIN_HAND": 24,
@@ -227,7 +227,7 @@
     "Leatherworking": 102,
     "Skinning": 176,
     "Cooking": 60,
-    "First Aid": 80
+    "First Aid": 93
    },
    "achs": [
     728,
@@ -243,7 +243,7 @@
     "FEET": "Dunkle Lederstiefel",
     "WRIST": "Ersatzteilbindungen",
     "HANDS": "Handschuhe des Mondes",
-    "FINGER_1": "Ausgelaugter Ritualring",
+    "FINGER_1": "Harpyienklauenring",
     "FINGER_2": "Kopfgeldjägerring",
     "BACK": "Raptorbalgumhang",
     "MAIN_HAND": "Flügelklinge",
@@ -1362,6 +1362,14 @@
    "type": "prof",
    "name": "Blacksmithing",
    "skill": 81
+  },
+  {
+   "t": 1794571704000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 25,
+   "to": 26,
+   "max": false
   }
  ]
 }
