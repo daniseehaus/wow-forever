@@ -334,7 +334,7 @@
    "classId": 2,
    "rank": "Mitglied",
    "level": 26,
-   "lastLogin": 1794560067000,
+   "lastLogin": 1794567837000,
    "items": {
     "NECK": 281265,
     "SHOULDER": 270024,
@@ -366,8 +366,8 @@
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 108,
-    "Blacksmithing": 72,
+    "Mining": 111,
+    "Blacksmithing": 81,
     "Cooking": 1,
     "First Aid": 40
    },
@@ -1355,6 +1355,13 @@
    "from": 25,
    "to": 26,
    "max": false
+  },
+  {
+   "t": 1794567837000,
+   "key": "lokk-eidlöter",
+   "type": "prof",
+   "name": "Blacksmithing",
+   "skill": 81
   }
  ]
 }
