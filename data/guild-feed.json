@@ -456,7 +456,7 @@
    "classId": 9,
    "rank": "Mitglied",
    "level": 22,
-   "lastLogin": 1794585131000,
+   "lastLogin": 1794590739000,
    "items": {
     "NECK": 281265,
     "SHOULDER": 4314,
@@ -490,9 +490,9 @@
     "RANGED": 21
    },
    "profs": {
-    "Tailoring": 90,
-    "Herbalism": 115,
-    "Cooking": 126,
+    "Tailoring": 112,
+    "Herbalism": 116,
+    "Cooking": 137,
     "Fishing": 140,
     "First Aid": 86
    },
