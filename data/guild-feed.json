@@ -453,11 +453,11 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": "Mitglied",
-   "level": 22,
-   "lastLogin": 1794590739000,
+   "level": 24,
+   "lastLogin": 1794608954000,
    "items": {
     "NECK": 281265,
-    "SHOULDER": 4314,
+    "SHOULDER": 3748,
     "SHIRT": 2579,
     "CHEST": 271206,
     "WAIST": 286980,
@@ -465,7 +465,7 @@
     "FEET": 271214,
     "WRIST": 15452,
     "HANDS": 286979,
-    "FINGER_1": 279867,
+    "FINGER_1": 6414,
     "FINGER_2": 281673,
     "BACK": 14167,
     "MAIN_HAND": 251534,
@@ -473,7 +473,7 @@
    },
    "ilvls": {
     "NECK": 20,
-    "SHOULDER": 22,
+    "SHOULDER": 28,
     "SHIRT": 14,
     "CHEST": 20,
     "WAIST": 22,
@@ -481,23 +481,23 @@
     "FEET": 24,
     "WRIST": 18,
     "HANDS": 22,
-    "FINGER_1": 23,
+    "FINGER_1": 29,
     "FINGER_2": 28,
     "BACK": 19,
     "MAIN_HAND": 24,
     "RANGED": 21
    },
    "profs": {
-    "Tailoring": 112,
-    "Herbalism": 116,
-    "Cooking": 137,
+    "Tailoring": 113,
+    "Herbalism": 118,
+    "Cooking": 150,
     "Fishing": 140,
-    "First Aid": 86
+    "First Aid": 105
    },
    "achs": [],
    "names": {
     "NECK": "Selbstvertrauen des Wegwächters",
-    "SHOULDER": "Doppelt genähte Wollschultern",
+    "SHOULDER": "Felinen-Mantel",
     "SHIRT": "Grünes Leinenhemd",
     "CHEST": "Monstrositätenhautreste",
     "WAIST": "Schärpe des Fäulnisheilers",
@@ -505,7 +505,7 @@
     "FEET": "Treter des Fäulnisheilers",
     "WRIST": "Federleichte Armschienen",
     "HANDS": "Handschuhe des Fäulnisheilers",
-    "FINGER_1": "Siegelring des getöteten Barons",
+    "FINGER_1": "Siegel von Sylvanas",
     "FINGER_2": "Schleife der Aufopferung",
     "BACK": "Bukanier-Cape des Adlers",
     "MAIN_HAND": "Knorriger Stab des Totenbeschwörers",
@@ -1392,6 +1392,47 @@
    "from": 14,
    "to": 15,
    "max": false
+  },
+  {
+   "t": 1794608954000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 22,
+   "to": 24,
+   "max": false
+  },
+  {
+   "t": 1794608954000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 3748,
+   "name": "Felinen-Mantel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135036.jpg",
+   "slot": "Schultern",
+   "ilvl": 28,
+   "prev": 22,
+   "prevName": "Doppelt genähte Wollschultern"
+  },
+  {
+   "t": 1794608954000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 6414,
+   "name": "Siegel von Sylvanas",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133357.jpg",
+   "slot": "Ring 1",
+   "ilvl": 29,
+   "prev": 23,
+   "prevName": "Siegelring des getöteten Barons"
+  },
+  {
+   "t": 1794608954000,
+   "key": "dennis-dotalot",
+   "type": "prof",
+   "name": "Cooking",
+   "skill": 150
   }
  ]
 }
