@@ -188,13 +188,12 @@
    "classId": 4,
    "rank": "Mitglied",
    "level": 26,
-   "lastLogin": 1794571704000,
+   "lastLogin": 1794598192000,
    "items": {
     "HEAD": 279391,
     "SHOULDER": 5404,
     "SHIRT": 2105,
     "CHEST": 271212,
-    "WAIST": 4246,
     "LEGS": 5961,
     "FEET": 252425,
     "WRIST": 279875,
@@ -211,7 +210,6 @@
     "SHOULDER": 23,
     "SHIRT": 1,
     "CHEST": 22,
-    "WAIST": 16,
     "LEGS": 23,
     "FEET": 15,
     "WRIST": 24,
@@ -224,7 +222,7 @@
     "RANGED": 11
    },
    "profs": {
-    "Leatherworking": 102,
+    "Leatherworking": 118,
     "Skinning": 176,
     "Cooking": 60,
     "First Aid": 93
@@ -238,7 +236,6 @@
     "SHOULDER": "Schlangen-Schultern",
     "SHIRT": "Rohlingshemd",
     "CHEST": "Blutige Brustwickel",
-    "WAIST": "Feiner Ledergürtel",
     "LEGS": "Dunkle Lederhose",
     "FEET": "Dunkle Lederstiefel",
     "WRIST": "Ersatzteilbindungen",
