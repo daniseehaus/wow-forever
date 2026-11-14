@@ -2,15 +2,15 @@
  "era": "classic",
  "members": [
   "wladimir-klatschko",
+  "pawris-hilton",
+  "hammer-hanno",
   "heili-kabel",
   "zukk-sturmzüngler",
-  "pavel-plattenpapst",
-  "orkward-orkbert",
-  "bernhard-backstab",
-  "hammer-hanno",
   "lokk-eidlöter",
-  "dennis-dotalot",
-  "pawris-hilton"
+  "pavel-plattenpapst",
+  "bernhard-backstab",
+  "orkward-orkbert",
+  "dennis-dotalot"
  ],
  "snapshot": {
   "heili-kabel": {
@@ -18,7 +18,7 @@
    "name": "Heili",
    "surname": "Kabel",
    "classId": 5,
-   "rank": "Mitglied",
+   "rank": 0,
    "level": 17,
    "lastLogin": 1794611572000,
    "items": {
@@ -80,7 +80,7 @@
    "name": "Zukk",
    "surname": "Sturmzüngler",
    "classId": 7,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 17,
    "lastLogin": 1794636480000,
    "items": {
@@ -138,7 +138,7 @@
    "name": "Pavel",
    "surname": "Plattenpapst",
    "classId": 2,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 14,
    "lastLogin": 1794429675000,
    "items": {
@@ -188,7 +188,7 @@
    "name": "Bernhard",
    "surname": "Backstab",
    "classId": 4,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 27,
    "lastLogin": 1794613779000,
    "items": {
@@ -258,7 +258,7 @@
    "name": "Hammer",
    "surname": "Hanno",
    "classId": 2,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 36,
    "lastLogin": 1794524010000,
    "items": {
@@ -334,7 +334,7 @@
    "name": "Lokk",
    "surname": "Eidlöter",
    "classId": 2,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 26,
    "lastLogin": 1794603648000,
    "items": {
@@ -399,7 +399,7 @@
    "name": "Wladimir",
    "surname": "Klatschko",
    "classId": 1,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 17,
    "lastLogin": 1794611671000,
    "items": {
@@ -456,7 +456,7 @@
    "name": "Dennis",
    "surname": "Dotalot",
    "classId": 9,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 24,
    "lastLogin": 1794608954000,
    "items": {
@@ -521,7 +521,7 @@
    "name": "Pawris",
    "surname": "Hilton",
    "classId": 11,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 12,
    "lastLogin": 1794177975000,
    "items": {
@@ -569,7 +569,7 @@
    "name": "Orkward",
    "surname": "Orkbert",
    "classId": 3,
-   "rank": "Mitglied",
+   "rank": 1,
    "level": 18,
    "lastLogin": 1794643806000,
    "items": {
