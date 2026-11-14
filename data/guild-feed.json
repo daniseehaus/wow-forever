@@ -608,11 +608,54 @@
    ]
   },
   "freddie-muhrcury": {
-   "id": null,
+   "id": 58776837,
    "name": "Freddie",
    "surname": "Muhrcury",
-   "classId": null,
-   "rank": 2
+   "classId": 11,
+   "rank": 2,
+   "level": 11,
+   "lastLogin": 1794695929000,
+   "items": {
+    "CHEST": 2300,
+    "WAIST": 15302,
+    "LEGS": 2303,
+    "FEET": 4906,
+    "WRIST": 7281,
+    "HANDS": 4239,
+    "BACK": 2310,
+    "MAIN_HAND": 4566
+   },
+   "ilvls": {
+    "CHEST": 12,
+    "WAIST": 11,
+    "LEGS": 10,
+    "FEET": 7,
+    "WRIST": 14,
+    "HANDS": 13,
+    "BACK": 13,
+    "MAIN_HAND": 13
+   },
+   "names": {
+    "CHEST": "Geprägte Lederweste",
+    "WAIST": "Grizzly-Gürtel",
+    "LEGS": "Handgenähte Lederhose",
+    "FEET": "Regenwandler-Stiefel",
+    "WRIST": "Leichte Lederarmschienen",
+    "HANDS": "Geprägte Lederhandschuhe",
+    "BACK": "Geprägter Lederumhang",
+    "MAIN_HAND": "Stabiler Bauernstecken der Bestie"
+   },
+   "profs": {
+    "Alchemy": 36,
+    "Herbalism": 49,
+    "Cooking": 27,
+    "Fishing": 1,
+    "First Aid": 40
+   },
+   "achs": [
+    728,
+    855
+   ]
   }
  },
  "events": [
