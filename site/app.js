@@ -19,6 +19,15 @@ state.use3d = want3d();
 // Modelldateien und Renders ändern sich nie. Der Service Worker hält sie über den Besuch hinaus vor (sw.js).
 if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
+// Vom Home-Bildschirm oder aus einem alten Tab bleibt die Seite im Speicher stehen und zeigt alten Code und alte Daten.
+// Kommt man nach mehr als 15 Minuten zurück, lädt sie neu.
+const LOADED_AT = Date.now();
+function reloadIfOld() {
+  if (document.visibilityState === 'visible' && Date.now() - LOADED_AT > 15 * 6e4) location.reload();
+}
+document.addEventListener('visibilitychange', reloadIfOld);
+addEventListener('pageshow', (e) => { if (e.persisted) reloadIfOld(); });
+
 // 3D läuft auch auf Handys. Nur „Daten sparen“ startet mit 2D, der Schalter schaltet 3D ein. Sonst gilt die letzte Wahl.
 // Ohne 3D zeigt die Bühne den 2D-Render (von Blizzard oder als Schnappschuss des 3D-Modells, mirror-models.mjs).
 function want3d() {
