@@ -237,48 +237,48 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 36,
-   "lastLogin": 1794524010000,
+   "level": 42,
+   "lastLogin": 1794696587000,
    "items": {
-    "HEAD": 3732,
+    "HEAD": 274291,
     "NECK": 281265,
     "SHOULDER": 279842,
     "SHIRT": 6125,
     "CHEST": 273035,
     "WAIST": 273846,
-    "LEGS": 273048,
+    "LEGS": 9625,
     "FEET": 250620,
-    "WRIST": 15459,
+    "WRIST": 270073,
     "HANDS": 16978,
     "FINGER_1": 17694,
     "FINGER_2": 6414,
     "TRINKET_1": 280766,
     "TRINKET_2": 276895,
     "BACK": 6314,
-    "MAIN_HAND": 271766
+    "MAIN_HAND": 279885
    },
    "ilvls": {
-    "HEAD": 30,
+    "HEAD": 36,
     "NECK": 20,
     "SHOULDER": 36,
     "SHIRT": 1,
     "CHEST": 32,
     "WAIST": 30,
-    "LEGS": 33,
+    "LEGS": 37,
     "FEET": 15,
-    "WRIST": 28,
+    "WRIST": 40,
     "HANDS": 27,
     "FINGER_1": 28,
     "FINGER_2": 29,
     "TRINKET_1": 33,
     "TRINKET_2": 30,
     "BACK": 27,
-    "MAIN_HAND": 33
+    "MAIN_HAND": 42
    },
    "profs": {
-    "Mining": 139,
-    "Blacksmithing": 75,
-    "Cooking": 63,
+    "Mining": 165,
+    "Blacksmithing": 84,
+    "Cooking": 83,
     "First Aid": 129
    },
    "achs": [
@@ -286,25 +286,27 @@
     769,
     750,
     62031,
-    728
+    728,
+    761,
+    846
    ],
    "names": {
-    "HEAD": "Kapuzenkutte",
+    "HEAD": "Polierte Schädelkappe",
     "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Kampfschiftung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Twilightfürstgurt",
-    "LEGS": "Lichtbrechende Schuppengamaschen",
+    "LEGS": "Zweifach verstärkte Gamaschen",
     "FEET": "Edelsteinbesetzte Kupferstiefel",
-    "WRIST": "Handgelenksschutz des dunklen Tributs",
+    "WRIST": "Manschetten von Stromgarde",
     "HANDS": "Warsongstulpen",
     "FINGER_1": "Band der Faust",
     "FINGER_2": "Siegel von Sylvanas",
     "TRINKET_1": "Tränketasche",
     "TRINKET_2": "Transformativer Kokon",
     "BACK": "Wolfmeister Cape",
-    "MAIN_HAND": "Wuchthammer"
+    "MAIN_HAND": "Zeremonieller Schlaghammer"
    }
   },
   "lokk-eidlöter": {
@@ -1431,6 +1433,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236712.jpg"
   },
   {
+   "t": 1794591926000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 761,
+   "name": "Erforscht das Arathihochland",
+   "desc": "Erforscht das Arathihochland und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236712.jpg"
+  },
+  {
    "t": 1794603564000,
    "key": "zukk-sturmzüngler",
    "type": "level",
@@ -1606,6 +1617,76 @@
    "from": 27,
    "to": 28,
    "max": false
+  },
+  {
+   "t": 1794684735000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 846,
+   "name": "Erforscht Tausend Nadeln",
+   "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
+  },
+  {
+   "t": 1794696587000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 36,
+   "to": 42,
+   "max": false
+  },
+  {
+   "t": 1794696587000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 274291,
+   "name": "Polierte Schädelkappe",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133118.jpg",
+   "slot": "Kopf",
+   "ilvl": 36,
+   "prev": 30,
+   "prevName": "Kapuzenkutte"
+  },
+  {
+   "t": 1794696587000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9625,
+   "name": "Zweifach verstärkte Gamaschen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134583.jpg",
+   "slot": "Beine",
+   "ilvl": 37,
+   "prev": 33,
+   "prevName": "Lichtbrechende Schuppengamaschen"
+  },
+  {
+   "t": 1794696587000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 279885,
+   "name": "Zeremonieller Schlaghammer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133043.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 42,
+   "prev": 33,
+   "prevName": "Wuchthammer"
+  },
+  {
+   "t": 1794696587000,
+   "key": "hammer-hanno",
+   "type": "prof",
+   "name": "Mining",
+   "skill": 165
+  },
+  {
+   "t": 1794696587000,
+   "key": "hammer-hanno",
+   "type": "prof",
+   "name": "Cooking",
+   "skill": 83
   }
  ]
 }
