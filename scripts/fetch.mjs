@@ -8,8 +8,7 @@
 //   node scripts/fetch.mjs --guild-demo   echte Daten, die Gilde mit Beispiel-Mitgliedern auf 15 aufgefüllt,
 //                                         der Squad mit denselben Test-Charakteren (zum Vergleich)
 //
-// Gilde: Forever kennt keine Gilden in der API (kein Gildenfeld, kein Roster). Die Mitglieder stehen deshalb
-// in config.guild.members. Die Gilde umfasst diese Liste und alle Charaktere aus characters (ohne Platzhalter).
+// Gilde: Die Mitglieder kommen aus der Mitgliederliste der API (Roster), config.guild nennt nur den Namen.
 // Der Abruf schreibt site/guild.json und hält Beitritte, Austritte und die Aktivität wie im Squad
 // (Level-Ups, Items, Berufe, Erfolge) in data/guild-feed.json fest.
 //
@@ -860,25 +859,24 @@ async function updateFeed(data, sessions) {
 // ---------------------------------------------------------------------------
 // Gilde
 
-// Mitglieder: config.guild.members und die Charaktere aus characters (ohne Platzhalter), die laut Profil in der Gilde sind.
-// Ein Gruppen-Charakter zählt erst, wenn sein Profil die Gilde nennt (Feld guild, siehe buildGuild).
-// Ein Eintrag in members mit gleichem Namen wie ein Gruppen-Charakter nimmt ihn fest auf.
-// Gruppen-Charaktere ruft der Abruf nicht zweimal ab. Schlägt ein Mitglied fehl, bleibt sein letzter Stand.
-function guildEntries() {
+// Mitglieder: die Mitgliederliste der API (Roster, in Forever erst seit 14.11.2026), mit Rang als Zahl (0 = Gildenmeister).
+// Fällt die Liste aus, gelten die Mitglieder der letzten guild.json. So entsteht bei einem Ausfall kein falscher Austritt.
+// Ohne beides (erster lokaler Lauf) gibt es keine Gilde, guild.json und Gilden-Feed bleiben unverändert.
+async function guildEntries(previous) {
   const g = config.guild;
-  const ranks = g.ranks ?? [];
-  const fallback = ranks.includes('Mitglied') ? 'Mitglied' : ranks.at(-1) ?? 'Mitglied';
-  const list = new Map();
-  for (const e of config.characters) {
-    if (!e.realm && !e.surname) continue;
-    list.set(charKey(e), { ...e, squadOnly: true, rank: e.rank ?? fallback });
+  const slug = realmSlug(g.slug ?? g.name ?? config.title);
+  const path = g.realm ? `${realmSlug(g.realm)}/${slug}` : slug;
+  try {
+    const roster = await ctx.api(`/data/wow/guild/${encodeURIComponent(path).replace(/%2F/g, '/')}/roster`, config.namespaces.profile);
+    const list = (roster.members ?? []).map(({ character: ch, rank }) => ({ name: ch.name, surname: ch.surname ?? null, realm: ch.realm?.slug, rank: rank ?? null }));
+    if (list.length) return list;
+    throw new Error('Mitgliederliste leer');
+  } catch (err) {
+    console.warn(`gilde   Mitgliederliste: ${err.message}`);
+    if (!previous.size) return null;
+    console.warn('gilde   nutze die Mitglieder der letzten guild.json');
+    return [...previous.values()].map((m) => ({ name: m.name, surname: m.surname ?? null, realm: m.realmName, rank: m.rank ?? null }));
   }
-  for (const e of g.members ?? []) {
-    if (!e.realm && !e.surname) continue;
-    const key = charKey(e);
-    list.set(key, { ...list.get(key), ...e, squadOnly: false, rank: e.rank ?? list.get(key)?.rank ?? fallback });
-  }
-  return [...list.values()];
 }
 
 function guildMeta(members) {
@@ -889,26 +887,22 @@ function guildMeta(members) {
     modelEnv: config.modelEnv ?? 'classic',
     wowhead: config.wowhead,
     maxLevel: config.maxLevel,
-    ranks: config.guild.ranks ?? [],
     members,
   };
 }
 
 async function buildGuild(data) {
   const previous = await loadPrevious(previousGuildUrl(), new URL('site/guild.json', root), 'members');
+  const entries = await guildEntries(previous);
+  if (!entries) return null;
   const group = new Map(data.characters.map((c) => [c.key, c]));
   const members = [];
-  for (const entry of guildEntries()) {
+  for (const entry of entries) {
     const key = charKey(entry);
     try {
       // Gruppen-Charaktere kommen aus data.json, auch ihr Fehler. Kein zweiter Abruf.
       // Hat data.json einen alten Stand (stale), gilt dieser auch hier. Sonst greift der letzte Stand der Gilde.
       const squad = group.get(key);
-      // Gruppen-Charakter ohne Gilde im Profil: (noch) kein Mitglied. Das Profil zeigt die Gilde erst nach dem nächsten Logout.
-      if (entry.squadOnly && (!squad?.level || (squad.guild ?? null) !== (config.guild.name ?? config.title))) {
-        console.log(`gilde   ${key} nicht in der Gilde (Profil: ${squad?.guild ?? 'keine'})`);
-        continue;
-      }
       if (squad?.error && !squad.level) throw new Error(squad.error);
       const c = squad ?? (await fetchCharacter(ctx.api, entry, ctx.caches));
       members.push({ ...c, rank: entry.rank });
@@ -1031,8 +1025,8 @@ async function fillSquad(data, guild) {
 
 // Gilden-Feed: Jeder Abruf vergleicht die Mitgliederliste und je Mitglied den Stand wie im Squad (activityEvents):
 // jedes Level-Up, neue Items ab Rar, Berufe und Erfolge. Die Gilde ist klein, darum steht alles im Feed.
-// Wer aus config.guild.members verschwindet, gilt als ausgetreten. Das Ereignis trägt den Namen, weil der Eintrag fehlt.
-// Eine Namenskorrektur in config.json ist kein Austritt mit Beitritt: Verschwindet ein Eintrag und kommt im selben Lauf
+// Wer aus der Mitgliederliste verschwindet, gilt als ausgetreten. Das Ereignis trägt den Namen, weil der Eintrag fehlt.
+// Eine Namensänderung ist kein Austritt mit Beitritt: Verschwindet ein Eintrag und kommt im selben Lauf
 // ein neuer dazu, mit gleicher Charakter-ID, gleichem Vornamen oder ohne je geladenes Profil, zieht nur der Stand um.
 async function updateGuildFeed(guild) {
   const FEED_LIMIT = 1500;

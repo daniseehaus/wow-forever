@@ -14,17 +14,7 @@
     "static": "static-eu"
   },
   "wowhead": "",
-  "guild": {
-    "name": "Geilbleiber",
-    "ranks": ["Gildenmeister", "Offizier", "Veteran", "Mitglied", "Rekrut"],
-    "members": [
-      { "name": "Bernhard", "surname": "Backstab" },
-      { "name": "Hammer", "surname": "Hanno" },
-      { "name": "Lokk", "surname": "Eidlöter" },
-      { "name": "Dennis", "surname": "Dotalot" },
-      { "name": "Pawris", "surname": "Hilton" }
-    ]
-  },
+  "guild": { "name": "Geilbleiber" },
   "forever": {
     "namespaces": {
       "profile": "profile-forever-eu",

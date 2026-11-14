@@ -59,26 +59,20 @@ Ein Eintrag nur mit Namen (`{ "name": "Daniel" }`) ist ein Platzhalter. Die Seit
 Die Gildenseite liegt unter `gilde.html`. Beide Seiten haben dieselbe Navigation: die Abschnitte der Startseite und „Guild“ am Ende.
 Auf der Gildenseite führen die Abschnitte zur Startseite, „Guild“ ist aktiv.
 
-Forever kennt in der API keine Mitgliederliste (geprüft am 09.11.2026). Das Profil nennt die Gilde (Feld `guild` mit Link),
-der Link selbst und alle Gilden-Endpunkte (`/data/wow/guild/...`, Roster, Aktivität) antworten aber mit 404.
-Die Gildenseite der Armory (`/forever/eu/armory/guild/...`) meldet 500, die Suche der Armory nennt keine Gilde.
-Die Mitglieder stehen deshalb in `config.json` unter `guild`:
+Die Mitglieder kommen aus der Mitgliederliste der API (`/data/wow/guild/{slug}/roster`, Namespace `profile-forever-eu`).
+Forever liefert sie seit dem 14.11.2026, vorher antworteten alle Gilden-Endpunkte mit 404. Der Slug ist der Gildenname in Kleinbuchstaben,
+Forever braucht keinen Realm. `config.json` nennt nur den Namen:
 
 ```json
-"guild": {
-  "name": "Geilbleiber",
-  "ranks": ["Gildenmeister", "Offizier", "Veteran", "Mitglied", "Rekrut"],
-  "members": [
-    { "name": "Hammer", "surname": "Hanno", "rank": "Offizier" }
-  ]
-}
+"guild": { "name": "Geilbleiber" }
 ```
 
-- Zur Gilde gehören alle Einträge in `members` und die Charaktere aus `characters`, deren Profil die Gilde nennt (`guild`).
-  Das Profil zeigt die Gilde erst nach dem nächsten Logout. Bis dahin fehlt ein neuer Squad-Charakter auf der Gildenseite.
-- `rank` und `ranks` stehen noch in `config.json`, die Seite zeigt Ränge aber nicht (die API kennt keine).
-- Wer aus `members` verschwindet, gilt im Gilden-Feed als ausgetreten. Ein neuer Eintrag gilt als Beitritt.
-- Eine Namenskorrektur ist kein Austritt mit Beitritt. Verschwindet ein Eintrag und kommt im selben Lauf ein neuer dazu, zieht nur der Stand um.
+- Optional: `slug` (wenn er vom Namen abweicht) und `realm` (für Spielversionen mit Realms).
+- Die Liste nennt Name, Nachname, Level, Klasse, Volk und den Rang als Zahl (0 = Gildenmeister). Die Seite zeigt keine Ränge.
+  Das Level in der Liste ist oft neuer als im Profil. Die Seite nutzt das Level aus dem Profil.
+- Fällt die Liste aus, gelten die Mitglieder der letzten `guild.json`. Ohne beide bleiben `guild.json` und der Gilden-Feed unverändert.
+- Wer aus der Liste verschwindet, gilt im Gilden-Feed als ausgetreten. Ein neuer Eintrag gilt als Beitritt.
+- Eine Namensänderung ist kein Austritt mit Beitritt. Verschwindet ein Eintrag und kommt im selben Lauf ein neuer dazu, zieht nur der Stand um.
   Bedingung: gleiche Charakter-ID bei Blizzard, gleicher Vorname oder ein alter Eintrag, der nie ein Profil hatte.
   Ein Eintrag ohne je geladenes Profil verschwindet ohne Austritt.
 
