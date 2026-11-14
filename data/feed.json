@@ -206,7 +206,7 @@
   },
   "zukk-sturmzüngler": {
    "level": 17,
-   "lastLogin": 1794636480000,
+   "lastLogin": 1794649929000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 4243,
@@ -254,7 +254,8 @@
    "achs": [
     769,
     728,
-    61997
+    61997,
+    772
    ],
    "guild": "Geilbleiber"
   },
@@ -1429,6 +1430,15 @@
     "zukk-sturmzüngler",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1794649260000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 772,
+   "name": "Erforscht das Vorgebirge des Hügellands",
+   "desc": "Erforscht das Vorgebirge des Hügellands und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236779.jpg"
   }
  ]
 }
