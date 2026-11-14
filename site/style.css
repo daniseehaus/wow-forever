@@ -688,7 +688,7 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
   .place-list { columns: auto; }
   .place.next em { display: none; }
   .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
-  .prep { columns: 2; }
+  .prep { columns: 1; }
   .recap-card { padding: 16px; }
   .rstat b { font-size: 32px; }
   .recap-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
