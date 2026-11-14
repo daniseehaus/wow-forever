@@ -335,8 +335,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 26,
-   "lastLogin": 1794603648000,
+   "level": 27,
+   "lastLogin": 1794649834000,
    "items": {
     "NECK": 281265,
     "SHOULDER": 270024,
@@ -368,7 +368,7 @@
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 112,
+    "Mining": 113,
     "Blacksmithing": 81,
     "Cooking": 1,
     "First Aid": 40
@@ -376,7 +376,8 @@
    "achs": [
     769,
     728,
-    61997
+    61997,
+    772
    ],
    "names": {
     "NECK": "Selbstvertrauen des Wegwächters",
@@ -1519,6 +1520,23 @@
    "ilvl": 28,
    "prev": 24,
    "prevName": "Flügelklinge"
+  },
+  {
+   "t": 1794649271000,
+   "key": "lokk-eidlöter",
+   "type": "achievement",
+   "id": 772,
+   "name": "Erforscht das Vorgebirge des Hügellands",
+   "desc": "Erforscht das Vorgebirge des Hügellands und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236779.jpg"
+  },
+  {
+   "t": 1794649834000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 26,
+   "to": 27,
+   "max": false
   }
  ]
 }
