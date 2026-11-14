@@ -389,6 +389,23 @@
       "135237": 5
      }
     }
+   },
+   {
+    "t": 1794669912000,
+    "level": 15,
+    "base": {
+     "ilvl": 0,
+     "profs": {
+      "Mining": 76,
+      "Engineering": 80,
+      "Cooking": 36,
+      "Fishing": 1,
+      "First Aid": 34
+     },
+     "talents": {
+      "135237": 5
+     }
+    }
    }
   ],
   "orkward-orkbert": [

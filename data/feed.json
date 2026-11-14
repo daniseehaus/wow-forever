@@ -260,40 +260,16 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 14,
-   "lastLogin": 1794429675000,
+   "level": 15,
+   "lastLogin": 1794669912000,
    "items": {
-    "SHIRT": 6125,
-    "CHEST": 10421,
-    "WAIST": 2857,
-    "LEGS": 9789,
-    "FEET": 6350,
-    "WRIST": 2854,
-    "HANDS": 9787,
-    "BACK": 286744,
-    "MAIN_HAND": 6214
+    "SHIRT": 6125
    },
    "ilvls": {
-    "SHIRT": 1,
-    "CHEST": 10,
-    "WAIST": 18,
-    "LEGS": 19,
-    "FEET": 18,
-    "WRIST": 19,
-    "HANDS": 19,
-    "BACK": 13,
-    "MAIN_HAND": 16
+    "SHIRT": 1
    },
    "names": {
-    "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Raue Kupferweste",
-    "WAIST": "Runenverzierter Kupfergürtel",
-    "LEGS": "Räuber-Beinschützer der Macht",
-    "FEET": "Raue bronzene Stiefel",
-    "WRIST": "Runenverzierte Kupferarmschienen",
-    "HANDS": "Räuber-Stulpen des Wals",
-    "BACK": "Dreifach genähtes Fleisch",
-    "MAIN_HAND": "Schwerer Kupferschlägel"
+    "SHIRT": "Muskelprotzharnisch"
    },
    "profs": {
     "Mining": 76,
@@ -1439,6 +1415,14 @@
    "name": "Erforscht das Vorgebirge des Hügellands",
    "desc": "Erforscht das Vorgebirge des Hügellands und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236779.jpg"
+  },
+  {
+   "t": 1794669912000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 14,
+   "to": 15,
+   "max": false
   }
  ]
 }
