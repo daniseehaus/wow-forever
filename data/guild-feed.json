@@ -167,8 +167,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 27,
-   "lastLogin": 1794613779000,
+   "level": 28,
+   "lastLogin": 1794683828000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -1551,6 +1551,14 @@
   {
    "t": 1794675945000,
    "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 27,
+   "to": 28,
+   "max": false
+  },
+  {
+   "t": 1794683828000,
+   "key": "bernhard-backstab",
    "type": "level",
    "from": 27,
    "to": 28,
