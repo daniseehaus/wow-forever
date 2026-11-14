@@ -1476,7 +1476,11 @@ function renderPrep() {
   const last = sessionList().at(-1);
   const el = document.getElementById('vorbereitung');
   const chars = state.chars.filter((c) => c.level);
-  const tasks = chars.map((c) => [c, prepTasks(c, last?.stats?.[c.key]?.level)]);
+  const tasks = chars.map((c) => {
+    const st = last?.stats?.[c.key];
+    // Die API kennt keine gelernten Zauber. Wer sich nach der Session neu einloggt, war vermutlich beim Lehrer.
+    return [c, prepTasks(c, st?.level, c.lastLogin > (st?.logout ?? last?.end ?? Infinity))];
+  });
   const total = tasks.reduce((a, [, t]) => a + t.length, 0);
   el.hidden = !last;
   document.getElementById('nav-vorbereitung').hidden = !last;
@@ -1491,7 +1495,7 @@ function renderPrep() {
   </div>`).join('');
 }
 
-function prepTasks(c, range) {
+function prepTasks(c, range, trained = false) {
   const [from, to] = range ?? [c.level, c.level];
   const crossed = (lv) => from < lv && to >= lv;
   const out = [];
@@ -1505,7 +1509,7 @@ function prepTasks(c, range) {
     out.push([`${profName(p.name)}: ${next[0]} lernen`, p.skill >= p.max, spell ? `spell=${spell}#taught-by-npc` : null]);
   }
   // Neue Zauber gibt es in Classic auf geraden Leveln.
-  for (let lv = to; lv > from; lv--) if (lv % 2 === 0) { out.push([`Lehrer: Level ${lv}`, false]); break; }
+  if (!trained) for (let lv = to; lv > from; lv--) if (lv % 2 === 0) { out.push([`Lehrer: Level ${lv}`, false]); break; }
   const free = c.talents?.trees?.length ? Math.max(0, c.level - 9 - c.talents.trees.reduce((a, t) => a + t.points, 0)) : 0;
   if (free) out.push([`${free} ${free === 1 ? 'Talentpunkt' : 'Talentpunkte'} frei`, false]);
   return out.sort((a, b) => b[1] - a[1]);
