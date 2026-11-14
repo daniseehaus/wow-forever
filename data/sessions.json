@@ -448,6 +448,25 @@
       "134437": 2
      }
     }
+   },
+   {
+    "t": 1794661546000,
+    "level": 18,
+    "base": {
+     "ilvl": 10,
+     "profs": {
+      "Leatherworking": 101,
+      "Skinning": 149,
+      "Cooking": 115,
+      "Fishing": 1,
+      "First Aid": 15
+     },
+     "talents": {
+      "134422": 5,
+      "134434": 1,
+      "134437": 2
+     }
+    }
    }
   ]
  }
