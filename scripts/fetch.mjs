@@ -222,6 +222,8 @@ async function fetchCharacter(api, entry, caches) {
     surname: summary.surname ?? entry.surname ?? null,
     realmName: summary.realm?.name ?? entry.realm ?? null,
     level: summary.level,
+    // Erfahrungspunkte im aktuellen Level (Stand beim letzten Logout). Die Seite rechnet daraus den Fortschritt zum nächsten Level.
+    xp: summary.experience ?? null,
     classId: summary.character_class?.id,
     className: summary.character_class?.name,
     race: raceName(summary.race?.name),

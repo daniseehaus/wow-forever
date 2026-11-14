@@ -324,6 +324,7 @@ function detailHtml(m) {
             ${m.lastLogin ? `<span class="chip">Aktiv ${ago(m.lastLogin)}</span>` : ''}
           </div>
         </div>
+        ${xpBarHtml(m)}
         ${boardKpis(m, items, sets)}
         <div class="board">${slots.map(([s, l]) => cardHtml(items.get(s), l, maxIlvl)).join('')}</div>
       </div>

@@ -152,8 +152,9 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   Dazu bis zu vier Auszeichnungen (z. B. Größtes Upgrade, Loot-Goblin, Licht aus). Die Werte je Spieler hält die Session in `stats` fest.
   Der Knopf „Teilen“ öffnet WhatsApp mit fertigem Text und Link.
 - **Loadout:** startet eingeklappt. Ein Klick auf eine Kachel klappt es für diesen Charakter auf, ein zweiter Klick auf dieselbe Kachel klappt es ein.
-  Kopf, Kennzahlen, Werte (aus `/statistics`), Berufe und bei Jägern die Begleiter (aus `/hunter-pets`, der aktive vorne, die im Stall blass), darunter Ausrüstung und Talentbäume.
+  Kopf, Levelfortschritt, Kennzahlen, Werte (aus `/statistics`), Berufe und bei Jägern die Begleiter (aus `/hunter-pets`, der aktive vorne, die im Stall blass), darunter Ausrüstung und Talentbäume.
   Werte, Berufe und Begleiter nutzen dieselben Bausteine wie das Gilden-Detail (`statRows`, `profRows`, `petRows` in `app.js`).
+  Der Levelfortschritt zeigt die XP im Level (`experience` aus dem Profil, Stand beim Logout) gegen die Classic-Tabelle `XP_TO_NEXT` in `meta.js` (`xpBarHtml`, auch im Gilden-Detail).
   Die Kennzahl „Leere Slots“ zählt alle leeren Slots, ohne Schildhand. Eine leere Schildhand erscheint auch nicht als Karte (Zweihandwaffe, Jäger).
   Item-Namen dürfen zwei Zeilen haben. Vor der ersten gemeinsamen Session zeigt die Kopfzahl „Gemeinsame Sessions“ statt „Level pro Session“.
 - **Kopfzahlen Squad:** Level pro Session, Ø Level (Mitte) und Spielzeit bis 60. Auf dem Handy stehen die drei in einer Reihe.

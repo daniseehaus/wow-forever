@@ -1080,6 +1080,7 @@ function renderLoadout() {
         ${c.lastLogin ? `<span class="chip">Aktiv ${ago(c.lastLogin)}</span>` : ''}
       </div>
     </div>
+    ${xpBarHtml(c)}
     ${boardKpis(c, items, sets)}
     ${loInfoHtml(c)}
     <div class="board">${slots.map(([s, l]) => cardHtml(items.get(s), l, maxIlvl, hints.get(s))).join('')}</div>
@@ -1088,6 +1089,21 @@ function renderLoadout() {
   el.querySelectorAll('img').forEach(imgFallback);
   focusMainTree(el);
   window.$WowheadPower?.refreshLinks?.();
+}
+
+// Levelfortschritt unter dem Kopf (Squad-Loadout und Gilden-Detail): XP im Level gegen die XP bis zum nächsten Level.
+// Ohne XP aus dem Profil oder auf dem Höchstlevel entfällt der Balken.
+function xpBarHtml(c) {
+  const need = M.XP_TO_NEXT?.[c.level];
+  if (c.xp == null || !need || c.level >= (state.data.maxLevel ?? 60)) return '';
+  const pct = Math.min(100, Math.max(0, (c.xp / need) * 100));
+  const n = (v) => Math.round(v).toLocaleString('de-DE');
+  return `<div class="xp-bar" title="noch ${n(Math.max(0, need - c.xp))} XP bis Level ${c.level + 1}">
+    <span class="xp-lv">Level ${c.level}</span>
+    <i class="bar"><i style="width:${pct.toFixed(1)}%"></i></i>
+    <span class="xp-lv next">${c.level + 1}</span>
+    <span class="xp-num">${n(c.xp)} / ${n(need)} XP · ${Math.floor(pct)} %</span>
+  </div>`;
 }
 
 // Werte und Berufe zwischen Kennzahlen und Ausrüstung, wie im Gilden-Detail unter dem Porträt.

@@ -229,7 +229,7 @@ img.stage-icon { position: absolute; left: 50%; top: 50%; width: 96px; height: 9
 /* Solange das Band läuft, reagiert das Loadout nicht auf die Maus: kein Hover, keine Tooltips. */
 .loadout.swapping { pointer-events: none; }
 body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
-.loadout.swap .lo-head, .loadout.swap .board-kpis, .loadout.swap .lo-info, .loadout.swap .board, .loadout.swap .talents { animation: rise .5s 1.05s both; }
+.loadout.swap .lo-head, .loadout.swap .xp-bar, .loadout.swap .board-kpis, .loadout.swap .lo-info, .loadout.swap .board, .loadout.swap .talents { animation: rise .5s 1.05s both; }
 
 /* Panels */
 .panel {
@@ -286,6 +286,17 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .chip { padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--line); font-weight: 700; font-size: 13px; }
 .chip.ok { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 30%, transparent); background: color-mix(in srgb, var(--accent) 7%, transparent); }
 /* Gear-Board: Kennzahlen oben, alle Slots als Karten. Rand links in Qualitätsfarbe, Balken für das iLvl. */
+/* Levelfortschritt: Level, Balken in Klassenfarbe, nächstes Level, rechts die XP. Auf dem Handy stehen die XP unter dem Balken. */
+.xp-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 6px 10px; margin-bottom: 12px; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(255,255,255,.025); }
+.xp-bar .xp-lv { font: 600 12px var(--mono); color: var(--text); white-space: nowrap; }
+.xp-bar .xp-lv.next { color: var(--dim); }
+.xp-bar .bar { display: block; height: 6px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
+.xp-bar .bar i { display: block; height: 100%; border-radius: inherit; background: var(--cls); box-shadow: 0 0 12px color-mix(in srgb, var(--cls) 60%, transparent); }
+.xp-bar .xp-num { font: 500 12px var(--mono); color: var(--muted); white-space: nowrap; margin-left: 6px; }
+@media (max-width: 600px) {
+  .xp-bar { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .xp-bar .xp-num { grid-column: 1 / -1; margin-left: 0; text-align: right; }
+}
 .board-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12px; }
 .bk { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: rgba(255,255,255,.025); }
 .bk b { font: 800 30px/1 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

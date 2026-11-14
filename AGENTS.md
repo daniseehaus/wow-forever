@@ -40,6 +40,7 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-14: Loadout und Gilden-Detail zeigen den Levelfortschritt (XP im Level aus dem Profil). Forever nutzt die Classic-Kurve, alle XP-Werte lagen darunter.
 - 2026-11-14: Die Gilde kommt aus der Mitgliederliste der API (Roster, in Forever neu), `config.json` nennt nur den Namen. Fällt die Liste aus, gilt die letzte `guild.json`. Jäger zeigen ihre Begleiter im Loadout und im Gilden-Detail.
 - 2026-11-14: Prep zeigt „Lehrer“ nur, bis sich der Spieler nach der Session neu eingeloggt hat. Die API kennt keine gelernten Zauber, ein erneuter Login gilt als Besuch beim Lehrer.
 - 2026-11-14: Session-Werte je Spieler gelten ab seinem letzten Logout mehr als 3 Stunden vor der Session. Solo-Spiel dazwischen zählt nicht mit (auch nicht Items und Quests). Wer bis 3 Stunden nach dem Ende ausloggt (Absturz), gehört noch zur Session. Orkward von Hand nachgetragen: Session 3 Level 11 → 14 (Absturz, Logout 08:37), Session 4 Level 15 → 18.
