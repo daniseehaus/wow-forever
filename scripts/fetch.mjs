@@ -78,7 +78,9 @@ await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\
 const sessions = demo ? {} : preview ? { list: preview.showcase.sessions } : await updateSessions(data);
 // Baseline: gemeinsame Sessions vor der Erkennung (config sessionBaseline). Die Seite zählt sie mit, zeigt aber keine Karte dafür.
 const baseline = config.sessionBaseline ? { count: config.sessionBaseline.count ?? 0, levels: config.sessionBaseline.levels ?? 0 } : null;
-await writeFile(new URL('site/sessions.json', root), JSON.stringify({ ...sessions, baseline }) + '\n');
+// Den Verlauf der Logouts (seen) braucht nur die Erkennung, nicht die Seite.
+const { seen, ...sessionsPublic } = sessions;
+await writeFile(new URL('site/sessions.json', root), JSON.stringify({ ...sessionsPublic, baseline }) + '\n');
 // Mit --guild-demo zeigt die Aktivität Beispiele und die echten Erfolge der echten Charaktere.
 const feed = demo ? demoFeed(data) : guildDemo ? await withAchievements(demoFeed(data), data) : await updateFeed(data, preview ? {} : sessions);
 const events = preview ? [...preview.showcase.events, ...feed.events].sort((a, b) => a.t - b.t) : feed.events;
@@ -668,11 +670,15 @@ async function updateHistory(data) {
 // Haben sich seit der letzten erkannten Session mindestens 4 Charaktere (bei kleinerer Gruppe alle)
 // innerhalb von 3 Stunden ausgeloggt, zählt das als gemeinsame Session. Erkannt wird sie erst, wenn
 // seit dem letzten Logout eine Stunde vergangen ist, damit Nachzügler noch dazukommen.
-// Der durchschnittliche Level-Zuwachs der Beteiligten seit dem letzten Stand ist ihr Ergebnis.
+// Der durchschnittliche Level-Zuwachs der Beteiligten ist ihr Ergebnis.
 // Für den Abend-Rückblick hält jede Session je Spieler Level, Itemlevel, Berufspunkte, Logout und Umskillen fest.
+// Verglichen wird je Spieler mit seinem Stand vor der Session (seen): dem letzten Logout, der mehr als 3 Stunden
+// vor ihrem Beginn liegt. So zählt Solo-Spiel zwischen zwei Sessions nicht mit, ein Relog während der Session aber schon.
+// Nachzügler: Wer bis 3 Stunden nach dem Ende ausloggt (Absturz, längere Runde), gehört noch zur Session.
 async function updateSessions(data) {
   const SESSION_WINDOW = 3 * 3600 * 1000;
   const QUIET = 3600 * 1000;
+  const SEEN_LIMIT = 12;
   const state = await loadState('sessions', () => ({ lastEnd: 0, levels: {}, base: {}, list: [] }));
   if (!process.env.GITHUB_ACTIONS) return state;
 
@@ -680,6 +686,24 @@ async function updateSessions(data) {
   const minPlayers = Math.max(2, Math.min(4, chars.length));
   const levels = Object.fromEntries(chars.map((c) => [c.key, c.level]));
   const base = Object.fromEntries(chars.map((c) => [c.key, sessionBase(c)]));
+
+  // Stand je Charakter nach jedem Logout, die letzten 12.
+  state.seen ??= {};
+  for (const c of chars) {
+    const list = (state.seen[c.key] ??= []);
+    if (!c.lastLogin || list.at(-1)?.t === c.lastLogin) continue;
+    list.push({ t: c.lastLogin, level: c.level, base: base[c.key] });
+    if (list.length > SEEN_LIMIT) list.shift();
+  }
+  // Stand vor einer Session, die mit dem Logout start beginnt. Ohne passenden Eintrag gilt der Stand der letzten Session.
+  const before = (c, start) => {
+    const s = state.seen[c.key].findLast((x) => x.t < start - SESSION_WINDOW);
+    return s ? { level: s.level, base: s.base, since: s.t } : { level: state.levels[c.key], base: state.base?.[c.key], since: null };
+  };
+  const meanGain = (stats) => {
+    const g = Object.values(stats).map((x) => x.level[1] - x.level[0]);
+    return g.reduce((a, b) => a + b, 0) / g.length;
+  };
 
   if (!Object.keys(state.levels).length) {
     state.levels = levels;
@@ -690,22 +714,34 @@ async function updateSessions(data) {
     const end = Math.max(0, ...fresh.map((c) => c.lastLogin));
     const players = fresh.filter((c) => end - c.lastLogin <= SESSION_WINDOW);
     if (players.length >= minPlayers && Date.now() - end >= QUIET) {
-      const gains = players.filter((c) => state.levels[c.key] != null).map((c) => c.level - state.levels[c.key]);
+      const start = Math.min(...players.map((c) => c.lastLogin));
+      const known = players.map((c) => [c, before(c, start)]).filter(([, p]) => p.level != null);
       // Sessions bis sessionBaseline.until stecken schon in der Baseline. Sie setzen nur den Stand, ohne eigene Session.
       const counted = Date.parse(config.sessionBaseline?.until ?? '') || 0;
-      if (gains.length && end >= counted) {
-        state.list.push({
-          start: Math.min(...players.map((c) => c.lastLogin)),
-          end,
-          gain: gains.reduce((a, b) => a + b, 0) / gains.length,
-          players: players.map((c) => c.key),
-          stats: Object.fromEntries(players.map((c) => [c.key, sessionStats(state.base?.[c.key], base[c.key], state.levels[c.key], c)])),
-        });
+      if (known.length && end >= counted) {
+        const stats = Object.fromEntries(known.map(([c, p]) => [c.key, sessionStats(p.base, base[c.key], p.level, c, p.since)]));
+        state.list.push({ start, end, gain: meanGain(stats), players: players.map((c) => c.key), stats });
       }
       // Auch Level aus Solo-Spiel der übrigen gelten damit als verbucht.
       state.levels = levels;
       state.base = base;
       state.lastEnd = end;
+    } else {
+      // Nachzügler der zuletzt erkannten Session. Auch er wartet eine Stunde, falls er sich nach dem Absturz wieder einloggt.
+      const last = state.list.at(-1);
+      if (last && last.end === state.lastEnd) {
+        for (const c of chars) {
+          if (last.players.includes(c.key) || !(c.lastLogin > last.end && c.lastLogin - last.end <= SESSION_WINDOW)) continue;
+          if (Date.now() - c.lastLogin < QUIET) continue;
+          const p = before(c, last.start);
+          if (p.level == null) continue;
+          last.players.push(c.key);
+          last.stats[c.key] = sessionStats(p.base, base[c.key], p.level, c, p.since);
+          last.gain = meanGain(last.stats);
+          state.levels[c.key] = c.level;
+          state.base[c.key] = base[c.key];
+        }
+      }
     }
   }
   await saveState('sessions', state);
@@ -723,11 +759,12 @@ function sessionBase(c) {
 
 // Werte eines Spielers für eine Session. Umskillen heißt: Ein Talent hat danach weniger Ränge als vorher.
 // profs: Punkte je Beruf (nur mit Zuwachs), für die Kachel Berufspunkte und den Tooltip je Spieler.
-function sessionStats(before, now, levelBefore, c) {
+// since: Logout vor der Session. Die Seite zeigt Items und Quests des Spielers ab diesem Zeitpunkt.
+function sessionStats(before, now, levelBefore, c, since = null) {
   const profs = Object.fromEntries(Object.entries(now.profs).map(([n, v]) => [n, Math.max(0, v - (before?.profs?.[n] ?? v))]).filter(([, g]) => g > 0));
   const profGain = Object.values(profs).reduce((a, g) => a + g, 0);
   const respec = Object.entries(before?.talents ?? {}).some(([id, r]) => (now.talents[id] ?? 0) < r);
-  return { level: [levelBefore ?? c.level, c.level], ilvl: [before?.ilvl ?? now.ilvl, now.ilvl], prof: profGain, profs, logout: c.lastLogin, respec };
+  return { level: [levelBefore ?? c.level, c.level], ilvl: [before?.ilvl ?? now.ilvl, now.ilvl], prof: profGain, profs, logout: c.lastLogin, respec, ...(since ? { since } : {}) };
 }
 
 // Stand eines Charakters für die Aktivität. Squad und Gilde vergleichen ihn bei jedem Abruf mit dem letzten Stand.
@@ -809,9 +846,10 @@ async function updateFeed(data, sessions) {
   }
 
   const last = sessions.list?.at(-1);
-  if (last && !feed.events.some((e) => e.type === 'session' && e.t === last.end)) {
-    add({ t: last.end, type: 'session', start: last.start, gain: last.gain, players: last.players ?? [] });
-  }
+  const known = last && feed.events.find((e) => e.type === 'session' && e.t === last.end);
+  if (last && !known) add({ t: last.end, type: 'session', start: last.start, gain: last.gain, players: last.players ?? [] });
+  // Ein Nachzügler ändert Spieler und Zuwachs der Session nachträglich.
+  if (known) Object.assign(known, { gain: last.gain, players: last.players ?? [] });
 
   feed.events.sort((a, b) => a.t - b.t);
   feed.events = feed.events.slice(-FEED_LIMIT);

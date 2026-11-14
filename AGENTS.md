@@ -40,6 +40,8 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-14: Session-Werte je Spieler gelten ab seinem letzten Logout mehr als 3 Stunden vor der Session. Solo-Spiel dazwischen zählt nicht mit (auch nicht Items und Quests). Wer bis 3 Stunden nach dem Ende ausloggt (Absturz), gehört noch zur Session. Orkward von Hand nachgetragen: Session 3 Level 11 → 14 (Absturz, Logout 08:37), Session 4 Level 15 → 18.
+
 - 2026-11-14: Die Seite lädt neu, wenn man nach mehr als 15 Minuten zu ihr zurückkehrt. Vom Home-Bildschirm blieb sonst ein alter Stand stehen (Teilen-Knopf noch Tage nach dem Entfernen). Auf dem Handy laufen Prep-Karten spaltenweise ohne Lücken, Quest-Namen rutschen unter den Titel, wenn der Platz nicht reicht.
 - 2026-11-11: Listen laufen spaltenweise (erst links runter, dann rechts) und zeigen links ihren Sortierwert: Aktivität die Uhrzeit, Crafting den Rang (1 = größtes Upgrade), Quests die Anzahl je Zone, Leveling die Levelspanne. Eine einzelne Quest-Karte mit bis zu 4 Quests ist so breit wie eine Karte unter mehreren. Crafting zeigt altes Item → neues Item, der Tooltip nur die beiden Items ohne Material.
 - 2026-11-11: Crafting sortiert nach dem größten Upgrade und hat einen Spielerfilter („bekommt“ oder „stellt her“). Ohne Filter stehen nur die 8 größten Upgrades da, der Rest auf Klick. Fernkampfwaffen zählen nur für Jäger voll, für Stoffträger der Zauberstab, für Nahkämpfer kaum.

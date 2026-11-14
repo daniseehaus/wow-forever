@@ -1286,10 +1286,17 @@ const QUALITY_NAMES = { EPIC: 'lila', RARE: 'blau', UNCOMMON: 'grün' };
 function sessionList() {
   const offset = state.sessions?.baseline?.count ?? 0;
   return (state.sessions?.list ?? []).map((s, i, all) => {
+    // Zeitraum je Spieler: ab seinem Logout vor der Session (since) bis zu seinem Logout danach (auch als Nachzügler).
+    // Ältere Sessions ohne since zählen ab dem Ende der Session davor.
     const from = i ? all[i - 1].end : s.start - 6 * 36e5;
-    const items = state.feed.events.filter((e) => e.type === 'item' && e.t > from && e.t <= s.end && s.players.includes(e.key));
+    const inSession = (e) => {
+      if (!s.players.includes(e.key)) return false;
+      const st = s.stats?.[e.key];
+      return e.t > (st?.since ?? from) && e.t <= Math.max(s.end, st?.logout ?? 0);
+    };
+    const items = state.feed.events.filter((e) => e.type === 'item' && inSession(e));
     // Quests im selben Zeitraum. Der Quest-Verlauf reicht 30 Tage zurück, ältere Sessions zeigen darum weniger.
-    const quests = state.questLog.filter((e) => e.t > from && e.t <= s.end && s.players.includes(e.key));
+    const quests = state.questLog.filter(inSession);
     return { ...s, nr: offset + i + 1, idx: i, items, quests };
   });
 }
