@@ -1416,6 +1416,18 @@
    "ilvl": 21,
    "prev": 11,
    "prevName": "Jagdbogen"
+  },
+  {
+   "t": 1794612663000,
+   "type": "session",
+   "start": 1794611501000,
+   "gain": 4.25,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "orkward-orkbert"
+   ]
   }
  ]
 }
