@@ -314,7 +314,7 @@
    "classId": 2,
    "rank": 1,
    "level": 28,
-   "lastLogin": 1794675945000,
+   "lastLogin": 1794685712000,
    "items": {
     "HEAD": 4048,
     "NECK": 281265,
@@ -328,7 +328,7 @@
     "HANDS": 271208,
     "FINGER_1": 281673,
     "FINGER_2": 6414,
-    "BACK": 14149,
+    "BACK": 15468,
     "MAIN_HAND": 267369
    },
    "ilvls": {
@@ -344,11 +344,11 @@
     "HANDS": 22,
     "FINGER_1": 28,
     "FINGER_2": 29,
-    "BACK": 18,
+    "BACK": 29,
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 116,
+    "Mining": 117,
     "Blacksmithing": 81,
     "Cooking": 1,
     "First Aid": 40
@@ -372,7 +372,7 @@
     "HANDS": "Griff der Angst",
     "FINGER_1": "Schleife der Aufopferung",
     "FINGER_2": "Siegel von Sylvanas",
-    "BACK": "Unterirdisches Cape",
+    "BACK": "Windsongtuch",
     "MAIN_HAND": "Wolfsbann"
    }
   },
@@ -553,7 +553,7 @@
    "classId": 3,
    "rank": 1,
    "level": 18,
-   "lastLogin": 1794661546000,
+   "lastLogin": 1794685548000,
    "items": {
     "SHIRT": 127,
     "CHEST": 4243,
