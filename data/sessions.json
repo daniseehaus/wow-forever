@@ -338,6 +338,22 @@
       "134216": 3
      }
     }
+   },
+   {
+    "t": 1794636480000,
+    "level": 17,
+    "base": {
+     "ilvl": 9,
+     "profs": {
+      "Alchemy": 142,
+      "Herbalism": 111,
+      "Cooking": 21
+     },
+     "talents": {
+      "134214": 5,
+      "134216": 3
+     }
+    }
    }
   ],
   "pavel-plattenpapst": [
