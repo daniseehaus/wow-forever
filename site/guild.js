@@ -302,6 +302,7 @@ function detailHtml(m) {
   const slots = boardSlots(items);
   const maxIlvl = Math.max(1, ...(m.items ?? []).map((i) => i.ilvl ?? 0));
   const profs = profRows(m);
+  const pets = petRows(m);
   const stats = statRows(m.stats);
   return `<div class="gd" style="--cls:${classColor(m)}">
     <div class="gd-top">
@@ -309,6 +310,7 @@ function detailHtml(m) {
         <div class="gd-stage">${stageFxHtml()}${stageImg(m)}</div>
         ${stats ? `<div class="gd-sec"><span class="gd-label">Werte</span><dl class="gd-stats">${stats}</dl></div>` : ''}
         ${profs ? `<div class="gd-sec"><span class="gd-label">Berufe</span><div class="gd-profs">${profs}</div></div>` : ''}
+        ${pets ? petSec(pets) : ''}
       </aside>
       <div class="gd-main">
         <div class="lo-head">

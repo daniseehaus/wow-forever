@@ -1094,10 +1094,14 @@ function renderLoadout() {
 function loInfoHtml(c) {
   const stats = statRows(c.stats);
   const profs = profRows(c);
-  if (!stats && !profs) return '';
+  const pets = petRows(c);
+  if (!stats && !profs && !pets) return '';
   return `<div class="lo-info">
     ${stats ? `<div class="gd-sec"><span class="gd-label">Werte</span><dl class="gd-stats lo-stats">${stats}</dl></div>` : ''}
-    ${profs ? `<div class="gd-sec"><span class="gd-label">Berufe</span><div class="gd-profs">${profs}</div></div>` : ''}
+    ${profs || pets ? `<div class="lo-side">
+      ${profs ? `<div class="gd-sec"><span class="gd-label">Berufe</span><div class="gd-profs">${profs}</div></div>` : ''}
+      ${pets ? petSec(pets) : ''}
+    </div>` : ''}
   </div>`;
 }
 
@@ -1151,6 +1155,17 @@ function profRows(c) {
     return `<div class="gd-prof"><span>${esc(profName(p.name))}</span><b>${p.skill ?? '?'}<small> / ${p.max ?? '?'}</small></b><i class="bar"><i style="width:${pct}%"></i></i></div>`;
   }).join('');
 }
+
+// Begleiter der Jäger (Squad-Loadout und Gilden-Detail): Name, Level und Art mit Link zu Wowhead. Der aktive steht vorne, die übrigen sind blass.
+function petRows(c) {
+  return (c.pets ?? []).map((p) => {
+    const kind = p.creatureId
+      ? `<a href="${wh(state.data.wowhead || 'classic', `npc=${p.creatureId}`)}" target="_blank" rel="noopener">${esc(p.creature ?? 'Begleiter')}</a>`
+      : esc(p.creature ?? '');
+    return `<div class="gd-pet${p.active ? '' : ' off'}"><span>${esc(p.name ?? p.creature ?? 'Begleiter')}</span><b>${p.level ? `LV ${p.level}` : ''}</b><small>${kind}</small></div>`;
+  }).join('');
+}
+function petSec(rows) { return `<div class="gd-sec"><span class="gd-label">Begleiter</span><div class="gd-profs">${rows}</div></div>`; }
 
 // Slots auf dem Board. Distanz und Schildhand erscheinen nur mit Item: Zweihandwaffen und Jäger lassen die Schildhand frei.
 function boardSlots(items) {

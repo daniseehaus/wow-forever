@@ -85,7 +85,7 @@ Die Seite zeigt:
   Wer länger als 14 Tage offline ist, steht blass am Ende unter der Trennzeile „Inaktiv“. Mitglieder ohne sichtbares Profil (unter Level 10)
   stehen ganz unten unter „Ohne Profil“. Die Spaltenbreiten sind je Bildschirmbreite gemessen. Unter 900 px zeigen die Berufe nur Icon, Skill und Balken, unter 600 px gar nicht.
 - **Filter:** Klassen-Icons und „Suchen“ (findet Name, Klasse, Volk und Beruf).
-- **Detail:** Ein Klick auf eine Zeile klappt das Detail auf: links 3D-Modell, darunter Werte (aus `/statistics`) und alle Berufe, rechts Kennzahlen und Ausrüstung, darunter die drei Talentbäume. Es ist immer nur ein Detail offen, Escape schließt es.
+- **Detail:** Ein Klick auf eine Zeile klappt das Detail auf: links 3D-Modell, darunter Werte (aus `/statistics`), alle Berufe und bei Jägern die Begleiter (`/hunter-pets`), rechts Kennzahlen und Ausrüstung, darunter die drei Talentbäume. Es ist immer nur ein Detail offen, Escape schließt es.
   Ist 3D aus oder lädt nicht, steht der 2D-Render auf der Bühne (siehe „3D-Modelle“). Nur ohne jedes Bild erscheint das Klassen-Icon.
 - **Gilden-Feed:** Gildengründung, Beitritt, Austritt und dieselbe Aktivität wie im Squad: jedes Level-Up, neue Items ab Rar, Berufe und Erfolge.
   Gegründet am 08.11.2026 um 21:59, alle Mitglieder bis dahin mit Beitritt um 22:00 (auch in der Aktivität der Startseite).
@@ -152,7 +152,8 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   Dazu bis zu vier Auszeichnungen (z. B. Größtes Upgrade, Loot-Goblin, Licht aus). Die Werte je Spieler hält die Session in `stats` fest.
   Der Knopf „Teilen“ öffnet WhatsApp mit fertigem Text und Link.
 - **Loadout:** startet eingeklappt. Ein Klick auf eine Kachel klappt es für diesen Charakter auf, ein zweiter Klick auf dieselbe Kachel klappt es ein.
-  Kopf, Kennzahlen, Werte (aus `/statistics`) und Berufe, darunter Ausrüstung und Talentbäume. Werte und Berufe nutzen dieselben Bausteine wie das Gilden-Detail (`statRows`, `profRows` in `app.js`).
+  Kopf, Kennzahlen, Werte (aus `/statistics`), Berufe und bei Jägern die Begleiter (aus `/hunter-pets`, der aktive vorne, die im Stall blass), darunter Ausrüstung und Talentbäume.
+  Werte, Berufe und Begleiter nutzen dieselben Bausteine wie das Gilden-Detail (`statRows`, `profRows`, `petRows` in `app.js`).
   Die Kennzahl „Leere Slots“ zählt alle leeren Slots, ohne Schildhand. Eine leere Schildhand erscheint auch nicht als Karte (Zweihandwaffe, Jäger).
   Item-Namen dürfen zwei Zeilen haben. Vor der ersten gemeinsamen Session zeigt die Kopfzahl „Gemeinsame Sessions“ statt „Level pro Session“.
 - **Kopfzahlen Squad:** Level pro Session, Ø Level (Mitte) und Spielzeit bis 60. Auf dem Handy stehen die drei in einer Reihe.

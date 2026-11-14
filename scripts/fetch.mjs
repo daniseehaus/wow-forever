@@ -177,7 +177,7 @@ async function fetchCharacter(api, entry, caches) {
   const ns = config.namespaces.profile;
   const optional = (path) => api(`${base}${path}`, ns).catch(() => null);
 
-  const [summary, equipment, media, stats, specs, profs, appearance, achievements, questsOpen, questsDone] = await Promise.all([
+  const [summary, equipment, media, stats, specs, profs, appearance, achievements, questsOpen, questsDone, hunterPets] = await Promise.all([
     api(base, ns),
     api(`${base}/equipment`, ns),
     optional('/character-media'),
@@ -188,6 +188,7 @@ async function fetchCharacter(api, entry, caches) {
     optional('/achievements'),
     optional('/quests'),
     optional('/quests/completed'),
+    optional('/hunter-pets'),
   ]);
 
   const items = [];
@@ -245,8 +246,23 @@ async function fetchCharacter(api, entry, caches) {
     achievements: pickAchievements(achievements),
     // Questlog: offene und abgeschlossene Quests (IDs). Titel und Zone holt buildQuests.
     quests: questsOpen || questsDone ? { open: (questsOpen?.in_progress ?? []).map((q) => q.id), done: (questsDone?.quests ?? []).map((q) => q.id) } : null,
+    pets: pickPets(hunterPets),
     items,
   };
+}
+
+// Begleiter der Jäger (gezähmte Tiere). Der aktive zuerst, die übrigen nach Stallplatz. Andere Klassen haben keine.
+function pickPets(p) {
+  const list = (p?.hunter_pets ?? []).map((x) => ({
+    name: x.name ?? null,
+    level: x.level ?? null,
+    creature: x.creature?.name ?? null,
+    creatureId: x.creature?.id ?? null,
+    displayId: x.creature_display?.id ?? null,
+    active: !!(x.is_active || x.is_summoned),
+    slot: x.slot ?? null,
+  }));
+  return list.length ? list.sort((a, b) => b.active - a.active || (a.slot ?? 99) - (b.slot ?? 99)) : null;
 }
 
 function pickAchievements(a) {

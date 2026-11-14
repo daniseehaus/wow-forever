@@ -903,6 +903,15 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 .gd-prof b small { color: var(--dim); }
 .gd-prof .bar { grid-column: 1 / -1; display: block; height: 3px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
 .gd-prof .bar i { display: block; height: 100%; background: var(--cls); }
+/* Begleiter: Name und Level in einer Zeile, darunter die Art. Nicht aktive Begleiter (im Stall) sind blass. */
+.lo-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.gd-pet { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 2px 8px; min-width: 0; }
+.gd-pet span { font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gd-pet b { font: 500 12px var(--mono); color: var(--text); }
+.gd-pet small { grid-column: 1 / -1; font-size: 11px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gd-pet small a { color: inherit; }
+.gd-pet small a:hover { color: var(--cls); }
+.gd-pet.off { opacity: .55; }
 .gd .board { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 /* Bis 1300 px reicht für „Zuletzt online“ der kurze Kopf. */
