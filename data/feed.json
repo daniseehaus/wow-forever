@@ -800,12 +800,13 @@
    "t": 1794289739000,
    "type": "session",
    "start": 1794264324000,
-   "gain": 1.75,
+   "gain": 2,
    "players": [
     "wladimir-klatschko",
     "heili-kabel",
     "zukk-sturmzüngler",
-    "pavel-plattenpapst"
+    "pavel-plattenpapst",
+    "orkward-orkbert"
    ]
   },
   {
@@ -1421,7 +1422,7 @@
    "t": 1794612663000,
    "type": "session",
    "start": 1794611501000,
-   "gain": 4.25,
+   "gain": 3.25,
    "players": [
     "wladimir-klatschko",
     "heili-kabel",
