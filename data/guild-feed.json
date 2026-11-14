@@ -10,7 +10,8 @@
   "pavel-plattenpapst",
   "bernhard-backstab",
   "orkward-orkbert",
-  "dennis-dotalot"
+  "dennis-dotalot",
+  "freddie-muhrcury"
  ],
  "snapshot": {
   "heili-kabel": {
@@ -626,6 +627,13 @@
    "achs": [
     728
    ]
+  },
+  "freddie-muhrcury": {
+   "id": null,
+   "name": "Freddie",
+   "surname": "Muhrcury",
+   "classId": null,
+   "rank": 2
   }
  },
  "events": [
@@ -1547,6 +1555,11 @@
    "from": 26,
    "to": 27,
    "max": false
+  },
+  {
+   "t": 1794657131449,
+   "key": "freddie-muhrcury",
+   "type": "join"
   }
  ]
 }
