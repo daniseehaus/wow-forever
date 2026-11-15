@@ -267,15 +267,15 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 42,
-   "lastLogin": 1794696587000,
+   "level": 45,
+   "lastLogin": 1794770421000,
    "items": {
-    "HEAD": 274291,
-    "NECK": 281265,
+    "HEAD": 10763,
+    "NECK": 10824,
     "SHOULDER": 279842,
     "SHIRT": 6125,
     "CHEST": 273035,
-    "WAIST": 273846,
+    "WAIST": 10768,
     "LEGS": 9625,
     "FEET": 250620,
     "WRIST": 270073,
@@ -284,16 +284,16 @@
     "FINGER_2": 6414,
     "TRINKET_1": 280766,
     "TRINKET_2": 276895,
-    "BACK": 6314,
+    "BACK": 271810,
     "MAIN_HAND": 279885
    },
    "ilvls": {
-    "HEAD": 36,
-    "NECK": 20,
+    "HEAD": 43,
+    "NECK": 44,
     "SHOULDER": 36,
     "SHIRT": 1,
     "CHEST": 32,
-    "WAIST": 30,
+    "WAIST": 42,
     "LEGS": 37,
     "FEET": 15,
     "WRIST": 40,
@@ -302,13 +302,13 @@
     "FINGER_2": 29,
     "TRINKET_1": 33,
     "TRINKET_2": 30,
-    "BACK": 27,
+    "BACK": 43,
     "MAIN_HAND": 42
    },
    "profs": {
-    "Mining": 165,
+    "Mining": 180,
     "Blacksmithing": 84,
-    "Cooking": 83,
+    "Cooking": 101,
     "First Aid": 129
    },
    "achs": [
@@ -318,15 +318,17 @@
     62031,
     728,
     761,
-    846
+    846,
+    63684,
+    61998
    ],
    "names": {
-    "HEAD": "Polierte Schädelkappe",
-    "NECK": "Selbstvertrauen des Wegwächters",
+    "HEAD": "Eismetallbarbute",
+    "NECK": "Bernsteinglut-Talisman",
     "SHOULDER": "Kampfschiftung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
-    "WAIST": "Twilightfürstgurt",
+    "WAIST": "Eberheldengürtel",
     "LEGS": "Zweifach verstärkte Gamaschen",
     "FEET": "Edelsteinbesetzte Kupferstiefel",
     "WRIST": "Manschetten von Stromgarde",
@@ -335,7 +337,7 @@
     "FINGER_2": "Siegel von Sylvanas",
     "TRINKET_1": "Tränketasche",
     "TRINKET_2": "Transformativer Kokon",
-    "BACK": "Wolfmeister Cape",
+    "BACK": "Abgestoßene Haut des Leichenfressers",
     "MAIN_HAND": "Zeremonieller Schlaghammer"
    }
   },
@@ -1783,6 +1785,15 @@
    "prevName": null
   },
   {
+   "t": 1794733413000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 63684,
+   "name": "Erkundet Shen'dralas",
+   "desc": "Erkundet Shen'dralas und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132368.jpg"
+  },
+  {
    "t": 1794740160000,
    "key": "dennis-dotalot",
    "type": "achievement",
@@ -1839,6 +1850,75 @@
    "type": "prof",
    "name": "Fishing",
    "skill": 150
+  },
+  {
+   "t": 1794768180000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 61998,
+   "name": "Erfahren: Paladin",
+   "desc": "Erreicht zum ersten Mal Stufe 45 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
+   "t": 1794770421000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 42,
+   "to": 45,
+   "max": false
+  },
+  {
+   "t": 1794770421000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10763,
+   "name": "Eismetallbarbute",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133111.jpg",
+   "slot": "Kopf",
+   "ilvl": 43,
+   "prev": 36,
+   "prevName": "Polierte Schädelkappe"
+  },
+  {
+   "t": 1794770421000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10824,
+   "name": "Bernsteinglut-Talisman",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133294.jpg",
+   "slot": "Hals",
+   "ilvl": 44,
+   "prev": 20,
+   "prevName": "Selbstvertrauen des Wegwächters"
+  },
+  {
+   "t": 1794770421000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10768,
+   "name": "Eberheldengürtel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132500.jpg",
+   "slot": "Taille",
+   "ilvl": 42,
+   "prev": 30,
+   "prevName": "Twilightfürstgurt"
+  },
+  {
+   "t": 1794770421000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 271810,
+   "name": "Abgestoßene Haut des Leichenfressers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133763.jpg",
+   "slot": "Rücken",
+   "ilvl": 43,
+   "prev": 27,
+   "prevName": "Wolfmeister Cape"
   }
  ]
 }
