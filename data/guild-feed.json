@@ -472,63 +472,69 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 24,
-   "lastLogin": 1794732757000,
+   "level": 26,
+   "lastLogin": 1794753109000,
    "items": {
+    "HEAD": 3732,
     "NECK": 281265,
     "SHOULDER": 3748,
     "SHIRT": 2579,
-    "CHEST": 6324,
+    "CHEST": 5766,
     "WAIST": 286980,
-    "LEGS": 3457,
+    "LEGS": 9797,
     "FEET": 271214,
-    "WRIST": 15452,
+    "WRIST": 6613,
     "HANDS": 9795,
-    "FINGER_1": 6414,
+    "FINGER_1": 3739,
     "FINGER_2": 281673,
     "BACK": 14167,
     "MAIN_HAND": 251534,
-    "RANGED": 5252
+    "RANGED": 5250
    },
    "ilvls": {
+    "HEAD": 30,
     "NECK": 20,
     "SHOULDER": 28,
     "SHIRT": 14,
-    "CHEST": 28,
+    "CHEST": 27,
     "WAIST": 22,
-    "LEGS": 18,
+    "LEGS": 28,
     "FEET": 24,
-    "WRIST": 18,
+    "WRIST": 28,
     "HANDS": 26,
-    "FINGER_1": 29,
+    "FINGER_1": 25,
     "FINGER_2": 28,
     "BACK": 19,
     "MAIN_HAND": 24,
-    "RANGED": 21
+    "RANGED": 28
    },
    "profs": {
-    "Tailoring": 113,
-    "Herbalism": 123,
-    "Cooking": 150,
-    "Fishing": 140,
-    "First Aid": 105
+    "Tailoring": 120,
+    "Herbalism": 128,
+    "Cooking": 182,
+    "Fishing": 150,
+    "First Aid": 110
    },
-   "achs": [],
+   "achs": [
+    62009,
+    769
+   ],
    "names": {
+    "HEAD": "Kapuzenkutte",
     "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Felinen-Mantel",
     "SHIRT": "Grünes Leinenhemd",
-    "CHEST": "Robe von Arugal",
+    "CHEST": "Geringe Hexerrobe",
     "WAIST": "Schärpe des Fäulnisheilers",
-    "LEGS": "Bedruckte Beinkleider",
+    "LEGS": "Efeustoffhose des Adlers",
     "FEET": "Treter des Fäulnisheilers",
-    "WRIST": "Federleichte Armschienen",
+    "WRIST": "Weisenarmschienen des Adlers",
     "HANDS": "Efeustoffhandschuhe des Schattenzorns",
-    "FINGER_1": "Siegel von Sylvanas",
+    "FINGER_1": "Schädelring",
     "FINGER_2": "Schleife der Aufopferung",
     "BACK": "Bukanier-Cape des Adlers",
     "MAIN_HAND": "Knorriger Stab des Totenbeschwörers",
-    "RANGED": "Zauberstab des Verfalls"
+    "RANGED": "Verkohlter Zauberstab"
    }
   },
   "pawris-hilton": {
@@ -1777,12 +1783,30 @@
    "prevName": null
   },
   {
+   "t": 1794740160000,
+   "key": "dennis-dotalot",
+   "type": "achievement",
+   "id": 62009,
+   "name": "Hexenmeisternovize",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Hexenmeister.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626007.jpg"
+  },
+  {
    "t": 1794741869000,
    "key": "freddie-muhrcury",
    "type": "level",
    "from": 11,
    "to": 13,
    "max": false
+  },
+  {
+   "t": 1794742250000,
+   "key": "dennis-dotalot",
+   "type": "achievement",
+   "id": 769,
+   "name": "Erforscht den Silberwald",
+   "desc": "Erforscht den Silberwald und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236830.jpg"
   },
   {
    "t": 1794743362000,
@@ -1800,6 +1824,21 @@
    "name": "Erforscht Tausend Nadeln",
    "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
+  },
+  {
+   "t": 1794753109000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 24,
+   "to": 26,
+   "max": false
+  },
+  {
+   "t": 1794753109000,
+   "key": "dennis-dotalot",
+   "type": "prof",
+   "name": "Fishing",
+   "skill": 150
   }
  ]
 }
