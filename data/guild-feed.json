@@ -345,8 +345,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 28,
-   "lastLogin": 1794690103000,
+   "level": 29,
+   "lastLogin": 1794743362000,
    "items": {
     "HEAD": 4048,
     "NECK": 281265,
@@ -380,7 +380,7 @@
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 118,
+    "Mining": 119,
     "Blacksmithing": 81,
     "Cooking": 1,
     "First Aid": 40
@@ -1781,6 +1781,14 @@
    "type": "level",
    "from": 11,
    "to": 13,
+   "max": false
+  },
+  {
+   "t": 1794743362000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 28,
+   "to": 29,
    "max": false
   }
  ]
