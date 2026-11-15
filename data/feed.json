@@ -37,8 +37,8 @@
    }
   },
   "orkward-orkbert": {
-   "level": 18,
-   "lastLogin": 1794730882000,
+   "level": 19,
+   "lastLogin": 1794776568000,
    "items": {
     "SHIRT": 127,
     "CHEST": 4243,
@@ -49,7 +49,7 @@
     "HANDS": 4239,
     "FINGER_1": 281268,
     "BACK": 2316,
-    "MAIN_HAND": 2632,
+    "MAIN_HAND": 15443,
     "RANGED": 4576,
     "AMMO": 2512
    },
@@ -63,7 +63,7 @@
     "HANDS": 13,
     "FINGER_1": 9,
     "BACK": 22,
-    "MAIN_HAND": 14,
+    "MAIN_HAND": 18,
     "RANGED": 21,
     "AMMO": 5
    },
@@ -77,7 +77,7 @@
     "HANDS": "Geprägte Lederhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Dunkler Lederumhang",
-    "MAIN_HAND": "Geschwungener Dolch des Adlers",
+    "MAIN_HAND": "Kris von Orgrimmar",
     "RANGED": "Leichter Bogen",
     "AMMO": "Rauer Pfeil"
    },
@@ -1601,6 +1601,27 @@
    "ilvl": 23,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1794776568000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 18,
+   "to": 19,
+   "max": false
+  },
+  {
+   "t": 1794776568000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 15443,
+   "name": "Kris von Orgrimmar",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135641.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 14,
+   "prevName": "Geschwungener Dolch des Adlers"
   }
  ]
 }
