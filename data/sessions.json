@@ -322,6 +322,24 @@
       "142601": 5
      }
     }
+   },
+   {
+    "t": 1794780743000,
+    "level": 19,
+    "base": {
+     "ilvl": 10,
+     "profs": {
+      "Tailoring": 86,
+      "Enchanting": 54,
+      "Cooking": 4,
+      "First Aid": 20
+     },
+     "talents": {
+      "135379": 2,
+      "135396": 3,
+      "142601": 5
+     }
+    }
    }
   ],
   "zukk-sturmzüngler": [

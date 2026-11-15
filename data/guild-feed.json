@@ -20,38 +20,40 @@
    "surname": "Kabel",
    "classId": 5,
    "rank": 0,
-   "level": 17,
-   "lastLogin": 1794611572000,
+   "level": 19,
+   "lastLogin": 1794780743000,
    "items": {
     "SHIRT": 53,
-    "CHEST": 6527,
+    "CHEST": 14150,
     "WAIST": 253887,
-    "LEGS": 4309,
+    "LEGS": 15449,
     "FEET": 14129,
     "WRIST": 14122,
-    "HANDS": 4307,
+    "HANDS": 4310,
     "FINGER_1": 281268,
     "BACK": 4771,
-    "MAIN_HAND": 4575,
+    "MAIN_HAND": 272996,
+    "OFF_HAND": 3451,
     "RANGED": 11287
    },
    "ilvls": {
     "SHIRT": 1,
-    "CHEST": 13,
+    "CHEST": 18,
     "WAIST": 15,
-    "LEGS": 14,
+    "LEGS": 18,
     "FEET": 20,
     "WRIST": 18,
-    "HANDS": 10,
+    "HANDS": 17,
     "FINGER_1": 9,
     "BACK": 17,
-    "MAIN_HAND": 19,
+    "MAIN_HAND": 18,
+    "OFF_HAND": 18,
     "RANGED": 15
    },
    "profs": {
-    "Tailoring": 83,
-    "Enchanting": 52,
-    "Cooking": 1,
+    "Tailoring": 86,
+    "Enchanting": 54,
+    "Cooking": 4,
     "First Aid": 20
    },
    "achs": [
@@ -60,19 +62,23 @@
     750,
     62031,
     728,
-    761
+    761,
+    846,
+    63684,
+    61998
    ],
    "names": {
     "SHIRT": "Neophytenhemd",
-    "CHEST": "Vorfahren-Robe",
+    "CHEST": "Robe der Hervorrufung",
     "WAIST": "Schärpe des inbrünstigen Novizen",
-    "LEGS": "Handgenähte Leinenkniehosen",
+    "LEGS": "Garstige Beinkleider",
     "FEET": "Ritual-Sandalen des Wals",
     "WRIST": "Rituelle Bänder der Intelligenz",
-    "HANDS": "Schwere Leinenhandschuhe",
+    "HANDS": "Schwere Wollhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Ernte-Umhang",
-    "MAIN_HAND": "Medizinstab der Magie",
+    "MAIN_HAND": "Troggzepter",
+    "OFF_HAND": "Nachtschimmergebräu",
     "RANGED": "Geringer Magiezauberstab"
    }
   },
@@ -1660,6 +1666,15 @@
    "max": false
   },
   {
+   "t": 1794684720000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 846,
+   "name": "Erforscht Tausend Nadeln",
+   "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
+  },
+  {
    "t": 1794684735000,
    "key": "hammer-hanno",
    "type": "achievement",
@@ -1786,6 +1801,15 @@
    "prevName": null
   },
   {
+   "t": 1794733380000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 63684,
+   "name": "Erkundet Shen'dralas",
+   "desc": "Erkundet Shen'dralas und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132368.jpg"
+  },
+  {
    "t": 1794733413000,
    "key": "hammer-hanno",
    "type": "achievement",
@@ -1864,6 +1888,15 @@
   {
    "t": 1794768180000,
    "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 61998,
+   "name": "Erfahren: Paladin",
+   "desc": "Erreicht zum ersten Mal Stufe 45 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
+   "t": 1794768180000,
+   "key": "heili-kabel",
    "type": "achievement",
    "id": 61998,
    "name": "Erfahren: Paladin",
@@ -2073,6 +2106,40 @@
    "ilvl": 29,
    "prev": 28,
    "prevName": "Verkohlter Zauberstab"
+  },
+  {
+   "t": 1794780743000,
+   "key": "heili-kabel",
+   "type": "level",
+   "from": 17,
+   "to": 19,
+   "max": false
+  },
+  {
+   "t": 1794780743000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 14150,
+   "name": "Robe der Hervorrufung",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132665.jpg",
+   "slot": "Brust",
+   "ilvl": 18,
+   "prev": 13,
+   "prevName": "Vorfahren-Robe"
+  },
+  {
+   "t": 1794780743000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 272996,
+   "name": "Troggzepter",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133727.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 19,
+   "prevName": "Medizinstab der Magie"
   }
  ]
 }
