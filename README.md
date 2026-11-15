@@ -162,7 +162,7 @@ Am Starttag setzt der Block `forever` die Vorschau ab (`"simulate": null`).
   Der Abruf holt zu jedem Rezept das Ergebnis aus den Spieldaten (`buildCrafts`, `recipeInfo` in `fetch.mjs`, Ablage `data/recipes.json`).
   - **Ausrüstung:** Die Seite vergleicht die Werte mit dem Item im Slot (`craftUpgrades` in `app.js`). Jeder Wert hat ein Gewicht je Spielweise
     (Stärke, Beweglichkeit, Jäger, Zauber, Heiler, Tank, aus Klasse, Rolle und Spezialisierung, `STAT_WEIGHTS`). Dazu zählen Rüstung und
-    Waffenschaden pro Sekunde. Ein Item zählt, wenn es tragbar ist (Rüstungsart und Waffenfertigkeit wie in Classic) und mindestens einen
+    Waffenschaden pro Sekunde. Ein Item zählt, wenn es tragbar ist (Rüstungsart und Waffenfertigkeit wie in Classic, dazu ein verlangter Beruf mit Stufe, z. B. Fliegerbrille: Ingenieurskunst 100) und mindestens einen
     halben Punkt Hauptwert bringt. Die Zeile zeigt die zwei wichtigsten Unterschiede, der Tooltip alle. Bis 3 Level zu früh steht es blass.
   - **Verbesserungen:** dauerhafte Verbesserungen wie Rüstungssets und Zielfernrohre (erkannt an den Slots in der Beschreibung),
     nur für angelegte Items ohne Verzauberung. Verzauberungen (erkannt am Namen „Armschiene - Ausdauer“) speichert der Abruf,

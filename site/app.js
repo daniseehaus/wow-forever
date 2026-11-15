@@ -658,7 +658,9 @@ function statDiff(c, neu, alt) {
 function statName(k) { return k === 'armor' ? 'Rüstung' : k === 'dps' ? 'Schaden pro Sekunde' : state.data.statNames?.[k] ?? k; }
 
 // Rüstungsarten: Stoff alle, Leder alle außer Stoffträgern, Kette und Platte je nach Klasse, Kette für Jäger und Schamanen und Platte erst ab 40.
+// Verlangt das Item einen Beruf (Fliegerbrille: Ingenieurskunst 100), braucht der Träger diesen Beruf mit mindestens dieser Stufe.
 function canWear(c, it) {
+  if (it.skill && !(c.professions ?? []).some((p) => p.id === it.skill.id && (p.skill ?? 0) >= it.skill.level)) return false;
   if (it.cls === 2) return (WEAPON_SKILLS[c.classId] ?? []).includes(it.sub);
   const id = c.classId;
   switch (it.sub) {

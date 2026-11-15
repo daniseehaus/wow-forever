@@ -281,7 +281,7 @@ function pickAchievements(a) {
 
 async function buildCrafts(chars) {
   // Format der Datei. Ändert sich das, was recipeInfo speichert, die Zahl erhöhen.
-  const RECIPE_VERSION = 4;
+  const RECIPE_VERSION = 5;
   const file = new URL('data/recipes.json', root);
   const ns = config.namespaces.static;
   const stored = existsSync(file) ? JSON.parse(await readFile(file, 'utf8')) : null;
@@ -365,6 +365,10 @@ async function recipeInfo(id) {
       dps: p.weapon?.dps?.value ?? null,
       // Bindung: ON_ACQUIRE (beim Aufheben) bindet an den Hersteller, das Item lässt sich nicht weitergeben. ON_EQUIP erst beim Anlegen.
       bind: p.binding?.type ?? null,
+      // Berufs-Bedingung zum Tragen, z. B. Fliegerbrille: „Benötigt Ingenieurskunst (100)“. Ohne Bedingung null.
+      skill: p.requirements?.skill?.profession?.id
+        ? { id: p.requirements.skill.profession.id, name: p.requirements.skill.profession.name ?? null, level: p.requirements.skill.level ?? 0 }
+        : null,
     },
     reagents,
   };
@@ -568,6 +572,8 @@ function pickProfessions(p) {
     const tier = e.tiers?.at(-1);
     return {
       name: e.profession?.name,
+      // Die ID vergleicht die Seite mit der Berufs-Bedingung eines Items. Der Name kommt englisch, die Bedingung deutsch.
+      id: e.profession?.id ?? null,
       kind,
       skill: tier?.skill_points ?? e.skill_points ?? null,
       max: tier?.max_skill_points ?? e.max_skill_points ?? null,
