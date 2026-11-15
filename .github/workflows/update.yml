@@ -90,6 +90,17 @@ jobs:
           done
           exit 1
 
+      # Pages liefert alle Dateien mit 10 Minuten Cache. Ohne Version holt ein Browser neue Daten (data.json?t=…), läuft aber mit altem app.js.
+      # Darum bekommen Skripte und CSS in den HTML-Seiten einen Hash ihres Inhalts (?v=…). Ändert sich eine Datei, ändert sich die Adresse.
+      # Nur im Artefakt, die HTML-Dateien im Repo bleiben ohne Version.
+      - name: Skripte und CSS versionieren
+        run: |
+          for f in app.js meta.js model3d.js guild.js style.css; do
+            v=$(sha1sum "site/$f" | cut -c1-8)
+            sed -i -E "s#(src|href)=\"$f\"#\1=\"$f?v=$v\"#g" site/index.html site/gilde.html
+          done
+          grep -ohE '(src|href)="[a-z0-9]+\.(js|css)\?v=[0-9a-f]{8}"' site/index.html site/gilde.html
+
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site
