@@ -206,19 +206,19 @@
    "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
-   "level": 17,
-   "lastLogin": 1794649929000,
+   "level": 19,
+   "lastLogin": 1794780346000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 4243,
     "WAIST": 4246,
     "LEGS": 7282,
-    "FEET": 14560,
+    "FEET": 273007,
     "WRIST": 7281,
     "HANDS": 15016,
     "FINGER_1": 281268,
     "BACK": 5111,
-    "MAIN_HAND": 6214,
+    "MAIN_HAND": 15424,
     "RANGED": 263412
    },
    "ilvls": {
@@ -226,12 +226,12 @@
     "CHEST": 17,
     "WAIST": 16,
     "LEGS": 19,
-    "FEET": 19,
+    "FEET": 18,
     "WRIST": 14,
     "HANDS": 16,
     "FINGER_1": 9,
     "BACK": 17,
-    "MAIN_HAND": 16,
+    "MAIN_HAND": 18,
     "RANGED": 10
    },
    "names": {
@@ -239,12 +239,12 @@
     "CHEST": "Feine Ledertunika",
     "WAIST": "Feiner Ledergürtel",
     "LEGS": "Leichte Lederhose",
-    "FEET": "Stiefel des Ausgrabungsleiters",
+    "FEET": "Abgrundläufer",
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Werwolf-Handlappen des Affen",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Rathorians Cape",
-    "MAIN_HAND": "Schwerer Kupferschlägel",
+    "MAIN_HAND": "Axt von Orgrimmar",
     "RANGED": "Totem der Geladenen Flammen"
    },
    "profs": {
@@ -256,13 +256,14 @@
     769,
     728,
     61997,
-    772
+    772,
+    846
    ],
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 18,
-   "lastLogin": 1794771128000,
+   "level": 19,
+   "lastLogin": 1794780445000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -273,7 +274,7 @@
     "FEET": 6350,
     "WRIST": 2854,
     "HANDS": 12994,
-    "BACK": 286744,
+    "BACK": 15309,
     "MAIN_HAND": 286977
    },
    "ilvls": {
@@ -286,7 +287,7 @@
     "FEET": 18,
     "WRIST": 19,
     "HANDS": 23,
-    "BACK": 13,
+    "BACK": 15,
     "MAIN_HAND": 23
    },
    "names": {
@@ -299,15 +300,15 @@
     "FEET": "Raue bronzene Stiefel",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
-    "BACK": "Dreifach genähtes Fleisch",
+    "BACK": "Wild-Umhang der Beweglichkeit",
     "MAIN_HAND": "Schwert der Gefallenen"
    },
    "profs": {
-    "Mining": 95,
-    "Engineering": 112,
-    "Cooking": 36,
-    "Fishing": 1,
-    "First Aid": 69
+    "Mining": 98,
+    "Engineering": 115,
+    "Cooking": 38,
+    "Fishing": 2,
+    "First Aid": 70
    },
    "achs": [],
    "guild": "Geilbleiber"
@@ -1603,6 +1604,15 @@
    "prevName": null
   },
   {
+   "t": 1794747060000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 846,
+   "name": "Erforscht Tausend Nadeln",
+   "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
+  },
+  {
    "t": 1794776568000,
    "key": "orkward-orkbert",
    "type": "level",
@@ -1656,6 +1666,61 @@
    "ilvl": 18,
    "prev": 17,
    "prevName": "Dicke Kriegsaxt"
+  },
+  {
+   "t": 1794780346000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 17,
+   "to": 19,
+   "max": false
+  },
+  {
+   "t": 1794780346000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 273007,
+   "name": "Abgrundläufer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132540.jpg",
+   "slot": "Füße",
+   "ilvl": 18,
+   "prev": 19,
+   "prevName": "Stiefel des Ausgrabungsleiters"
+  },
+  {
+   "t": 1794780346000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 15424,
+   "name": "Axt von Orgrimmar",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132395.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 16,
+   "prevName": "Schwerer Kupferschlägel"
+  },
+  {
+   "t": 1794780445000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 18,
+   "to": 19,
+   "max": false
+  },
+  {
+   "t": 1794780445000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 15309,
+   "name": "Wild-Umhang der Beweglichkeit",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133770.jpg",
+   "slot": "Rücken",
+   "ilvl": 15,
+   "prev": 13,
+   "prevName": "Dreifach genähtes Fleisch"
   }
  ]
 }
