@@ -1827,6 +1827,19 @@
    "ilvl": 18,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1794780743000,
+   "type": "session",
+   "start": 1794776568000,
+   "gain": 1.4,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ]
   }
  ]
 }

@@ -1,79 +1,84 @@
 {
  "era": "classic",
- "lastEnd": 1794612663000,
+ "lastEnd": 1794780743000,
  "levels": {
-  "wladimir-klatschko": 17,
-  "heili-kabel": 17,
-  "zukk-sturmzüngler": 17,
-  "pavel-plattenpapst": 14,
-  "orkward-orkbert": 18
+  "wladimir-klatschko": 18,
+  "heili-kabel": 19,
+  "zukk-sturmzüngler": 19,
+  "pavel-plattenpapst": 19,
+  "orkward-orkbert": 19
  },
  "base": {
   "wladimir-klatschko": {
    "ilvl": 9,
    "profs": {
-    "Mining": 92,
+    "Mining": 93,
     "Blacksmithing": 70,
     "Cooking": 2,
     "First Aid": 1
    },
    "talents": {
-    "135500": 1,
+    "135500": 2,
     "135505": 2,
     "135507": 5
    }
   },
   "heili-kabel": {
-   "ilvl": 9,
+   "ilvl": 10,
    "profs": {
-    "Tailoring": 83,
-    "Enchanting": 52,
-    "Cooking": 1,
+    "Tailoring": 86,
+    "Enchanting": 54,
+    "Cooking": 4,
     "First Aid": 20
    },
    "talents": {
-    "135396": 2,
+    "135379": 2,
+    "135396": 3,
     "142601": 5
    }
   },
   "zukk-sturmzüngler": {
-   "ilvl": 9,
+   "ilvl": 10,
    "profs": {
-    "Alchemy": 94,
-    "Herbalism": 110,
+    "Alchemy": 142,
+    "Herbalism": 111,
     "Cooking": 21
    },
    "talents": {
     "134214": 5,
-    "134216": 3
+    "134216": 3,
+    "134217": 2
    }
   },
   "pavel-plattenpapst": {
-   "ilvl": 9,
+   "ilvl": 13,
    "profs": {
-    "Mining": 76,
-    "Engineering": 80,
-    "Cooking": 36,
-    "Fishing": 1,
-    "First Aid": 34
+    "Mining": 98,
+    "Engineering": 115,
+    "Cooking": 38,
+    "Fishing": 2,
+    "First Aid": 70
    },
    "talents": {
+    "135233": 3,
+    "135235": 2,
     "135237": 5
    }
   },
   "orkward-orkbert": {
    "ilvl": 10,
    "profs": {
-    "Leatherworking": 96,
+    "Leatherworking": 101,
     "Skinning": 149,
     "Cooking": 115,
     "Fishing": 1,
-    "First Aid": 12
+    "First Aid": 15
    },
    "talents": {
     "134422": 5,
-    "134434": 1,
-    "134437": 2
+    "134434": 2,
+    "134437": 2,
+    "134438": 1
    }
   }
  },
@@ -262,6 +267,107 @@
      "logout": 1794612663000,
      "respec": false,
      "since": 1794574740000
+    }
+   }
+  },
+  {
+   "start": 1794776568000,
+   "end": 1794780743000,
+   "gain": 1.4,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ],
+   "stats": {
+    "wladimir-klatschko": {
+     "level": [
+      17,
+      18
+     ],
+     "ilvl": [
+      9,
+      9
+     ],
+     "prof": 1,
+     "profs": {
+      "Mining": 1
+     },
+     "logout": 1794776812000,
+     "respec": false,
+     "since": 1794611671000
+    },
+    "heili-kabel": {
+     "level": [
+      17,
+      19
+     ],
+     "ilvl": [
+      9,
+      10
+     ],
+     "prof": 8,
+     "profs": {
+      "Tailoring": 3,
+      "Enchanting": 2,
+      "Cooking": 3
+     },
+     "logout": 1794780743000,
+     "respec": false,
+     "since": 1794611572000
+    },
+    "zukk-sturmzüngler": {
+     "level": [
+      17,
+      19
+     ],
+     "ilvl": [
+      9,
+      10
+     ],
+     "prof": 0,
+     "profs": {},
+     "logout": 1794780346000,
+     "respec": false,
+     "since": 1794649929000
+    },
+    "pavel-plattenpapst": {
+     "level": [
+      18,
+      19
+     ],
+     "ilvl": [
+      13,
+      13
+     ],
+     "prof": 10,
+     "profs": {
+      "Mining": 3,
+      "Engineering": 3,
+      "Cooking": 2,
+      "Fishing": 1,
+      "First Aid": 1
+     },
+     "logout": 1794780445000,
+     "respec": false,
+     "since": 1794752087000
+    },
+    "orkward-orkbert": {
+     "level": [
+      18,
+      19
+     ],
+     "ilvl": [
+      10,
+      10
+     ],
+     "prof": 0,
+     "profs": {},
+     "logout": 1794776568000,
+     "respec": false,
+     "since": 1794730882000
     }
    }
   }
