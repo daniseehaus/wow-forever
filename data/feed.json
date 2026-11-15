@@ -95,49 +95,49 @@
    "guild": "Geilbleiber"
   },
   "wladimir-klatschko": {
-   "level": 17,
-   "lastLogin": 1794611671000,
+   "level": 18,
+   "lastLogin": 1794776812000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
     "WAIST": 2857,
-    "LEGS": 3282,
+    "LEGS": 15451,
     "FEET": 250621,
     "WRIST": 2854,
     "HANDS": 3472,
     "FINGER_1": 281268,
     "BACK": 14123,
-    "MAIN_HAND": 3489,
+    "MAIN_HAND": 14145,
     "OFF_HAND": 15014
    },
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 10,
     "WAIST": 18,
-    "LEGS": 12,
+    "LEGS": 18,
     "FEET": 15,
     "WRIST": 19,
     "HANDS": 12,
     "FINGER_1": 9,
     "BACK": 17,
-    "MAIN_HAND": 17,
+    "MAIN_HAND": 18,
     "OFF_HAND": 17
    },
    "names": {
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Raue Kupferweste",
     "WAIST": "Runenverzierter Kupfergürtel",
-    "LEGS": "Kampfkettenhose",
+    "LEGS": "Gargoylegamaschen",
     "FEET": "Seltsame Bronzestiefel",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Runenverzierte Kupferstulpen",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Rituelles Cape des Naturschutzes",
-    "MAIN_HAND": "Dicke Kriegsaxt",
+    "MAIN_HAND": "Verfluchte Teufelsklinge",
     "OFF_HAND": "Werwolf-Rundschild des Bären"
    },
    "profs": {
-    "Mining": 92,
+    "Mining": 93,
     "Blacksmithing": 70,
     "Cooking": 2,
     "First Aid": 1
@@ -1622,6 +1622,40 @@
    "ilvl": 18,
    "prev": 14,
    "prevName": "Geschwungener Dolch des Adlers"
+  },
+  {
+   "t": 1794776812000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 17,
+   "to": 18,
+   "max": false
+  },
+  {
+   "t": 1794776812000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 15451,
+   "name": "Gargoylegamaschen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134583.jpg",
+   "slot": "Beine",
+   "ilvl": 18,
+   "prev": 12,
+   "prevName": "Kampfkettenhose"
+  },
+  {
+   "t": 1794776812000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 14145,
+   "name": "Verfluchte Teufelsklinge",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135648.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 17,
+   "prevName": "Dicke Kriegsaxt"
   }
  ]
 }
