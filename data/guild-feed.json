@@ -204,8 +204,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 28,
-   "lastLogin": 1794695398000,
+   "level": 29,
+   "lastLogin": 1794783664000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -242,7 +242,7 @@
    },
    "profs": {
     "Leatherworking": 118,
-    "Skinning": 188,
+    "Skinning": 190,
     "Cooking": 60,
     "First Aid": 115
    },
@@ -2140,6 +2140,14 @@
    "ilvl": 18,
    "prev": 19,
    "prevName": "Medizinstab der Magie"
+  },
+  {
+   "t": 1794783664000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 28,
+   "to": 29,
+   "max": false
   }
  ]
 }
