@@ -260,23 +260,53 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 15,
-   "lastLogin": 1794669912000,
+   "level": 18,
+   "lastLogin": 1794702008000,
    "items": {
-    "SHIRT": 6125
+    "HEAD": 4368,
+    "SHOULDER": 3480,
+    "SHIRT": 6125,
+    "CHEST": 2866,
+    "WAIST": 2857,
+    "LEGS": 9789,
+    "FEET": 6350,
+    "WRIST": 2854,
+    "HANDS": 12994,
+    "BACK": 286744,
+    "MAIN_HAND": 286977
    },
    "ilvls": {
-    "SHIRT": 1
+    "HEAD": 20,
+    "SHOULDER": 22,
+    "SHIRT": 1,
+    "CHEST": 23,
+    "WAIST": 18,
+    "LEGS": 19,
+    "FEET": 18,
+    "WRIST": 19,
+    "HANDS": 23,
+    "BACK": 13,
+    "MAIN_HAND": 23
    },
    "names": {
-    "SHIRT": "Muskelprotzharnisch"
+    "HEAD": "Fliegerbrille",
+    "SHOULDER": "Raue bronzene Schultern",
+    "SHIRT": "Muskelprotzharnisch",
+    "CHEST": "Rauer bronzener Kürass",
+    "WAIST": "Runenverzierter Kupfergürtel",
+    "LEGS": "Räuber-Beinschützer der Macht",
+    "FEET": "Raue bronzene Stiefel",
+    "WRIST": "Runenverzierte Kupferarmschienen",
+    "HANDS": "Thorbias' Stulpen",
+    "BACK": "Dreifach genähtes Fleisch",
+    "MAIN_HAND": "Schwert der Gefallenen"
    },
    "profs": {
-    "Mining": 76,
-    "Engineering": 80,
+    "Mining": 93,
+    "Engineering": 112,
     "Cooking": 36,
     "Fishing": 1,
-    "First Aid": 34
+    "First Aid": 69
    },
    "achs": [],
    "guild": "Geilbleiber"
@@ -1423,6 +1453,144 @@
    "from": 14,
    "to": 15,
    "max": false
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 15,
+   "to": 18,
+   "max": false
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 4368,
+   "name": "Fliegerbrille",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133149.jpg",
+   "slot": "Kopf",
+   "ilvl": 20,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 3480,
+   "name": "Raue bronzene Schultern",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135036.jpg",
+   "slot": "Schultern",
+   "ilvl": 22,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 2866,
+   "name": "Rauer bronzener Kürass",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132630.jpg",
+   "slot": "Brust",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 2857,
+   "name": "Runenverzierter Kupfergürtel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132492.jpg",
+   "slot": "Taille",
+   "ilvl": 18,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 9789,
+   "name": "Räuber-Beinschützer der Macht",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134583.jpg",
+   "slot": "Beine",
+   "ilvl": 19,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 6350,
+   "name": "Raue bronzene Stiefel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132535.jpg",
+   "slot": "Füße",
+   "ilvl": 18,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 2854,
+   "name": "Runenverzierte Kupferarmschienen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132602.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 19,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 12994,
+   "name": "Thorbias' Stulpen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132945.jpg",
+   "slot": "Hände",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286744,
+   "name": "Dreifach genähtes Fleisch",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133759.jpg",
+   "slot": "Rücken",
+   "ilvl": 13,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794702008000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286977,
+   "name": "Schwert der Gefallenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
