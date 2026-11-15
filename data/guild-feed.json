@@ -275,7 +275,7 @@
    "classId": 2,
    "rank": 1,
    "level": 45,
-   "lastLogin": 1794770421000,
+   "lastLogin": 1794783716000,
    "items": {
     "HEAD": 10763,
     "NECK": 10824,
@@ -316,6 +316,7 @@
     "Mining": 180,
     "Blacksmithing": 84,
     "Cooking": 101,
+    "Fishing": 1,
     "First Aid": 129
    },
    "achs": [
@@ -2148,6 +2149,14 @@
    "from": 28,
    "to": 29,
    "max": false
+  },
+  {
+   "t": 1794783716000,
+   "key": "hammer-hanno",
+   "type": "prof",
+   "name": "Fishing",
+   "skill": 1,
+   "learned": true
   }
  ]
 }
