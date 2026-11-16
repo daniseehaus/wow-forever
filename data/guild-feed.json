@@ -718,11 +718,61 @@
    ]
   },
   "erwin-elemental": {
-   "id": null,
+   "id": 76954255,
    "name": "Erwin",
    "surname": "Elemental",
-   "classId": null,
-   "rank": 1
+   "classId": 7,
+   "rank": 1,
+   "level": 10,
+   "lastLogin": 1794842472000,
+   "items": {
+    "SHIRT": 6134,
+    "CHEST": 6240,
+    "WAIST": 4919,
+    "LEGS": 4343,
+    "FEET": 1419,
+    "WRIST": 4928,
+    "HANDS": 4940,
+    "FINGER_1": 281268,
+    "BACK": 2580,
+    "MAIN_HAND": 286728,
+    "OFF_HAND": 2211
+   },
+   "ilvls": {
+    "SHIRT": 1,
+    "CHEST": 12,
+    "WAIST": 5,
+    "LEGS": 10,
+    "FEET": 8,
+    "WRIST": 8,
+    "HANDS": 10,
+    "FINGER_1": 9,
+    "BACK": 12,
+    "MAIN_HAND": 8,
+    "OFF_HAND": 4
+   },
+   "names": {
+    "SHIRT": "Primitiver Mantel",
+    "CHEST": "Blaue Leinenweste",
+    "WAIST": "Weicher Wollgürtel",
+    "LEGS": "Braune Leinenhose",
+    "FEET": "Abgenutzte Lederstiefel",
+    "WRIST": "Sandläuferhandgelenksschützer",
+    "HANDS": "Verhüllter Handschutz",
+    "FINGER_1": "Ausgelaugter Ritualring",
+    "BACK": "Verstärktes Leinencape",
+    "MAIN_HAND": "Hammer der Kolkar",
+    "OFF_HAND": "Gebogener großer Schild"
+   },
+   "profs": {
+    "Enchanting": 54,
+    "Alchemy": 71,
+    "Cooking": 4
+   },
+   "achs": [
+    62009,
+    769
+   ]
   }
  },
  "events": [
