@@ -427,6 +427,24 @@
       "135507": 5
      }
     }
+   },
+   {
+    "t": 1794870949000,
+    "level": 19,
+    "base": {
+     "ilvl": 12,
+     "profs": {
+      "Mining": 109,
+      "Blacksmithing": 90,
+      "Cooking": 2,
+      "First Aid": 1
+     },
+     "talents": {
+      "135500": 3,
+      "135505": 2,
+      "135507": 5
+     }
+    }
    }
   ],
   "heili-kabel": [

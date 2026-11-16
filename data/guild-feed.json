@@ -275,8 +275,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 46,
-   "lastLogin": 1794834753000,
+   "level": 48,
+   "lastLogin": 1794870673000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -314,9 +314,9 @@
     "MAIN_HAND": 47
    },
    "profs": {
-    "Mining": 189,
+    "Mining": 209,
     "Blacksmithing": 115,
-    "Cooking": 120,
+    "Cooking": 140,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -436,36 +436,38 @@
    "classId": 1,
    "rank": 1,
    "level": 19,
-   "lastLogin": 1794859627000,
+   "lastLogin": 1794870949000,
    "items": {
+    "SHOULDER": 3480,
     "SHIRT": 6125,
-    "CHEST": 10421,
+    "CHEST": 2866,
     "WAIST": 2857,
-    "LEGS": 15451,
-    "FEET": 250621,
+    "LEGS": 2865,
+    "FEET": 14742,
     "WRIST": 2854,
     "HANDS": 3472,
     "FINGER_1": 281268,
-    "BACK": 14123,
+    "BACK": 3582,
     "MAIN_HAND": 14145,
     "OFF_HAND": 15014
    },
    "ilvls": {
+    "SHOULDER": 22,
     "SHIRT": 1,
-    "CHEST": 10,
+    "CHEST": 23,
     "WAIST": 18,
-    "LEGS": 18,
-    "FEET": 15,
+    "LEGS": 21,
+    "FEET": 24,
     "WRIST": 19,
     "HANDS": 12,
     "FINGER_1": 9,
-    "BACK": 17,
+    "BACK": 18,
     "MAIN_HAND": 18,
     "OFF_HAND": 17
    },
    "profs": {
-    "Mining": 93,
-    "Blacksmithing": 70,
+    "Mining": 109,
+    "Blacksmithing": 90,
     "Cooking": 2,
     "First Aid": 1
    },
@@ -473,15 +475,16 @@
     728
    ],
    "names": {
+    "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Raue Kupferweste",
+    "CHEST": "Rauer bronzener Kürass",
     "WAIST": "Runenverzierter Kupfergürtel",
-    "LEGS": "Gargoylegamaschen",
-    "FEET": "Seltsame Bronzestiefel",
+    "LEGS": "Raue bronzene Gamaschen",
+    "FEET": "Titanische Stiefel",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Runenverzierte Kupferstulpen",
     "FINGER_1": "Ausgelaugter Ritualring",
-    "BACK": "Rituelles Cape des Naturschutzes",
+    "BACK": "Säurefester Umhang",
     "MAIN_HAND": "Verfluchte Teufelsklinge",
     "OFF_HAND": "Werwolf-Rundschild des Bären"
    }
@@ -2449,6 +2452,14 @@
    "prevName": "Wolfsbann"
   },
   {
+   "t": 1794870673000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 46,
+   "to": 48,
+   "max": false
+  },
+  {
    "t": 1794870742664,
    "key": "hammer-hanno",
    "type": "item",
@@ -2460,6 +2471,13 @@
    "ilvl": 47,
    "prev": 44,
    "prevName": "Schwert des Omens"
+  },
+  {
+   "t": 1794870949000,
+   "key": "wladimir-klatschko",
+   "type": "prof",
+   "name": "Blacksmithing",
+   "skill": 90
   }
  ]
 }
