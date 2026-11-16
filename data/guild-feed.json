@@ -206,7 +206,7 @@
    "classId": 4,
    "rank": 1,
    "level": 29,
-   "lastLogin": 1794783664000,
+   "lastLogin": 1794867409000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -243,9 +243,9 @@
    },
    "profs": {
     "Leatherworking": 118,
-    "Skinning": 190,
+    "Skinning": 194,
     "Cooking": 60,
-    "First Aid": 115
+    "First Aid": 140
    },
    "achs": [
     728,
