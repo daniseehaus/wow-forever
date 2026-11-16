@@ -279,41 +279,39 @@
    "lastLogin": 1794834753000,
    "items": {
     "HEAD": 10763,
-    "NECK": 10824,
+    "NECK": 274955,
     "SHOULDER": 279842,
     "SHIRT": 6125,
     "CHEST": 273035,
     "WAIST": 10768,
     "LEGS": 9625,
-    "FEET": 19509,
+    "FEET": 270101,
     "WRIST": 270073,
     "HANDS": 16978,
     "FINGER_1": 275045,
-    "FINGER_2": 9588,
+    "FINGER_2": 17694,
     "TRINKET_1": 280766,
     "TRINKET_2": 276895,
     "BACK": 271810,
-    "MAIN_HAND": 6802,
-    "OFF_HAND": 274608
+    "MAIN_HAND": 279480
    },
    "ilvls": {
     "HEAD": 43,
-    "NECK": 44,
+    "NECK": 42,
     "SHOULDER": 36,
     "SHIRT": 1,
     "CHEST": 32,
     "WAIST": 42,
     "LEGS": 37,
-    "FEET": 42,
+    "FEET": 49,
     "WRIST": 40,
     "HANDS": 27,
     "FINGER_1": 45,
-    "FINGER_2": 37,
+    "FINGER_2": 28,
     "TRINKET_1": 33,
     "TRINKET_2": 30,
     "BACK": 43,
-    "MAIN_HAND": 44,
-    "OFF_HAND": 42
+    "MAIN_HAND": 47
    },
    "profs": {
     "Mining": 189,
@@ -337,22 +335,21 @@
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
-    "NECK": "Bernsteinglut-Talisman",
+    "NECK": "Clobroks Brockenfels",
     "SHOULDER": "Kampfschiftung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Eberheldengürtel",
     "LEGS": "Zweifach verstärkte Gamaschen",
-    "FEET": "Verstaubte Panzerstiefel",
+    "FEET": "Gnomisches Levitationsgerät",
     "WRIST": "Manschetten von Stromgarde",
     "HANDS": "Warsongstulpen",
     "FINGER_1": "Ogerhornring",
-    "FINGER_2": "Noggs Goldring",
+    "FINGER_2": "Band der Faust",
     "TRINKET_1": "Tränketasche",
     "TRINKET_2": "Transformativer Kokon",
     "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Schwert des Omens",
-    "OFF_HAND": "Schlund von Min'loth"
+    "MAIN_HAND": "Größerer Stein auf größerem Stock"
    }
   },
   "lokk-eidlöter": {
@@ -2450,6 +2447,19 @@
    "ilvl": 33,
    "prev": 31,
    "prevName": "Wolfsbann"
+  },
+  {
+   "t": 1794870742664,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 279480,
+   "name": "Größerer Stein auf größerem Stock",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133479.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 47,
+   "prev": 44,
+   "prevName": "Schwert des Omens"
   }
  ]
 }
