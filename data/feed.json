@@ -215,7 +215,7 @@
   },
   "zukk-sturmzüngler": {
    "level": 19,
-   "lastLogin": 1794814754000,
+   "lastLogin": 1794838559000,
    "items": {
     "CHEST": 4243,
     "WAIST": 4246,
@@ -262,7 +262,8 @@
     728,
     61997,
     772,
-    846
+    846,
+    62015
    ],
    "guild": "Geilbleiber"
   },
@@ -1857,6 +1858,15 @@
    "name": "Erfahren: Dungeonerforscher",
    "desc": "Schließt die folgenden Dungeons ab.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
+  },
+  {
+   "t": 1794837660000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62015,
+   "name": "Schmiedekunstgeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schmiedekunst.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
   }
  ]
 }
