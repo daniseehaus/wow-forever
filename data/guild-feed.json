@@ -22,7 +22,7 @@
    "classId": 5,
    "rank": 0,
    "level": 19,
-   "lastLogin": 1794816751000,
+   "lastLogin": 1794834786000,
    "items": {
     "SHIRT": 53,
     "CHEST": 14150,
@@ -66,7 +66,9 @@
     761,
     846,
     63684,
-    61998
+    61998,
+    62354,
+    62032
    ],
    "names": {
     "SHIRT": "Neophytenhemd",
@@ -272,8 +274,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 45,
-   "lastLogin": 1794816720000,
+   "level": 46,
+   "lastLogin": 1794834753000,
    "items": {
     "HEAD": 10763,
     "NECK": 10824,
@@ -282,15 +284,16 @@
     "CHEST": 273035,
     "WAIST": 10768,
     "LEGS": 9625,
-    "FEET": 250620,
+    "FEET": 19509,
     "WRIST": 270073,
     "HANDS": 16978,
-    "FINGER_1": 17694,
-    "FINGER_2": 6414,
+    "FINGER_1": 275045,
+    "FINGER_2": 9588,
     "TRINKET_1": 280766,
     "TRINKET_2": 276895,
     "BACK": 271810,
-    "MAIN_HAND": 279885
+    "MAIN_HAND": 6802,
+    "OFF_HAND": 274608
    },
    "ilvls": {
     "HEAD": 43,
@@ -300,19 +303,20 @@
     "CHEST": 32,
     "WAIST": 42,
     "LEGS": 37,
-    "FEET": 15,
+    "FEET": 42,
     "WRIST": 40,
     "HANDS": 27,
-    "FINGER_1": 28,
-    "FINGER_2": 29,
+    "FINGER_1": 45,
+    "FINGER_2": 37,
     "TRINKET_1": 33,
     "TRINKET_2": 30,
     "BACK": 43,
-    "MAIN_HAND": 42
+    "MAIN_HAND": 44,
+    "OFF_HAND": 42
    },
    "profs": {
-    "Mining": 180,
-    "Blacksmithing": 113,
+    "Mining": 189,
+    "Blacksmithing": 115,
     "Cooking": 120,
     "Fishing": 1,
     "First Aid": 129
@@ -326,7 +330,9 @@
     761,
     846,
     63684,
-    61998
+    61998,
+    62354,
+    62032
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
@@ -336,15 +342,16 @@
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Eberheldengürtel",
     "LEGS": "Zweifach verstärkte Gamaschen",
-    "FEET": "Edelsteinbesetzte Kupferstiefel",
+    "FEET": "Verstaubte Panzerstiefel",
     "WRIST": "Manschetten von Stromgarde",
     "HANDS": "Warsongstulpen",
-    "FINGER_1": "Band der Faust",
-    "FINGER_2": "Siegel von Sylvanas",
+    "FINGER_1": "Ogerhornring",
+    "FINGER_2": "Noggs Goldring",
     "TRINKET_1": "Tränketasche",
     "TRINKET_2": "Transformativer Kokon",
     "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Zeremonieller Schlaghammer"
+    "MAIN_HAND": "Schwert des Omens",
+    "OFF_HAND": "Schlund von Min'loth"
    }
   },
   "lokk-eidlöter": {
@@ -2189,6 +2196,115 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136155.jpg",
    "slot": "Schmuckstück 1",
    "ilvl": 29,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1794828600000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 62354,
+   "name": "Erkundet die Flusslande",
+   "desc": "Erkundet die Flusslande und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/1032150.jpg"
+  },
+  {
+   "t": 1794828613000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 62354,
+   "name": "Erkundet die Flusslande",
+   "desc": "Erkundet die Flusslande und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/1032150.jpg"
+  },
+  {
+   "t": 1794833820000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 62032,
+   "name": "Erfahren: Dungeonerforscher",
+   "desc": "Schließt die folgenden Dungeons ab.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
+  },
+  {
+   "t": 1794833820000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 62032,
+   "name": "Erfahren: Dungeonerforscher",
+   "desc": "Schließt die folgenden Dungeons ab.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
+  },
+  {
+   "t": 1794834753000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 45,
+   "to": 46,
+   "max": false
+  },
+  {
+   "t": 1794834753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 19509,
+   "name": "Verstaubte Panzerstiefel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132545.jpg",
+   "slot": "Füße",
+   "ilvl": 42,
+   "prev": 15,
+   "prevName": "Edelsteinbesetzte Kupferstiefel"
+  },
+  {
+   "t": 1794834753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 275045,
+   "name": "Ogerhornring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133722.jpg",
+   "slot": "Ring 1",
+   "ilvl": 45,
+   "prev": 28,
+   "prevName": "Band der Faust"
+  },
+  {
+   "t": 1794834753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9588,
+   "name": "Noggs Goldring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
+   "slot": "Ring 2",
+   "ilvl": 37,
+   "prev": 29,
+   "prevName": "Siegel von Sylvanas"
+  },
+  {
+   "t": 1794834753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 6802,
+   "name": "Schwert des Omens",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135317.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 44,
+   "prev": 42,
+   "prevName": "Zeremonieller Schlaghammer"
+  },
+  {
+   "t": 1794834753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 274608,
+   "name": "Schlund von Min'loth",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135461.jpg",
+   "slot": "Schildhand",
+   "ilvl": 42,
    "prev": null,
    "prevName": null
   }

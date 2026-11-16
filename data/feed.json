@@ -149,7 +149,7 @@
   },
   "heili-kabel": {
    "level": 19,
-   "lastLogin": 1794816751000,
+   "lastLogin": 1794834786000,
    "items": {
     "SHIRT": 53,
     "CHEST": 14150,
@@ -207,7 +207,9 @@
     761,
     846,
     63684,
-    61998
+    61998,
+    62354,
+    62032
    ],
    "guild": "Geilbleiber"
   },
@@ -1837,6 +1839,24 @@
     "pavel-plattenpapst",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1794828600000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 62354,
+   "name": "Erkundet die Flusslande",
+   "desc": "Erkundet die Flusslande und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/1032150.jpg"
+  },
+  {
+   "t": 1794833820000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 62032,
+   "name": "Erfahren: Dungeonerforscher",
+   "desc": "Schließt die folgenden Dungeons ab.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
   }
  ]
 }
