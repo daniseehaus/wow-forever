@@ -22,7 +22,7 @@
    "classId": 5,
    "rank": 0,
    "level": 19,
-   "lastLogin": 1794780743000,
+   "lastLogin": 1794814357000,
    "items": {
     "SHIRT": 53,
     "CHEST": 14150,
@@ -52,8 +52,8 @@
     "RANGED": 15
    },
    "profs": {
-    "Tailoring": 86,
-    "Enchanting": 54,
+    "Tailoring": 95,
+    "Enchanting": 55,
     "Cooking": 4,
     "First Aid": 20
    },
