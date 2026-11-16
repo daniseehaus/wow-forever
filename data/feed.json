@@ -213,9 +213,8 @@
   },
   "zukk-sturmzüngler": {
    "level": 19,
-   "lastLogin": 1794780346000,
+   "lastLogin": 1794814754000,
    "items": {
-    "SHIRT": 6134,
     "CHEST": 4243,
     "WAIST": 4246,
     "LEGS": 7282,
@@ -228,7 +227,6 @@
     "RANGED": 263412
    },
    "ilvls": {
-    "SHIRT": 1,
     "CHEST": 17,
     "WAIST": 16,
     "LEGS": 19,
@@ -241,7 +239,6 @@
     "RANGED": 10
    },
    "names": {
-    "SHIRT": "Primitiver Mantel",
     "CHEST": "Feine Ledertunika",
     "WAIST": "Feiner Ledergürtel",
     "LEGS": "Leichte Lederhose",
