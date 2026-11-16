@@ -435,8 +435,8 @@
    "surname": "Klatschko",
    "classId": 1,
    "rank": 1,
-   "level": 18,
-   "lastLogin": 1794776812000,
+   "level": 19,
+   "lastLogin": 1794859627000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
@@ -2405,6 +2405,14 @@
    "type": "prof",
    "name": "Blacksmithing",
    "skill": 150
+  },
+  {
+   "t": 1794859627000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 18,
+   "to": 19,
+   "max": false
   }
  ]
 }

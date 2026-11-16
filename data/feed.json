@@ -95,8 +95,8 @@
    "guild": "Geilbleiber"
   },
   "wladimir-klatschko": {
-   "level": 18,
-   "lastLogin": 1794776812000,
+   "level": 19,
+   "lastLogin": 1794859627000,
    "items": {
     "SHIRT": 6125,
     "CHEST": 10421,
@@ -1867,6 +1867,14 @@
    "name": "Schmiedekunstgeselle",
    "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schmiedekunst.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
+  },
+  {
+   "t": 1794859627000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 18,
+   "to": 19,
+   "max": false
   }
  ]
 }
