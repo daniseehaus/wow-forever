@@ -92,7 +92,7 @@
    "classId": 7,
    "rank": 1,
    "level": 19,
-   "lastLogin": 1794845287000,
+   "lastLogin": 1794863889000,
    "items": {
     "CHEST": 4243,
     "WAIST": 4246,
@@ -361,12 +361,12 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 31,
-   "lastLogin": 1794847008000,
+   "level": 32,
+   "lastLogin": 1794863866000,
    "items": {
     "HEAD": 4048,
     "NECK": 281265,
-    "SHOULDER": 9842,
+    "SHOULDER": 273028,
     "SHIRT": 6125,
     "CHEST": 3733,
     "WAIST": 4712,
@@ -377,13 +377,14 @@
     "FINGER_1": 281673,
     "FINGER_2": 6414,
     "TRINKET_1": 273840,
+    "TRINKET_2": 280766,
     "BACK": 15468,
-    "MAIN_HAND": 267369
+    "MAIN_HAND": 271766
    },
    "ilvls": {
     "HEAD": 31,
     "NECK": 20,
-    "SHOULDER": 32,
+    "SHOULDER": 33,
     "SHIRT": 1,
     "CHEST": 23,
     "WAIST": 29,
@@ -394,11 +395,12 @@
     "FINGER_1": 28,
     "FINGER_2": 29,
     "TRINKET_1": 29,
+    "TRINKET_2": 33,
     "BACK": 29,
-    "MAIN_HAND": 31
+    "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 135,
+    "Mining": 143,
     "Blacksmithing": 150,
     "Cooking": 1,
     "First Aid": 40
@@ -414,7 +416,7 @@
    "names": {
     "HEAD": "Geschmückter Hut",
     "NECK": "Selbstvertrauen des Wegwächters",
-    "SHOULDER": "Bebänderte Schulterstücke des Feuerschutzes",
+    "SHOULDER": "Reliquiarmantelung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Orc-Kriegskette",
     "WAIST": "Gleißender Panzergurt",
@@ -425,8 +427,9 @@
     "FINGER_1": "Schleife der Aufopferung",
     "FINGER_2": "Siegel von Sylvanas",
     "TRINKET_1": "Verfluchtes Murlocauge",
+    "TRINKET_2": "Tränketasche",
     "BACK": "Windsongtuch",
-    "MAIN_HAND": "Wolfsbann"
+    "MAIN_HAND": "Wuchthammer"
    }
   },
   "wladimir-klatschko": {
@@ -2413,6 +2416,40 @@
    "from": 18,
    "to": 19,
    "max": false
+  },
+  {
+   "t": 1794863866000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 31,
+   "to": 32,
+   "max": false
+  },
+  {
+   "t": 1794863866000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 273028,
+   "name": "Reliquiarmantelung",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135058.jpg",
+   "slot": "Schultern",
+   "ilvl": 33,
+   "prev": 32,
+   "prevName": "Bebänderte Schulterstücke des Feuerschutzes"
+  },
+  {
+   "t": 1794863866000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 271766,
+   "name": "Wuchthammer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133046.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 33,
+   "prev": 31,
+   "prevName": "Wolfsbann"
   }
  ]
 }
