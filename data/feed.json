@@ -272,7 +272,7 @@
   },
   "pavel-plattenpapst": {
    "level": 19,
-   "lastLogin": 1794780445000,
+   "lastLogin": 1794931896000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -284,7 +284,7 @@
     "WRIST": 2854,
     "HANDS": 12994,
     "BACK": 15309,
-    "MAIN_HAND": 286977
+    "MAIN_HAND": 6256
    },
    "ilvls": {
     "HEAD": 20,
@@ -297,7 +297,7 @@
     "WRIST": 19,
     "HANDS": 23,
     "BACK": 15,
-    "MAIN_HAND": 23
+    "MAIN_HAND": 1
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -310,13 +310,13 @@
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "BACK": "Wild-Umhang der Beweglichkeit",
-    "MAIN_HAND": "Schwert der Gefallenen"
+    "MAIN_HAND": "Angel"
    },
    "profs": {
-    "Mining": 98,
+    "Mining": 99,
     "Engineering": 115,
     "Cooking": 38,
-    "Fishing": 2,
+    "Fishing": 18,
     "First Aid": 70
    },
    "achs": [],
