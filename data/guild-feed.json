@@ -358,18 +358,18 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 32,
-   "lastLogin": 1794863866000,
+   "level": 33,
+   "lastLogin": 1794906477000,
    "items": {
-    "HEAD": 4048,
+    "HEAD": 6688,
     "NECK": 281265,
     "SHOULDER": 273028,
     "SHIRT": 6125,
-    "CHEST": 3733,
+    "CHEST": 3049,
     "WAIST": 4712,
     "LEGS": 3751,
     "FEET": 276727,
-    "WRIST": 4534,
+    "WRIST": 15545,
     "HANDS": 16978,
     "FINGER_1": 281673,
     "FINGER_2": 6414,
@@ -379,15 +379,15 @@
     "MAIN_HAND": 271766
    },
    "ilvls": {
-    "HEAD": 31,
+    "HEAD": 34,
     "NECK": 20,
     "SHOULDER": 33,
     "SHIRT": 1,
-    "CHEST": 23,
+    "CHEST": 27,
     "WAIST": 29,
     "LEGS": 30,
     "FEET": 30,
-    "WRIST": 28,
+    "WRIST": 30,
     "HANDS": 27,
     "FINGER_1": 28,
     "FINGER_2": 29,
@@ -397,7 +397,7 @@
     "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 143,
+    "Mining": 145,
     "Blacksmithing": 150,
     "Cooking": 1,
     "First Aid": 40
@@ -411,15 +411,15 @@
     62015
    ],
    "names": {
-    "HEAD": "Geschmückter Hut",
+    "HEAD": "Whisperwindkopfputz",
     "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Reliquiarmantelung",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Orc-Kriegskette",
+    "CHEST": "Züngelnde Schuppenbrustplatte",
     "WAIST": "Gleißender Panzergurt",
     "LEGS": "Söldnergamaschen",
     "FEET": "Glitzernde Stampfer",
-    "WRIST": "Stahlschnallenarmschienen",
+    "WRIST": "Dickschuppenarmreifen des Champions",
     "HANDS": "Warsongstulpen",
     "FINGER_1": "Schleife der Aufopferung",
     "FINGER_2": "Siegel von Sylvanas",
@@ -2478,6 +2478,27 @@
    "type": "prof",
    "name": "Blacksmithing",
    "skill": 90
+  },
+  {
+   "t": 1794906477000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 32,
+   "to": 33,
+   "max": false
+  },
+  {
+   "t": 1794906477000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 6688,
+   "name": "Whisperwindkopfputz",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133119.jpg",
+   "slot": "Kopf",
+   "ilvl": 34,
+   "prev": 31,
+   "prevName": "Geschmückter Hut"
   }
  ]
 }
