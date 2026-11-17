@@ -496,9 +496,9 @@
    "classId": 9,
    "rank": 1,
    "level": 27,
-   "lastLogin": 1794842563000,
+   "lastLogin": 1794933410000,
    "items": {
-    "HEAD": 7048,
+    "HEAD": 253955,
     "NECK": 281265,
     "SHOULDER": 3748,
     "SHIRT": 2579,
@@ -515,7 +515,7 @@
     "RANGED": 7001
    },
    "ilvls": {
-    "HEAD": 29,
+    "HEAD": 25,
     "NECK": 20,
     "SHOULDER": 28,
     "SHIRT": 14,
@@ -532,7 +532,7 @@
     "RANGED": 29
    },
    "profs": {
-    "Tailoring": 141,
+    "Tailoring": 146,
     "Herbalism": 134,
     "Cooking": 188,
     "Fishing": 150,
@@ -543,7 +543,7 @@
     769
    ],
    "names": {
-    "HEAD": "Azurblaue Seidenkapuze",
+    "HEAD": "Schattenreif",
     "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Felinen-Mantel",
     "SHIRT": "Grünes Leinenhemd",
@@ -2499,6 +2499,19 @@
    "ilvl": 34,
    "prev": 31,
    "prevName": "Geschmückter Hut"
+  },
+  {
+   "t": 1794933410000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 253955,
+   "name": "Schattenreif",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132767.jpg",
+   "slot": "Kopf",
+   "ilvl": 25,
+   "prev": 29,
+   "prevName": "Azurblaue Seidenkapuze"
   }
  ]
 }
