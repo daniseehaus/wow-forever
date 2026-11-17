@@ -275,48 +275,48 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 48,
-   "lastLogin": 1794870673000,
+   "level": 51,
+   "lastLogin": 1794954786000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
-    "SHOULDER": 279842,
+    "SHOULDER": 9476,
     "SHIRT": 6125,
     "CHEST": 273035,
     "WAIST": 10768,
     "LEGS": 9625,
-    "FEET": 270101,
+    "FEET": 14839,
     "WRIST": 270073,
     "HANDS": 16978,
     "FINGER_1": 275045,
-    "FINGER_2": 17694,
-    "TRINKET_1": 280766,
+    "FINGER_2": 9533,
+    "TRINKET_1": 11122,
     "TRINKET_2": 276895,
     "BACK": 271810,
-    "MAIN_HAND": 279480
+    "MAIN_HAND": 9413
    },
    "ilvls": {
     "HEAD": 43,
     "NECK": 42,
-    "SHOULDER": 36,
+    "SHOULDER": 50,
     "SHIRT": 1,
     "CHEST": 32,
     "WAIST": 42,
     "LEGS": 37,
-    "FEET": 49,
+    "FEET": 44,
     "WRIST": 40,
     "HANDS": 27,
     "FINGER_1": 45,
-    "FINGER_2": 28,
-    "TRINKET_1": 33,
+    "FINGER_2": 49,
+    "TRINKET_1": 50,
     "TRINKET_2": 30,
     "BACK": 43,
-    "MAIN_HAND": 47
+    "MAIN_HAND": 49
    },
    "profs": {
-    "Mining": 209,
+    "Mining": 218,
     "Blacksmithing": 115,
-    "Cooking": 140,
+    "Cooking": 150,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -336,20 +336,20 @@
    "names": {
     "HEAD": "Eismetallbarbute",
     "NECK": "Clobroks Brockenfels",
-    "SHOULDER": "Kampfschiftung",
+    "SHOULDER": "Große böse Schulterstücke",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Eberheldengürtel",
     "LEGS": "Zweifach verstärkte Gamaschen",
-    "FEET": "Gnomisches Levitationsgerät",
+    "FEET": "Schienbeinschützer des Tyrannen",
     "WRIST": "Manschetten von Stromgarde",
     "HANDS": "Warsongstulpen",
     "FINGER_1": "Ogerhornring",
-    "FINGER_2": "Band der Faust",
-    "TRINKET_1": "Tränketasche",
+    "FINGER_2": "Masons Bruderschaftsring",
+    "TRINKET_1": "Karotte am Stiel",
     "TRINKET_2": "Transformativer Kokon",
     "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Größerer Stein auf größerem Stock"
+    "MAIN_HAND": "Der Felstrommler"
    }
   },
   "lokk-eidlöter": {
@@ -2558,6 +2558,60 @@
    "type": "prof",
    "name": "Mining",
    "skill": 163
+  },
+  {
+   "t": 1794954786000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 48,
+   "to": 51,
+   "max": false
+  },
+  {
+   "t": 1794954786000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9476,
+   "name": "Große böse Schulterstücke",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135032.jpg",
+   "slot": "Schultern",
+   "ilvl": 50,
+   "prev": 36,
+   "prevName": "Kampfschiftung"
+  },
+  {
+   "t": 1794954786000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9533,
+   "name": "Masons Bruderschaftsring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
+   "slot": "Ring 2",
+   "ilvl": 49,
+   "prev": 28,
+   "prevName": "Band der Faust"
+  },
+  {
+   "t": 1794954786000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9413,
+   "name": "Der Felstrommler",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133049.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 49,
+   "prev": 47,
+   "prevName": "Größerer Stein auf größerem Stock"
+  },
+  {
+   "t": 1794954786000,
+   "key": "hammer-hanno",
+   "type": "prof",
+   "name": "Cooking",
+   "skill": 150
   }
  ]
 }
