@@ -205,8 +205,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 29,
-   "lastLogin": 1794923655000,
+   "level": 30,
+   "lastLogin": 1794956451000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -222,7 +222,7 @@
     "BACK": 16990,
     "MAIN_HAND": 6220,
     "OFF_HAND": 6472,
-    "RANGED": 287060
+    "RANGED": 287066
    },
    "ilvls": {
     "HEAD": 30,
@@ -239,13 +239,13 @@
     "BACK": 27,
     "MAIN_HAND": 28,
     "OFF_HAND": 24,
-    "RANGED": 11
+    "RANGED": 30
    },
    "profs": {
-    "Leatherworking": 118,
-    "Skinning": 194,
+    "Leatherworking": 139,
+    "Skinning": 203,
     "Cooking": 60,
-    "First Aid": 140
+    "First Aid": 146
    },
    "achs": [
     728,
@@ -266,7 +266,7 @@
     "BACK": "Grimmlingumhang",
     "MAIN_HAND": "Meteorsplitter",
     "OFF_HAND": "Stechviper",
-    "RANGED": "Rezlaks Ersatzmesser"
+    "RANGED": "Wizlos Stimmschlüssel"
    }
   },
   "hammer-hanno": {
@@ -2612,6 +2612,14 @@
    "type": "prof",
    "name": "Cooking",
    "skill": 150
+  },
+  {
+   "t": 1794956451000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 29,
+   "to": 30,
+   "max": false
   }
  ]
 }
