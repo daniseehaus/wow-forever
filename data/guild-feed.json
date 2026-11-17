@@ -358,8 +358,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 33,
-   "lastLogin": 1794930464000,
+   "level": 34,
+   "lastLogin": 1794950772000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -368,14 +368,14 @@
     "CHEST": 3049,
     "WAIST": 4712,
     "LEGS": 3751,
-    "FEET": 276727,
-    "WRIST": 15545,
+    "FEET": 273042,
+    "WRIST": 251965,
     "HANDS": 16978,
-    "FINGER_1": 281673,
-    "FINGER_2": 6414,
+    "FINGER_1": 11994,
+    "FINGER_2": 281673,
     "TRINKET_1": 273840,
     "TRINKET_2": 280766,
-    "BACK": 15468,
+    "BACK": 279848,
     "MAIN_HAND": 271766
    },
    "ilvls": {
@@ -386,19 +386,19 @@
     "CHEST": 27,
     "WAIST": 29,
     "LEGS": 30,
-    "FEET": 30,
-    "WRIST": 30,
+    "FEET": 33,
+    "WRIST": 36,
     "HANDS": 27,
-    "FINGER_1": 28,
-    "FINGER_2": 29,
+    "FINGER_1": 25,
+    "FINGER_2": 28,
     "TRINKET_1": 29,
     "TRINKET_2": 33,
-    "BACK": 29,
+    "BACK": 36,
     "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 149,
-    "Blacksmithing": 150,
+    "Mining": 163,
+    "Blacksmithing": 176,
     "Cooking": 1,
     "First Aid": 40
    },
@@ -408,7 +408,8 @@
     61997,
     772,
     846,
-    62015
+    62015,
+    760
    ],
    "names": {
     "HEAD": "Whisperwindkopfputz",
@@ -418,14 +419,14 @@
     "CHEST": "Züngelnde Schuppenbrustplatte",
     "WAIST": "Gleißender Panzergurt",
     "LEGS": "Söldnergamaschen",
-    "FEET": "Glitzernde Stampfer",
-    "WRIST": "Dickschuppenarmreifen des Champions",
+    "FEET": "Manaschuppentreter",
+    "WRIST": "Armschienen des untoten Ritters",
     "HANDS": "Warsongstulpen",
-    "FINGER_1": "Schleife der Aufopferung",
-    "FINGER_2": "Siegel von Sylvanas",
+    "FINGER_1": "Korallenband des Gorillas",
+    "FINGER_2": "Schleife der Aufopferung",
     "TRINKET_1": "Verfluchtes Murlocauge",
     "TRINKET_2": "Tränketasche",
-    "BACK": "Windsongtuch",
+    "BACK": "Konstruktumhang",
     "MAIN_HAND": "Wuchthammer"
    }
   },
@@ -2514,12 +2515,49 @@
    "prevName": "Azurblaue Seidenkapuze"
   },
   {
+   "t": 1794939182000,
+   "key": "lokk-eidlöter",
+   "type": "achievement",
+   "id": 760,
+   "name": "Erforscht das Alteracgebirge",
+   "desc": "Erforscht das Alteracgebirge und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236711.jpg"
+  },
+  {
    "t": 1794950127000,
    "key": "dennis-dotalot",
    "type": "level",
    "from": 27,
    "to": 28,
    "max": false
+  },
+  {
+   "t": 1794950772000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 33,
+   "to": 34,
+   "max": false
+  },
+  {
+   "t": 1794950772000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 273042,
+   "name": "Manaschuppentreter",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132551.jpg",
+   "slot": "Füße",
+   "ilvl": 33,
+   "prev": 30,
+   "prevName": "Glitzernde Stampfer"
+  },
+  {
+   "t": 1794950772000,
+   "key": "lokk-eidlöter",
+   "type": "prof",
+   "name": "Mining",
+   "skill": 163
   }
  ]
 }
