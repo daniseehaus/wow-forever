@@ -38,14 +38,14 @@
   },
   "orkward-orkbert": {
    "level": 19,
-   "lastLogin": 1794776568000,
+   "lastLogin": 1794931516000,
    "items": {
     "SHIRT": 127,
     "CHEST": 4243,
     "WAIST": 4246,
     "LEGS": 5961,
     "FEET": 252425,
-    "WRIST": 7281,
+    "WRIST": 15453,
     "HANDS": 4239,
     "FINGER_1": 281268,
     "BACK": 2316,
@@ -59,7 +59,7 @@
     "WAIST": 16,
     "LEGS": 23,
     "FEET": 15,
-    "WRIST": 14,
+    "WRIST": 18,
     "HANDS": 13,
     "FINGER_1": 9,
     "BACK": 22,
@@ -73,7 +73,7 @@
     "WAIST": "Feiner Ledergürtel",
     "LEGS": "Dunkle Lederhose",
     "FEET": "Dunkle Lederstiefel",
-    "WRIST": "Leichte Lederarmschienen",
+    "WRIST": "Savannenarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Dunkler Lederumhang",
@@ -1950,6 +1950,19 @@
    "type": "prof",
    "name": "Blacksmithing",
    "skill": 90
+  },
+  {
+   "t": 1794931516000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 15453,
+   "name": "Savannenarmschienen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132606.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 18,
+   "prev": 14,
+   "prevName": "Leichte Lederarmschienen"
   }
  ]
 }
