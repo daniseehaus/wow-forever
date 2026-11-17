@@ -495,8 +495,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 27,
-   "lastLogin": 1794933410000,
+   "level": 28,
+   "lastLogin": 1794950127000,
    "items": {
     "HEAD": 253955,
     "NECK": 281265,
@@ -533,9 +533,9 @@
    },
    "profs": {
     "Tailoring": 146,
-    "Herbalism": 134,
-    "Cooking": 188,
-    "Fishing": 150,
+    "Herbalism": 137,
+    "Cooking": 189,
+    "Fishing": 153,
     "First Aid": 125
    },
    "achs": [
@@ -2512,6 +2512,14 @@
    "ilvl": 25,
    "prev": 29,
    "prevName": "Azurblaue Seidenkapuze"
+  },
+  {
+   "t": 1794950127000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 27,
+   "to": 28,
+   "max": false
   }
  ]
 }
