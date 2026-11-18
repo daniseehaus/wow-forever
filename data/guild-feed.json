@@ -496,8 +496,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 28,
-   "lastLogin": 1794950127000,
+   "level": 29,
+   "lastLogin": 1794960519000,
    "items": {
     "HEAD": 253955,
     "NECK": 281265,
@@ -511,7 +511,7 @@
     "HANDS": 9795,
     "FINGER_1": 3739,
     "FINGER_2": 281673,
-    "BACK": 14167,
+    "BACK": 16661,
     "MAIN_HAND": 15109,
     "RANGED": 7001
    },
@@ -528,15 +528,15 @@
     "HANDS": 26,
     "FINGER_1": 25,
     "FINGER_2": 28,
-    "BACK": 19,
+    "BACK": 27,
     "MAIN_HAND": 25,
     "RANGED": 29
    },
    "profs": {
     "Tailoring": 146,
-    "Herbalism": 137,
+    "Herbalism": 142,
     "Cooking": 189,
-    "Fishing": 153,
+    "Fishing": 158,
     "First Aid": 125
    },
    "achs": [
@@ -556,7 +556,7 @@
     "HANDS": "Efeustoffhandschuhe des Schattenzorns",
     "FINGER_1": "Schädelring",
     "FINGER_2": "Schleife der Aufopferung",
-    "BACK": "Bukanier-Cape des Adlers",
+    "BACK": "Weiches Weidencape",
     "MAIN_HAND": "Stab von Soran'ruk",
     "RANGED": "Grabsteinszepter"
    }
@@ -2619,6 +2619,14 @@
    "type": "level",
    "from": 29,
    "to": 30,
+   "max": false
+  },
+  {
+   "t": 1794960519000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 28,
+   "to": 29,
    "max": false
   }
  ]
