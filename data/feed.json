@@ -37,54 +37,57 @@
    }
   },
   "orkward-orkbert": {
-   "level": 19,
-   "lastLogin": 1794931516000,
+   "level": 21,
+   "lastLogin": 1795040296000,
    "items": {
     "SHIRT": 127,
     "CHEST": 4243,
-    "WAIST": 4246,
+    "WAIST": 4249,
     "LEGS": 5961,
     "FEET": 252425,
-    "WRIST": 15453,
+    "WRIST": 271202,
     "HANDS": 4239,
     "FINGER_1": 281268,
-    "BACK": 2316,
-    "MAIN_HAND": 15443,
+    "FINGER_2": 279867,
+    "BACK": 9770,
+    "MAIN_HAND": 6448,
     "RANGED": 4576,
-    "AMMO": 2512
+    "AMMO": 2515
    },
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 17,
-    "WAIST": 16,
+    "WAIST": 25,
     "LEGS": 23,
     "FEET": 15,
-    "WRIST": 18,
+    "WRIST": 20,
     "HANDS": 13,
     "FINGER_1": 9,
-    "BACK": 22,
-    "MAIN_HAND": 18,
+    "FINGER_2": 23,
+    "BACK": 20,
+    "MAIN_HAND": 21,
     "RANGED": 21,
-    "AMMO": 5
+    "AMMO": 15
    },
    "names": {
     "SHIRT": "Fallenstellerhemd",
     "CHEST": "Feine Ledertunika",
-    "WAIST": "Feiner Ledergürtel",
+    "WAIST": "Dunkler Ledergürtel",
     "LEGS": "Dunkle Lederhose",
     "FEET": "Dunkle Lederstiefel",
-    "WRIST": "Savannenarmschienen",
+    "WRIST": "Welkbissarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
     "FINGER_1": "Ausgelaugter Ritualring",
-    "BACK": "Dunkler Lederumhang",
-    "MAIN_HAND": "Kris von Orgrimmar",
+    "FINGER_2": "Siegelring des getöteten Barons",
+    "BACK": "Grünzwirnumhang der Beweglichkeit",
+    "MAIN_HAND": "Schwanzstachel",
     "RANGED": "Leichter Bogen",
-    "AMMO": "Rauer Pfeil"
+    "AMMO": "Scharfer Pfeil"
    },
    "profs": {
-    "Leatherworking": 101,
-    "Skinning": 149,
-    "Cooking": 115,
+    "Leatherworking": 102,
+    "Skinning": 155,
+    "Cooking": 121,
     "Fishing": 1,
     "First Aid": 15
    },
@@ -1970,6 +1973,86 @@
    "type": "prof",
    "name": "Fishing",
    "skill": 100
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 19,
+   "to": 21,
+   "max": false
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 4249,
+   "name": "Dunkler Ledergürtel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132492.jpg",
+   "slot": "Taille",
+   "ilvl": 25,
+   "prev": 16,
+   "prevName": "Feiner Ledergürtel"
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 271202,
+   "name": "Welkbissarmschienen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132606.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 20,
+   "prev": 18,
+   "prevName": "Savannenarmschienen"
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 279867,
+   "name": "Siegelring des getöteten Barons",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133361.jpg",
+   "slot": "Ring 2",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 9770,
+   "name": "Grünzwirnumhang der Beweglichkeit",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133769.jpg",
+   "slot": "Rücken",
+   "ilvl": 20,
+   "prev": 22,
+   "prevName": "Dunkler Lederumhang"
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 6448,
+   "name": "Schwanzstachel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135646.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 21,
+   "prev": 18,
+   "prevName": "Kris von Orgrimmar"
+  },
+  {
+   "t": 1795040296000,
+   "key": "orkward-orkbert",
+   "type": "prof",
+   "name": "Skinning",
+   "skill": 155
   }
  ]
 }
