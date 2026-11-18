@@ -2314,6 +2314,18 @@
    "ilvl": 24,
    "prev": 18,
    "prevName": "Troggzepter"
+  },
+  {
+   "t": 1795041369000,
+   "type": "session",
+   "start": 1795040296000,
+   "gain": 2.75,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "orkward-orkbert"
+   ]
   }
  ]
 }
