@@ -496,8 +496,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 29,
-   "lastLogin": 1795004008000,
+   "level": 30,
+   "lastLogin": 1795011966000,
    "items": {
     "HEAD": 253955,
     "NECK": 281265,
@@ -511,6 +511,7 @@
     "HANDS": 9795,
     "FINGER_1": 3739,
     "FINGER_2": 281673,
+    "TRINKET_1": 276895,
     "BACK": 16661,
     "MAIN_HAND": 15109,
     "RANGED": 7001
@@ -528,6 +529,7 @@
     "HANDS": 26,
     "FINGER_1": 25,
     "FINGER_2": 28,
+    "TRINKET_1": 30,
     "BACK": 27,
     "MAIN_HAND": 25,
     "RANGED": 29
@@ -556,6 +558,7 @@
     "HANDS": "Efeustoffhandschuhe des Schattenzorns",
     "FINGER_1": "Schädelring",
     "FINGER_2": "Schleife der Aufopferung",
+    "TRINKET_1": "Transformativer Kokon",
     "BACK": "Weiches Weidencape",
     "MAIN_HAND": "Stab von Soran'ruk",
     "RANGED": "Grabsteinszepter"
@@ -2656,6 +2659,14 @@
    "type": "prof",
    "name": "Fishing",
    "skill": 100
+  },
+  {
+   "t": 1795011966000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 29,
+   "to": 30,
+   "max": false
   }
  ]
 }
