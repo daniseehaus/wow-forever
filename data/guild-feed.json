@@ -497,14 +497,14 @@
    "classId": 9,
    "rank": 1,
    "level": 29,
-   "lastLogin": 1794960519000,
+   "lastLogin": 1795004008000,
    "items": {
     "HEAD": 253955,
     "NECK": 281265,
     "SHOULDER": 3748,
     "SHIRT": 2579,
     "CHEST": 5766,
-    "WAIST": 286980,
+    "WAIST": 16975,
     "LEGS": 6910,
     "FEET": 4320,
     "WRIST": 6613,
@@ -521,7 +521,7 @@
     "SHOULDER": 28,
     "SHIRT": 14,
     "CHEST": 27,
-    "WAIST": 22,
+    "WAIST": 27,
     "LEGS": 29,
     "FEET": 25,
     "WRIST": 28,
@@ -534,8 +534,8 @@
    },
    "profs": {
     "Tailoring": 146,
-    "Herbalism": 142,
-    "Cooking": 189,
+    "Herbalism": 143,
+    "Cooking": 192,
     "Fishing": 158,
     "First Aid": 125
    },
@@ -549,7 +549,7 @@
     "SHOULDER": "Felinen-Mantel",
     "SHIRT": "Grünes Leinenhemd",
     "CHEST": "Geringe Hexerrobe",
-    "WAIST": "Schärpe des Fäulnisheilers",
+    "WAIST": "Warsongschärpe",
     "LEGS": "Egel-Hose",
     "FEET": "Spinnenseidenstiefel",
     "WRIST": "Weisenarmschienen des Adlers",
@@ -2636,6 +2636,19 @@
    "from": 34,
    "to": 35,
    "max": false
+  },
+  {
+   "t": 1795004008000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 16975,
+   "name": "Warsongschärpe",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132491.jpg",
+   "slot": "Taille",
+   "ilvl": 27,
+   "prev": 22,
+   "prevName": "Schärpe des Fäulnisheilers"
   }
  ]
 }
