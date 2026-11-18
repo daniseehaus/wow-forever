@@ -150,7 +150,7 @@
    "classId": 2,
    "rank": 1,
    "level": 19,
-   "lastLogin": 1794931896000,
+   "lastLogin": 1795007583000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -180,8 +180,8 @@
    "profs": {
     "Mining": 99,
     "Engineering": 115,
-    "Cooking": 38,
-    "Fishing": 18,
+    "Cooking": 49,
+    "Fishing": 100,
     "First Aid": 70
    },
    "achs": [],
@@ -2649,6 +2649,13 @@
    "ilvl": 27,
    "prev": 22,
    "prevName": "Schärpe des Fäulnisheilers"
+  },
+  {
+   "t": 1795007583000,
+   "key": "pavel-plattenpapst",
+   "type": "prof",
+   "name": "Fishing",
+   "skill": 100
   }
  ]
 }

@@ -272,7 +272,7 @@
   },
   "pavel-plattenpapst": {
    "level": 19,
-   "lastLogin": 1794931896000,
+   "lastLogin": 1795007583000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -315,8 +315,8 @@
    "profs": {
     "Mining": 99,
     "Engineering": 115,
-    "Cooking": 38,
-    "Fishing": 18,
+    "Cooking": 49,
+    "Fishing": 100,
     "First Aid": 70
    },
    "achs": [],
@@ -1963,6 +1963,13 @@
    "ilvl": 18,
    "prev": 14,
    "prevName": "Leichte Lederarmschienen"
+  },
+  {
+   "t": 1795007583000,
+   "key": "pavel-plattenpapst",
+   "type": "prof",
+   "name": "Fishing",
+   "skill": 100
   }
  ]
 }
