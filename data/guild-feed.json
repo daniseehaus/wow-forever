@@ -731,7 +731,7 @@
    "classId": 7,
    "rank": 1,
    "level": 10,
-   "lastLogin": 1794950291000,
+   "lastLogin": 1795012329000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
@@ -772,8 +772,8 @@
     "OFF_HAND": "Gebogener großer Schild"
    },
    "profs": {
-    "Enchanting": 54,
-    "Alchemy": 71,
+    "Enchanting": 55,
+    "Alchemy": 72,
     "Cooking": 4
    },
    "achs": [
