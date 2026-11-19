@@ -690,22 +690,6 @@
   ],
   "zukk-sturmzüngler": [
    {
-    "t": 1794611501000,
-    "level": 17,
-    "base": {
-     "ilvl": 9,
-     "profs": {
-      "Alchemy": 94,
-      "Herbalism": 110,
-      "Cooking": 21
-     },
-     "talents": {
-      "134214": 5,
-      "134216": 3
-     }
-    }
-   },
-   {
     "t": 1794635417000,
     "level": 17,
     "base": {
@@ -884,6 +868,25 @@
      "profs": {
       "Alchemy": 150,
       "Herbalism": 113,
+      "Cooking": 21
+     },
+     "talents": {
+      "134210": 1,
+      "134211": 2,
+      "134214": 5,
+      "134216": 3,
+      "134217": 2
+     }
+    }
+   },
+   {
+    "t": 1795086445000,
+    "level": 22,
+    "base": {
+     "ilvl": 13,
+     "profs": {
+      "Alchemy": 225,
+      "Herbalism": 129,
       "Cooking": 21
      },
      "talents": {
