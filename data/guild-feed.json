@@ -370,8 +370,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 35,
-   "lastLogin": 1795097791000,
+   "level": 36,
+   "lastLogin": 1795117594000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -2966,6 +2966,14 @@
    "ilvl": 23,
    "prev": 24,
    "prevName": "Großaxt des Verlassenen"
+  },
+  {
+   "t": 1795117594000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 35,
+   "to": 36,
+   "max": false
   }
  ]
 }
