@@ -95,7 +95,7 @@
    "classId": 7,
    "rank": 1,
    "level": 22,
-   "lastLogin": 1795078734000,
+   "lastLogin": 1795080091000,
    "items": {
     "CHEST": 6473,
     "WAIST": 4246,
@@ -123,7 +123,7 @@
     "RANGED": 10
    },
    "profs": {
-    "Alchemy": 144,
+    "Alchemy": 150,
     "Herbalism": 113,
     "Cooking": 21
    },
@@ -134,7 +134,8 @@
     772,
     846,
     62015,
-    760
+    760,
+    62012
    ],
    "names": {
     "CHEST": "Rüstung des Giftzahns",
@@ -2899,6 +2900,22 @@
    "type": "prof",
    "name": "Cooking",
    "skill": 111
+  },
+  {
+   "t": 1795080060000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62012,
+   "name": "Alchimiegeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Alchimie.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
+  },
+  {
+   "t": 1795080091000,
+   "key": "zukk-sturmzüngler",
+   "type": "prof",
+   "name": "Alchemy",
+   "skill": 150
   }
  ]
 }
