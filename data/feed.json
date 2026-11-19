@@ -281,8 +281,8 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 19,
-   "lastLogin": 1795007583000,
+   "level": 23,
+   "lastLogin": 1795047070000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -293,8 +293,9 @@
     "FEET": 6350,
     "WRIST": 2854,
     "HANDS": 12994,
-    "BACK": 15309,
-    "MAIN_HAND": 6256
+    "FINGER_1": 279867,
+    "BACK": 5343,
+    "MAIN_HAND": 251533
    },
    "ilvls": {
     "HEAD": 20,
@@ -306,8 +307,9 @@
     "FEET": 18,
     "WRIST": 19,
     "HANDS": 23,
-    "BACK": 15,
-    "MAIN_HAND": 1
+    "FINGER_1": 23,
+    "BACK": 18,
+    "MAIN_HAND": 24
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -319,14 +321,15 @@
     "FEET": "Raue bronzene Stiefel",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
-    "BACK": "Wild-Umhang der Beweglichkeit",
-    "MAIN_HAND": "Angel"
+    "FINGER_1": "Siegelring des getöteten Barons",
+    "BACK": "Barkeeper-Umhang",
+    "MAIN_HAND": "Großaxt des Verlassenen"
    },
    "profs": {
-    "Mining": 99,
+    "Mining": 104,
     "Engineering": 115,
-    "Cooking": 49,
-    "Fishing": 100,
+    "Cooking": 111,
+    "Fishing": 107,
     "First Aid": 70
    },
    "achs": [],
@@ -2326,6 +2329,60 @@
     "zukk-sturmzüngler",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1795047070000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 19,
+   "to": 23,
+   "max": false
+  },
+  {
+   "t": 1795047070000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 279867,
+   "name": "Siegelring des getöteten Barons",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133361.jpg",
+   "slot": "Ring 1",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795047070000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 5343,
+   "name": "Barkeeper-Umhang",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133755.jpg",
+   "slot": "Rücken",
+   "ilvl": 18,
+   "prev": 15,
+   "prevName": "Wild-Umhang der Beweglichkeit"
+  },
+  {
+   "t": 1795047070000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 251533,
+   "name": "Großaxt des Verlassenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 24,
+   "prev": 1,
+   "prevName": "Angel"
+  },
+  {
+   "t": 1795047070000,
+   "key": "pavel-plattenpapst",
+   "type": "prof",
+   "name": "Cooking",
+   "skill": 111
   }
  ]
 }
