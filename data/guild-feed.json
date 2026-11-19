@@ -371,7 +371,7 @@
    "classId": 2,
    "rank": 1,
    "level": 35,
-   "lastLogin": 1795078990000,
+   "lastLogin": 1795097791000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -383,8 +383,8 @@
     "FEET": 273042,
     "WRIST": 251965,
     "HANDS": 16978,
-    "FINGER_1": 281673,
-    "FINGER_2": 11994,
+    "FINGER_1": 11994,
+    "FINGER_2": 281673,
     "TRINKET_1": 273840,
     "TRINKET_2": 280766,
     "BACK": 279848,
@@ -401,15 +401,15 @@
     "FEET": 33,
     "WRIST": 36,
     "HANDS": 27,
-    "FINGER_1": 28,
-    "FINGER_2": 25,
+    "FINGER_1": 25,
+    "FINGER_2": 28,
     "TRINKET_1": 29,
     "TRINKET_2": 33,
     "BACK": 36,
     "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 165,
+    "Mining": 166,
     "Blacksmithing": 176,
     "Cooking": 1,
     "First Aid": 40
@@ -421,7 +421,9 @@
     772,
     846,
     62015,
-    760
+    760,
+    62012,
+    62013
    ],
    "names": {
     "HEAD": "Whisperwindkopfputz",
@@ -434,8 +436,8 @@
     "FEET": "Manaschuppentreter",
     "WRIST": "Armschienen des untoten Ritters",
     "HANDS": "Warsongstulpen",
-    "FINGER_1": "Schleife der Aufopferung",
-    "FINGER_2": "Korallenband des Gorillas",
+    "FINGER_1": "Korallenband des Gorillas",
+    "FINGER_2": "Schleife der Aufopferung",
     "TRINKET_1": "Verfluchtes Murlocauge",
     "TRINKET_2": "Tränketasche",
     "BACK": "Konstruktumhang",
@@ -2912,6 +2914,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
   },
   {
+   "t": 1795080060000,
+   "key": "lokk-eidlöter",
+   "type": "achievement",
+   "id": 62012,
+   "name": "Alchimiegeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Alchimie.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
+  },
+  {
    "t": 1795080091000,
    "key": "zukk-sturmzüngler",
    "type": "prof",
@@ -2921,6 +2932,15 @@
   {
    "t": 1795081080000,
    "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62013,
+   "name": "Alchimieexperte",
+   "desc": "Erzielt zum ersten Mal 225 Fertigkeitspunkte in Alchimie.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
+  },
+  {
+   "t": 1795081080000,
+   "key": "lokk-eidlöter",
    "type": "achievement",
    "id": 62013,
    "name": "Alchimieexperte",
