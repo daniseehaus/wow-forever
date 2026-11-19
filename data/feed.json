@@ -284,7 +284,7 @@
   },
   "pavel-plattenpapst": {
    "level": 23,
-   "lastLogin": 1795091449000,
+   "lastLogin": 1795093573000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -297,7 +297,7 @@
     "HANDS": 12994,
     "FINGER_1": 279867,
     "BACK": 5343,
-    "MAIN_HAND": 286977
+    "MAIN_HAND": 6256
    },
    "ilvls": {
     "HEAD": 20,
@@ -311,7 +311,7 @@
     "HANDS": 23,
     "FINGER_1": 23,
     "BACK": 18,
-    "MAIN_HAND": 23
+    "MAIN_HAND": 1
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -325,13 +325,13 @@
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
     "BACK": "Barkeeper-Umhang",
-    "MAIN_HAND": "Schwert der Gefallenen"
+    "MAIN_HAND": "Angel"
    },
    "profs": {
     "Mining": 104,
     "Engineering": 115,
     "Cooking": 111,
-    "Fishing": 107,
+    "Fishing": 109,
     "First Aid": 70
    },
    "achs": [],
