@@ -5,7 +5,7 @@
   "wladimir-klatschko": 22,
   "heili-kabel": 22,
   "zukk-sturmzüngler": 22,
-  "pavel-plattenpapst": 19,
+  "pavel-plattenpapst": 23,
   "orkward-orkbert": 21
  },
  "base": {
@@ -55,15 +55,18 @@
    }
   },
   "pavel-plattenpapst": {
-   "ilvl": 11,
+   "ilvl": 15,
    "profs": {
-    "Mining": 99,
+    "Mining": 104,
     "Engineering": 115,
-    "Cooking": 49,
-    "Fishing": 100,
+    "Cooking": 111,
+    "Fishing": 107,
     "First Aid": 70
    },
    "talents": {
+    "135226": 1,
+    "135229": 2,
+    "135231": 1,
     "135233": 3,
     "135235": 2,
     "135237": 5
@@ -379,12 +382,13 @@
   {
    "start": 1795040296000,
    "end": 1795041369000,
-   "gain": 2.75,
+   "gain": 3,
    "players": [
     "wladimir-klatschko",
     "heili-kabel",
     "zukk-sturmzüngler",
-    "orkward-orkbert"
+    "orkward-orkbert",
+    "pavel-plattenpapst"
    ],
    "stats": {
     "wladimir-klatschko": {
@@ -457,6 +461,25 @@
      "logout": 1795040296000,
      "respec": false,
      "since": 1794931516000
+    },
+    "pavel-plattenpapst": {
+     "level": [
+      19,
+      23
+     ],
+     "ilvl": [
+      11,
+      15
+     ],
+     "prof": 74,
+     "profs": {
+      "Mining": 5,
+      "Cooking": 62,
+      "Fishing": 7
+     },
+     "logout": 1795047070000,
+     "respec": false,
+     "since": 1795007583000
     }
    }
   }
