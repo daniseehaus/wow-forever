@@ -284,7 +284,7 @@
   },
   "pavel-plattenpapst": {
    "level": 23,
-   "lastLogin": 1795047070000,
+   "lastLogin": 1795091449000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -297,7 +297,7 @@
     "HANDS": 12994,
     "FINGER_1": 279867,
     "BACK": 5343,
-    "MAIN_HAND": 251533
+    "MAIN_HAND": 286977
    },
    "ilvls": {
     "HEAD": 20,
@@ -311,7 +311,7 @@
     "HANDS": 23,
     "FINGER_1": 23,
     "BACK": 18,
-    "MAIN_HAND": 24
+    "MAIN_HAND": 23
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -325,7 +325,7 @@
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
     "BACK": "Barkeeper-Umhang",
-    "MAIN_HAND": "Großaxt des Verlassenen"
+    "MAIN_HAND": "Schwert der Gefallenen"
    },
    "profs": {
     "Mining": 104,
@@ -2418,6 +2418,19 @@
    "type": "prof",
    "name": "Alchemy",
    "skill": 225
+  },
+  {
+   "t": 1795091449000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286977,
+   "name": "Schwert der Gefallenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 23,
+   "prev": 24,
+   "prevName": "Großaxt des Verlassenen"
   }
  ]
 }
