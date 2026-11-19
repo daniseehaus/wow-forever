@@ -287,8 +287,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 51,
-   "lastLogin": 1795041419000,
+   "level": 53,
+   "lastLogin": 1795129563000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -297,7 +297,7 @@
     "CHEST": 273035,
     "WAIST": 10768,
     "LEGS": 9625,
-    "FEET": 14839,
+    "FEET": 9637,
     "WRIST": 270073,
     "HANDS": 16978,
     "FINGER_1": 275045,
@@ -315,7 +315,7 @@
     "CHEST": 32,
     "WAIST": 42,
     "LEGS": 37,
-    "FEET": 44,
+    "FEET": 45,
     "WRIST": 40,
     "HANDS": 27,
     "FINGER_1": 45,
@@ -326,9 +326,9 @@
     "MAIN_HAND": 49
    },
    "profs": {
-    "Mining": 218,
+    "Mining": 221,
     "Blacksmithing": 115,
-    "Cooking": 161,
+    "Cooking": 172,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -353,7 +353,7 @@
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Eberheldengürtel",
     "LEGS": "Zweifach verstärkte Gamaschen",
-    "FEET": "Schienbeinschützer des Tyrannen",
+    "FEET": "Schienbeintreter-Stiefel",
     "WRIST": "Manschetten von Stromgarde",
     "HANDS": "Warsongstulpen",
     "FINGER_1": "Ogerhornring",
@@ -2981,6 +2981,14 @@
    "type": "level",
    "from": 30,
    "to": 31,
+   "max": false
+  },
+  {
+   "t": 1795129563000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 51,
+   "to": 53,
    "max": false
   }
  ]
