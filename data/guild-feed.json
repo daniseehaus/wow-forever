@@ -217,8 +217,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 30,
-   "lastLogin": 1795045183000,
+   "level": 32,
+   "lastLogin": 1795130399000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -229,12 +229,13 @@
     "FEET": 6668,
     "WRIST": 279875,
     "HANDS": 5299,
-    "FINGER_1": 6414,
-    "FINGER_2": 5351,
+    "FINGER_1": 7686,
+    "FINGER_2": 6414,
     "BACK": 16990,
-    "MAIN_HAND": 6220,
-    "OFF_HAND": 6472,
-    "RANGED": 287066
+    "MAIN_HAND": 7682,
+    "OFF_HAND": 7683,
+    "RANGED": 274084,
+    "AMMO": 2519
    },
    "ilvls": {
     "HEAD": 30,
@@ -246,16 +247,17 @@
     "FEET": 27,
     "WRIST": 24,
     "HANDS": 20,
-    "FINGER_1": 29,
-    "FINGER_2": 20,
+    "FINGER_1": 35,
+    "FINGER_2": 29,
     "BACK": 27,
-    "MAIN_HAND": 28,
-    "OFF_HAND": 24,
-    "RANGED": 30
+    "MAIN_HAND": 34,
+    "OFF_HAND": 34,
+    "RANGED": 36,
+    "AMMO": 15
    },
    "profs": {
     "Leatherworking": 139,
-    "Skinning": 204,
+    "Skinning": 208,
     "Cooking": 60,
     "First Aid": 146
    },
@@ -273,12 +275,13 @@
     "FEET": "Zeichner-Stiefel",
     "WRIST": "Ersatzteilbindungen",
     "HANDS": "Handschuhe des Mondes",
-    "FINGER_1": "Siegel von Sylvanas",
-    "FINGER_2": "Kopfgeldjägerring",
+    "FINGER_1": "Eisenrückenauge",
+    "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Grimmlingumhang",
-    "MAIN_HAND": "Meteorsplitter",
-    "OFF_HAND": "Stechviper",
-    "RANGED": "Wizlos Stimmschlüssel"
+    "MAIN_HAND": "Quälerschüreisen",
+    "OFF_HAND": "Blutiger Messingschlagring",
+    "RANGED": "Stacheleber-Blaster",
+    "AMMO": "Schweres Geschoss"
    }
   },
   "hammer-hanno": {
@@ -2990,6 +2993,66 @@
    "from": 51,
    "to": 53,
    "max": false
+  },
+  {
+   "t": 1795130399000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 30,
+   "to": 32,
+   "max": false
+  },
+  {
+   "t": 1795130399000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 7686,
+   "name": "Eisenrückenauge",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133346.jpg",
+   "slot": "Ring 1",
+   "ilvl": 35,
+   "prev": 29,
+   "prevName": "Siegel von Sylvanas"
+  },
+  {
+   "t": 1795130399000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 7682,
+   "name": "Quälerschüreisen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135124.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 34,
+   "prev": 28,
+   "prevName": "Meteorsplitter"
+  },
+  {
+   "t": 1795130399000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 7683,
+   "name": "Blutiger Messingschlagring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132945.jpg",
+   "slot": "Schildhand",
+   "ilvl": 34,
+   "prev": 24,
+   "prevName": "Stechviper"
+  },
+  {
+   "t": 1795130399000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 274084,
+   "name": "Stacheleber-Blaster",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135614.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 36,
+   "prev": 30,
+   "prevName": "Wizlos Stimmschlüssel"
   }
  ]
 }
