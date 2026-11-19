@@ -75,6 +75,12 @@
     "level": 21,
     "ilvl": 12,
     "epics": 0
+   },
+   {
+    "d": "2026-11-19",
+    "level": 21,
+    "ilvl": 12,
+    "epics": 0
    }
   ],
   "wladimir-klatschko": [
@@ -140,6 +146,12 @@
    },
    {
     "d": "2026-11-18",
+    "level": 22,
+    "ilvl": 15,
+    "epics": 0
+   },
+   {
+    "d": "2026-11-19",
     "level": 22,
     "ilvl": 15,
     "epics": 0
@@ -211,6 +223,12 @@
     "level": 22,
     "ilvl": 15,
     "epics": 0
+   },
+   {
+    "d": "2026-11-19",
+    "level": 22,
+    "ilvl": 15,
+    "epics": 0
    }
   ],
   "zukk-sturmzüngler": [
@@ -279,6 +297,12 @@
     "level": 22,
     "ilvl": 13,
     "epics": 0
+   },
+   {
+    "d": "2026-11-19",
+    "level": 22,
+    "ilvl": 13,
+    "epics": 0
    }
   ],
   "pavel-plattenpapst": [
@@ -344,6 +368,12 @@
    },
    {
     "d": "2026-11-18",
+    "level": 19,
+    "ilvl": 11,
+    "epics": 0
+   },
+   {
+    "d": "2026-11-19",
     "level": 19,
     "ilvl": 11,
     "epics": 0
