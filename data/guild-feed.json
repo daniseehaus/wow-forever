@@ -510,8 +510,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 30,
-   "lastLogin": 1795097320000,
+   "level": 31,
+   "lastLogin": 1795120740000,
    "items": {
     "HEAD": 253955,
     "NECK": 281265,
@@ -526,7 +526,7 @@
     "FINGER_1": 3739,
     "FINGER_2": 281673,
     "TRINKET_1": 276895,
-    "BACK": 16661,
+    "BACK": 15468,
     "MAIN_HAND": 15109,
     "RANGED": 7001
    },
@@ -544,7 +544,7 @@
     "FINGER_1": 25,
     "FINGER_2": 28,
     "TRINKET_1": 30,
-    "BACK": 27,
+    "BACK": 29,
     "MAIN_HAND": 25,
     "RANGED": 29
    },
@@ -573,7 +573,7 @@
     "FINGER_1": "Schädelring",
     "FINGER_2": "Schleife der Aufopferung",
     "TRINKET_1": "Transformativer Kokon",
-    "BACK": "Weiches Weidencape",
+    "BACK": "Windsongtuch",
     "MAIN_HAND": "Stab von Soran'ruk",
     "RANGED": "Grabsteinszepter"
    }
@@ -2973,6 +2973,14 @@
    "type": "level",
    "from": 35,
    "to": 36,
+   "max": false
+  },
+  {
+   "t": 1795120740000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 30,
+   "to": 31,
    "max": false
   }
  ]
