@@ -37,56 +37,59 @@
    }
   },
   "orkward-orkbert": {
-   "level": 21,
-   "lastLogin": 1795040296000,
+   "level": 23,
+   "lastLogin": 1795193387000,
    "items": {
+    "SHOULDER": 5404,
     "SHIRT": 127,
-    "CHEST": 4243,
+    "CHEST": 6473,
     "WAIST": 4249,
     "LEGS": 5961,
-    "FEET": 252425,
+    "FEET": 10411,
     "WRIST": 271202,
-    "HANDS": 4239,
+    "HANDS": 10413,
     "FINGER_1": 281268,
     "FINGER_2": 279867,
-    "BACK": 9770,
+    "BACK": 2316,
     "MAIN_HAND": 6448,
     "RANGED": 4576,
     "AMMO": 2515
    },
    "ilvls": {
+    "SHOULDER": 23,
     "SHIRT": 1,
-    "CHEST": 17,
+    "CHEST": 23,
     "WAIST": 25,
     "LEGS": 23,
-    "FEET": 15,
+    "FEET": 22,
     "WRIST": 20,
-    "HANDS": 13,
+    "HANDS": 19,
     "FINGER_1": 9,
     "FINGER_2": 23,
-    "BACK": 20,
+    "BACK": 22,
     "MAIN_HAND": 21,
     "RANGED": 21,
     "AMMO": 15
    },
    "names": {
+    "SHOULDER": "Schlangen-Schultern",
     "SHIRT": "Fallenstellerhemd",
-    "CHEST": "Feine Ledertunika",
+    "CHEST": "Rüstung des Giftzahns",
     "WAIST": "Dunkler Ledergürtel",
     "LEGS": "Dunkle Lederhose",
-    "FEET": "Dunkle Lederstiefel",
+    "FEET": "Fußpolster des Giftzahns",
     "WRIST": "Welkbissarmschienen",
-    "HANDS": "Geprägte Lederhandschuhe",
+    "HANDS": "Handschuhe des Giftzahns",
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Siegelring des getöteten Barons",
-    "BACK": "Grünzwirnumhang der Beweglichkeit",
+    "BACK": "Dunkler Lederumhang",
     "MAIN_HAND": "Schwanzstachel",
     "RANGED": "Leichter Bogen",
     "AMMO": "Scharfer Pfeil"
    },
    "profs": {
     "Leatherworking": 102,
-    "Skinning": 155,
+    "Skinning": 167,
     "Cooking": 121,
     "Fishing": 1,
     "First Aid": 15
@@ -154,10 +157,11 @@
    "guild": "Geilbleiber"
   },
   "heili-kabel": {
-   "level": 22,
-   "lastLogin": 1795166020000,
+   "level": 23,
+   "lastLogin": 1795193495000,
    "items": {
     "NECK": 273088,
+    "SHOULDER": 10657,
     "SHIRT": 53,
     "CHEST": 286978,
     "WAIST": 253887,
@@ -167,12 +171,13 @@
     "HANDS": 4318,
     "FINGER_1": 281268,
     "FINGER_2": 279867,
-    "BACK": 9770,
+    "BACK": 15114,
     "MAIN_HAND": 251534,
-    "RANGED": 11287
+    "RANGED": 8071
    },
    "ilvls": {
     "NECK": 22,
+    "SHOULDER": 26,
     "SHIRT": 1,
     "CHEST": 23,
     "WAIST": 15,
@@ -182,12 +187,13 @@
     "HANDS": 26,
     "FINGER_1": 9,
     "FINGER_2": 23,
-    "BACK": 20,
+    "BACK": 19,
     "MAIN_HAND": 24,
-    "RANGED": 15
+    "RANGED": 23
    },
    "names": {
     "NECK": "Schlangenaugenkaleidoskop",
+    "SHOULDER": "Talbar-Mantel",
     "SHIRT": "Neophytenhemd",
     "CHEST": "Gewand des Fäulnisheilers",
     "WAIST": "Schärpe des inbrünstigen Novizen",
@@ -197,13 +203,13 @@
     "HANDS": "Handschuhe der Meditation",
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Siegelring des getöteten Barons",
-    "BACK": "Grünzwirnumhang des Schattenschutzes",
+    "BACK": "Starres Cape der Magie",
     "MAIN_HAND": "Knorriger Stab des Totenbeschwörers",
-    "RANGED": "Geringer Magiezauberstab"
+    "RANGED": "Schmorstecken"
    },
    "profs": {
     "Tailoring": 95,
-    "Enchanting": 57,
+    "Enchanting": 60,
     "Cooking": 4,
     "First Aid": 20
    },
@@ -219,55 +225,56 @@
     61998,
     62354,
     62032,
-    62015
+    62015,
+    777
    ],
    "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
-   "level": 22,
-   "lastLogin": 1795093489000,
+   "level": 23,
+   "lastLogin": 1795193160000,
    "items": {
     "CHEST": 6473,
-    "WAIST": 4246,
-    "LEGS": 14565,
+    "WAIST": 14567,
+    "LEGS": 10410,
     "FEET": 273007,
     "WRIST": 279875,
-    "HANDS": 15016,
+    "HANDS": 270008,
     "FINGER_1": 281268,
     "FINGER_2": 279867,
-    "BACK": 5111,
+    "BACK": 15508,
     "MAIN_HAND": 251533,
     "RANGED": 263412
    },
    "ilvls": {
     "CHEST": 23,
-    "WAIST": 16,
-    "LEGS": 21,
+    "WAIST": 23,
+    "LEGS": 22,
     "FEET": 18,
     "WRIST": 24,
-    "HANDS": 16,
+    "HANDS": 20,
     "FINGER_1": 9,
     "FINGER_2": 23,
-    "BACK": 17,
+    "BACK": 19,
     "MAIN_HAND": 24,
     "RANGED": 10
    },
    "names": {
     "CHEST": "Rüstung des Giftzahns",
-    "WAIST": "Feiner Ledergürtel",
-    "LEGS": "Wollwäsche des Ausgrabungsleiters",
+    "WAIST": "Borstenledergürtel",
+    "LEGS": "Gamaschen des Giftzahns",
     "FEET": "Abgrundläufer",
     "WRIST": "Ersatzteilbindungen",
-    "HANDS": "Werwolf-Handlappen des Affen",
+    "HANDS": "Hitzebeständige Fäustlinge",
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Siegelring des getöteten Barons",
-    "BACK": "Rathorians Cape",
+    "BACK": "Grunzercape der Stärke",
     "MAIN_HAND": "Großaxt des Verlassenen",
     "RANGED": "Totem der Geladenen Flammen"
    },
    "profs": {
     "Alchemy": 225,
-    "Herbalism": 129,
+    "Herbalism": 130,
     "Cooking": 21
    },
    "achs": [
@@ -279,7 +286,8 @@
     62015,
     760,
     62012,
-    62013
+    62013,
+    62031
    ],
    "guild": "Geilbleiber"
   },
@@ -2443,6 +2451,24 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
   },
   {
+   "t": 1795168680000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 777,
+   "name": "Erforscht den Gebirgspass der Totenwinde",
+   "desc": "Erforscht den Gebirgspass der Totenwinde und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236741.jpg"
+  },
+  {
+   "t": 1795191240000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62031,
+   "name": "Novize: Dungeonerforscher",
+   "desc": "Schließt die folgenden Dungeons ab.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
+  },
+  {
    "t": 1795192802000,
    "key": "pavel-plattenpapst",
    "type": "level",
@@ -2475,6 +2501,186 @@
    "ilvl": 23,
    "prev": 1,
    "prevName": "Angel"
+  },
+  {
+   "t": 1795193160000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 22,
+   "to": 23,
+   "max": false
+  },
+  {
+   "t": 1795193160000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 14567,
+   "name": "Borstenledergürtel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132492.jpg",
+   "slot": "Taille",
+   "ilvl": 23,
+   "prev": 16,
+   "prevName": "Feiner Ledergürtel"
+  },
+  {
+   "t": 1795193160000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 10410,
+   "name": "Gamaschen des Giftzahns",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134591.jpg",
+   "slot": "Beine",
+   "ilvl": 22,
+   "prev": 21,
+   "prevName": "Wollwäsche des Ausgrabungsleiters"
+  },
+  {
+   "t": 1795193160000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 270008,
+   "name": "Hitzebeständige Fäustlinge",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132949.jpg",
+   "slot": "Hände",
+   "ilvl": 20,
+   "prev": 16,
+   "prevName": "Werwolf-Handlappen des Affen"
+  },
+  {
+   "t": 1795193160000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 15508,
+   "name": "Grunzercape der Stärke",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133766.jpg",
+   "slot": "Rücken",
+   "ilvl": 19,
+   "prev": 17,
+   "prevName": "Rathorians Cape"
+  },
+  {
+   "t": 1795193387000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 21,
+   "to": 23,
+   "max": false
+  },
+  {
+   "t": 1795193387000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 5404,
+   "name": "Schlangen-Schultern",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135039.jpg",
+   "slot": "Schultern",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795193387000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 6473,
+   "name": "Rüstung des Giftzahns",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135020.jpg",
+   "slot": "Brust",
+   "ilvl": 23,
+   "prev": 17,
+   "prevName": "Feine Ledertunika"
+  },
+  {
+   "t": 1795193387000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 10411,
+   "name": "Fußpolster des Giftzahns",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132538.jpg",
+   "slot": "Füße",
+   "ilvl": 22,
+   "prev": 15,
+   "prevName": "Dunkle Lederstiefel"
+  },
+  {
+   "t": 1795193387000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 10413,
+   "name": "Handschuhe des Giftzahns",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132952.jpg",
+   "slot": "Hände",
+   "ilvl": 19,
+   "prev": 13,
+   "prevName": "Geprägte Lederhandschuhe"
+  },
+  {
+   "t": 1795193387000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 2316,
+   "name": "Dunkler Lederumhang",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133762.jpg",
+   "slot": "Rücken",
+   "ilvl": 22,
+   "prev": 20,
+   "prevName": "Grünzwirnumhang der Beweglichkeit"
+  },
+  {
+   "t": 1795193495000,
+   "key": "heili-kabel",
+   "type": "level",
+   "from": 22,
+   "to": 23,
+   "max": false
+  },
+  {
+   "t": 1795193495000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 10657,
+   "name": "Talbar-Mantel",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135040.jpg",
+   "slot": "Schultern",
+   "ilvl": 26,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795193495000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 15114,
+   "name": "Starres Cape der Magie",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133762.jpg",
+   "slot": "Rücken",
+   "ilvl": 19,
+   "prev": 20,
+   "prevName": "Grünzwirnumhang des Schattenschutzes"
+  },
+  {
+   "t": 1795193495000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 8071,
+   "name": "Schmorstecken",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135139.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 23,
+   "prev": 15,
+   "prevName": "Geringer Magiezauberstab"
   }
  ]
 }
