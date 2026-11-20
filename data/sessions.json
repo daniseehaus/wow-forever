@@ -763,6 +763,27 @@
       "135507": 5
      }
     }
+   },
+   {
+    "t": 1795202316000,
+    "level": 23,
+    "base": {
+     "ilvl": 15,
+     "profs": {
+      "Mining": 112,
+      "Blacksmithing": 96,
+      "Cooking": 2,
+      "First Aid": 1
+     },
+     "talents": {
+      "135500": 3,
+      "135501": 1,
+      "135502": 2,
+      "135503": 1,
+      "135505": 2,
+      "135507": 5
+     }
+    }
    }
   ],
   "heili-kabel": [
@@ -1152,23 +1173,6 @@
   ],
   "pavel-plattenpapst": [
    {
-    "t": 1794429675000,
-    "level": 14,
-    "base": {
-     "ilvl": 9,
-     "profs": {
-      "Mining": 76,
-      "Engineering": 80,
-      "Cooking": 36,
-      "Fishing": 1,
-      "First Aid": 34
-     },
-     "talents": {
-      "135237": 5
-     }
-    }
-   },
-   {
     "t": 1794669912000,
     "level": 15,
     "base": {
@@ -1363,6 +1367,28 @@
    },
    {
     "t": 1795192802000,
+    "level": 24,
+    "base": {
+     "ilvl": 15,
+     "profs": {
+      "Mining": 105,
+      "Engineering": 115,
+      "Cooking": 111,
+      "Fishing": 110,
+      "First Aid": 70
+     },
+     "talents": {
+      "135226": 1,
+      "135229": 2,
+      "135231": 2,
+      "135233": 3,
+      "135235": 2,
+      "135237": 5
+     }
+    }
+   },
+   {
+    "t": 1795202303000,
     "level": 24,
     "base": {
      "ilvl": 15,
@@ -1590,6 +1616,29 @@
      "ilvl": 15,
      "profs": {
       "Leatherworking": 102,
+      "Skinning": 167,
+      "Cooking": 121,
+      "Fishing": 1,
+      "First Aid": 15
+     },
+     "talents": {
+      "134422": 5,
+      "134431": 1,
+      "134432": 1,
+      "134434": 2,
+      "134435": 2,
+      "134437": 2,
+      "134438": 1
+     }
+    }
+   },
+   {
+    "t": 1795202393000,
+    "level": 23,
+    "base": {
+     "ilvl": 15,
+     "profs": {
+      "Leatherworking": 109,
       "Skinning": 167,
       "Cooking": 121,
       "Fishing": 1,
