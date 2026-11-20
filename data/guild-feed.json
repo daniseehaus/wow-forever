@@ -752,46 +752,46 @@
    "surname": "Elemental",
    "classId": 7,
    "rank": 1,
-   "level": 10,
-   "lastLogin": 1795126528000,
+   "level": 12,
+   "lastLogin": 1795166415000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
-    "WAIST": 4919,
+    "WAIST": 3370,
     "LEGS": 4343,
-    "FEET": 1419,
+    "FEET": 4942,
     "WRIST": 4928,
     "HANDS": 4940,
     "FINGER_1": 281268,
     "BACK": 2580,
     "MAIN_HAND": 286728,
-    "OFF_HAND": 2211
+    "OFF_HAND": 15478
    },
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 12,
-    "WAIST": 5,
+    "WAIST": 8,
     "LEGS": 10,
-    "FEET": 8,
+    "FEET": 12,
     "WRIST": 8,
     "HANDS": 10,
     "FINGER_1": 9,
     "BACK": 12,
     "MAIN_HAND": 8,
-    "OFF_HAND": 4
+    "OFF_HAND": 8
    },
    "names": {
     "SHIRT": "Primitiver Mantel",
     "CHEST": "Blaue Leinenweste",
-    "WAIST": "Weicher Wollgürtel",
+    "WAIST": "Flickwerkgürtel",
     "LEGS": "Braune Leinenhose",
-    "FEET": "Abgenutzte Lederstiefel",
+    "FEET": "Tigerbalg-Stiefel",
     "WRIST": "Sandläuferhandgelenksschützer",
     "HANDS": "Verhüllter Handschutz",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Verstärktes Leinencape",
     "MAIN_HAND": "Hammer der Kolkar",
-    "OFF_HAND": "Gebogener großer Schild"
+    "OFF_HAND": "Stürmerschild"
    },
    "profs": {
     "Enchanting": 55,
@@ -3080,6 +3080,14 @@
    "type": "prof",
    "name": "Blacksmithing",
    "skill": 150
+  },
+  {
+   "t": 1795166415000,
+   "key": "erwin-elemental",
+   "type": "level",
+   "from": 10,
+   "to": 12,
+   "max": false
   }
  ]
 }
