@@ -292,7 +292,7 @@
    "classId": 2,
    "rank": 1,
    "level": 53,
-   "lastLogin": 1795165987000,
+   "lastLogin": 1795172040000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -330,7 +330,7 @@
     "MAIN_HAND": 49
    },
    "profs": {
-    "Mining": 221,
+    "Mining": 222,
     "Blacksmithing": 150,
     "Cooking": 172,
     "Fishing": 1,
@@ -348,7 +348,8 @@
     61998,
     62354,
     62032,
-    62015
+    62015,
+    777
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
@@ -3088,6 +3089,15 @@
    "from": 10,
    "to": 12,
    "max": false
+  },
+  {
+   "t": 1795168737000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 777,
+   "name": "Erforscht den Gebirgspass der Totenwinde",
+   "desc": "Erforscht den Gebirgspass der Totenwinde und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236741.jpg"
   }
  ]
 }
