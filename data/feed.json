@@ -101,12 +101,12 @@
    "guild": "Geilbleiber"
   },
   "wladimir-klatschko": {
-   "level": 22,
-   "lastLogin": 1795121629000,
+   "level": 23,
+   "lastLogin": 1795193708000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
-    "CHEST": 2866,
+    "CHEST": 6627,
     "WAIST": 6460,
     "LEGS": 2865,
     "FEET": 14742,
@@ -134,7 +134,7 @@
    "names": {
     "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Rauer bronzener Kürass",
+    "CHEST": "Mutantenschuppenbrustplatte",
     "WAIST": "Kobrahns Griff",
     "LEGS": "Raue bronzene Gamaschen",
     "FEET": "Titanische Stiefel",
@@ -146,8 +146,8 @@
     "MAIN_HAND": "Großaxt des Verlassenen"
    },
    "profs": {
-    "Mining": 110,
-    "Blacksmithing": 90,
+    "Mining": 112,
+    "Blacksmithing": 96,
     "Cooking": 2,
     "First Aid": 1
    },
@@ -2681,6 +2681,27 @@
    "ilvl": 23,
    "prev": 15,
    "prevName": "Geringer Magiezauberstab"
+  },
+  {
+   "t": 1795193708000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 22,
+   "to": 23,
+   "max": false
+  },
+  {
+   "t": 1795193708000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 6627,
+   "name": "Mutantenschuppenbrustplatte",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132743.jpg",
+   "slot": "Brust",
+   "ilvl": 23,
+   "prev": 23,
+   "prevName": "Rauer bronzener Kürass"
   }
  ]
 }
