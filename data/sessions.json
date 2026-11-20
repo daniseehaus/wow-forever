@@ -1514,25 +1514,6 @@
   ],
   "orkward-orkbert": [
    {
-    "t": 1794612663000,
-    "level": 18,
-    "base": {
-     "ilvl": 10,
-     "profs": {
-      "Leatherworking": 96,
-      "Skinning": 149,
-      "Cooking": 115,
-      "Fishing": 1,
-      "First Aid": 12
-     },
-     "talents": {
-      "134422": 5,
-      "134434": 1,
-      "134437": 2
-     }
-    }
-   },
-   {
     "t": 1794643806000,
     "level": 18,
     "base": {
@@ -1741,6 +1722,29 @@
      "ilvl": 15,
      "profs": {
       "Leatherworking": 109,
+      "Skinning": 167,
+      "Cooking": 121,
+      "Fishing": 1,
+      "First Aid": 15
+     },
+     "talents": {
+      "134422": 5,
+      "134431": 1,
+      "134432": 1,
+      "134434": 2,
+      "134435": 2,
+      "134437": 2,
+      "134438": 1
+     }
+    }
+   },
+   {
+    "t": 1795208006000,
+    "level": 23,
+    "base": {
+     "ilvl": 15,
+     "profs": {
+      "Leatherworking": 113,
       "Skinning": 167,
       "Cooking": 121,
       "Fishing": 1,
