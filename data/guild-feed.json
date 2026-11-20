@@ -292,7 +292,7 @@
    "classId": 2,
    "rank": 1,
    "level": 53,
-   "lastLogin": 1795185167000,
+   "lastLogin": 1795186860000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -377,7 +377,7 @@
    "classId": 2,
    "rank": 1,
    "level": 36,
-   "lastLogin": 1795184653000,
+   "lastLogin": 1795186836000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -415,7 +415,7 @@
     "MAIN_HAND": 33
    },
    "profs": {
-    "Mining": 168,
+    "Mining": 169,
     "Blacksmithing": 176,
     "Cooking": 1,
     "First Aid": 40
