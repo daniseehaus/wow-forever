@@ -2702,6 +2702,19 @@
    "ilvl": 23,
    "prev": 23,
    "prevName": "Rauer bronzener Kürass"
+  },
+  {
+   "t": 1795193708000,
+   "type": "session",
+   "start": 1795192802000,
+   "gain": 1.2,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ]
   }
  ]
 }
