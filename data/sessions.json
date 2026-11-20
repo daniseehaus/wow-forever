@@ -1,6 +1,6 @@
 {
  "era": "classic",
- "lastEnd": 1795193708000,
+ "lastEnd": 1795202393000,
  "levels": {
   "wladimir-klatschko": 23,
   "heili-kabel": 23,
@@ -30,7 +30,7 @@
    "ilvl": 17,
    "profs": {
     "Tailoring": 95,
-    "Enchanting": 60,
+    "Enchanting": 61,
     "Cooking": 4,
     "First Aid": 20
    },
@@ -77,7 +77,7 @@
   "orkward-orkbert": {
    "ilvl": 15,
    "profs": {
-    "Leatherworking": 102,
+    "Leatherworking": 109,
     "Skinning": 167,
     "Cooking": 121,
     "Fishing": 1,
@@ -583,6 +583,108 @@
       "Skinning": 12
      },
      "logout": 1795193387000,
+     "respec": false,
+     "since": 1795040296000
+    }
+   }
+  },
+  {
+   "start": 1795202047000,
+   "end": 1795202393000,
+   "gain": 1.2,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ],
+   "stats": {
+    "wladimir-klatschko": {
+     "level": [
+      22,
+      23
+     ],
+     "ilvl": [
+      15,
+      15
+     ],
+     "prof": 8,
+     "profs": {
+      "Mining": 2,
+      "Blacksmithing": 6
+     },
+     "logout": 1795202316000,
+     "respec": false,
+     "since": 1795121629000
+    },
+    "heili-kabel": {
+     "level": [
+      22,
+      23
+     ],
+     "ilvl": [
+      15,
+      17
+     ],
+     "prof": 4,
+     "profs": {
+      "Enchanting": 4
+     },
+     "logout": 1795202047000,
+     "respec": false,
+     "since": 1795166020000
+    },
+    "zukk-sturmzüngler": {
+     "level": [
+      22,
+      23
+     ],
+     "ilvl": [
+      13,
+      14
+     ],
+     "prof": 1,
+     "profs": {
+      "Herbalism": 1
+     },
+     "logout": 1795202069000,
+     "respec": false,
+     "since": 1795093489000
+    },
+    "pavel-plattenpapst": {
+     "level": [
+      23,
+      24
+     ],
+     "ilvl": [
+      12,
+      15
+     ],
+     "prof": 2,
+     "profs": {
+      "Mining": 1,
+      "Fishing": 1
+     },
+     "logout": 1795202303000,
+     "respec": false,
+     "since": 1795093573000
+    },
+    "orkward-orkbert": {
+     "level": [
+      21,
+      23
+     ],
+     "ilvl": [
+      12,
+      15
+     ],
+     "prof": 19,
+     "profs": {
+      "Leatherworking": 7,
+      "Skinning": 12
+     },
+     "logout": 1795202393000,
      "respec": false,
      "since": 1795040296000
     }
