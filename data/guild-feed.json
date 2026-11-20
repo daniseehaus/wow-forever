@@ -159,8 +159,8 @@
    "surname": "Plattenpapst",
    "classId": 2,
    "rank": 1,
-   "level": 23,
-   "lastLogin": 1795093573000,
+   "level": 24,
+   "lastLogin": 1795192802000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -172,8 +172,8 @@
     "WRIST": 2854,
     "HANDS": 12994,
     "FINGER_1": 279867,
-    "BACK": 5343,
-    "MAIN_HAND": 6256
+    "BACK": 14745,
+    "MAIN_HAND": 286977
    },
    "ilvls": {
     "HEAD": 20,
@@ -186,14 +186,14 @@
     "WRIST": 19,
     "HANDS": 23,
     "FINGER_1": 23,
-    "BACK": 18,
-    "MAIN_HAND": 1
+    "BACK": 20,
+    "MAIN_HAND": 23
    },
    "profs": {
-    "Mining": 104,
+    "Mining": 105,
     "Engineering": 115,
     "Cooking": 111,
-    "Fishing": 109,
+    "Fishing": 110,
     "First Aid": 70
    },
    "achs": [],
@@ -208,8 +208,8 @@
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
-    "BACK": "Barkeeper-Umhang",
-    "MAIN_HAND": "Angel"
+    "BACK": "Titanischer Umhang",
+    "MAIN_HAND": "Schwert der Gefallenen"
    }
   },
   "bernhard-backstab": {
@@ -3098,6 +3098,27 @@
    "name": "Erforscht den Gebirgspass der Totenwinde",
    "desc": "Erforscht den Gebirgspass der Totenwinde und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236741.jpg"
+  },
+  {
+   "t": 1795192802000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 23,
+   "to": 24,
+   "max": false
+  },
+  {
+   "t": 1795192802000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286977,
+   "name": "Schwert der Gefallenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 23,
+   "prev": 1,
+   "prevName": "Angel"
   }
  ]
 }
