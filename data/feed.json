@@ -3216,6 +3216,19 @@
    "ilvl": 31,
    "prev": 23,
    "prevName": "Schwert der Gefallenen"
+  },
+  {
+   "t": 1795279468000,
+   "type": "session",
+   "start": 1795274116000,
+   "gain": 1,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ]
   }
  ]
 }
