@@ -464,7 +464,7 @@
    "classId": 1,
    "rank": 1,
    "level": 23,
-   "lastLogin": 1795202316000,
+   "lastLogin": 1795257516000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -717,8 +717,8 @@
    "surname": "Muhrcury",
    "classId": 11,
    "rank": 1,
-   "level": 14,
-   "lastLogin": 1795227764000,
+   "level": 15,
+   "lastLogin": 1795257673000,
    "items": {
     "CHEST": 2300,
     "WAIST": 15302,
@@ -751,7 +751,7 @@
    },
    "profs": {
     "Alchemy": 63,
-    "Herbalism": 64,
+    "Herbalism": 71,
     "Cooking": 31,
     "Fishing": 23,
     "First Aid": 48
@@ -3401,6 +3401,14 @@
    "type": "level",
    "from": 36,
    "to": 37,
+   "max": false
+  },
+  {
+   "t": 1795257673000,
+   "key": "freddie-muhrcury",
+   "type": "level",
+   "from": 14,
+   "to": 15,
    "max": false
   }
  ]
