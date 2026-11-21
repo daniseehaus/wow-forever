@@ -223,8 +223,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 32,
-   "lastLogin": 1795224125000,
+   "level": 33,
+   "lastLogin": 1795256068000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -263,9 +263,9 @@
    },
    "profs": {
     "Leatherworking": 139,
-    "Skinning": 213,
+    "Skinning": 221,
     "Cooking": 60,
-    "First Aid": 146
+    "First Aid": 149
    },
    "achs": [
     728,
@@ -3386,6 +3386,14 @@
    "type": "prof",
    "name": "Mining",
    "skill": 225
+  },
+  {
+   "t": 1795256068000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 32,
+   "to": 33,
+   "max": false
   }
  ]
 }
