@@ -535,7 +535,7 @@
    "classId": 9,
    "rank": 1,
    "level": 34,
-   "lastLogin": 1795250158000,
+   "lastLogin": 1795275258000,
    "items": {
     "HEAD": 253955,
     "NECK": 273049,
@@ -582,7 +582,8 @@
    "achs": [
     62009,
     769,
-    846
+    846,
+    728
    ],
    "names": {
     "HEAD": "Schattenreif",
@@ -779,12 +780,12 @@
    "classId": 7,
    "rank": 1,
    "level": 15,
-   "lastLogin": 1795273917000,
+   "lastLogin": 1795275388000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
     "WAIST": 3370,
-    "LEGS": 4343,
+    "LEGS": 4309,
     "FEET": 15012,
     "WRIST": 15452,
     "HANDS": 15016,
@@ -798,7 +799,7 @@
     "SHIRT": 1,
     "CHEST": 12,
     "WAIST": 8,
-    "LEGS": 10,
+    "LEGS": 14,
     "FEET": 16,
     "WRIST": 18,
     "HANDS": 16,
@@ -812,7 +813,7 @@
     "SHIRT": "Primitiver Mantel",
     "CHEST": "Blaue Leinenweste",
     "WAIST": "Flickwerkgürtel",
-    "LEGS": "Braune Leinenhose",
+    "LEGS": "Handgenähte Leinenkniehosen",
     "FEET": "Werwolf-Schuhe der Stärke",
     "WRIST": "Federleichte Armschienen",
     "HANDS": "Werwolf-Handlappen der Heilung",
@@ -3420,6 +3421,15 @@
    "type": "prof",
    "name": "Mining",
    "skill": 225
+  },
+  {
+   "t": 1795253940000,
+   "key": "dennis-dotalot",
+   "type": "achievement",
+   "id": 728,
+   "name": "Erforscht Durotar",
+   "desc": "Erforscht Durotar und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
   },
   {
    "t": 1795253962000,
