@@ -715,8 +715,8 @@
    "surname": "Muhrcury",
    "classId": 11,
    "rank": 1,
-   "level": 13,
-   "lastLogin": 1795201425000,
+   "level": 14,
+   "lastLogin": 1795220876000,
    "items": {
     "CHEST": 2300,
     "WAIST": 15302,
@@ -3330,6 +3330,14 @@
    "ilvl": 25,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795220876000,
+   "key": "freddie-muhrcury",
+   "type": "level",
+   "from": 13,
+   "to": 14,
+   "max": false
   }
  ]
 }
