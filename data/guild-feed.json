@@ -522,8 +522,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 33,
-   "lastLogin": 1795207398000,
+   "level": 34,
+   "lastLogin": 1795221282000,
    "items": {
     "HEAD": 253955,
     "NECK": 273049,
@@ -532,7 +532,7 @@
     "CHEST": 9791,
     "WAIST": 273039,
     "LEGS": 6910,
-    "FEET": 4320,
+    "FEET": 279843,
     "WRIST": 4036,
     "HANDS": 9795,
     "FINGER_1": 3760,
@@ -550,7 +550,7 @@
     "CHEST": 29,
     "WAIST": 34,
     "LEGS": 29,
-    "FEET": 25,
+    "FEET": 36,
     "WRIST": 27,
     "HANDS": 26,
     "FINGER_1": 32,
@@ -562,14 +562,15 @@
    },
    "profs": {
     "Tailoring": 146,
-    "Herbalism": 150,
+    "Herbalism": 154,
     "Cooking": 192,
     "Fishing": 161,
     "First Aid": 136
    },
    "achs": [
     62009,
-    769
+    769,
+    846
    ],
    "names": {
     "HEAD": "Schattenreif",
@@ -579,7 +580,7 @@
     "CHEST": "Efeustofftunika des Ältesten",
     "WAIST": "Seuchenblattseil",
     "LEGS": "Egel-Hose",
-    "FEET": "Spinnenseidenstiefel",
+    "FEET": "Verzauberte Sandalen",
     "WRIST": "Silberfadenmanschetten",
     "HANDS": "Efeustoffhandschuhe des Schattenzorns",
     "FINGER_1": "Band von Undercity",
@@ -3310,6 +3311,15 @@
    "skill": 150
   },
   {
+   "t": 1795212077000,
+   "key": "dennis-dotalot",
+   "type": "achievement",
+   "id": 846,
+   "name": "Erforscht Tausend Nadeln",
+   "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
+  },
+  {
    "t": 1795220092000,
    "key": "hammer-hanno",
    "type": "achievement",
@@ -3338,6 +3348,27 @@
    "from": 13,
    "to": 14,
    "max": false
+  },
+  {
+   "t": 1795221282000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 33,
+   "to": 34,
+   "max": false
+  },
+  {
+   "t": 1795221282000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 279843,
+   "name": "Verzauberte Sandalen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132539.jpg",
+   "slot": "Füße",
+   "ilvl": 36,
+   "prev": 25,
+   "prevName": "Spinnenseidenstiefel"
   }
  ]
 }
