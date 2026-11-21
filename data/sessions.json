@@ -907,6 +907,27 @@
       "135507": 5
      }
     }
+   },
+   {
+    "t": 1795262003000,
+    "level": 23,
+    "base": {
+     "ilvl": 15,
+     "profs": {
+      "Mining": 114,
+      "Blacksmithing": 96,
+      "Cooking": 2,
+      "First Aid": 1
+     },
+     "talents": {
+      "135500": 3,
+      "135501": 1,
+      "135502": 2,
+      "135503": 1,
+      "135505": 2,
+      "135507": 5
+     }
+    }
    }
   ],
   "heili-kabel": [
@@ -1059,6 +1080,25 @@
     "level": 23,
     "base": {
      "ilvl": 17,
+     "profs": {
+      "Tailoring": 95,
+      "Enchanting": 61,
+      "Cooking": 4,
+      "First Aid": 20
+     },
+     "talents": {
+      "135379": 5,
+      "135393": 1,
+      "135396": 3,
+      "142601": 5
+     }
+    }
+   },
+   {
+    "t": 1795261907000,
+    "level": 23,
+    "base": {
+     "ilvl": 18,
      "profs": {
       "Tailoring": 95,
       "Enchanting": 61,
@@ -1298,23 +1338,6 @@
   ],
   "pavel-plattenpapst": [
    {
-    "t": 1794702008000,
-    "level": 18,
-    "base": {
-     "ilvl": 13,
-     "profs": {
-      "Mining": 93,
-      "Engineering": 112,
-      "Cooking": 36,
-      "Fishing": 1,
-      "First Aid": 69
-     },
-     "talents": {
-      "135237": 5
-     }
-    }
-   },
-   {
     "t": 1794752087000,
     "level": 18,
     "base": {
@@ -1538,30 +1561,31 @@
       "135237": 5
      }
     }
+   },
+   {
+    "t": 1795261933000,
+    "level": 24,
+    "base": {
+     "ilvl": 16,
+     "profs": {
+      "Mining": 107,
+      "Engineering": 115,
+      "Cooking": 140,
+      "Fishing": 125,
+      "First Aid": 95
+     },
+     "talents": {
+      "135226": 1,
+      "135229": 2,
+      "135231": 2,
+      "135233": 3,
+      "135235": 2,
+      "135237": 5
+     }
+    }
    }
   ],
   "orkward-orkbert": [
-   {
-    "t": 1795040296000,
-    "level": 21,
-    "base": {
-     "ilvl": 12,
-     "profs": {
-      "Leatherworking": 102,
-      "Skinning": 155,
-      "Cooking": 121,
-      "Fishing": 1,
-      "First Aid": 15
-     },
-     "talents": {
-      "134422": 5,
-      "134434": 2,
-      "134435": 2,
-      "134437": 2,
-      "134438": 1
-     }
-    }
-   },
    {
     "t": 1795193387000,
     "level": 23,
@@ -1794,6 +1818,29 @@
    },
    {
     "t": 1795251398000,
+    "level": 23,
+    "base": {
+     "ilvl": 17,
+     "profs": {
+      "Leatherworking": 115,
+      "Skinning": 167,
+      "Cooking": 121,
+      "Fishing": 1,
+      "First Aid": 15
+     },
+     "talents": {
+      "134422": 5,
+      "134431": 1,
+      "134432": 1,
+      "134434": 2,
+      "134435": 2,
+      "134437": 2,
+      "134438": 1
+     }
+    }
+   },
+   {
+    "t": 1795262096000,
     "level": 23,
     "base": {
      "ilvl": 17,

@@ -38,7 +38,7 @@
   },
   "orkward-orkbert": {
    "level": 23,
-   "lastLogin": 1795251398000,
+   "lastLogin": 1795262096000,
    "items": {
     "HEAD": 252504,
     "SHOULDER": 5404,
@@ -52,7 +52,7 @@
     "FINGER_1": 281268,
     "FINGER_2": 279867,
     "BACK": 2316,
-    "MAIN_HAND": 6448,
+    "MAIN_HAND": 872,
     "RANGED": 4576,
     "AMMO": 2515
    },
@@ -69,7 +69,7 @@
     "FINGER_1": 9,
     "FINGER_2": 23,
     "BACK": 22,
-    "MAIN_HAND": 21,
+    "MAIN_HAND": 23,
     "RANGED": 21,
     "AMMO": 15
    },
@@ -86,7 +86,7 @@
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Siegelring des getöteten Barons",
     "BACK": "Dunkler Lederumhang",
-    "MAIN_HAND": "Schwanzstachel",
+    "MAIN_HAND": "Steinschneider",
     "RANGED": "Leichter Bogen",
     "AMMO": "Scharfer Pfeil"
    },
@@ -105,7 +105,7 @@
   },
   "wladimir-klatschko": {
    "level": 23,
-   "lastLogin": 1795257516000,
+   "lastLogin": 1795262003000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -118,7 +118,8 @@
     "FINGER_1": 281268,
     "FINGER_2": 279867,
     "BACK": 3582,
-    "MAIN_HAND": 251533
+    "MAIN_HAND": 251533,
+    "RANGED": 2781
    },
    "ilvls": {
     "SHOULDER": 22,
@@ -132,7 +133,8 @@
     "FINGER_1": 9,
     "FINGER_2": 23,
     "BACK": 18,
-    "MAIN_HAND": 24
+    "MAIN_HAND": 24,
+    "RANGED": 18
    },
    "names": {
     "SHOULDER": "Raue bronzene Schultern",
@@ -146,10 +148,11 @@
     "FINGER_1": "Ausgelaugter Ritualring",
     "FINGER_2": "Siegelring des getöteten Barons",
     "BACK": "Säurefester Umhang",
-    "MAIN_HAND": "Großaxt des Verlassenen"
+    "MAIN_HAND": "Großaxt des Verlassenen",
+    "RANGED": "Schmutzige Donnerbüchse"
    },
    "profs": {
-    "Mining": 112,
+    "Mining": 114,
     "Blacksmithing": 96,
     "Cooking": 2,
     "First Aid": 1
@@ -161,7 +164,7 @@
   },
   "heili-kabel": {
    "level": 23,
-   "lastLogin": 1795202047000,
+   "lastLogin": 1795261907000,
    "items": {
     "NECK": 273088,
     "SHOULDER": 10657,
@@ -172,11 +175,11 @@
     "FEET": 271214,
     "WRIST": 251486,
     "HANDS": 4318,
-    "FINGER_1": 281268,
+    "FINGER_1": 1156,
     "FINGER_2": 279867,
     "BACK": 15114,
-    "MAIN_HAND": 251534,
-    "RANGED": 8071
+    "MAIN_HAND": 6505,
+    "RANGED": 5198
    },
    "ilvls": {
     "NECK": 22,
@@ -188,11 +191,11 @@
     "FEET": 24,
     "WRIST": 24,
     "HANDS": 26,
-    "FINGER_1": 9,
+    "FINGER_1": 22,
     "FINGER_2": 23,
     "BACK": 19,
     "MAIN_HAND": 24,
-    "RANGED": 23
+    "RANGED": 22
    },
    "names": {
     "NECK": "Schlangenaugenkaleidoskop",
@@ -204,11 +207,11 @@
     "FEET": "Treter des Fäulnisheilers",
     "WRIST": "Tabithas Manschetten",
     "HANDS": "Handschuhe der Meditation",
-    "FINGER_1": "Ausgelaugter Ritualring",
+    "FINGER_1": "Reich mit Juwelen besetzter Ring",
     "FINGER_2": "Siegelring des getöteten Barons",
     "BACK": "Starres Cape der Magie",
-    "MAIN_HAND": "Knorriger Stab des Totenbeschwörers",
-    "RANGED": "Schmorstecken"
+    "MAIN_HAND": "Mondsichelstab",
+    "RANGED": "Cookies Rührerrute"
    },
    "profs": {
     "Tailoring": 95,
@@ -229,7 +232,8 @@
     62354,
     62032,
     62015,
-    777
+    777,
+    854
    ],
    "guild": "Geilbleiber"
   },
@@ -296,55 +300,55 @@
   },
   "pavel-plattenpapst": {
    "level": 24,
-   "lastLogin": 1795253266000,
+   "lastLogin": 1795261933000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
     "SHIRT": 6125,
     "CHEST": 2866,
-    "WAIST": 2857,
+    "WAIST": 4697,
     "LEGS": 9789,
     "FEET": 10658,
     "WRIST": 2854,
     "HANDS": 12994,
     "FINGER_1": 279867,
-    "BACK": 14745,
-    "MAIN_HAND": 6256
+    "BACK": 4710,
+    "MAIN_HAND": 286977
    },
    "ilvls": {
     "HEAD": 20,
     "SHOULDER": 22,
     "SHIRT": 1,
     "CHEST": 23,
-    "WAIST": 18,
+    "WAIST": 20,
     "LEGS": 19,
     "FEET": 25,
     "WRIST": 19,
     "HANDS": 23,
     "FINGER_1": 23,
-    "BACK": 20,
-    "MAIN_HAND": 1
+    "BACK": 22,
+    "MAIN_HAND": 23
    },
    "names": {
     "HEAD": "Fliegerbrille",
     "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Rauer bronzener Kürass",
-    "WAIST": "Runenverzierter Kupfergürtel",
+    "WAIST": "Brünierter Gurt",
     "LEGS": "Räuber-Beinschützer der Macht",
     "FEET": "Morastgaloschen",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
-    "BACK": "Titanischer Umhang",
-    "MAIN_HAND": "Angel"
+    "BACK": "Waldumhang",
+    "MAIN_HAND": "Schwert der Gefallenen"
    },
    "profs": {
-    "Mining": 105,
+    "Mining": 107,
     "Engineering": 115,
-    "Cooking": 111,
+    "Cooking": 140,
     "Fishing": 125,
-    "First Aid": 70
+    "First Aid": 95
    },
    "achs": [],
    "guild": "Geilbleiber"
@@ -2733,6 +2737,15 @@
    ]
   },
   {
+   "t": 1795220040000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 854,
+   "name": "Erforscht den Krater von Un'Goro",
+   "desc": "Erforscht den Krater von Un'Goro und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236850.jpg"
+  },
+  {
    "t": 1795220325000,
    "key": "orkward-orkbert",
    "type": "item",
@@ -2778,6 +2791,104 @@
    "ilvl": 22,
    "prev": 23,
    "prevName": "Borstenledergürtel"
+  },
+  {
+   "t": 1795261907000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 1156,
+   "name": "Reich mit Juwelen besetzter Ring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133351.jpg",
+   "slot": "Ring 1",
+   "ilvl": 22,
+   "prev": 9,
+   "prevName": "Ausgelaugter Ritualring"
+  },
+  {
+   "t": 1795261907000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 6505,
+   "name": "Mondsichelstab",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135141.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 24,
+   "prev": 24,
+   "prevName": "Knorriger Stab des Totenbeschwörers"
+  },
+  {
+   "t": 1795261907000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 5198,
+   "name": "Cookies Rührerrute",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135139.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 22,
+   "prev": 23,
+   "prevName": "Schmorstecken"
+  },
+  {
+   "t": 1795261933000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 4697,
+   "name": "Brünierter Gurt",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132523.jpg",
+   "slot": "Taille",
+   "ilvl": 20,
+   "prev": 18,
+   "prevName": "Runenverzierter Kupfergürtel"
+  },
+  {
+   "t": 1795261933000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 4710,
+   "name": "Waldumhang",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133761.jpg",
+   "slot": "Rücken",
+   "ilvl": 22,
+   "prev": 20,
+   "prevName": "Titanischer Umhang"
+  },
+  {
+   "t": 1795261933000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 286977,
+   "name": "Schwert der Gefallenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 23,
+   "prev": 1,
+   "prevName": "Angel"
+  },
+  {
+   "t": 1795261933000,
+   "key": "pavel-plattenpapst",
+   "type": "prof",
+   "name": "First Aid",
+   "skill": 95
+  },
+  {
+   "t": 1795262096000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 872,
+   "name": "Steinschneider",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135419.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 23,
+   "prev": 21,
+   "prevName": "Schwanzstachel"
   }
  ]
 }
