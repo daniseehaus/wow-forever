@@ -723,7 +723,7 @@
    "classId": 11,
    "rank": 1,
    "level": 15,
-   "lastLogin": 1795257673000,
+   "lastLogin": 1795269653000,
    "items": {
     "CHEST": 2300,
     "WAIST": 15302,
@@ -755,7 +755,7 @@
     "MAIN_HAND": "Stabiler Bauernstecken der Bestie"
    },
    "profs": {
-    "Alchemy": 63,
+    "Alchemy": 73,
     "Herbalism": 71,
     "Cooking": 31,
     "Fishing": 23,
