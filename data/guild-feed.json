@@ -298,7 +298,7 @@
    "classId": 2,
    "rank": 1,
    "level": 54,
-   "lastLogin": 1795265494000,
+   "lastLogin": 1795270774000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -385,7 +385,7 @@
    "classId": 2,
    "rank": 1,
    "level": 37,
-   "lastLogin": 1795269013000,
+   "lastLogin": 1795270779000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -466,7 +466,7 @@
    "classId": 1,
    "rank": 1,
    "level": 23,
-   "lastLogin": 1795265795000,
+   "lastLogin": 1795270723000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -723,10 +723,10 @@
    "classId": 11,
    "rank": 1,
    "level": 15,
-   "lastLogin": 1795269653000,
+   "lastLogin": 1795270619000,
    "items": {
     "CHEST": 2300,
-    "WAIST": 15302,
+    "WAIST": 5275,
     "LEGS": 4909,
     "FEET": 4906,
     "WRIST": 7281,
@@ -736,7 +736,7 @@
    },
    "ilvls": {
     "CHEST": 12,
-    "WAIST": 11,
+    "WAIST": 15,
     "LEGS": 15,
     "FEET": 7,
     "WRIST": 14,
@@ -746,7 +746,7 @@
    },
    "names": {
     "CHEST": "Geprägte Lederweste",
-    "WAIST": "Grizzly-Gürtel",
+    "WAIST": "Bindegurt",
     "LEGS": "Kodojäger-Gamaschen",
     "FEET": "Regenwandler-Stiefel",
     "WRIST": "Leichte Lederarmschienen",
@@ -756,7 +756,7 @@
    },
    "profs": {
     "Alchemy": 73,
-    "Herbalism": 71,
+    "Herbalism": 73,
     "Cooking": 31,
     "Fishing": 23,
     "First Aid": 48
