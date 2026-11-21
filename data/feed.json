@@ -296,7 +296,7 @@
   },
   "pavel-plattenpapst": {
    "level": 24,
-   "lastLogin": 1795202303000,
+   "lastLogin": 1795253266000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -304,12 +304,12 @@
     "CHEST": 2866,
     "WAIST": 2857,
     "LEGS": 9789,
-    "FEET": 6350,
+    "FEET": 10658,
     "WRIST": 2854,
     "HANDS": 12994,
     "FINGER_1": 279867,
     "BACK": 14745,
-    "MAIN_HAND": 286977
+    "MAIN_HAND": 6256
    },
    "ilvls": {
     "HEAD": 20,
@@ -318,12 +318,12 @@
     "CHEST": 23,
     "WAIST": 18,
     "LEGS": 19,
-    "FEET": 18,
+    "FEET": 25,
     "WRIST": 19,
     "HANDS": 23,
     "FINGER_1": 23,
     "BACK": 20,
-    "MAIN_HAND": 23
+    "MAIN_HAND": 1
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -332,18 +332,18 @@
     "CHEST": "Rauer bronzener Kürass",
     "WAIST": "Runenverzierter Kupfergürtel",
     "LEGS": "Räuber-Beinschützer der Macht",
-    "FEET": "Raue bronzene Stiefel",
+    "FEET": "Morastgaloschen",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
     "BACK": "Titanischer Umhang",
-    "MAIN_HAND": "Schwert der Gefallenen"
+    "MAIN_HAND": "Angel"
    },
    "profs": {
     "Mining": 105,
     "Engineering": 115,
     "Cooking": 111,
-    "Fishing": 110,
+    "Fishing": 125,
     "First Aid": 70
    },
    "achs": [],
@@ -2744,6 +2744,19 @@
    "ilvl": 25,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795253266000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 10658,
+   "name": "Morastgaloschen",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132541.jpg",
+   "slot": "Füße",
+   "ilvl": 25,
+   "prev": 18,
+   "prevName": "Raue bronzene Stiefel"
   }
  ]
 }
