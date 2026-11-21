@@ -308,7 +308,7 @@
    "classId": 2,
    "rank": 1,
    "level": 54,
-   "lastLogin": 1795295386000,
+   "lastLogin": 1795297935000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -395,7 +395,7 @@
    "classId": 2,
    "rank": 1,
    "level": 37,
-   "lastLogin": 1795286558000,
+   "lastLogin": 1795298078000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -735,11 +735,11 @@
    "classId": 11,
    "rank": 1,
    "level": 16,
-   "lastLogin": 1795295332000,
+   "lastLogin": 1795298019000,
    "items": {
     "CHEST": 5341,
     "WAIST": 5275,
-    "LEGS": 4909,
+    "LEGS": 5327,
     "FEET": 4906,
     "WRIST": 7281,
     "HANDS": 4239,
@@ -749,7 +749,7 @@
    "ilvls": {
     "CHEST": 15,
     "WAIST": 15,
-    "LEGS": 15,
+    "LEGS": 18,
     "FEET": 7,
     "WRIST": 14,
     "HANDS": 13,
@@ -759,7 +759,7 @@
    "names": {
     "CHEST": "Sporenbedeckte Tunika",
     "WAIST": "Bindegurt",
-    "LEGS": "Kodojäger-Gamaschen",
+    "LEGS": "Schmierige Tüftlerhose",
     "FEET": "Regenwandler-Stiefel",
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
