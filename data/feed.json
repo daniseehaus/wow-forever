@@ -104,21 +104,22 @@
    "guild": "Geilbleiber"
   },
   "wladimir-klatschko": {
-   "level": 23,
-   "lastLogin": 1795270723000,
+   "level": 24,
+   "lastLogin": 1795276259000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
     "CHEST": 6627,
     "WAIST": 6460,
-    "LEGS": 2865,
+    "LEGS": 250494,
     "FEET": 14742,
     "WRIST": 2854,
     "HANDS": 271208,
-    "FINGER_1": 281268,
+    "FINGER_1": 6414,
     "FINGER_2": 279867,
     "BACK": 3582,
-    "MAIN_HAND": 251533,
+    "MAIN_HAND": 6323,
+    "OFF_HAND": 13245,
     "RANGED": 2781
    },
    "ilvls": {
@@ -126,14 +127,15 @@
     "SHIRT": 1,
     "CHEST": 23,
     "WAIST": 22,
-    "LEGS": 21,
+    "LEGS": 25,
     "FEET": 24,
     "WRIST": 19,
     "HANDS": 22,
-    "FINGER_1": 9,
+    "FINGER_1": 29,
     "FINGER_2": 23,
     "BACK": 18,
-    "MAIN_HAND": 24,
+    "MAIN_HAND": 26,
+    "OFF_HAND": 23,
     "RANGED": 18
    },
    "names": {
@@ -141,19 +143,20 @@
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Mutantenschuppenbrustplatte",
     "WAIST": "Kobrahns Griff",
-    "LEGS": "Raue bronzene Gamaschen",
+    "LEGS": "Kettengamaschen des Gardisten",
     "FEET": "Titanische Stiefel",
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Griff der Angst",
-    "FINGER_1": "Ausgelaugter Ritualring",
+    "FINGER_1": "Siegel von Sylvanas",
     "FINGER_2": "Siegelring des getöteten Barons",
     "BACK": "Säurefester Umhang",
-    "MAIN_HAND": "Großaxt des Verlassenen",
+    "MAIN_HAND": "Szepter des Barons",
+    "OFF_HAND": "Kreshs Rücken",
     "RANGED": "Schmutzige Donnerbüchse"
    },
    "profs": {
     "Mining": 114,
-    "Blacksmithing": 96,
+    "Blacksmithing": 97,
     "Cooking": 2,
     "First Aid": 1
    },
@@ -3105,6 +3108,66 @@
    "ilvl": 29,
    "prev": 9,
    "prevName": "Ausgelaugter Ritualring"
+  },
+  {
+   "t": 1795276259000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 23,
+   "to": 24,
+   "max": false
+  },
+  {
+   "t": 1795276259000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 250494,
+   "name": "Kettengamaschen des Gardisten",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134668.jpg",
+   "slot": "Beine",
+   "ilvl": 25,
+   "prev": 21,
+   "prevName": "Raue bronzene Gamaschen"
+  },
+  {
+   "t": 1795276259000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 6414,
+   "name": "Siegel von Sylvanas",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133357.jpg",
+   "slot": "Ring 1",
+   "ilvl": 29,
+   "prev": 9,
+   "prevName": "Ausgelaugter Ritualring"
+  },
+  {
+   "t": 1795276259000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 6323,
+   "name": "Szepter des Barons",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133477.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 26,
+   "prev": 24,
+   "prevName": "Großaxt des Verlassenen"
+  },
+  {
+   "t": 1795276259000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 13245,
+   "name": "Kreshs Rücken",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134964.jpg",
+   "slot": "Schildhand",
+   "ilvl": 23,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
