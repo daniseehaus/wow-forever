@@ -38,8 +38,9 @@
   },
   "orkward-orkbert": {
    "level": 23,
-   "lastLogin": 1795218277000,
+   "lastLogin": 1795220325000,
    "items": {
+    "HEAD": 252504,
     "SHOULDER": 5404,
     "SHIRT": 127,
     "CHEST": 6473,
@@ -56,6 +57,7 @@
     "AMMO": 2515
    },
    "ilvls": {
+    "HEAD": 25,
     "SHOULDER": 23,
     "SHIRT": 1,
     "CHEST": 23,
@@ -72,6 +74,7 @@
     "AMMO": 15
    },
    "names": {
+    "HEAD": "Lederkapuze des Grubenkämpfers",
     "SHOULDER": "Schlangen-Schultern",
     "SHIRT": "Fallenstellerhemd",
     "CHEST": "Rüstung des Giftzahns",
@@ -88,7 +91,7 @@
     "AMMO": "Scharfer Pfeil"
    },
    "profs": {
-    "Leatherworking": 114,
+    "Leatherworking": 115,
     "Skinning": 167,
     "Cooking": 121,
     "Fishing": 1,
@@ -2728,6 +2731,19 @@
     "pavel-plattenpapst",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1795220325000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 252504,
+   "name": "Lederkapuze des Grubenkämpfers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133133.jpg",
+   "slot": "Kopf",
+   "ilvl": 25,
+   "prev": null,
+   "prevName": null
   }
  ]
 }

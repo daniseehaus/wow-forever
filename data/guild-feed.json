@@ -297,7 +297,7 @@
    "classId": 2,
    "rank": 1,
    "level": 53,
-   "lastLogin": 1795208523000,
+   "lastLogin": 1795220257000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -305,7 +305,7 @@
     "SHIRT": 6125,
     "CHEST": 273035,
     "WAIST": 10768,
-    "LEGS": 9625,
+    "LEGS": 11882,
     "FEET": 9637,
     "WRIST": 270073,
     "HANDS": 16978,
@@ -323,7 +323,7 @@
     "SHIRT": 1,
     "CHEST": 32,
     "WAIST": 42,
-    "LEGS": 37,
+    "LEGS": 56,
     "FEET": 45,
     "WRIST": 40,
     "HANDS": 27,
@@ -335,7 +335,7 @@
     "MAIN_HAND": 49
    },
    "profs": {
-    "Mining": 222,
+    "Mining": 223,
     "Blacksmithing": 150,
     "Cooking": 172,
     "Fishing": 1,
@@ -354,7 +354,8 @@
     62354,
     62032,
     62015,
-    777
+    777,
+    854
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
@@ -363,7 +364,7 @@
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Eberheldengürtel",
-    "LEGS": "Zweifach verstärkte Gamaschen",
+    "LEGS": "Vorhut-Gamaschen",
     "FEET": "Schienbeintreter-Stiefel",
     "WRIST": "Manschetten von Stromgarde",
     "HANDS": "Warsongstulpen",
@@ -644,8 +645,9 @@
    "classId": 3,
    "rank": 1,
    "level": 23,
-   "lastLogin": 1795218277000,
+   "lastLogin": 1795220325000,
    "items": {
+    "HEAD": 252504,
     "SHOULDER": 5404,
     "SHIRT": 127,
     "CHEST": 6473,
@@ -662,6 +664,7 @@
     "AMMO": 2515
    },
    "ilvls": {
+    "HEAD": 25,
     "SHOULDER": 23,
     "SHIRT": 1,
     "CHEST": 23,
@@ -678,6 +681,7 @@
     "AMMO": 15
    },
    "names": {
+    "HEAD": "Lederkapuze des Grubenkämpfers",
     "SHOULDER": "Schlangen-Schultern",
     "SHIRT": "Fallenstellerhemd",
     "CHEST": "Rüstung des Giftzahns",
@@ -694,7 +698,7 @@
     "AMMO": "Scharfer Pfeil"
    },
    "profs": {
-    "Leatherworking": 114,
+    "Leatherworking": 115,
     "Skinning": 167,
     "Cooking": 121,
     "Fishing": 1,
@@ -3304,6 +3308,28 @@
    "type": "prof",
    "name": "Herbalism",
    "skill": 150
+  },
+  {
+   "t": 1795220092000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 854,
+   "name": "Erforscht den Krater von Un'Goro",
+   "desc": "Erforscht den Krater von Un'Goro und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236850.jpg"
+  },
+  {
+   "t": 1795220325000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 252504,
+   "name": "Lederkapuze des Grubenkämpfers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133133.jpg",
+   "slot": "Kopf",
+   "ilvl": 25,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
