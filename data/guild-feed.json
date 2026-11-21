@@ -308,7 +308,7 @@
    "classId": 2,
    "rank": 1,
    "level": 54,
-   "lastLogin": 1795279348000,
+   "lastLogin": 1795295386000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -477,7 +477,7 @@
    "classId": 1,
    "rank": 1,
    "level": 24,
-   "lastLogin": 1795290250000,
+   "lastLogin": 1795295385000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -734,10 +734,10 @@
    "surname": "Muhrcury",
    "classId": 11,
    "rank": 1,
-   "level": 15,
-   "lastLogin": 1795279415000,
+   "level": 16,
+   "lastLogin": 1795295332000,
    "items": {
-    "CHEST": 2300,
+    "CHEST": 5341,
     "WAIST": 5275,
     "LEGS": 4909,
     "FEET": 4906,
@@ -747,7 +747,7 @@
     "MAIN_HAND": 4566
    },
    "ilvls": {
-    "CHEST": 12,
+    "CHEST": 15,
     "WAIST": 15,
     "LEGS": 15,
     "FEET": 7,
@@ -757,7 +757,7 @@
     "MAIN_HAND": 13
    },
    "names": {
-    "CHEST": "Geprägte Lederweste",
+    "CHEST": "Sporenbedeckte Tunika",
     "WAIST": "Bindegurt",
     "LEGS": "Kodojäger-Gamaschen",
     "FEET": "Regenwandler-Stiefel",
@@ -3885,6 +3885,14 @@
    "ilvl": 24,
    "prev": 26,
    "prevName": "Szepter des Barons"
+  },
+  {
+   "t": 1795295332000,
+   "key": "freddie-muhrcury",
+   "type": "level",
+   "from": 15,
+   "to": 16,
+   "max": false
   }
  ]
 }
