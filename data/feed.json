@@ -305,7 +305,7 @@
   },
   "pavel-plattenpapst": {
    "level": 25,
-   "lastLogin": 1795279468000,
+   "lastLogin": 1795291081000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -319,7 +319,7 @@
     "FINGER_1": 279867,
     "FINGER_2": 6414,
     "BACK": 4710,
-    "MAIN_HAND": 267369
+    "MAIN_HAND": 6256
    },
    "ilvls": {
     "HEAD": 20,
@@ -334,7 +334,7 @@
     "FINGER_1": 23,
     "FINGER_2": 29,
     "BACK": 22,
-    "MAIN_HAND": 31
+    "MAIN_HAND": 1
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -349,13 +349,13 @@
     "FINGER_1": "Siegelring des getöteten Barons",
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Waldumhang",
-    "MAIN_HAND": "Wolfsbann"
+    "MAIN_HAND": "Angel"
    },
    "profs": {
     "Mining": 107,
     "Engineering": 115,
     "Cooking": 140,
-    "Fishing": 125,
+    "Fishing": 135,
     "First Aid": 95
    },
    "achs": [

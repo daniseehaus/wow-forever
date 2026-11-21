@@ -1567,25 +1567,6 @@
   ],
   "pavel-plattenpapst": [
    {
-    "t": 1794771128000,
-    "level": 18,
-    "base": {
-     "ilvl": 13,
-     "profs": {
-      "Mining": 95,
-      "Engineering": 112,
-      "Cooking": 36,
-      "Fishing": 1,
-      "First Aid": 69
-     },
-     "talents": {
-      "135233": 3,
-      "135235": 1,
-      "135237": 5
-     }
-    }
-   },
-   {
     "t": 1794780445000,
     "level": 19,
     "base": {
@@ -1806,6 +1787,29 @@
       "Engineering": 115,
       "Cooking": 140,
       "Fishing": 125,
+      "First Aid": 95
+     },
+     "talents": {
+      "135226": 1,
+      "135227": 1,
+      "135229": 2,
+      "135231": 2,
+      "135233": 3,
+      "135235": 2,
+      "135237": 5
+     }
+    }
+   },
+   {
+    "t": 1795291081000,
+    "level": 25,
+    "base": {
+     "ilvl": 15,
+     "profs": {
+      "Mining": 107,
+      "Engineering": 115,
+      "Cooking": 140,
+      "Fishing": 135,
       "First Aid": 95
      },
      "talents": {
