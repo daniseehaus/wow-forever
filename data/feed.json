@@ -2889,6 +2889,19 @@
    "ilvl": 23,
    "prev": 21,
    "prevName": "Schwanzstachel"
+  },
+  {
+   "t": 1795262096000,
+   "type": "session",
+   "start": 1795261829000,
+   "gain": 0.2,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ]
   }
  ]
 }

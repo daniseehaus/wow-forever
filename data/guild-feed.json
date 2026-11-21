@@ -298,7 +298,7 @@
    "classId": 2,
    "rank": 1,
    "level": 54,
-   "lastLogin": 1795257704000,
+   "lastLogin": 1795265494000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -313,7 +313,7 @@
     "FINGER_1": 275045,
     "FINGER_2": 9533,
     "TRINKET_1": 11122,
-    "TRINKET_2": 276895,
+    "TRINKET_2": 12846,
     "BACK": 271810,
     "MAIN_HAND": 9413
    },
@@ -331,7 +331,7 @@
     "FINGER_1": 45,
     "FINGER_2": 49,
     "TRINKET_1": 50,
-    "TRINKET_2": 30,
+    "TRINKET_2": 1,
     "BACK": 43,
     "MAIN_HAND": 49
    },
@@ -356,7 +356,8 @@
     62032,
     62015,
     777,
-    854
+    854,
+    768
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
@@ -372,7 +373,7 @@
     "FINGER_1": "Ogerhornring",
     "FINGER_2": "Masons Bruderschaftsring",
     "TRINKET_1": "Karotte am Stiel",
-    "TRINKET_2": "Transformativer Kokon",
+    "TRINKET_2": "Anstecknadel der Argentumdämmerung",
     "BACK": "Abgestoßene Haut des Leichenfressers",
     "MAIN_HAND": "Der Felstrommler"
    }
@@ -3562,6 +3563,15 @@
    "ilvl": 23,
    "prev": 21,
    "prevName": "Schwanzstachel"
+  },
+  {
+   "t": 1795264995000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 768,
+   "name": "Erforscht Tirisfal",
+   "desc": "Erforscht Tirisfal und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236849.jpg"
   }
  ]
 }
