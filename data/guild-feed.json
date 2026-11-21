@@ -297,7 +297,7 @@
    "classId": 2,
    "rank": 1,
    "level": 53,
-   "lastLogin": 1795220257000,
+   "lastLogin": 1795227069000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -335,7 +335,7 @@
     "MAIN_HAND": 49
    },
    "profs": {
-    "Mining": 223,
+    "Mining": 225,
     "Blacksmithing": 150,
     "Cooking": 172,
     "Fishing": 1,
@@ -3369,6 +3369,13 @@
    "ilvl": 36,
    "prev": 25,
    "prevName": "Spinnenseidenstiefel"
+  },
+  {
+   "t": 1795227069000,
+   "key": "hammer-hanno",
+   "type": "prof",
+   "name": "Mining",
+   "skill": 225
   }
  ]
 }
