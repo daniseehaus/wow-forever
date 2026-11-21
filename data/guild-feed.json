@@ -296,8 +296,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 53,
-   "lastLogin": 1795227069000,
+   "level": 54,
+   "lastLogin": 1795257704000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -337,7 +337,7 @@
    "profs": {
     "Mining": 225,
     "Blacksmithing": 150,
-    "Cooking": 172,
+    "Cooking": 179,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -767,20 +767,21 @@
    "surname": "Elemental",
    "classId": 7,
    "rank": 1,
-   "level": 12,
-   "lastLogin": 1795166415000,
+   "level": 14,
+   "lastLogin": 1795257746000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
     "WAIST": 3370,
     "LEGS": 4343,
     "FEET": 4942,
-    "WRIST": 4928,
+    "WRIST": 281270,
     "HANDS": 4940,
     "FINGER_1": 281268,
     "BACK": 2580,
-    "MAIN_HAND": 286728,
-    "OFF_HAND": 15478
+    "MAIN_HAND": 4948,
+    "OFF_HAND": 15478,
+    "RANGED": 263412
    },
    "ilvls": {
     "SHIRT": 1,
@@ -788,12 +789,13 @@
     "WAIST": 8,
     "LEGS": 10,
     "FEET": 12,
-    "WRIST": 8,
+    "WRIST": 10,
     "HANDS": 10,
     "FINGER_1": 9,
     "BACK": 12,
-    "MAIN_HAND": 8,
-    "OFF_HAND": 8
+    "MAIN_HAND": 11,
+    "OFF_HAND": 8,
+    "RANGED": 10
    },
    "names": {
     "SHIRT": "Primitiver Mantel",
@@ -801,21 +803,24 @@
     "WAIST": "Flickwerkgürtel",
     "LEGS": "Braune Leinenhose",
     "FEET": "Tigerbalg-Stiefel",
-    "WRIST": "Sandläuferhandgelenksschützer",
+    "WRIST": "Thras Freundschaftsband",
     "HANDS": "Verhüllter Handschutz",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Verstärktes Leinencape",
-    "MAIN_HAND": "Hammer der Kolkar",
-    "OFF_HAND": "Stürmerschild"
+    "MAIN_HAND": "Stechender Streitkolben",
+    "OFF_HAND": "Stürmerschild",
+    "RANGED": "Totem der Geladenen Flammen"
    },
    "profs": {
-    "Enchanting": 55,
-    "Alchemy": 72,
+    "Enchanting": 70,
+    "Alchemy": 104,
     "Cooking": 4
    },
    "achs": [
     62009,
-    769
+    769,
+    846,
+    728
    ]
   }
  },
@@ -3321,6 +3326,15 @@
    "skill": 150
   },
   {
+   "t": 1795212060000,
+   "key": "erwin-elemental",
+   "type": "achievement",
+   "id": 846,
+   "name": "Erforscht Tausend Nadeln",
+   "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
+  },
+  {
    "t": 1795212077000,
    "key": "dennis-dotalot",
    "type": "achievement",
@@ -3388,6 +3402,15 @@
    "skill": 225
   },
   {
+   "t": 1795253962000,
+   "key": "erwin-elemental",
+   "type": "achievement",
+   "id": 728,
+   "name": "Erforscht Durotar",
+   "desc": "Erforscht Durotar und enthüllt die verdeckten Gebiete auf der Weltkarte.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236756.jpg"
+  },
+  {
    "t": 1795256068000,
    "key": "bernhard-backstab",
    "type": "level",
@@ -3410,6 +3433,29 @@
    "from": 14,
    "to": 15,
    "max": false
+  },
+  {
+   "t": 1795257704000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 53,
+   "to": 54,
+   "max": false
+  },
+  {
+   "t": 1795257746000,
+   "key": "erwin-elemental",
+   "type": "level",
+   "from": 12,
+   "to": 14,
+   "max": false
+  },
+  {
+   "t": 1795257746000,
+   "key": "erwin-elemental",
+   "type": "prof",
+   "name": "Alchemy",
+   "skill": 104
   }
  ]
 }
