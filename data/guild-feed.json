@@ -99,11 +99,11 @@
    "surname": "Sturmzüngler",
    "classId": 7,
    "rank": 1,
-   "level": 23,
-   "lastLogin": 1795202069000,
+   "level": 24,
+   "lastLogin": 1795261829000,
    "items": {
     "CHEST": 6473,
-    "WAIST": 14567,
+    "WAIST": 10403,
     "LEGS": 10410,
     "FEET": 273007,
     "WRIST": 279875,
@@ -116,7 +116,7 @@
    },
    "ilvls": {
     "CHEST": 23,
-    "WAIST": 23,
+    "WAIST": 22,
     "LEGS": 22,
     "FEET": 18,
     "WRIST": 24,
@@ -129,7 +129,7 @@
    },
    "profs": {
     "Alchemy": 225,
-    "Herbalism": 130,
+    "Herbalism": 132,
     "Cooking": 21
    },
    "achs": [
@@ -146,7 +146,7 @@
    ],
    "names": {
     "CHEST": "Rüstung des Giftzahns",
-    "WAIST": "Borstenledergürtel",
+    "WAIST": "Geschwärzter Gürtel der Defias",
     "LEGS": "Gamaschen des Giftzahns",
     "FEET": "Abgrundläufer",
     "WRIST": "Ersatzteilbindungen",
@@ -3456,6 +3456,27 @@
    "type": "prof",
    "name": "Alchemy",
    "skill": 104
+  },
+  {
+   "t": 1795261829000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 23,
+   "to": 24,
+   "max": false
+  },
+  {
+   "t": 1795261829000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 10403,
+   "name": "Geschwärzter Gürtel der Defias",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132515.jpg",
+   "slot": "Taille",
+   "ilvl": 22,
+   "prev": 23,
+   "prevName": "Borstenledergürtel"
   }
  ]
 }
