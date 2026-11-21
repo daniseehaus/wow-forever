@@ -171,42 +171,42 @@
    "classId": 2,
    "rank": 1,
    "level": 25,
-   "lastLogin": 1795296494000,
+   "lastLogin": 1795302803000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
     "SHIRT": 6125,
-    "CHEST": 2866,
+    "CHEST": 6907,
     "WAIST": 4697,
     "LEGS": 9789,
     "FEET": 10658,
-    "WRIST": 2854,
+    "WRIST": 4534,
     "HANDS": 12994,
     "FINGER_1": 279867,
     "FINGER_2": 6414,
     "BACK": 4710,
-    "MAIN_HAND": 6256
+    "MAIN_HAND": 267369
    },
    "ilvls": {
     "HEAD": 20,
     "SHOULDER": 22,
     "SHIRT": 1,
-    "CHEST": 23,
+    "CHEST": 27,
     "WAIST": 20,
     "LEGS": 19,
     "FEET": 25,
-    "WRIST": 19,
+    "WRIST": 28,
     "HANDS": 23,
     "FINGER_1": 23,
     "FINGER_2": 29,
     "BACK": 22,
-    "MAIN_HAND": 1
+    "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 107,
+    "Mining": 108,
     "Engineering": 115,
     "Cooking": 140,
-    "Fishing": 135,
+    "Fishing": 140,
     "First Aid": 95
    },
    "achs": [
@@ -216,16 +216,16 @@
     "HEAD": "Fliegerbrille",
     "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Rauer bronzener Kürass",
+    "CHEST": "Schildkrötenrüstung",
     "WAIST": "Brünierter Gurt",
     "LEGS": "Räuber-Beinschützer der Macht",
     "FEET": "Morastgaloschen",
-    "WRIST": "Runenverzierte Kupferarmschienen",
+    "WRIST": "Stahlschnallenarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Waldumhang",
-    "MAIN_HAND": "Angel"
+    "MAIN_HAND": "Wolfsbann"
    }
   },
   "bernhard-backstab": {
@@ -3893,6 +3893,32 @@
    "from": 15,
    "to": 16,
    "max": false
+  },
+  {
+   "t": 1795302803000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 6907,
+   "name": "Schildkrötenrüstung",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135010.jpg",
+   "slot": "Brust",
+   "ilvl": 27,
+   "prev": 23,
+   "prevName": "Rauer bronzener Kürass"
+  },
+  {
+   "t": 1795302803000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 267369,
+   "name": "Wolfsbann",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 31,
+   "prev": 1,
+   "prevName": "Angel"
   }
  ]
 }
