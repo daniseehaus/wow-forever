@@ -383,7 +383,7 @@
    "classId": 2,
    "rank": 1,
    "level": 36,
-   "lastLogin": 1795186836000,
+   "lastLogin": 1795230083000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -435,7 +435,8 @@
     62015,
     760,
     62012,
-    62013
+    62013,
+    62031
    ],
    "names": {
     "HEAD": "Whisperwindkopfputz",
@@ -3124,6 +3125,15 @@
   {
    "t": 1795191240000,
    "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62031,
+   "name": "Novize: Dungeonerforscher",
+   "desc": "Schließt die folgenden Dungeons ab.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
+  },
+  {
+   "t": 1795191240000,
+   "key": "lokk-eidlöter",
    "type": "achievement",
    "id": 62031,
    "name": "Novize: Dungeonerforscher",
