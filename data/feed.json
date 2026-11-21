@@ -307,8 +307,8 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 24,
-   "lastLogin": 1795261933000,
+   "level": 25,
+   "lastLogin": 1795279468000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -320,8 +320,9 @@
     "WRIST": 2854,
     "HANDS": 12994,
     "FINGER_1": 279867,
+    "FINGER_2": 6414,
     "BACK": 4710,
-    "MAIN_HAND": 286977
+    "MAIN_HAND": 267369
    },
    "ilvls": {
     "HEAD": 20,
@@ -334,8 +335,9 @@
     "WRIST": 19,
     "HANDS": 23,
     "FINGER_1": 23,
+    "FINGER_2": 29,
     "BACK": 22,
-    "MAIN_HAND": 23
+    "MAIN_HAND": 31
    },
    "names": {
     "HEAD": "Fliegerbrille",
@@ -348,8 +350,9 @@
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
+    "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Waldumhang",
-    "MAIN_HAND": "Schwert der Gefallenen"
+    "MAIN_HAND": "Wolfsbann"
    },
    "profs": {
     "Mining": 107,
@@ -358,7 +361,9 @@
     "Fishing": 125,
     "First Aid": 95
    },
-   "achs": [],
+   "achs": [
+    61997
+   ],
    "guild": "Geilbleiber"
   }
  },
@@ -2921,6 +2926,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236849.jpg"
   },
   {
+   "t": 1795273500000,
+   "key": "pavel-plattenpapst",
+   "type": "achievement",
+   "id": 61997,
+   "name": "Novize: Paladin",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
    "t": 1795273620000,
    "key": "zukk-sturmzüngler",
    "type": "achievement",
@@ -3168,6 +3182,40 @@
    "ilvl": 23,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795279468000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 24,
+   "to": 25,
+   "max": false
+  },
+  {
+   "t": 1795279468000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 6414,
+   "name": "Siegel von Sylvanas",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133357.jpg",
+   "slot": "Ring 2",
+   "ilvl": 29,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795279468000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 267369,
+   "name": "Wolfsbann",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 31,
+   "prev": 23,
+   "prevName": "Schwert der Gefallenen"
   }
  ]
 }

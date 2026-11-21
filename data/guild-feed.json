@@ -170,8 +170,8 @@
    "surname": "Plattenpapst",
    "classId": 2,
    "rank": 1,
-   "level": 24,
-   "lastLogin": 1795261933000,
+   "level": 25,
+   "lastLogin": 1795279468000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
@@ -183,8 +183,9 @@
     "WRIST": 2854,
     "HANDS": 12994,
     "FINGER_1": 279867,
+    "FINGER_2": 6414,
     "BACK": 4710,
-    "MAIN_HAND": 286977
+    "MAIN_HAND": 267369
    },
    "ilvls": {
     "HEAD": 20,
@@ -197,8 +198,9 @@
     "WRIST": 19,
     "HANDS": 23,
     "FINGER_1": 23,
+    "FINGER_2": 29,
     "BACK": 22,
-    "MAIN_HAND": 23
+    "MAIN_HAND": 31
    },
    "profs": {
     "Mining": 107,
@@ -207,7 +209,9 @@
     "Fishing": 125,
     "First Aid": 95
    },
-   "achs": [],
+   "achs": [
+    61997
+   ],
    "names": {
     "HEAD": "Fliegerbrille",
     "SHOULDER": "Raue bronzene Schultern",
@@ -219,8 +223,9 @@
     "WRIST": "Runenverzierte Kupferarmschienen",
     "HANDS": "Thorbias' Stulpen",
     "FINGER_1": "Siegelring des getöteten Barons",
+    "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Waldumhang",
-    "MAIN_HAND": "Schwert der Gefallenen"
+    "MAIN_HAND": "Wolfsbann"
    }
   },
   "bernhard-backstab": {
@@ -303,7 +308,7 @@
    "classId": 2,
    "rank": 1,
    "level": 54,
-   "lastLogin": 1795270774000,
+   "lastLogin": 1795279348000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -314,7 +319,7 @@
     "LEGS": 11882,
     "FEET": 9637,
     "WRIST": 270073,
-    "HANDS": 16978,
+    "HANDS": 19126,
     "FINGER_1": 275045,
     "FINGER_2": 9533,
     "TRINKET_1": 11122,
@@ -332,7 +337,7 @@
     "LEGS": 56,
     "FEET": 45,
     "WRIST": 40,
-    "HANDS": 27,
+    "HANDS": 49,
     "FINGER_1": 45,
     "FINGER_2": 49,
     "TRINKET_1": 50,
@@ -374,7 +379,7 @@
     "LEGS": "Vorhut-Gamaschen",
     "FEET": "Schienbeintreter-Stiefel",
     "WRIST": "Manschetten von Stromgarde",
-    "HANDS": "Warsongstulpen",
+    "HANDS": "Gußplattenstulpen",
     "FINGER_1": "Ogerhornring",
     "FINGER_2": "Masons Bruderschaftsring",
     "TRINKET_1": "Karotte am Stiel",
@@ -733,7 +738,7 @@
    "classId": 11,
    "rank": 1,
    "level": 15,
-   "lastLogin": 1795270619000,
+   "lastLogin": 1795279415000,
    "items": {
     "CHEST": 2300,
     "WAIST": 5275,
@@ -741,7 +746,7 @@
     "FEET": 4906,
     "WRIST": 7281,
     "HANDS": 4239,
-    "BACK": 2310,
+    "BACK": 14123,
     "MAIN_HAND": 4566
    },
    "ilvls": {
@@ -751,7 +756,7 @@
     "FEET": 7,
     "WRIST": 14,
     "HANDS": 13,
-    "BACK": 13,
+    "BACK": 17,
     "MAIN_HAND": 13
    },
    "names": {
@@ -761,12 +766,12 @@
     "FEET": "Regenwandler-Stiefel",
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Geprägte Lederhandschuhe",
-    "BACK": "Geprägter Lederumhang",
+    "BACK": "Rituelles Cape der Intelligenz",
     "MAIN_HAND": "Stabiler Bauernstecken der Bestie"
    },
    "profs": {
     "Alchemy": 73,
-    "Herbalism": 73,
+    "Herbalism": 74,
     "Cooking": 31,
     "Fishing": 23,
     "First Aid": 48
@@ -3602,6 +3607,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236849.jpg"
   },
   {
+   "t": 1795273500000,
+   "key": "pavel-plattenpapst",
+   "type": "achievement",
+   "id": 61997,
+   "name": "Novize: Paladin",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
    "t": 1795273620000,
    "key": "zukk-sturmzüngler",
    "type": "achievement",
@@ -3827,6 +3841,40 @@
    "ilvl": 23,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795279468000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 24,
+   "to": 25,
+   "max": false
+  },
+  {
+   "t": 1795279468000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 6414,
+   "name": "Siegel von Sylvanas",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133357.jpg",
+   "slot": "Ring 2",
+   "ilvl": 29,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795279468000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 267369,
+   "name": "Wolfsbann",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 31,
+   "prev": 23,
+   "prevName": "Schwert der Gefallenen"
   }
  ]
 }
