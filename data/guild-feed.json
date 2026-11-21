@@ -389,7 +389,7 @@
    "classId": 2,
    "rank": 1,
    "level": 37,
-   "lastLogin": 1795270779000,
+   "lastLogin": 1795274746000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
@@ -442,7 +442,8 @@
     760,
     62012,
     62013,
-    62031
+    62031,
+    62006
    ],
    "names": {
     "HEAD": "Whisperwindkopfputz",
@@ -3580,6 +3581,15 @@
   {
    "t": 1795273620000,
    "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62006,
+   "name": "Novize: Schamane",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Schamanen.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626006.jpg"
+  },
+  {
+   "t": 1795273620000,
+   "key": "lokk-eidlöter",
    "type": "achievement",
    "id": 62006,
    "name": "Novize: Schamane",
