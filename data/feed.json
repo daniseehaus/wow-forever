@@ -105,7 +105,7 @@
   },
   "wladimir-klatschko": {
    "level": 24,
-   "lastLogin": 1795276259000,
+   "lastLogin": 1795290250000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -118,8 +118,7 @@
     "FINGER_1": 6414,
     "FINGER_2": 279867,
     "BACK": 3582,
-    "MAIN_HAND": 6323,
-    "OFF_HAND": 13245,
+    "MAIN_HAND": 251533,
     "RANGED": 2781
    },
    "ilvls": {
@@ -134,8 +133,7 @@
     "FINGER_1": 29,
     "FINGER_2": 23,
     "BACK": 18,
-    "MAIN_HAND": 26,
-    "OFF_HAND": 23,
+    "MAIN_HAND": 24,
     "RANGED": 18
    },
    "names": {
@@ -150,8 +148,7 @@
     "FINGER_1": "Siegel von Sylvanas",
     "FINGER_2": "Siegelring des getöteten Barons",
     "BACK": "Säurefester Umhang",
-    "MAIN_HAND": "Szepter des Barons",
-    "OFF_HAND": "Kreshs Rücken",
+    "MAIN_HAND": "Großaxt des Verlassenen",
     "RANGED": "Schmutzige Donnerbüchse"
    },
    "profs": {
@@ -3229,6 +3226,19 @@
     "pavel-plattenpapst",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1795290250000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 251533,
+   "name": "Großaxt des Verlassenen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 24,
+   "prev": 26,
+   "prevName": "Szepter des Barons"
   }
  ]
 }
