@@ -238,45 +238,48 @@
    "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
-   "level": 24,
-   "lastLogin": 1795270195000,
+   "level": 25,
+   "lastLogin": 1795274116000,
    "items": {
+    "SHOULDER": 270023,
     "CHEST": 6473,
     "WAIST": 10403,
     "LEGS": 10410,
     "FEET": 273007,
-    "WRIST": 279875,
+    "WRIST": 3230,
     "HANDS": 270008,
-    "FINGER_1": 281268,
+    "FINGER_1": 6414,
     "FINGER_2": 279867,
-    "BACK": 15508,
-    "MAIN_HAND": 251533,
+    "BACK": 9812,
+    "MAIN_HAND": 3191,
     "RANGED": 263412
    },
    "ilvls": {
+    "SHOULDER": 27,
     "CHEST": 23,
     "WAIST": 22,
     "LEGS": 22,
     "FEET": 18,
-    "WRIST": 24,
+    "WRIST": 27,
     "HANDS": 20,
-    "FINGER_1": 9,
+    "FINGER_1": 29,
     "FINGER_2": 23,
-    "BACK": 19,
-    "MAIN_HAND": 24,
+    "BACK": 22,
+    "MAIN_HAND": 26,
     "RANGED": 10
    },
    "names": {
+    "SHOULDER": "Gegerbte Schulterpolster",
     "CHEST": "Rüstung des Giftzahns",
     "WAIST": "Geschwärzter Gürtel der Defias",
     "LEGS": "Gamaschen des Giftzahns",
     "FEET": "Abgrundläufer",
-    "WRIST": "Ersatzteilbindungen",
+    "WRIST": "Schwarzwolf-Armschienen",
     "HANDS": "Hitzebeständige Fäustlinge",
-    "FINGER_1": "Ausgelaugter Ritualring",
+    "FINGER_1": "Siegel von Sylvanas",
     "FINGER_2": "Siegelring des getöteten Barons",
-    "BACK": "Grunzercape der Stärke",
-    "MAIN_HAND": "Großaxt des Verlassenen",
+    "BACK": "Befestigter Umhang des Gorillas",
+    "MAIN_HAND": "Gekrümmte Kriegsaxt",
     "RANGED": "Totem der Geladenen Flammen"
    },
    "profs": {
@@ -294,7 +297,8 @@
     760,
     62012,
     62013,
-    62031
+    62031,
+    62006
    ],
    "guild": "Geilbleiber"
   },
@@ -2902,6 +2906,88 @@
     "pavel-plattenpapst",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1795273620000,
+   "key": "zukk-sturmzüngler",
+   "type": "achievement",
+   "id": 62006,
+   "name": "Novize: Schamane",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Schamanen.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626006.jpg"
+  },
+  {
+   "t": 1795274116000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 24,
+   "to": 25,
+   "max": false
+  },
+  {
+   "t": 1795274116000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 270023,
+   "name": "Gegerbte Schulterpolster",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135058.jpg",
+   "slot": "Schultern",
+   "ilvl": 27,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795274116000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 3230,
+   "name": "Schwarzwolf-Armschienen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132606.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 27,
+   "prev": 24,
+   "prevName": "Ersatzteilbindungen"
+  },
+  {
+   "t": 1795274116000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 6414,
+   "name": "Siegel von Sylvanas",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133357.jpg",
+   "slot": "Ring 1",
+   "ilvl": 29,
+   "prev": 9,
+   "prevName": "Ausgelaugter Ritualring"
+  },
+  {
+   "t": 1795274116000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 9812,
+   "name": "Befestigter Umhang des Gorillas",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133766.jpg",
+   "slot": "Rücken",
+   "ilvl": 22,
+   "prev": 19,
+   "prevName": "Grunzercape der Stärke"
+  },
+  {
+   "t": 1795274116000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 3191,
+   "name": "Gekrümmte Kriegsaxt",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132397.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 26,
+   "prev": 24,
+   "prevName": "Großaxt des Verlassenen"
   }
  ]
 }
