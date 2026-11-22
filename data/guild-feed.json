@@ -476,8 +476,8 @@
    "surname": "Klatschko",
    "classId": 1,
    "rank": 1,
-   "level": 24,
-   "lastLogin": 1795295385000,
+   "level": 26,
+   "lastLogin": 1795306544000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -486,12 +486,14 @@
     "LEGS": 250494,
     "FEET": 14742,
     "WRIST": 2854,
-    "HANDS": 271208,
+    "HANDS": 6906,
     "FINGER_1": 6414,
-    "FINGER_2": 279867,
+    "FINGER_2": 17694,
     "BACK": 3582,
-    "MAIN_HAND": 251533,
-    "RANGED": 2781
+    "MAIN_HAND": 16886,
+    "OFF_HAND": 7002,
+    "RANGED": 2781,
+    "AMMO": 2516
    },
    "ilvls": {
     "SHOULDER": 22,
@@ -501,21 +503,24 @@
     "LEGS": 25,
     "FEET": 24,
     "WRIST": 19,
-    "HANDS": 22,
+    "HANDS": 28,
     "FINGER_1": 29,
-    "FINGER_2": 23,
+    "FINGER_2": 28,
     "BACK": 18,
-    "MAIN_HAND": 24,
-    "RANGED": 18
+    "MAIN_HAND": 32,
+    "OFF_HAND": 29,
+    "RANGED": 18,
+    "AMMO": 5
    },
    "profs": {
-    "Mining": 114,
+    "Mining": 116,
     "Blacksmithing": 97,
     "Cooking": 2,
     "First Aid": 1
    },
    "achs": [
-    728
+    728,
+    61499
    ],
    "names": {
     "SHOULDER": "Raue bronzene Schultern",
@@ -525,12 +530,14 @@
     "LEGS": "Kettengamaschen des Gardisten",
     "FEET": "Titanische Stiefel",
     "WRIST": "Runenverzierte Kupferarmschienen",
-    "HANDS": "Griff der Angst",
+    "HANDS": "Algenfäuste",
     "FINGER_1": "Siegel von Sylvanas",
-    "FINGER_2": "Siegelring des getöteten Barons",
+    "FINGER_2": "Band der Faust",
     "BACK": "Säurefester Umhang",
-    "MAIN_HAND": "Großaxt des Verlassenen",
-    "RANGED": "Schmutzige Donnerbüchse"
+    "MAIN_HAND": "Gesetzlosensäbel",
+    "OFF_HAND": "Arktischer Rundschild",
+    "RANGED": "Schmutzige Donnerbüchse",
+    "AMMO": "Leichtes Geschoss"
    }
   },
   "dennis-dotalot": {
@@ -3896,6 +3903,15 @@
    "max": false
   },
   {
+   "t": 1795301580000,
+   "key": "wladimir-klatschko",
+   "type": "achievement",
+   "id": 61499,
+   "name": "Kriegernovize",
+   "desc": "Erreicht zum ersten Mal Stufe 25: Krieger.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626008.jpg"
+  },
+  {
    "t": 1795302803000,
    "key": "pavel-plattenpapst",
    "type": "item",
@@ -3992,6 +4008,53 @@
    "from": 24,
    "to": 25,
    "max": false
+  },
+  {
+   "t": 1795306544000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 24,
+   "to": 26,
+   "max": false
+  },
+  {
+   "t": 1795306544000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 6906,
+   "name": "Algenfäuste",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132944.jpg",
+   "slot": "Hände",
+   "ilvl": 28,
+   "prev": 22,
+   "prevName": "Griff der Angst"
+  },
+  {
+   "t": 1795306544000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 16886,
+   "name": "Gesetzlosensäbel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135343.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 32,
+   "prev": 24,
+   "prevName": "Großaxt des Verlassenen"
+  },
+  {
+   "t": 1795306544000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 7002,
+   "name": "Arktischer Rundschild",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134948.jpg",
+   "slot": "Schildhand",
+   "ilvl": 29,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
