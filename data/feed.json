@@ -106,7 +106,7 @@
   },
   "wladimir-klatschko": {
    "level": 26,
-   "lastLogin": 1795338265000,
+   "lastLogin": 1795341371000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -121,7 +121,7 @@
     "BACK": 3582,
     "MAIN_HAND": 16886,
     "OFF_HAND": 7002,
-    "RANGED": 2781,
+    "RANGED": 217314,
     "AMMO": 2516
    },
    "ilvls": {
@@ -138,7 +138,7 @@
     "BACK": 18,
     "MAIN_HAND": 32,
     "OFF_HAND": 29,
-    "RANGED": 18,
+    "RANGED": 27,
     "AMMO": 5
    },
    "names": {
@@ -155,7 +155,7 @@
     "BACK": "Säurefester Umhang",
     "MAIN_HAND": "Gesetzlosensäbel",
     "OFF_HAND": "Arktischer Rundschild",
-    "RANGED": "Schmutzige Donnerbüchse",
+    "RANGED": "Mondsichtgewehr",
     "AMMO": "Leichtes Geschoss"
    },
    "profs": {
@@ -3555,6 +3555,19 @@
     "pavel-plattenpapst",
     "orkward-orkbert"
    ]
+  },
+  {
+   "t": 1795341371000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 217314,
+   "name": "Mondsichtgewehr",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135615.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 27,
+   "prev": 18,
+   "prevName": "Schmutzige Donnerbüchse"
   }
  ]
 }

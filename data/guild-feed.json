@@ -485,7 +485,7 @@
    "classId": 1,
    "rank": 1,
    "level": 26,
-   "lastLogin": 1795338265000,
+   "lastLogin": 1795341371000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -500,7 +500,7 @@
     "BACK": 3582,
     "MAIN_HAND": 16886,
     "OFF_HAND": 7002,
-    "RANGED": 2781,
+    "RANGED": 217314,
     "AMMO": 2516
    },
    "ilvls": {
@@ -517,7 +517,7 @@
     "BACK": 18,
     "MAIN_HAND": 32,
     "OFF_HAND": 29,
-    "RANGED": 18,
+    "RANGED": 27,
     "AMMO": 5
    },
    "profs": {
@@ -544,7 +544,7 @@
     "BACK": "Säurefester Umhang",
     "MAIN_HAND": "Gesetzlosensäbel",
     "OFF_HAND": "Arktischer Rundschild",
-    "RANGED": "Schmutzige Donnerbüchse",
+    "RANGED": "Mondsichtgewehr",
     "AMMO": "Leichtes Geschoss"
    }
   },
@@ -555,15 +555,15 @@
    "classId": 9,
    "rank": 1,
    "level": 36,
-   "lastLogin": 1795305542000,
+   "lastLogin": 1795341570000,
    "items": {
     "HEAD": 253955,
     "NECK": 273049,
-    "SHOULDER": 4197,
+    "SHOULDER": 7057,
     "SHIRT": 2579,
-    "CHEST": 9791,
+    "CHEST": 7058,
     "WAIST": 273039,
-    "LEGS": 6910,
+    "LEGS": 7062,
     "FEET": 279843,
     "WRIST": 14187,
     "HANDS": 9795,
@@ -579,9 +579,9 @@
     "NECK": 35,
     "SHOULDER": 36,
     "SHIRT": 14,
-    "CHEST": 29,
+    "CHEST": 37,
     "WAIST": 34,
-    "LEGS": 29,
+    "LEGS": 39,
     "FEET": 36,
     "WRIST": 28,
     "HANDS": 26,
@@ -593,7 +593,7 @@
     "RANGED": 29
    },
    "profs": {
-    "Tailoring": 146,
+    "Tailoring": 161,
     "Herbalism": 159,
     "Cooking": 207,
     "Fishing": 163,
@@ -603,16 +603,17 @@
     62009,
     769,
     846,
-    728
+    728,
+    62028
    ],
    "names": {
     "HEAD": "Schattenreif",
     "NECK": "Facettierter Anhänger des Erzmagisters",
-    "SHOULDER": "Beryllpolster",
+    "SHOULDER": "Grüne Seidenschultern",
     "SHIRT": "Grünes Leinenhemd",
-    "CHEST": "Efeustofftunika des Ältesten",
+    "CHEST": "Purpurrote Seidenweste",
     "WAIST": "Seuchenblattseil",
-    "LEGS": "Egel-Hose",
+    "LEGS": "Purpurrote Seidenpantalons",
     "FEET": "Verzauberte Sandalen",
     "WRIST": "Regenmachermanschetten des Schattenzorns",
     "HANDS": "Efeustoffhandschuhe des Schattenzorns",
@@ -4200,6 +4201,22 @@
    "from": 54,
    "to": 55,
    "max": false
+  },
+  {
+   "t": 1795339440000,
+   "key": "dennis-dotalot",
+   "type": "achievement",
+   "id": 62028,
+   "name": "Schneidergeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schneiderei.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136249.jpg"
+  },
+  {
+   "t": 1795341570000,
+   "key": "dennis-dotalot",
+   "type": "prof",
+   "name": "Tailoring",
+   "skill": 161
   }
  ]
 }
