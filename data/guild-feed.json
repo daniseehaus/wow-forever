@@ -109,7 +109,7 @@
    "classId": 7,
    "rank": 1,
    "level": 26,
-   "lastLogin": 1795334511000,
+   "lastLogin": 1795347850000,
    "items": {
     "SHOULDER": 270023,
     "CHEST": 270043,
@@ -485,7 +485,7 @@
    "classId": 1,
    "rank": 1,
    "level": 26,
-   "lastLogin": 1795341920000,
+   "lastLogin": 1795347832000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -751,41 +751,41 @@
    "surname": "Muhrcury",
    "classId": 11,
    "rank": 1,
-   "level": 16,
-   "lastLogin": 1795338233000,
+   "level": 17,
+   "lastLogin": 1795347872000,
    "items": {
     "CHEST": 5341,
-    "WAIST": 5275,
+    "WAIST": 16608,
     "LEGS": 5327,
-    "FEET": 4906,
+    "FEET": 15012,
     "WRIST": 7281,
-    "HANDS": 4239,
-    "BACK": 14123,
+    "HANDS": 3314,
+    "BACK": 14149,
     "MAIN_HAND": 4566
    },
    "ilvls": {
     "CHEST": 15,
-    "WAIST": 15,
+    "WAIST": 16,
     "LEGS": 18,
-    "FEET": 7,
+    "FEET": 16,
     "WRIST": 14,
-    "HANDS": 13,
-    "BACK": 17,
+    "HANDS": 15,
+    "BACK": 18,
     "MAIN_HAND": 13
    },
    "names": {
     "CHEST": "Sporenbedeckte Tunika",
-    "WAIST": "Bindegurt",
+    "WAIST": "Wassermann-Gürtel",
     "LEGS": "Schmierige Tüftlerhose",
-    "FEET": "Regenwandler-Stiefel",
+    "FEET": "Werwolf-Schuhe des Falken",
     "WRIST": "Leichte Lederarmschienen",
-    "HANDS": "Geprägte Lederhandschuhe",
-    "BACK": "Rituelles Cape der Intelligenz",
-    "MAIN_HAND": "Stabiler Bauernstecken der Bestie"
+    "HANDS": "Zeremonielle Lederhandschuhe",
+    "BACK": "Unterirdisches Cape",
+    "MAIN_HAND": "Stabiler Bauernstecken des Gorillas"
    },
    "profs": {
-    "Alchemy": 73,
-    "Herbalism": 74,
+    "Alchemy": 78,
+    "Herbalism": 79,
     "Cooking": 31,
     "Fishing": 23,
     "First Aid": 48
@@ -4217,6 +4217,41 @@
    "type": "prof",
    "name": "Tailoring",
    "skill": 161
+  },
+  {
+   "t": 1795347872000,
+   "key": "freddie-muhrcury",
+   "type": "level",
+   "from": 16,
+   "to": 17,
+   "max": false
+  },
+  {
+   "t": 1795347872000,
+   "key": "freddie-muhrcury",
+   "type": "item",
+   "id": 14149,
+   "name": "Unterirdisches Cape",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133770.jpg",
+   "slot": "Rücken",
+   "ilvl": 18,
+   "prev": 17,
+   "prevName": "Rituelles Cape der Intelligenz"
+  },
+  {
+   "t": 1795347872000,
+   "key": "freddie-muhrcury",
+   "type": "prof",
+   "name": "Alchemy",
+   "skill": 78
+  },
+  {
+   "t": 1795347872000,
+   "key": "freddie-muhrcury",
+   "type": "prof",
+   "name": "Herbalism",
+   "skill": 79
   }
  ]
 }
