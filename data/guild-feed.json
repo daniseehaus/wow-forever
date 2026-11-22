@@ -557,8 +557,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 36,
-   "lastLogin": 1795366269000,
+   "level": 37,
+   "lastLogin": 1795383201000,
    "items": {
     "HEAD": 253955,
     "NECK": 273049,
@@ -574,7 +574,7 @@
     "FINGER_2": 279845,
     "TRINKET_1": 276895,
     "BACK": 274149,
-    "MAIN_HAND": 15109,
+    "MAIN_HAND": 15106,
     "RANGED": 7001
    },
    "ilvls": {
@@ -592,12 +592,12 @@
     "FINGER_2": 36,
     "TRINKET_1": 30,
     "BACK": 30,
-    "MAIN_HAND": 25,
+    "MAIN_HAND": 40,
     "RANGED": 29
    },
    "profs": {
     "Tailoring": 161,
-    "Herbalism": 160,
+    "Herbalism": 168,
     "Cooking": 207,
     "Fishing": 163,
     "First Aid": 136
@@ -624,7 +624,7 @@
     "FINGER_2": "Solides Goldband",
     "TRINKET_1": "Transformativer Kokon",
     "BACK": "Dornenwirkertuch",
-    "MAIN_HAND": "Stab von Soran'ruk",
+    "MAIN_HAND": "Stab von Dar'Orahil",
     "RANGED": "Grabsteinszepter"
    }
   },
@@ -4289,6 +4289,14 @@
    "ilvl": 40,
    "prev": 29,
    "prevName": "Gleißender Panzergurt"
+  },
+  {
+   "t": 1795383201000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 36,
+   "to": 37,
+   "max": false
   }
  ]
 }
