@@ -171,58 +171,64 @@
    "guild": "Geilbleiber"
   },
   "heili-kabel": {
-   "level": 24,
-   "lastLogin": 1795274786000,
+   "level": 26,
+   "lastLogin": 1795309081000,
    "items": {
+    "HEAD": 7048,
     "NECK": 273457,
     "SHOULDER": 3324,
     "SHIRT": 53,
     "CHEST": 286978,
     "WAIST": 6392,
-    "LEGS": 15449,
+    "LEGS": 6903,
     "FEET": 271214,
     "WRIST": 251486,
     "HANDS": 270030,
     "FINGER_1": 1156,
     "FINGER_2": 6414,
     "BACK": 15114,
-    "MAIN_HAND": 6505,
-    "RANGED": 5198
+    "MAIN_HAND": 272996,
+    "OFF_HAND": 16887,
+    "RANGED": 7001
    },
    "ilvls": {
+    "HEAD": 29,
     "NECK": 22,
     "SHOULDER": 27,
     "SHIRT": 1,
     "CHEST": 23,
     "WAIST": 28,
-    "LEGS": 18,
+    "LEGS": 28,
     "FEET": 24,
     "WRIST": 24,
     "HANDS": 28,
     "FINGER_1": 22,
     "FINGER_2": 29,
     "BACK": 19,
-    "MAIN_HAND": 24,
-    "RANGED": 22
+    "MAIN_HAND": 18,
+    "OFF_HAND": 32,
+    "RANGED": 29
    },
    "names": {
+    "HEAD": "Azurblaue Seidenkapuze",
     "NECK": "Zaubererhalsband",
     "SHOULDER": "Geisterhafter Mantel",
     "SHIRT": "Neophytenhemd",
     "CHEST": "Gewand des Fäulnisheilers",
     "WAIST": "Gürtel von Arugal",
-    "LEGS": "Garstige Beinkleider",
+    "LEGS": "Gazeträumer-Hose",
     "FEET": "Treter des Fäulnisheilers",
     "WRIST": "Tabithas Manschetten",
     "HANDS": "Zerfledderte Fäustlinge",
     "FINGER_1": "Reich mit Juwelen besetzter Ring",
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Starres Cape der Magie",
-    "MAIN_HAND": "Mondsichelstab",
-    "RANGED": "Cookies Rührerrute"
+    "MAIN_HAND": "Troggzepter",
+    "OFF_HAND": "Hexenfinger",
+    "RANGED": "Grabsteinszepter"
    },
    "profs": {
-    "Tailoring": 95,
+    "Tailoring": 121,
     "Enchanting": 61,
     "Cooking": 4,
     "First Aid": 20
@@ -242,7 +248,8 @@
     62015,
     777,
     854,
-    768
+    768,
+    62000
    ],
    "guild": "Geilbleiber"
   },
@@ -3297,6 +3304,15 @@
    "prevName": "Angel"
   },
   {
+   "t": 1795303680000,
+   "key": "heili-kabel",
+   "type": "achievement",
+   "id": 62000,
+   "name": "Novize: Priester",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Priester.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626004.jpg"
+  },
+  {
    "t": 1795304760000,
    "key": "orkward-orkbert",
    "type": "achievement",
@@ -3453,6 +3469,79 @@
    "ilvl": 28,
    "prev": 23,
    "prevName": "Siegelring des getöteten Barons"
+  },
+  {
+   "t": 1795309081000,
+   "key": "heili-kabel",
+   "type": "level",
+   "from": 24,
+   "to": 26,
+   "max": false
+  },
+  {
+   "t": 1795309081000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 7048,
+   "name": "Azurblaue Seidenkapuze",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133131.jpg",
+   "slot": "Kopf",
+   "ilvl": 29,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795309081000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 6903,
+   "name": "Gazeträumer-Hose",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134582.jpg",
+   "slot": "Beine",
+   "ilvl": 28,
+   "prev": 18,
+   "prevName": "Garstige Beinkleider"
+  },
+  {
+   "t": 1795309081000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 272996,
+   "name": "Troggzepter",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133727.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 24,
+   "prevName": "Mondsichelstab"
+  },
+  {
+   "t": 1795309081000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 16887,
+   "name": "Hexenfinger",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135474.jpg",
+   "slot": "Schildhand",
+   "ilvl": 32,
+   "prev": null,
+   "prevName": null
+  },
+  {
+   "t": 1795309081000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 7001,
+   "name": "Grabsteinszepter",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135466.jpg",
+   "slot": "Distanzwaffe",
+   "ilvl": 29,
+   "prev": 22,
+   "prevName": "Cookies Rührerrute"
   }
  ]
 }
