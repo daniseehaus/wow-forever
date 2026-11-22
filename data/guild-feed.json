@@ -314,8 +314,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 54,
-   "lastLogin": 1795297935000,
+   "level": 55,
+   "lastLogin": 1795337191000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -374,7 +374,8 @@
     62015,
     777,
     854,
-    768
+    768,
+    62000
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
@@ -3954,6 +3955,15 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626004.jpg"
   },
   {
+   "t": 1795303680000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 62000,
+   "name": "Novize: Priester",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Priester.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626004.jpg"
+  },
+  {
    "t": 1795304760000,
    "key": "orkward-orkbert",
    "type": "achievement",
@@ -4172,6 +4182,14 @@
    "ilvl": 29,
    "prev": 22,
    "prevName": "Cookies Rührerrute"
+  },
+  {
+   "t": 1795337191000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 54,
+   "to": 55,
+   "max": false
   }
  ]
 }
