@@ -485,7 +485,7 @@
    "classId": 1,
    "rank": 1,
    "level": 26,
-   "lastLogin": 1795306544000,
+   "lastLogin": 1795338265000,
    "items": {
     "SHOULDER": 3480,
     "SHIRT": 6125,
@@ -751,7 +751,7 @@
    "classId": 11,
    "rank": 1,
    "level": 16,
-   "lastLogin": 1795298019000,
+   "lastLogin": 1795338233000,
    "items": {
     "CHEST": 5341,
     "WAIST": 5275,
@@ -791,7 +791,8 @@
    },
    "achs": [
     728,
-    855
+    855,
+    61989
    ]
   },
   "erwin-elemental": {
@@ -3966,6 +3967,15 @@
   {
    "t": 1795304760000,
    "key": "orkward-orkbert",
+   "type": "achievement",
+   "id": 61989,
+   "name": "Novize: Jäger",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Jäger.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626000.jpg"
+  },
+  {
+   "t": 1795304760000,
+   "key": "freddie-muhrcury",
    "type": "achievement",
    "id": 61989,
    "name": "Novize: Jäger",
