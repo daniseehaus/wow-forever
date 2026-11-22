@@ -37,8 +37,8 @@
    }
   },
   "orkward-orkbert": {
-   "level": 24,
-   "lastLogin": 1795296901000,
+   "level": 25,
+   "lastLogin": 1795305615000,
    "items": {
     "HEAD": 252504,
     "SHOULDER": 5404,
@@ -50,7 +50,7 @@
     "WRIST": 271202,
     "HANDS": 10413,
     "FINGER_1": 6414,
-    "FINGER_2": 279867,
+    "FINGER_2": 17694,
     "BACK": 2316,
     "MAIN_HAND": 872,
     "RANGED": 4576,
@@ -67,7 +67,7 @@
     "WRIST": 20,
     "HANDS": 19,
     "FINGER_1": 29,
-    "FINGER_2": 23,
+    "FINGER_2": 28,
     "BACK": 22,
     "MAIN_HAND": 23,
     "RANGED": 21,
@@ -84,7 +84,7 @@
     "WRIST": "Welkbissarmschienen",
     "HANDS": "Handschuhe des Giftzahns",
     "FINGER_1": "Siegel von Sylvanas",
-    "FINGER_2": "Siegelring des getöteten Barons",
+    "FINGER_2": "Band der Faust",
     "BACK": "Dunkler Lederumhang",
     "MAIN_HAND": "Steinschneider",
     "RANGED": "Leichter Bogen",
@@ -92,14 +92,15 @@
    },
    "profs": {
     "Leatherworking": 115,
-    "Skinning": 175,
+    "Skinning": 179,
     "Cooking": 121,
     "Fishing": 1,
     "First Aid": 15
    },
    "achs": [
     728,
-    855
+    855,
+    61989
    ],
    "guild": "Geilbleiber"
   },
@@ -239,11 +240,11 @@
    "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
-   "level": 25,
-   "lastLogin": 1795274116000,
+   "level": 26,
+   "lastLogin": 1795305579000,
    "items": {
     "SHOULDER": 270023,
-    "CHEST": 6473,
+    "CHEST": 270043,
     "WAIST": 10403,
     "LEGS": 10410,
     "FEET": 273007,
@@ -257,7 +258,7 @@
    },
    "ilvls": {
     "SHOULDER": 27,
-    "CHEST": 23,
+    "CHEST": 32,
     "WAIST": 22,
     "LEGS": 22,
     "FEET": 18,
@@ -271,7 +272,7 @@
    },
    "names": {
     "SHOULDER": "Gegerbte Schulterpolster",
-    "CHEST": "Rüstung des Giftzahns",
+    "CHEST": "Brustschutz des Träumers",
     "WAIST": "Geschwärzter Gürtel der Defias",
     "LEGS": "Gamaschen des Giftzahns",
     "FEET": "Abgrundläufer",
@@ -285,7 +286,7 @@
    },
    "profs": {
     "Alchemy": 225,
-    "Herbalism": 132,
+    "Herbalism": 137,
     "Cooking": 21
    },
    "achs": [
@@ -3278,6 +3279,57 @@
    "ilvl": 31,
    "prev": 1,
    "prevName": "Angel"
+  },
+  {
+   "t": 1795304760000,
+   "key": "orkward-orkbert",
+   "type": "achievement",
+   "id": 61989,
+   "name": "Novize: Jäger",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Jäger.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626000.jpg"
+  },
+  {
+   "t": 1795305579000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 25,
+   "to": 26,
+   "max": false
+  },
+  {
+   "t": 1795305579000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 270043,
+   "name": "Brustschutz des Träumers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132716.jpg",
+   "slot": "Brust",
+   "ilvl": 32,
+   "prev": 23,
+   "prevName": "Rüstung des Giftzahns"
+  },
+  {
+   "t": 1795305615000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 24,
+   "to": 25,
+   "max": false
+  },
+  {
+   "t": 1795305615000,
+   "key": "orkward-orkbert",
+   "type": "item",
+   "id": 17694,
+   "name": "Band der Faust",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133344.jpg",
+   "slot": "Ring 2",
+   "ilvl": 28,
+   "prev": 23,
+   "prevName": "Siegelring des getöteten Barons"
   }
  ]
 }

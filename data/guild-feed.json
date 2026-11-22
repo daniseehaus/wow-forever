@@ -101,11 +101,11 @@
    "surname": "Sturmzüngler",
    "classId": 7,
    "rank": 1,
-   "level": 25,
-   "lastLogin": 1795274116000,
+   "level": 26,
+   "lastLogin": 1795305579000,
    "items": {
     "SHOULDER": 270023,
-    "CHEST": 6473,
+    "CHEST": 270043,
     "WAIST": 10403,
     "LEGS": 10410,
     "FEET": 273007,
@@ -119,7 +119,7 @@
    },
    "ilvls": {
     "SHOULDER": 27,
-    "CHEST": 23,
+    "CHEST": 32,
     "WAIST": 22,
     "LEGS": 22,
     "FEET": 18,
@@ -133,7 +133,7 @@
    },
    "profs": {
     "Alchemy": 225,
-    "Herbalism": 132,
+    "Herbalism": 137,
     "Cooking": 21
    },
    "achs": [
@@ -151,7 +151,7 @@
    ],
    "names": {
     "SHOULDER": "Gegerbte Schulterpolster",
-    "CHEST": "Rüstung des Giftzahns",
+    "CHEST": "Brustschutz des Träumers",
     "WAIST": "Geschwärzter Gürtel der Defias",
     "LEGS": "Gamaschen des Giftzahns",
     "FEET": "Abgrundläufer",
@@ -539,49 +539,49 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 34,
-   "lastLogin": 1795278215000,
+   "level": 36,
+   "lastLogin": 1795305542000,
    "items": {
     "HEAD": 253955,
     "NECK": 273049,
-    "SHOULDER": 3748,
+    "SHOULDER": 4197,
     "SHIRT": 2579,
     "CHEST": 9791,
     "WAIST": 273039,
     "LEGS": 6910,
     "FEET": 279843,
-    "WRIST": 4036,
+    "WRIST": 14187,
     "HANDS": 9795,
-    "FINGER_1": 3760,
+    "FINGER_1": 6750,
     "FINGER_2": 279845,
     "TRINKET_1": 276895,
-    "BACK": 15468,
+    "BACK": 274149,
     "MAIN_HAND": 15109,
     "RANGED": 7001
    },
    "ilvls": {
     "HEAD": 25,
     "NECK": 35,
-    "SHOULDER": 28,
+    "SHOULDER": 36,
     "SHIRT": 14,
     "CHEST": 29,
     "WAIST": 34,
     "LEGS": 29,
     "FEET": 36,
-    "WRIST": 27,
+    "WRIST": 28,
     "HANDS": 26,
     "FINGER_1": 32,
     "FINGER_2": 36,
     "TRINKET_1": 30,
-    "BACK": 29,
+    "BACK": 30,
     "MAIN_HAND": 25,
     "RANGED": 29
    },
    "profs": {
     "Tailoring": 146,
-    "Herbalism": 154,
-    "Cooking": 192,
-    "Fishing": 161,
+    "Herbalism": 159,
+    "Cooking": 207,
+    "Fishing": 163,
     "First Aid": 136
    },
    "achs": [
@@ -593,18 +593,18 @@
    "names": {
     "HEAD": "Schattenreif",
     "NECK": "Facettierter Anhänger des Erzmagisters",
-    "SHOULDER": "Felinen-Mantel",
+    "SHOULDER": "Beryllpolster",
     "SHIRT": "Grünes Leinenhemd",
     "CHEST": "Efeustofftunika des Ältesten",
     "WAIST": "Seuchenblattseil",
     "LEGS": "Egel-Hose",
     "FEET": "Verzauberte Sandalen",
-    "WRIST": "Silberfadenmanschetten",
+    "WRIST": "Regenmachermanschetten des Schattenzorns",
     "HANDS": "Efeustoffhandschuhe des Schattenzorns",
-    "FINGER_1": "Band von Undercity",
+    "FINGER_1": "Natternreifen",
     "FINGER_2": "Solides Goldband",
     "TRINKET_1": "Transformativer Kokon",
-    "BACK": "Windsongtuch",
+    "BACK": "Dornenwirkertuch",
     "MAIN_HAND": "Stab von Soran'ruk",
     "RANGED": "Grabsteinszepter"
    }
@@ -663,8 +663,8 @@
    "surname": "Orkbert",
    "classId": 3,
    "rank": 1,
-   "level": 24,
-   "lastLogin": 1795296901000,
+   "level": 25,
+   "lastLogin": 1795305615000,
    "items": {
     "HEAD": 252504,
     "SHOULDER": 5404,
@@ -676,7 +676,7 @@
     "WRIST": 271202,
     "HANDS": 10413,
     "FINGER_1": 6414,
-    "FINGER_2": 279867,
+    "FINGER_2": 17694,
     "BACK": 2316,
     "MAIN_HAND": 872,
     "RANGED": 4576,
@@ -693,7 +693,7 @@
     "WRIST": 20,
     "HANDS": 19,
     "FINGER_1": 29,
-    "FINGER_2": 23,
+    "FINGER_2": 28,
     "BACK": 22,
     "MAIN_HAND": 23,
     "RANGED": 21,
@@ -710,7 +710,7 @@
     "WRIST": "Welkbissarmschienen",
     "HANDS": "Handschuhe des Giftzahns",
     "FINGER_1": "Siegel von Sylvanas",
-    "FINGER_2": "Siegelring des getöteten Barons",
+    "FINGER_2": "Band der Faust",
     "BACK": "Dunkler Lederumhang",
     "MAIN_HAND": "Steinschneider",
     "RANGED": "Leichter Bogen",
@@ -718,14 +718,15 @@
    },
    "profs": {
     "Leatherworking": 115,
-    "Skinning": 175,
+    "Skinning": 179,
     "Cooking": 121,
     "Fishing": 1,
     "First Aid": 15
    },
    "achs": [
     728,
-    855
+    855,
+    61989
    ]
   },
   "freddie-muhrcury": {
@@ -3919,6 +3920,78 @@
    "ilvl": 31,
    "prev": 1,
    "prevName": "Angel"
+  },
+  {
+   "t": 1795304760000,
+   "key": "orkward-orkbert",
+   "type": "achievement",
+   "id": 61989,
+   "name": "Novize: Jäger",
+   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Jäger.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626000.jpg"
+  },
+  {
+   "t": 1795305542000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 34,
+   "to": 36,
+   "max": false
+  },
+  {
+   "t": 1795305542000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 4197,
+   "name": "Beryllpolster",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135036.jpg",
+   "slot": "Schultern",
+   "ilvl": 36,
+   "prev": 28,
+   "prevName": "Felinen-Mantel"
+  },
+  {
+   "t": 1795305542000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 274149,
+   "name": "Dornenwirkertuch",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133763.jpg",
+   "slot": "Rücken",
+   "ilvl": 30,
+   "prev": 29,
+   "prevName": "Windsongtuch"
+  },
+  {
+   "t": 1795305579000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 25,
+   "to": 26,
+   "max": false
+  },
+  {
+   "t": 1795305579000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 270043,
+   "name": "Brustschutz des Träumers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132716.jpg",
+   "slot": "Brust",
+   "ilvl": 32,
+   "prev": 23,
+   "prevName": "Rüstung des Giftzahns"
+  },
+  {
+   "t": 1795305615000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 24,
+   "to": 25,
+   "max": false
   }
  ]
 }
