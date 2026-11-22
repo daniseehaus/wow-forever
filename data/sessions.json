@@ -1,6 +1,6 @@
 {
  "era": "classic",
- "lastEnd": 1795309081000,
+ "lastEnd": 1795348513000,
  "levels": {
   "wladimir-klatschko": 26,
   "heili-kabel": 26,
@@ -31,7 +31,7 @@
   "heili-kabel": {
    "ilvl": 22,
    "profs": {
-    "Tailoring": 121,
+    "Tailoring": 125,
     "Enchanting": 61,
     "Cooking": 4,
     "First Aid": 20
@@ -984,6 +984,81 @@
      "logout": 1795305615000,
      "respec": false,
      "since": 1795274796000
+    }
+   }
+  },
+  {
+   "start": 1795347832000,
+   "end": 1795348513000,
+   "gain": 0,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst"
+   ],
+   "stats": {
+    "wladimir-klatschko": {
+     "level": [
+      26,
+      26
+     ],
+     "ilvl": [
+      18,
+      18
+     ],
+     "prof": 0,
+     "profs": {},
+     "logout": 1795347832000,
+     "respec": false,
+     "since": 1795306544000
+    },
+    "heili-kabel": {
+     "level": [
+      26,
+      26
+     ],
+     "ilvl": [
+      22,
+      22
+     ],
+     "prof": 4,
+     "profs": {
+      "Tailoring": 4
+     },
+     "logout": 1795347949000,
+     "respec": false,
+     "since": 1795309081000
+    },
+    "zukk-sturmzüngler": {
+     "level": [
+      26,
+      26
+     ],
+     "ilvl": [
+      18,
+      18
+     ],
+     "prof": 0,
+     "profs": {},
+     "logout": 1795347850000,
+     "respec": false,
+     "since": 1795334511000
+    },
+    "pavel-plattenpapst": {
+     "level": [
+      26,
+      26
+     ],
+     "ilvl": [
+      21,
+      21
+     ],
+     "prof": 0,
+     "profs": {},
+     "logout": 1795348513000,
+     "respec": false,
+     "since": 1795307943000
     }
    }
   }

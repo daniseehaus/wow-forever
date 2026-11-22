@@ -3568,6 +3568,18 @@
    "ilvl": 27,
    "prev": 18,
    "prevName": "Schmutzige Donnerbüchse"
+  },
+  {
+   "t": 1795348513000,
+   "type": "session",
+   "start": 1795347832000,
+   "gain": 0,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst"
+   ]
   }
  ]
 }
