@@ -3542,6 +3542,19 @@
    "ilvl": 29,
    "prev": 22,
    "prevName": "Cookies Rührerrute"
+  },
+  {
+   "t": 1795309081000,
+   "type": "session",
+   "start": 1795305579000,
+   "gain": 1.4,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "pavel-plattenpapst",
+    "orkward-orkbert"
+   ]
   }
  ]
 }
