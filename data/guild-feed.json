@@ -170,19 +170,19 @@
    "surname": "Plattenpapst",
    "classId": 2,
    "rank": 1,
-   "level": 25,
-   "lastLogin": 1795302803000,
+   "level": 26,
+   "lastLogin": 1795307943000,
    "items": {
     "HEAD": 4368,
     "SHOULDER": 3480,
     "SHIRT": 6125,
-    "CHEST": 6907,
+    "CHEST": 270043,
     "WAIST": 4697,
-    "LEGS": 9789,
+    "LEGS": 270031,
     "FEET": 10658,
     "WRIST": 4534,
     "HANDS": 12994,
-    "FINGER_1": 279867,
+    "FINGER_1": 17694,
     "FINGER_2": 6414,
     "BACK": 4710,
     "MAIN_HAND": 267369
@@ -191,13 +191,13 @@
     "HEAD": 20,
     "SHOULDER": 22,
     "SHIRT": 1,
-    "CHEST": 27,
+    "CHEST": 32,
     "WAIST": 20,
-    "LEGS": 19,
+    "LEGS": 29,
     "FEET": 25,
     "WRIST": 28,
     "HANDS": 23,
-    "FINGER_1": 23,
+    "FINGER_1": 28,
     "FINGER_2": 29,
     "BACK": 22,
     "MAIN_HAND": 31
@@ -216,13 +216,13 @@
     "HEAD": "Fliegerbrille",
     "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Schildkrötenrüstung",
+    "CHEST": "Brustschutz des Träumers",
     "WAIST": "Brünierter Gurt",
-    "LEGS": "Räuber-Beinschützer der Macht",
+    "LEGS": "Dunkle Ritualgamaschen",
     "FEET": "Morastgaloschen",
     "WRIST": "Stahlschnallenarmschienen",
     "HANDS": "Thorbias' Stulpen",
-    "FINGER_1": "Siegelring des getöteten Barons",
+    "FINGER_1": "Band der Faust",
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Waldumhang",
     "MAIN_HAND": "Wolfsbann"
@@ -235,7 +235,7 @@
    "classId": 4,
    "rank": 1,
    "level": 33,
-   "lastLogin": 1795278903000,
+   "lastLogin": 1795307903000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5404,
@@ -274,7 +274,7 @@
    },
    "profs": {
     "Leatherworking": 139,
-    "Skinning": 224,
+    "Skinning": 225,
     "Cooking": 60,
     "First Aid": 149
    },
@@ -4055,6 +4055,47 @@
    "ilvl": 29,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795307903000,
+   "key": "bernhard-backstab",
+   "type": "prof",
+   "name": "Skinning",
+   "skill": 225
+  },
+  {
+   "t": 1795307943000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 25,
+   "to": 26,
+   "max": false
+  },
+  {
+   "t": 1795307943000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 270043,
+   "name": "Brustschutz des Träumers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132716.jpg",
+   "slot": "Brust",
+   "ilvl": 32,
+   "prev": 27,
+   "prevName": "Schildkrötenrüstung"
+  },
+  {
+   "t": 1795307943000,
+   "key": "pavel-plattenpapst",
+   "type": "item",
+   "id": 270031,
+   "name": "Dunkle Ritualgamaschen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134582.jpg",
+   "slot": "Beine",
+   "ilvl": 29,
+   "prev": 19,
+   "prevName": "Räuber-Beinschützer der Macht"
   }
  ]
 }
