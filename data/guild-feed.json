@@ -317,8 +317,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 55,
-   "lastLogin": 1795345944000,
+   "level": 56,
+   "lastLogin": 1795388372000,
    "items": {
     "HEAD": 10763,
     "NECK": 274955,
@@ -326,16 +326,16 @@
     "SHIRT": 6125,
     "CHEST": 273035,
     "WAIST": 10768,
-    "LEGS": 11882,
-    "FEET": 9637,
-    "WRIST": 270073,
-    "HANDS": 19126,
+    "LEGS": 17711,
+    "FEET": 11872,
+    "WRIST": 17714,
+    "HANDS": 279824,
     "FINGER_1": 275045,
-    "FINGER_2": 9533,
+    "FINGER_2": 9588,
     "TRINKET_1": 11122,
     "TRINKET_2": 12846,
     "BACK": 271810,
-    "MAIN_HAND": 9413
+    "MAIN_HAND": 276732
    },
    "ilvls": {
     "HEAD": 43,
@@ -344,21 +344,21 @@
     "SHIRT": 1,
     "CHEST": 32,
     "WAIST": 42,
-    "LEGS": 56,
-    "FEET": 45,
-    "WRIST": 40,
-    "HANDS": 49,
+    "LEGS": 54,
+    "FEET": 54,
+    "WRIST": 54,
+    "HANDS": 55,
     "FINGER_1": 45,
-    "FINGER_2": 49,
+    "FINGER_2": 37,
     "TRINKET_1": 50,
     "TRINKET_2": 1,
     "BACK": 43,
-    "MAIN_HAND": 49
+    "MAIN_HAND": 52
    },
    "profs": {
-    "Mining": 225,
+    "Mining": 233,
     "Blacksmithing": 150,
-    "Cooking": 179,
+    "Cooking": 182,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -387,16 +387,16 @@
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Manaverformtes Kettenhemd",
     "WAIST": "Eberheldengürtel",
-    "LEGS": "Vorhut-Gamaschen",
-    "FEET": "Schienbeintreter-Stiefel",
-    "WRIST": "Manschetten von Stromgarde",
-    "HANDS": "Gußplattenstulpen",
+    "LEGS": "Elementarfelsgamaschen",
+    "FEET": "Scheuende Schienbeinschützer",
+    "WRIST": "Armschienen der Steinprinzessin",
+    "HANDS": "Kampfstulpen der Kor'kron",
     "FINGER_1": "Ogerhornring",
-    "FINGER_2": "Masons Bruderschaftsring",
+    "FINGER_2": "Noggs Goldring",
     "TRINKET_1": "Karotte am Stiel",
     "TRINKET_2": "Anstecknadel der Argentumdämmerung",
     "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Der Felstrommler"
+    "MAIN_HAND": "Willensbrecher von Alcaz"
    }
   },
   "lokk-eidlöter": {
@@ -4297,6 +4297,66 @@
    "from": 36,
    "to": 37,
    "max": false
+  },
+  {
+   "t": 1795388372000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 55,
+   "to": 56,
+   "max": false
+  },
+  {
+   "t": 1795388372000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 17711,
+   "name": "Elementarfelsgamaschen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134584.jpg",
+   "slot": "Beine",
+   "ilvl": 54,
+   "prev": 56,
+   "prevName": "Vorhut-Gamaschen"
+  },
+  {
+   "t": 1795388372000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 17714,
+   "name": "Armschienen der Steinprinzessin",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132613.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 54,
+   "prev": 40,
+   "prevName": "Manschetten von Stromgarde"
+  },
+  {
+   "t": 1795388372000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9588,
+   "name": "Noggs Goldring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
+   "slot": "Ring 2",
+   "ilvl": 37,
+   "prev": 49,
+   "prevName": "Masons Bruderschaftsring"
+  },
+  {
+   "t": 1795388372000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 276732,
+   "name": "Willensbrecher von Alcaz",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133479.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 52,
+   "prev": 49,
+   "prevName": "Der Felstrommler"
   }
  ]
 }
