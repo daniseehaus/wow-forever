@@ -255,8 +255,9 @@
   },
   "zukk-sturmzüngler": {
    "level": 26,
-   "lastLogin": 1795347850000,
+   "lastLogin": 1795382900000,
    "items": {
+    "HEAD": 7048,
     "SHOULDER": 270023,
     "CHEST": 270043,
     "WAIST": 10403,
@@ -271,6 +272,7 @@
     "RANGED": 263412
    },
    "ilvls": {
+    "HEAD": 29,
     "SHOULDER": 27,
     "CHEST": 32,
     "WAIST": 22,
@@ -285,6 +287,7 @@
     "RANGED": 10
    },
    "names": {
+    "HEAD": "Azurblaue Seidenkapuze",
     "SHOULDER": "Gegerbte Schulterpolster",
     "CHEST": "Brustschutz des Träumers",
     "WAIST": "Geschwärzter Gürtel der Defias",
@@ -3580,6 +3583,19 @@
     "zukk-sturmzüngler",
     "pavel-plattenpapst"
    ]
+  },
+  {
+   "t": 1795382900000,
+   "key": "zukk-sturmzüngler",
+   "type": "item",
+   "id": 7048,
+   "name": "Azurblaue Seidenkapuze",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133131.jpg",
+   "slot": "Kopf",
+   "ilvl": 29,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
