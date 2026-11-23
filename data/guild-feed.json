@@ -245,10 +245,10 @@
    "classId": 4,
    "rank": 1,
    "level": 33,
-   "lastLogin": 1795307903000,
+   "lastLogin": 1795430906000,
    "items": {
     "HEAD": 3732,
-    "SHOULDER": 5404,
+    "SHOULDER": 5964,
     "SHIRT": 2105,
     "CHEST": 271212,
     "WAIST": 5355,
@@ -266,7 +266,7 @@
    },
    "ilvls": {
     "HEAD": 30,
-    "SHOULDER": 23,
+    "SHOULDER": 35,
     "SHIRT": 1,
     "CHEST": 22,
     "WAIST": 28,
@@ -283,18 +283,19 @@
     "AMMO": 15
    },
    "profs": {
-    "Leatherworking": 139,
+    "Leatherworking": 151,
     "Skinning": 225,
     "Cooking": 60,
-    "First Aid": 149
+    "First Aid": 185
    },
    "achs": [
     728,
-    62003
+    62003,
+    62024
    ],
    "names": {
     "HEAD": "Kapuzenkutte",
-    "SHOULDER": "Schlangen-Schultern",
+    "SHOULDER": "Barbarische Schultern",
     "SHIRT": "Rohlingshemd",
     "CHEST": "Blutige Brustwickel",
     "WAIST": "Bestienmeistergurt",
@@ -4374,6 +4375,29 @@
    "type": "prof",
    "name": "Enchanting",
    "skill": 90
+  },
+  {
+   "t": 1795428120000,
+   "key": "bernhard-backstab",
+   "type": "achievement",
+   "id": 62024,
+   "name": "Lederverarbeitungsgeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Lederverarbeitung.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136247.jpg"
+  },
+  {
+   "t": 1795430906000,
+   "key": "bernhard-backstab",
+   "type": "prof",
+   "name": "Leatherworking",
+   "skill": 151
+  },
+  {
+   "t": 1795430906000,
+   "key": "bernhard-backstab",
+   "type": "prof",
+   "name": "First Aid",
+   "skill": 185
   }
  ]
 }
