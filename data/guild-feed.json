@@ -558,8 +558,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 37,
-   "lastLogin": 1795399081000,
+   "level": 38,
+   "lastLogin": 1795452311000,
    "items": {
     "HEAD": 253955,
     "NECK": 273049,
@@ -598,7 +598,7 @@
    },
    "profs": {
     "Tailoring": 161,
-    "Herbalism": 168,
+    "Herbalism": 172,
     "Cooking": 207,
     "Fishing": 163,
     "First Aid": 136
@@ -4411,6 +4411,14 @@
    "ilvl": 40,
    "prev": 40,
    "prevName": "Umbralschuppengürtel"
+  },
+  {
+   "t": 1795452311000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 37,
+   "to": 38,
+   "max": false
   }
  ]
 }
