@@ -407,14 +407,14 @@
    "classId": 2,
    "rank": 1,
    "level": 38,
-   "lastLogin": 1795382819000,
+   "lastLogin": 1795431708000,
    "items": {
     "HEAD": 6688,
     "NECK": 281265,
     "SHOULDER": 273028,
     "SHIRT": 6125,
     "CHEST": 15500,
-    "WAIST": 286658,
+    "WAIST": 274605,
     "LEGS": 15511,
     "FEET": 273042,
     "WRIST": 251965,
@@ -469,7 +469,7 @@
     "SHOULDER": "Reliquiarmantelung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Kundschafter-Brustschutz der Intelligenz",
-    "WAIST": "Umbralschuppengürtel",
+    "WAIST": "Salzige Schärpe",
     "LEGS": "Grunzerbeinschützer des Adlers",
     "FEET": "Manaschuppentreter",
     "WRIST": "Armschienen des untoten Ritters",
@@ -4398,6 +4398,19 @@
    "type": "prof",
    "name": "First Aid",
    "skill": 185
+  },
+  {
+   "t": 1795431708000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 274605,
+   "name": "Salzige Schärpe",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132496.jpg",
+   "slot": "Taille",
+   "ilvl": 40,
+   "prev": 40,
+   "prevName": "Umbralschuppengürtel"
   }
  ]
 }
