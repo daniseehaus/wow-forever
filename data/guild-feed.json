@@ -807,27 +807,27 @@
    "surname": "Elemental",
    "classId": 7,
    "rank": 1,
-   "level": 15,
-   "lastLogin": 1795398665000,
+   "level": 16,
+   "lastLogin": 1795523087000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
-    "WAIST": 3370,
-    "LEGS": 4309,
-    "FEET": 15012,
+    "WAIST": 4687,
+    "LEGS": 15450,
+    "FEET": 14114,
     "WRIST": 15452,
     "HANDS": 15016,
     "FINGER_1": 281268,
     "BACK": 2584,
-    "MAIN_HAND": 15445,
+    "MAIN_HAND": 272996,
     "OFF_HAND": 15478,
     "RANGED": 263412
    },
    "ilvls": {
     "SHIRT": 1,
     "CHEST": 12,
-    "WAIST": 8,
-    "LEGS": 14,
+    "WAIST": 14,
+    "LEGS": 18,
     "FEET": 16,
     "WRIST": 18,
     "HANDS": 16,
@@ -840,14 +840,14 @@
    "names": {
     "SHIRT": "Primitiver Mantel",
     "CHEST": "Blaue Leinenweste",
-    "WAIST": "Flickwerkgürtel",
-    "LEGS": "Handgenähte Leinenkniehosen",
-    "FEET": "Werwolf-Schuhe der Stärke",
+    "WAIST": "Barbarischer Stoffgürtel",
+    "LEGS": "Gamaschen des Sumpfgräbers",
+    "FEET": "Ureinwohnerfußlappen der Intelligenz",
     "WRIST": "Federleichte Armschienen",
     "HANDS": "Werwolf-Handlappen der Heilung",
     "FINGER_1": "Ausgelaugter Ritualring",
     "BACK": "Wollcape",
-    "MAIN_HAND": "Hammer von Orgrimmar",
+    "MAIN_HAND": "Troggzepter",
     "OFF_HAND": "Stürmerschild",
     "RANGED": "Totem der Geladenen Flammen"
    },
@@ -4564,6 +4564,27 @@
    "ilvl": 37,
    "prev": 40,
    "prevName": "Umbralschuppengürtel"
+  },
+  {
+   "t": 1795523087000,
+   "key": "erwin-elemental",
+   "type": "level",
+   "from": 15,
+   "to": 16,
+   "max": false
+  },
+  {
+   "t": 1795523087000,
+   "key": "erwin-elemental",
+   "type": "item",
+   "id": 272996,
+   "name": "Troggzepter",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133727.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 18,
+   "prevName": "Hammer von Orgrimmar"
   }
  ]
 }
