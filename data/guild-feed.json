@@ -318,8 +318,8 @@
    "surname": "Hanno",
    "classId": 2,
    "rank": 1,
-   "level": 58,
-   "lastLogin": 1795470869000,
+   "level": 60,
+   "lastLogin": 1795560672000,
    "items": {
     "HEAD": 10763,
     "NECK": 19159,
@@ -328,7 +328,7 @@
     "CHEST": 9650,
     "WAIST": 10768,
     "LEGS": 17711,
-    "FEET": 11919,
+    "FEET": 276341,
     "WRIST": 17714,
     "HANDS": 279824,
     "FINGER_1": 275045,
@@ -346,7 +346,7 @@
     "CHEST": 55,
     "WAIST": 42,
     "LEGS": 54,
-    "FEET": 55,
+    "FEET": 58,
     "WRIST": 54,
     "HANDS": 55,
     "FINGER_1": 45,
@@ -380,7 +380,8 @@
     854,
     768,
     62000,
-    855
+    855,
+    61999
    ],
    "names": {
     "HEAD": "Eismetallbarbute",
@@ -390,7 +391,7 @@
     "CHEST": "Ehrenwache-Brustharnisch",
     "WAIST": "Eberheldengürtel",
     "LEGS": "Elementarfelsgamaschen",
-    "FEET": "Cragplate-Schienbeinschützer",
+    "FEET": "Beinschützer des Seuchenbezwingers",
     "WRIST": "Armschienen der Steinprinzessin",
     "HANDS": "Kampfstulpen der Kor'kron",
     "FINGER_1": "Ogerhornring",
@@ -4617,6 +4618,23 @@
    "from": 39,
    "to": 40,
    "max": false
+  },
+  {
+   "t": 1795560300000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 61999,
+   "name": "Meisterpaladin",
+   "desc": "Erreicht zum ersten Mal Stufe 60 mit einem Paladin.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
+  },
+  {
+   "t": 1795560672000,
+   "key": "hammer-hanno",
+   "type": "level",
+   "from": 58,
+   "to": 60,
+   "max": true
   }
  ]
 }
