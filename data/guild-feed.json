@@ -407,19 +407,19 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 39,
-   "lastLogin": 1795512336000,
+   "level": 40,
+   "lastLogin": 1795555051000,
    "items": {
-    "HEAD": 10008,
+    "HEAD": 8142,
     "NECK": 281265,
     "SHOULDER": 274607,
     "SHIRT": 6125,
     "CHEST": 2870,
     "WAIST": 10329,
-    "LEGS": 7440,
+    "LEGS": 14829,
     "FEET": 273042,
     "WRIST": 282716,
-    "HANDS": 16978,
+    "HANDS": 8139,
     "FINGER_1": 281673,
     "FINGER_2": 11994,
     "TRINKET_1": 273840,
@@ -428,16 +428,16 @@
     "MAIN_HAND": 279885
    },
    "ilvls": {
-    "HEAD": 43,
+    "HEAD": 44,
     "NECK": 20,
     "SHOULDER": 41,
     "SHIRT": 1,
     "CHEST": 29,
     "WAIST": 37,
-    "LEGS": 39,
+    "LEGS": 42,
     "FEET": 33,
     "WRIST": 32,
-    "HANDS": 27,
+    "HANDS": 44,
     "FINGER_1": 28,
     "FINGER_2": 25,
     "TRINKET_1": 29,
@@ -446,7 +446,7 @@
     "MAIN_HAND": 42
    },
    "profs": {
-    "Mining": 176,
+    "Mining": 184,
     "Blacksmithing": 188,
     "Cooking": 1,
     "First Aid": 40
@@ -465,16 +465,16 @@
     62006
    ],
    "names": {
-    "HEAD": "Weiße Banditenmaske",
+    "HEAD": "Chromitbarbute",
     "NECK": "Selbstvertrauen des Wegwächters",
     "SHOULDER": "Eingeweideschiftung",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Leuchtende silberne Brustplatte",
     "WAIST": "Scharlachroter Gürtel",
-    "LEGS": "Schildwachen-Beinkleider des Ritters",
+    "LEGS": "Symbolbeinplatten",
     "FEET": "Manaschuppentreter",
     "WRIST": "Machterfüllte Schuppenmanschetten",
-    "HANDS": "Warsongstulpen",
+    "HANDS": "Chromitstulpen",
     "FINGER_1": "Schleife der Aufopferung",
     "FINGER_2": "Korallenband des Gorillas",
     "TRINKET_1": "Verfluchtes Murlocauge",
@@ -4609,6 +4609,14 @@
    "name": "Cooking",
    "skill": 1,
    "learned": true
+  },
+  {
+   "t": 1795555051000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 39,
+   "to": 40,
+   "max": false
   }
  ]
 }
