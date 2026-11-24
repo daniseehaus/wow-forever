@@ -660,11 +660,7 @@
     "BACK": 8,
     "MAIN_HAND": 13
    },
-   "profs": {
-    "Leatherworking": 33,
-    "Skinning": 68,
-    "Cooking": 1
-   },
+   "profs": {},
    "achs": [],
    "names": {
     "SHIRT": "Hemd des Überlebenskünstlers von Thendal",
