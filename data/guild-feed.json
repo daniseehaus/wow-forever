@@ -660,7 +660,11 @@
     "BACK": 8,
     "MAIN_HAND": 13
    },
-   "profs": {},
+   "profs": {
+    "Leatherworking": 33,
+    "Skinning": 68,
+    "Cooking": 1
+   },
    "achs": [],
    "names": {
     "SHIRT": "Hemd des Überlebenskünstlers von Thendal",
@@ -4581,6 +4585,30 @@
    "ilvl": 18,
    "prev": 18,
    "prevName": "Hammer von Orgrimmar"
+  },
+  {
+   "t": 1795548735466,
+   "key": "pawris-hilton",
+   "type": "prof",
+   "name": "Leatherworking",
+   "skill": 33,
+   "learned": true
+  },
+  {
+   "t": 1795548735466,
+   "key": "pawris-hilton",
+   "type": "prof",
+   "name": "Skinning",
+   "skill": 68,
+   "learned": true
+  },
+  {
+   "t": 1795548735466,
+   "key": "pawris-hilton",
+   "type": "prof",
+   "name": "Cooking",
+   "skill": 1,
+   "learned": true
   }
  ]
 }
