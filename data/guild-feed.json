@@ -320,25 +320,24 @@
    "classId": 2,
    "rank": 1,
    "level": 60,
-   "lastLogin": 1795633301000,
+   "lastLogin": 1795647097000,
    "items": {
-    "HEAD": 20640,
+    "HEAD": 10763,
     "NECK": 19159,
     "SHOULDER": 9476,
     "SHIRT": 6125,
     "CHEST": 11195,
-    "WAIST": 272187,
+    "WAIST": 10768,
     "LEGS": 17711,
-    "FEET": 11919,
+    "FEET": 276341,
     "WRIST": 17714,
     "HANDS": 279824,
     "FINGER_1": 275045,
-    "FINGER_2": 276333,
+    "FINGER_2": 9533,
     "TRINKET_1": 270225,
     "TRINKET_2": 19120,
-    "BACK": 276737,
-    "MAIN_HAND": 6802,
-    "OFF_HAND": 279831
+    "BACK": 271810,
+    "MAIN_HAND": 276732
    },
    "ilvls": {
     "HEAD": null,
@@ -356,11 +355,10 @@
     "TRINKET_1": null,
     "TRINKET_2": null,
     "BACK": null,
-    "MAIN_HAND": null,
-    "OFF_HAND": null
+    "MAIN_HAND": null
    },
    "profs": {
-    "Mining": 246,
+    "Mining": 251,
     "Blacksmithing": 150,
     "Cooking": 223,
     "Fishing": 1,
@@ -389,23 +387,22 @@
     62356
    ],
    "names": {
-    "HEAD": "Südmeertopfhelm",
+    "HEAD": "Eismetallbarbute",
     "NECK": "Gewobene Efeuhalskette",
     "SHOULDER": "Große böse Schulterstücke",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Kriegsgeschmiedete Brustplatte",
-    "WAIST": "Dornenbeschlagene Kordel",
+    "WAIST": "Eberheldengürtel",
     "LEGS": "Elementarfelsgamaschen",
-    "FEET": "Cragplate-Schienbeinschützer",
+    "FEET": "Beinschützer des Seuchenbezwingers",
     "WRIST": "Armschienen der Steinprinzessin",
     "HANDS": "Kampfstulpen der Kor'kron",
     "FINGER_1": "Ogerhornring",
-    "FINGER_2": "Siegel der Familie Sawyer",
+    "FINGER_2": "Masons Bruderschaftsring",
     "TRINKET_1": "Juwel des Wachbefehlshabers",
     "TRINKET_2": "Rune des Wachbefehlshabers",
-    "BACK": "Umhang der Gezeitenherrin",
-    "MAIN_HAND": "Schwert des Omens",
-    "OFF_HAND": "Schicksalsgebundener Rundschild"
+    "BACK": "Abgestoßene Haut des Leichenfressers",
+    "MAIN_HAND": "Willensbrecher von Alcaz"
    }
   },
   "lokk-eidlöter": {
@@ -4875,6 +4872,71 @@
    "from": 26,
    "to": 27,
    "max": false
+  },
+  {
+   "t": 1795647097000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10763,
+   "name": "Eismetallbarbute",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133111.jpg",
+   "slot": "Kopf",
+   "ilvl": null,
+   "prev": null,
+   "prevName": "Südmeertopfhelm"
+  },
+  {
+   "t": 1795647097000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10768,
+   "name": "Eberheldengürtel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132500.jpg",
+   "slot": "Taille",
+   "ilvl": null,
+   "prev": null,
+   "prevName": "Dornenbeschlagene Kordel"
+  },
+  {
+   "t": 1795647097000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9533,
+   "name": "Masons Bruderschaftsring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
+   "slot": "Ring 2",
+   "ilvl": null,
+   "prev": null,
+   "prevName": "Siegel der Familie Sawyer"
+  },
+  {
+   "t": 1795647097000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 271810,
+   "name": "Abgestoßene Haut des Leichenfressers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133763.jpg",
+   "slot": "Rücken",
+   "ilvl": null,
+   "prev": null,
+   "prevName": "Umhang der Gezeitenherrin"
+  },
+  {
+   "t": 1795647097000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 276732,
+   "name": "Willensbrecher von Alcaz",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133479.jpg",
+   "slot": "Waffenhand",
+   "ilvl": null,
+   "prev": null,
+   "prevName": "Schwert des Omens"
   }
  ]
 }
