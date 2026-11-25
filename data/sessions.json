@@ -1,25 +1,25 @@
 {
  "era": "classic",
- "lastEnd": 1795348513000,
+ "lastEnd": 1795641816000,
  "levels": {
-  "wladimir-klatschko": 26,
-  "heili-kabel": 26,
-  "zukk-sturmzüngler": 26,
+  "wladimir-klatschko": 27,
+  "heili-kabel": 27,
+  "zukk-sturmzüngler": 27,
   "pavel-plattenpapst": 26,
-  "orkward-orkbert": 25
+  "orkward-orkbert": 27
  },
  "base": {
   "wladimir-klatschko": {
-   "ilvl": 18,
+   "ilvl": null,
    "profs": {
-    "Mining": 116,
+    "Mining": 121,
     "Blacksmithing": 97,
     "Cooking": 2,
     "First Aid": 1
    },
    "talents": {
     "135497": 1,
-    "135499": 1,
+    "135499": 2,
     "135500": 3,
     "135501": 1,
     "135502": 2,
@@ -29,32 +29,32 @@
    }
   },
   "heili-kabel": {
-   "ilvl": 22,
+   "ilvl": null,
    "profs": {
-    "Tailoring": 125,
-    "Enchanting": 61,
+    "Tailoring": 150,
+    "Enchanting": 71,
     "Cooking": 4,
     "First Aid": 20
    },
    "talents": {
     "135379": 5,
-    "135393": 4,
+    "135393": 5,
     "135396": 3,
     "142601": 5
    }
   },
   "zukk-sturmzüngler": {
-   "ilvl": 18,
+   "ilvl": null,
    "profs": {
     "Alchemy": 225,
-    "Herbalism": 137,
+    "Herbalism": 147,
     "Cooking": 21
    },
    "talents": {
     "134204": 1,
     "134210": 1,
     "134211": 3,
-    "134213": 1,
+    "134213": 2,
     "134214": 5,
     "134216": 3,
     "134217": 3
@@ -80,10 +80,10 @@
    }
   },
   "orkward-orkbert": {
-   "ilvl": 19,
+   "ilvl": null,
    "profs": {
     "Leatherworking": 115,
-    "Skinning": 179,
+    "Skinning": 188,
     "Cooking": 121,
     "Fishing": 1,
     "First Aid": 15
@@ -91,7 +91,7 @@
    "talents": {
     "134422": 5,
     "134428": 1,
-    "134431": 2,
+    "134431": 4,
     "134432": 1,
     "134434": 2,
     "134435": 2,
@@ -1059,6 +1059,87 @@
      "logout": 1795348513000,
      "respec": false,
      "since": 1795307943000
+    }
+   }
+  },
+  {
+   "start": 1795640397000,
+   "end": 1795641816000,
+   "gain": 1.25,
+   "players": [
+    "wladimir-klatschko",
+    "heili-kabel",
+    "zukk-sturmzüngler",
+    "orkward-orkbert"
+   ],
+   "stats": {
+    "wladimir-klatschko": {
+     "level": [
+      26,
+      27
+     ],
+     "ilvl": [
+      18,
+      null
+     ],
+     "prof": 5,
+     "profs": {
+      "Mining": 5
+     },
+     "logout": 1795640424000,
+     "respec": false,
+     "since": 1795347832000
+    },
+    "heili-kabel": {
+     "level": [
+      26,
+      27
+     ],
+     "ilvl": [
+      null,
+      null
+     ],
+     "prof": 9,
+     "profs": {
+      "Enchanting": 9
+     },
+     "logout": 1795641816000,
+     "respec": false,
+     "since": 1795625557000
+    },
+    "zukk-sturmzüngler": {
+     "level": [
+      26,
+      27
+     ],
+     "ilvl": [
+      22,
+      null
+     ],
+     "prof": 10,
+     "profs": {
+      "Herbalism": 10
+     },
+     "logout": 1795640521000,
+     "respec": false,
+     "since": 1795508728000
+    },
+    "orkward-orkbert": {
+     "level": [
+      25,
+      27
+     ],
+     "ilvl": [
+      19,
+      null
+     ],
+     "prof": 9,
+     "profs": {
+      "Skinning": 9
+     },
+     "logout": 1795640397000,
+     "respec": false,
+     "since": 1795305615000
     }
    }
   }
