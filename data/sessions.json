@@ -1330,24 +1330,6 @@
   ],
   "heili-kabel": [
    {
-    "t": 1794814357000,
-    "level": 19,
-    "base": {
-     "ilvl": 10,
-     "profs": {
-      "Tailoring": 95,
-      "Enchanting": 55,
-      "Cooking": 4,
-      "First Aid": 20
-     },
-     "talents": {
-      "135379": 2,
-      "135396": 3,
-      "142601": 5
-     }
-    }
-   },
-   {
     "t": 1794816751000,
     "level": 19,
     "base": {
@@ -1541,6 +1523,25 @@
      "profs": {
       "Tailoring": 125,
       "Enchanting": 61,
+      "Cooking": 4,
+      "First Aid": 20
+     },
+     "talents": {
+      "135379": 5,
+      "135393": 4,
+      "135396": 3,
+      "142601": 5
+     }
+    }
+   },
+   {
+    "t": 1795625557000,
+    "level": 26,
+    "base": {
+     "ilvl": null,
+     "profs": {
+      "Tailoring": 150,
+      "Enchanting": 62,
       "Cooking": 4,
       "First Aid": 20
      },
