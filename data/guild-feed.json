@@ -808,12 +808,12 @@
    "surname": "Elemental",
    "classId": 7,
    "rank": 1,
-   "level": 16,
-   "lastLogin": 1795610967000,
+   "level": 17,
+   "lastLogin": 1795623495000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
-    "WAIST": 4687,
+    "WAIST": 6539,
     "LEGS": 4309,
     "FEET": 15012,
     "WRIST": 15452,
@@ -841,7 +841,7 @@
    "names": {
     "SHIRT": "Primitiver Mantel",
     "CHEST": "Blaue Leinenweste",
-    "WAIST": "Barbarischer Stoffgürtel",
+    "WAIST": "Weidengürtel des Wals",
     "LEGS": "Handgenähte Leinenkniehosen",
     "FEET": "Werwolf-Schuhe der Stärke",
     "WRIST": "Federleichte Armschienen",
@@ -4677,6 +4677,14 @@
    "ilvl": null,
    "prev": 28,
    "prevName": "Bestienmeistergurt"
+  },
+  {
+   "t": 1795623495000,
+   "key": "erwin-elemental",
+   "type": "level",
+   "from": 16,
+   "to": 17,
+   "max": false
   }
  ]
 }
