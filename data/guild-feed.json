@@ -690,8 +690,8 @@
    "surname": "Orkbert",
    "classId": 3,
    "rank": 1,
-   "level": 25,
-   "lastLogin": 1795305615000,
+   "level": 27,
+   "lastLogin": 1795640397000,
    "items": {
     "HEAD": 252504,
     "SHOULDER": 5404,
@@ -706,25 +706,25 @@
     "FINGER_2": 17694,
     "BACK": 2316,
     "MAIN_HAND": 872,
-    "RANGED": 4576,
-    "AMMO": 2515
+    "RANGED": 3742,
+    "AMMO": 3030
    },
    "ilvls": {
-    "HEAD": 25,
-    "SHOULDER": 23,
-    "SHIRT": 1,
-    "CHEST": 23,
-    "WAIST": 25,
-    "LEGS": 26,
-    "FEET": 22,
-    "WRIST": 20,
-    "HANDS": 19,
-    "FINGER_1": 29,
-    "FINGER_2": 28,
-    "BACK": 22,
-    "MAIN_HAND": 23,
-    "RANGED": 21,
-    "AMMO": 15
+    "HEAD": null,
+    "SHOULDER": null,
+    "SHIRT": null,
+    "CHEST": null,
+    "WAIST": null,
+    "LEGS": null,
+    "FEET": null,
+    "WRIST": null,
+    "HANDS": null,
+    "FINGER_1": null,
+    "FINGER_2": null,
+    "BACK": null,
+    "MAIN_HAND": null,
+    "RANGED": null,
+    "AMMO": null
    },
    "names": {
     "HEAD": "Lederkapuze des Grubenkämpfers",
@@ -740,12 +740,12 @@
     "FINGER_2": "Band der Faust",
     "BACK": "Dunkler Lederumhang",
     "MAIN_HAND": "Steinschneider",
-    "RANGED": "Leichter Bogen",
-    "AMMO": "Scharfer Pfeil"
+    "RANGED": "Plünderbogen",
+    "AMMO": "Schneidenpfeil"
    },
    "profs": {
     "Leatherworking": 115,
-    "Skinning": 179,
+    "Skinning": 188,
     "Cooking": 121,
     "Fishing": 1,
     "First Aid": 15
@@ -4820,6 +4820,14 @@
    "ilvl": null,
    "prev": 23,
    "prevName": "Grünzwirnsandalen des Adlers"
+  },
+  {
+   "t": 1795640397000,
+   "key": "orkward-orkbert",
+   "type": "level",
+   "from": 25,
+   "to": 27,
+   "max": false
   }
  ]
 }
