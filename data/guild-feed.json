@@ -319,47 +319,49 @@
    "classId": 2,
    "rank": 1,
    "level": 60,
-   "lastLogin": 1795560672000,
+   "lastLogin": 1795633301000,
    "items": {
-    "HEAD": 10763,
+    "HEAD": 20640,
     "NECK": 19159,
     "SHOULDER": 9476,
     "SHIRT": 6125,
-    "CHEST": 9650,
-    "WAIST": 10768,
+    "CHEST": 11195,
+    "WAIST": 272187,
     "LEGS": 17711,
-    "FEET": 276341,
+    "FEET": 11919,
     "WRIST": 17714,
     "HANDS": 279824,
     "FINGER_1": 275045,
-    "FINGER_2": 9533,
+    "FINGER_2": 276333,
     "TRINKET_1": 270225,
     "TRINKET_2": 19120,
-    "BACK": 271810,
-    "MAIN_HAND": 276732
+    "BACK": 276737,
+    "MAIN_HAND": 6802,
+    "OFF_HAND": 279831
    },
    "ilvls": {
-    "HEAD": 43,
-    "NECK": 51,
-    "SHOULDER": 50,
-    "SHIRT": 1,
-    "CHEST": 55,
-    "WAIST": 42,
-    "LEGS": 54,
-    "FEET": 58,
-    "WRIST": 54,
-    "HANDS": 55,
-    "FINGER_1": 45,
-    "FINGER_2": 49,
-    "TRINKET_1": 51,
-    "TRINKET_2": 51,
-    "BACK": 43,
-    "MAIN_HAND": 52
+    "HEAD": null,
+    "NECK": null,
+    "SHOULDER": null,
+    "SHIRT": null,
+    "CHEST": null,
+    "WAIST": null,
+    "LEGS": null,
+    "FEET": null,
+    "WRIST": null,
+    "HANDS": null,
+    "FINGER_1": null,
+    "FINGER_2": null,
+    "TRINKET_1": null,
+    "TRINKET_2": null,
+    "BACK": null,
+    "MAIN_HAND": null,
+    "OFF_HAND": null
    },
    "profs": {
-    "Mining": 244,
+    "Mining": 246,
     "Blacksmithing": 150,
-    "Cooking": 214,
+    "Cooking": 223,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -381,25 +383,28 @@
     768,
     62000,
     855,
-    61999
+    61999,
+    62028,
+    62356
    ],
    "names": {
-    "HEAD": "Eismetallbarbute",
+    "HEAD": "Südmeertopfhelm",
     "NECK": "Gewobene Efeuhalskette",
     "SHOULDER": "Große böse Schulterstücke",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Ehrenwache-Brustharnisch",
-    "WAIST": "Eberheldengürtel",
+    "CHEST": "Kriegsgeschmiedete Brustplatte",
+    "WAIST": "Dornenbeschlagene Kordel",
     "LEGS": "Elementarfelsgamaschen",
-    "FEET": "Beinschützer des Seuchenbezwingers",
+    "FEET": "Cragplate-Schienbeinschützer",
     "WRIST": "Armschienen der Steinprinzessin",
     "HANDS": "Kampfstulpen der Kor'kron",
     "FINGER_1": "Ogerhornring",
-    "FINGER_2": "Masons Bruderschaftsring",
+    "FINGER_2": "Siegel der Familie Sawyer",
     "TRINKET_1": "Juwel des Wachbefehlshabers",
     "TRINKET_2": "Rune des Wachbefehlshabers",
-    "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Willensbrecher von Alcaz"
+    "BACK": "Umhang der Gezeitenherrin",
+    "MAIN_HAND": "Schwert des Omens",
+    "OFF_HAND": "Schicksalsgebundener Rundschild"
    }
   },
   "lokk-eidlöter": {
@@ -409,7 +414,7 @@
    "classId": 2,
    "rank": 1,
    "level": 41,
-   "lastLogin": 1795608896000,
+   "lastLogin": 1795633334000,
    "items": {
     "HEAD": 8142,
     "NECK": 281265,
@@ -447,7 +452,7 @@
     "MAIN_HAND": null
    },
    "profs": {
-    "Mining": 186,
+    "Mining": 188,
     "Blacksmithing": 188,
     "Cooking": 1,
     "First Aid": 40
@@ -4714,11 +4719,81 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136249.jpg"
   },
   {
+   "t": 1795624680000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 62028,
+   "name": "Schneidergeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schneiderei.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136249.jpg"
+  },
+  {
    "t": 1795625557000,
    "key": "heili-kabel",
    "type": "prof",
    "name": "Tailoring",
    "skill": 150
+  },
+  {
+   "t": 1795626172000,
+   "key": "hammer-hanno",
+   "type": "achievement",
+   "id": 62356,
+   "name": "Erkundet den Hyjal",
+   "desc": "Erkundet den Hyjal und deckt die unbekannten Bereiche der Weltkarte auf.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/409547.jpg"
+  },
+  {
+   "t": 1795633301000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 272187,
+   "name": "Dornenbeschlagene Kordel",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132512.jpg",
+   "slot": "Taille",
+   "ilvl": null,
+   "prev": 42,
+   "prevName": "Eberheldengürtel"
+  },
+  {
+   "t": 1795633301000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 276737,
+   "name": "Umhang der Gezeitenherrin",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133757.jpg",
+   "slot": "Rücken",
+   "ilvl": null,
+   "prev": 43,
+   "prevName": "Abgestoßene Haut des Leichenfressers"
+  },
+  {
+   "t": 1795633301000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 6802,
+   "name": "Schwert des Omens",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135317.jpg",
+   "slot": "Waffenhand",
+   "ilvl": null,
+   "prev": 52,
+   "prevName": "Willensbrecher von Alcaz"
+  },
+  {
+   "t": 1795633301000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 279831,
+   "name": "Schicksalsgebundener Rundschild",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134948.jpg",
+   "slot": "Schildhand",
+   "ilvl": null,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
