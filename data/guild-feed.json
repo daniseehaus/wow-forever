@@ -244,14 +244,14 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 33,
-   "lastLogin": 1795528893000,
+   "level": 34,
+   "lastLogin": 1795610337000,
    "items": {
     "HEAD": 3732,
     "SHOULDER": 5964,
     "SHIRT": 2105,
     "CHEST": 271212,
-    "WAIST": 5355,
+    "WAIST": 252520,
     "LEGS": 5961,
     "FEET": 6668,
     "WRIST": 279875,
@@ -265,25 +265,25 @@
     "AMMO": 2519
    },
    "ilvls": {
-    "HEAD": 30,
-    "SHOULDER": 35,
-    "SHIRT": 1,
-    "CHEST": 22,
-    "WAIST": 28,
-    "LEGS": 23,
-    "FEET": 27,
-    "WRIST": 24,
-    "HANDS": 20,
-    "FINGER_1": 35,
-    "FINGER_2": 29,
-    "BACK": 27,
-    "MAIN_HAND": 34,
-    "OFF_HAND": 34,
-    "RANGED": 36,
-    "AMMO": 15
+    "HEAD": null,
+    "SHOULDER": null,
+    "SHIRT": null,
+    "CHEST": null,
+    "WAIST": null,
+    "LEGS": null,
+    "FEET": null,
+    "WRIST": null,
+    "HANDS": null,
+    "FINGER_1": null,
+    "FINGER_2": null,
+    "BACK": null,
+    "MAIN_HAND": null,
+    "OFF_HAND": null,
+    "RANGED": null,
+    "AMMO": null
    },
    "profs": {
-    "Leatherworking": 151,
+    "Leatherworking": 152,
     "Skinning": 225,
     "Cooking": 60,
     "First Aid": 185
@@ -298,7 +298,7 @@
     "SHOULDER": "Barbarische Schultern",
     "SHIRT": "Rohlingshemd",
     "CHEST": "Blutige Brustwickel",
-    "WAIST": "Bestienmeistergurt",
+    "WAIST": "Ledergürtel des Schleichers",
     "LEGS": "Dunkle Lederhose",
     "FEET": "Zeichner-Stiefel",
     "WRIST": "Ersatzteilbindungen",
@@ -4656,6 +4656,27 @@
    "ilvl": null,
    "prev": 18,
    "prevName": "Troggzepter"
+  },
+  {
+   "t": 1795610337000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 33,
+   "to": 34,
+   "max": false
+  },
+  {
+   "t": 1795610337000,
+   "key": "bernhard-backstab",
+   "type": "item",
+   "id": 252520,
+   "name": "Ledergürtel des Schleichers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236896.jpg",
+   "slot": "Taille",
+   "ilvl": null,
+   "prev": 28,
+   "prevName": "Bestienmeistergurt"
   }
  ]
 }
