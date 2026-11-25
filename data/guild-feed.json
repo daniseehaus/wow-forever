@@ -809,7 +809,7 @@
    "classId": 7,
    "rank": 1,
    "level": 16,
-   "lastLogin": 1795608743000,
+   "lastLogin": 1795610967000,
    "items": {
     "SHIRT": 6134,
     "CHEST": 6240,
@@ -819,7 +819,7 @@
     "WRIST": 15452,
     "HANDS": 15016,
     "FINGER_1": 281268,
-    "BACK": 2580,
+    "BACK": 286744,
     "MAIN_HAND": 15445,
     "OFF_HAND": 15478,
     "RANGED": 263412
@@ -847,7 +847,7 @@
     "WRIST": "Federleichte Armschienen",
     "HANDS": "Werwolf-Handlappen der Heilung",
     "FINGER_1": "Ausgelaugter Ritualring",
-    "BACK": "Verstärktes Leinencape",
+    "BACK": "Dreifach genähtes Fleisch",
     "MAIN_HAND": "Hammer von Orgrimmar",
     "OFF_HAND": "Stürmerschild",
     "RANGED": "Totem der Geladenen Flammen"
