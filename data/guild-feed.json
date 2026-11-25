@@ -563,11 +563,11 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 39,
-   "lastLogin": 1795535072000,
+   "level": 40,
+   "lastLogin": 1795649530000,
    "items": {
     "HEAD": 253955,
-    "NECK": 273049,
+    "NECK": 7722,
     "SHOULDER": 7684,
     "SHIRT": 2579,
     "CHEST": 7058,
@@ -584,26 +584,26 @@
     "RANGED": 7001
    },
    "ilvls": {
-    "HEAD": 25,
-    "NECK": 35,
-    "SHOULDER": 35,
-    "SHIRT": 14,
-    "CHEST": 37,
-    "WAIST": 34,
-    "LEGS": 39,
-    "FEET": 36,
-    "WRIST": 28,
-    "HANDS": 26,
-    "FINGER_1": 37,
-    "FINGER_2": 32,
-    "TRINKET_1": 30,
-    "BACK": 30,
-    "MAIN_HAND": 40,
-    "RANGED": 29
+    "HEAD": null,
+    "NECK": null,
+    "SHOULDER": null,
+    "SHIRT": null,
+    "CHEST": null,
+    "WAIST": null,
+    "LEGS": null,
+    "FEET": null,
+    "WRIST": null,
+    "HANDS": null,
+    "FINGER_1": null,
+    "FINGER_2": null,
+    "TRINKET_1": null,
+    "BACK": null,
+    "MAIN_HAND": null,
+    "RANGED": null
    },
    "profs": {
-    "Tailoring": 167,
-    "Herbalism": 194,
+    "Tailoring": 170,
+    "Herbalism": 205,
     "Cooking": 225,
     "Fishing": 174,
     "First Aid": 136
@@ -617,7 +617,7 @@
    ],
    "names": {
     "HEAD": "Schattenreif",
-    "NECK": "Facettierter Anhänger des Erzmagisters",
+    "NECK": "Triunen-Amulett",
     "SHOULDER": "Blutmagier-Mantel",
     "SHIRT": "Grünes Leinenhemd",
     "CHEST": "Purpurrote Seidenweste",
@@ -4945,6 +4945,27 @@
    "from": 26,
    "to": 27,
    "max": false
+  },
+  {
+   "t": 1795649530000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 39,
+   "to": 40,
+   "max": false
+  },
+  {
+   "t": 1795649530000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 7722,
+   "name": "Triunen-Amulett",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133276.jpg",
+   "slot": "Hals",
+   "ilvl": null,
+   "prev": 35,
+   "prevName": "Facettierter Anhänger des Erzmagisters"
   }
  ]
 }
