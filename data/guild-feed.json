@@ -181,14 +181,14 @@
    "surname": "Plattenpapst",
    "classId": 2,
    "rank": 1,
-   "level": 26,
-   "lastLogin": 1795348513000,
+   "level": 27,
+   "lastLogin": 1795648075000,
    "items": {
-    "HEAD": 4368,
+    "HEAD": 7048,
     "SHOULDER": 3480,
     "SHIRT": 6125,
     "CHEST": 270043,
-    "WAIST": 4697,
+    "WAIST": 4712,
     "LEGS": 270031,
     "FEET": 10658,
     "WRIST": 4534,
@@ -199,36 +199,36 @@
     "MAIN_HAND": 267369
    },
    "ilvls": {
-    "HEAD": 20,
-    "SHOULDER": 22,
-    "SHIRT": 1,
-    "CHEST": 32,
-    "WAIST": 20,
-    "LEGS": 29,
-    "FEET": 25,
-    "WRIST": 28,
-    "HANDS": 23,
-    "FINGER_1": 28,
-    "FINGER_2": 29,
-    "BACK": 22,
-    "MAIN_HAND": 31
+    "HEAD": null,
+    "SHOULDER": null,
+    "SHIRT": null,
+    "CHEST": null,
+    "WAIST": null,
+    "LEGS": null,
+    "FEET": null,
+    "WRIST": null,
+    "HANDS": null,
+    "FINGER_1": null,
+    "FINGER_2": null,
+    "BACK": null,
+    "MAIN_HAND": null
    },
    "profs": {
-    "Mining": 108,
-    "Engineering": 115,
+    "Mining": 140,
+    "Engineering": 146,
     "Cooking": 140,
-    "Fishing": 140,
-    "First Aid": 95
+    "Fishing": 142,
+    "First Aid": 99
    },
    "achs": [
     61997
    ],
    "names": {
-    "HEAD": "Fliegerbrille",
+    "HEAD": "Azurblaue Seidenkapuze",
     "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Brustschutz des Träumers",
-    "WAIST": "Brünierter Gurt",
+    "WAIST": "Gleißender Panzergurt",
     "LEGS": "Dunkle Ritualgamaschen",
     "FEET": "Morastgaloschen",
     "WRIST": "Stahlschnallenarmschienen",
@@ -4937,6 +4937,14 @@
    "ilvl": null,
    "prev": null,
    "prevName": "Schwert des Omens"
+  },
+  {
+   "t": 1795648075000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 26,
+   "to": 27,
+   "max": false
   }
  ]
 }
