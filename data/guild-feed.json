@@ -108,16 +108,16 @@
    "surname": "Sturmzüngler",
    "classId": 7,
    "rank": 1,
-   "level": 26,
-   "lastLogin": 1795634187000,
+   "level": 27,
+   "lastLogin": 1795640521000,
    "items": {
     "HEAD": 7048,
     "SHOULDER": 15127,
-    "CHEST": 6263,
+    "CHEST": 3750,
     "WAIST": 10403,
     "LEGS": 10410,
     "FEET": 273007,
-    "WRIST": 14197,
+    "WRIST": 9803,
     "HANDS": 9832,
     "FINGER_1": 6414,
     "FINGER_2": 11995,
@@ -142,7 +142,7 @@
    },
    "profs": {
     "Alchemy": 225,
-    "Herbalism": 137,
+    "Herbalism": 147,
     "Cooking": 21
    },
    "achs": [
@@ -161,11 +161,11 @@
    "names": {
     "HEAD": "Azurblaue Seidenkapuze",
     "SHOULDER": "Robuste Schultern des Zauberers",
-    "CHEST": "Blauer Overall",
+    "CHEST": "Rippenbrustplatte",
     "WAIST": "Geschwärzter Gürtel der Defias",
     "LEGS": "Gamaschen des Giftzahns",
     "FEET": "Abgrundläufer",
-    "WRIST": "Distelfellbänder der Intelligenz",
+    "WRIST": "Überragende Armschienen des Ältesten",
     "HANDS": "Lederschuppenhandschuhe der Magie",
     "FINGER_1": "Siegel von Sylvanas",
     "FINGER_2": "Elfenbeinband des Falken",
@@ -495,9 +495,10 @@
    "surname": "Klatschko",
    "classId": 1,
    "rank": 1,
-   "level": 26,
-   "lastLogin": 1795347832000,
+   "level": 27,
+   "lastLogin": 1795640424000,
    "items": {
+    "HEAD": 7048,
     "SHOULDER": 3480,
     "SHIRT": 6125,
     "CHEST": 6627,
@@ -509,30 +510,29 @@
     "FINGER_1": 6414,
     "FINGER_2": 17694,
     "BACK": 3582,
-    "MAIN_HAND": 16886,
-    "OFF_HAND": 7002,
+    "MAIN_HAND": 273841,
     "RANGED": 217314,
     "AMMO": 2516
    },
    "ilvls": {
-    "SHOULDER": 22,
-    "SHIRT": 1,
-    "CHEST": 23,
-    "WAIST": 22,
-    "LEGS": 25,
-    "FEET": 24,
-    "WRIST": 19,
-    "HANDS": 28,
-    "FINGER_1": 29,
-    "FINGER_2": 28,
-    "BACK": 18,
-    "MAIN_HAND": 32,
-    "OFF_HAND": 29,
-    "RANGED": 27,
-    "AMMO": 5
+    "HEAD": null,
+    "SHOULDER": null,
+    "SHIRT": null,
+    "CHEST": null,
+    "WAIST": null,
+    "LEGS": null,
+    "FEET": null,
+    "WRIST": null,
+    "HANDS": null,
+    "FINGER_1": null,
+    "FINGER_2": null,
+    "BACK": null,
+    "MAIN_HAND": null,
+    "RANGED": null,
+    "AMMO": null
    },
    "profs": {
-    "Mining": 116,
+    "Mining": 121,
     "Blacksmithing": 97,
     "Cooking": 2,
     "First Aid": 1
@@ -542,6 +542,7 @@
     61499
    ],
    "names": {
+    "HEAD": "Azurblaue Seidenkapuze",
     "SHOULDER": "Raue bronzene Schultern",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Mutantenschuppenbrustplatte",
@@ -553,8 +554,7 @@
     "FINGER_1": "Siegel von Sylvanas",
     "FINGER_2": "Band der Faust",
     "BACK": "Säurefester Umhang",
-    "MAIN_HAND": "Gesetzlosensäbel",
-    "OFF_HAND": "Arktischer Rundschild",
+    "MAIN_HAND": "Twilighthammer",
     "RANGED": "Mondsichtgewehr",
     "AMMO": "Leichtes Geschoss"
    }
@@ -4826,6 +4826,35 @@
    "key": "orkward-orkbert",
    "type": "level",
    "from": 25,
+   "to": 27,
+   "max": false
+  },
+  {
+   "t": 1795640424000,
+   "key": "wladimir-klatschko",
+   "type": "level",
+   "from": 26,
+   "to": 27,
+   "max": false
+  },
+  {
+   "t": 1795640424000,
+   "key": "wladimir-klatschko",
+   "type": "item",
+   "id": 273841,
+   "name": "Twilighthammer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133046.jpg",
+   "slot": "Waffenhand",
+   "ilvl": null,
+   "prev": 32,
+   "prevName": "Gesetzlosensäbel"
+  },
+  {
+   "t": 1795640521000,
+   "key": "zukk-sturmzüngler",
+   "type": "level",
+   "from": 26,
    "to": 27,
    "max": false
   }
