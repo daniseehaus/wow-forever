@@ -408,8 +408,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 40,
-   "lastLogin": 1795593392000,
+   "level": 41,
+   "lastLogin": 1795602804000,
    "items": {
     "HEAD": 8142,
     "NECK": 281265,
@@ -4635,6 +4635,14 @@
    "from": 58,
    "to": 60,
    "max": true
+  },
+  {
+   "t": 1795602804000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 40,
+   "to": 41,
+   "max": false
   }
  ]
 }
