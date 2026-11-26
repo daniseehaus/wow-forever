@@ -71,6 +71,7 @@ if (guild) {
   await writeFile(new URL('site/guild-feed.json', root), JSON.stringify({ era: guildFeed.era, events: guildFeed.events }) + '\n');
   console.log(`guild.json geschrieben: ${guild.members.length} Mitglieder, ${guild.members.filter((m) => m.error).length} ohne Profil.`);
 }
+await saveItemLevels();
 const history = demo ? {} : await updateHistory(data);
 await writeFile(new URL('site/history.json', root), JSON.stringify(history) + '\n');
 // In der Vorschau stammen die Sessions nur aus dem Showcase, der Feed aus Showcase und echten Änderungen.
@@ -200,7 +201,11 @@ async function fetchCharacter(api, entry, caches, old = null) {
       id: it.item?.id,
       name: it.name,
       quality: it.quality?.type,
-      ilvl: it.level?.value ?? null,
+      // Forever nennt seit dem 25.11.2026 kein Itemlevel mehr an der Ausrüstung. Dann gilt das Itemlevel aus den Spieldaten.
+      ilvl: it.level?.value ?? (await itemLevel(api, it.item?.id)),
+      inv: it.inventory_type?.type ?? null,
+      // Angel (Waffe, Unterklasse 20): zählt im Feed nicht als altes Item eines Upgrades.
+      pole: it.item_class?.id === 2 && it.item_subclass?.id === 20,
       enchants: (it.enchantments ?? []).map((e) => stripMarkup(e.display_string)).filter(Boolean),
       // Werte für den Vergleich mit herstellbaren Items (Crafting).
       stats: statMap(it.stats),
@@ -214,6 +219,10 @@ async function fetchCharacter(api, entry, caches, old = null) {
 
   const asset = (k) => media?.assets?.find((a) => a.key === k)?.value ?? null;
   const spec = await resolveSpec(api, summary, specs, caches.specs);
+  // Fällt ein Teilabruf aus (optional liefert null), gilt der alte Wert. Sonst fehlt der Teil 5 Minuten lang auf der Seite
+  // oder der nächste Lauf hält den Rest für neu (Berufe, Quests) oder für weniger (Talente: falsches „Umskillen“).
+  const keep = (got, value, key) => (got || !old ? value : old[key] ?? value);
+  const talents = pickTalents(specs, summary);
 
   return {
     key: charKey(entry),
@@ -232,30 +241,83 @@ async function fetchCharacter(api, entry, caches, old = null) {
     faction: summary.faction?.type,
     guild: summary.guild?.name ?? null,
     title: summary.active_title?.display_string?.replace('{name}', summary.name) ?? null,
-    avgIlvl: summary.average_item_level ?? null,
-    equippedIlvl: summary.equipped_item_level ?? null,
+    avgIlvl: summary.average_item_level ?? equippedLevel(items),
+    equippedIlvl: summary.equipped_item_level ?? equippedLevel(items),
     lastLogin: summary.last_login_timestamp ?? null,
-    spec: spec.name,
-    role: spec.role,
-    avatar: asset('avatar'),
-    render: asset('main-raw') ?? asset('main') ?? asset('inset'),
-    stats: pickStats(stats),
+    spec: keep(specs || summary.active_spec, spec.name, 'spec'),
+    role: keep(specs || summary.active_spec, spec.role, 'role'),
+    avatar: keep(media, asset('avatar'), 'avatar'),
+    render: keep(media, asset('main-raw') ?? asset('main') ?? asset('inset'), 'render'),
+    stats: keep(stats, pickStats(stats), 'stats'),
     // Fällt der Abruf der Berufe aus, gelten die alten Berufe und Rezepte. Sonst meldet der nächste Lauf alle Berufe als neu gelernt
     // (am 24.11.2026 bei Pawris: ein Lauf ohne Berufe, danach „lernt Kürschnerei“ im Feed).
-    professions: profs || !old ? pickProfessions(profs) : old.professions ?? [],
+    professions: keep(profs, pickProfessions(profs), 'professions'),
     // Gelernte Rezepte aller Berufe (IDs), auch Kochen und Erste Hilfe. Was sie herstellen, klärt buildCrafts.
     recipes: profs || !old
       ? [...(profs?.primaries ?? []), ...(profs?.secondaries ?? [])].flatMap((e) => (e.tiers ?? []).flatMap((t) => (t.known_recipes ?? []).map((r) => r.id)))
       : old.recipes ?? [],
-    talents: pickTalents(specs, summary),
-    model: await modelData(api, appearance, caches.displays),
+    talents: keep(specs, talents, 'talents'),
+    model: keep(appearance, await modelData(api, appearance, caches.displays), 'model'),
     // Abgeschlossene Erfolge als [ID, Zeitpunkt], älteste zuerst. Namen und Icons holt erst der Feed, nur für neue Erfolge.
-    achievements: pickAchievements(achievements),
+    achievements: keep(achievements, pickAchievements(achievements), 'achievements'),
     // Questlog: offene und abgeschlossene Quests (IDs). Titel und Zone holt buildQuests.
-    quests: questsOpen || questsDone ? { open: (questsOpen?.in_progress ?? []).map((q) => q.id), done: (questsDone?.quests ?? []).map((q) => q.id) } : null,
-    pets: pickPets(hunterPets),
+    // Jede Liste einzeln: Fehlt nur die Liste der erledigten Quests, meldete der nächste Lauf sonst alle rund 200 neu.
+    quests: questsOpen || questsDone || old?.quests
+      ? {
+        open: questsOpen ? (questsOpen.in_progress ?? []).map((q) => q.id) : old?.quests?.open ?? [],
+        done: questsDone ? (questsDone.quests ?? []).map((q) => q.id) : old?.quests?.done ?? [],
+      }
+      : null,
+    // Jäger: Ein Ausfall (null) behält die alten Begleiter. Andere Klassen haben keine (404, auch null).
+    pets: keep(hunterPets, pickPets(hunterPets), 'pets'),
     items,
   };
+}
+
+// Itemlevel eines Items aus den Spieldaten. Es ändert sich nur mit einem Patch, darum merkt sich data/item-levels.json
+// die Werte je Namespace. Die Action speichert die Datei am Ende (saveItemLevels), ein lokaler Lauf nur im Speicher.
+async function itemLevel(api, id) {
+  if (!id) return null;
+  const ns = config.namespaces.static;
+  if (!ctx.itemLevels) {
+    const file = new URL('data/item-levels.json', root);
+    const stored = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : null;
+    ctx.itemLevels = { ns, levels: stored?.ns === ns ? stored.levels : {}, fresh: 0 };
+  }
+  const cache = ctx.itemLevels;
+  if (!(id in cache.levels)) {
+    // Die Spieldaten von Forever kennen viele Items nicht (404, auch alte Classic-Items). Dann gilt der Tooltip von Wowhead
+    // für Forever (<!--ilvl-->27). Classic-Daten passen nicht: Dort hat der Geisterhafte Mantel 28 statt 27.
+    const env = config.wowhead ? `${config.wowhead}/` : '';
+    const level = await api(`/data/wow/item/${id}`, ns).then((it) => it.level ?? null).catch(() => null)
+      ?? (await fetch(`https://nether.wowhead.com/${env}tooltip/item/${id}?locale=0`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => (j ? Number(j.tooltip?.match(/<!--ilvl-->(\d+)/)?.[1]) || null : undefined))
+        .catch(() => undefined));
+    // Ein Fehler wird nicht gespeichert, der nächste Lauf versucht es erneut.
+    if (level == null) return null;
+    cache.levels[id] = level;
+    cache.fresh++;
+  }
+  return cache.levels[id];
+}
+
+async function saveItemLevels() {
+  const cache = ctx.itemLevels;
+  if (!cache?.fresh || !process.env.GITHUB_ACTIONS) return;
+  await mkdir(new URL('data/', root), { recursive: true });
+  await writeFile(new URL('data/item-levels.json', root), JSON.stringify({ ns: cache.ns, levels: cache.levels }) + '\n');
+}
+
+// Angelegtes Itemlevel wie bei Blizzard: Mittel über 16 Plätze ohne Hemd, Wappenrock, Munition und Fernkampf,
+// eine Zweihandwaffe ohne Nebenhand zählt doppelt, abgerundet. Traf am 21. bis 23.11.2026 alle Werte der API genau.
+function equippedLevel(items) {
+  const counted = items.filter((i) => i.ilvl != null && !['SHIRT', 'TABARD', 'AMMO', 'RANGED'].includes(i.slot));
+  if (!counted.length) return null;
+  const main = counted.find((i) => i.slot === 'MAIN_HAND');
+  const off = counted.some((i) => i.slot === 'OFF_HAND');
+  const two = main && !off && (main.inv ? main.inv === 'TWOHWEAPON' : true) ? main.ilvl : 0;
+  return Math.floor((counted.reduce((a, i) => a + i.ilvl, 0) + two) / 16);
 }
 
 // Begleiter der Jäger (gezähmte Tiere). Der aktive zuerst, die übrigen nach Stallplatz. Andere Klassen haben keine.
@@ -389,7 +451,13 @@ async function achievementInfo(id) {
         ctx.api(`/data/wow/achievement/${id}`, ns).catch(() => null),
         ctx.api(`/data/wow/media/achievement/${id}`, ns).catch(() => null),
       ]);
-      return { name: a?.name ?? null, desc: a?.description ?? null, icon: media?.assets?.find((x) => x.key === 'icon')?.value ?? null };
+      return {
+        name: a?.name ?? null,
+        desc: a?.description ?? null,
+        icon: media?.assets?.find((x) => x.key === 'icon')?.value ?? null,
+        account: !!a?.is_account_wide,
+        category: a?.category?.name ?? null,
+      };
     })());
   }
   return ctx.achievements.get(id);
@@ -397,7 +465,22 @@ async function achievementInfo(id) {
 
 async function achievementEvent(key, id, t) {
   const info = await achievementInfo(id);
-  return info.name ? { t, key, type: 'achievement', id, ...info } : null;
+  return info.name ? { t, key, type: 'achievement', id, name: info.name, desc: info.desc, icon: info.icon } : null;
+}
+
+// Account-Erfolge (is_account_wide) nennt die API bei jedem Charakter des Accounts, auch wenn ein anderer sie erreicht hat
+// („Meisterpaladin“ beim Priester Heili). Sie zählen nur, wenn sie sicher zum Charakter passen:
+// Klassen-Erfolge zur eigenen Klasse, Berufs-Erfolge zu einem eigenen Beruf. Alle übrigen Account-Erfolge fallen weg.
+const ACHIEVEMENT_PROFESSIONS = {
+  Alchemie: 'Alchemy', Schmiedekunst: 'Blacksmithing', Verzauberkunst: 'Enchanting', Ingenieurskunst: 'Engineering',
+  Kräuterkunde: 'Herbalism', Lederverarbeitung: 'Leatherworking', Bergbau: 'Mining', Kürschnerei: 'Skinning',
+  Schneiderei: 'Tailoring', Kochkunst: 'Cooking', Angeln: 'Fishing', 'Erste Hilfe': 'First Aid',
+};
+function achievementFits(info, c) {
+  if (!info.account) return true;
+  if (info.category && info.category === c.className) return true;
+  const prof = ACHIEVEMENT_PROFESSIONS[info.category];
+  return !!prof && (c.professions ?? []).some((p) => p.name === prof);
 }
 
 // Inventartypen in der Zählung des Wowhead-Modellviewers.
@@ -724,8 +807,10 @@ async function updateSessions(data) {
     if (list.length > SEEN_LIMIT) list.shift();
   }
   // Stand vor einer Session, die mit dem Logout start beginnt. Ohne passenden Eintrag gilt der Stand der letzten Session.
-  const before = (c, start) => {
-    const s = state.seen[c.key].findLast((x) => x.t < start - SESSION_WINDOW);
+  // prevEnd: Ende der Session davor. Ein Logout bis dahin gilt auch, wenn er weniger als 3 Stunden vor dem Start liegt.
+  // Sonst zählen zwei Sessions am selben Abend (20.11.2026, 17:40 und 20:14) beide ab demselben alten Stand doppelt.
+  const before = (c, start, prevEnd) => {
+    const s = state.seen[c.key].findLast((x) => x.t < start - SESSION_WINDOW || x.t <= prevEnd);
     return s ? { level: s.level, base: s.base, since: s.t } : { level: state.levels[c.key], base: state.base?.[c.key], since: null };
   };
   const meanGain = (stats) => {
@@ -743,7 +828,7 @@ async function updateSessions(data) {
     const players = fresh.filter((c) => end - c.lastLogin <= SESSION_WINDOW);
     if (players.length >= minPlayers && Date.now() - end >= QUIET) {
       const start = Math.min(...players.map((c) => c.lastLogin));
-      const known = players.map((c) => [c, before(c, start)]).filter(([, p]) => p.level != null);
+      const known = players.map((c) => [c, before(c, start, state.lastEnd)]).filter(([, p]) => p.level != null);
       // Sessions bis sessionBaseline.until stecken schon in der Baseline. Sie setzen nur den Stand, ohne eigene Session.
       const counted = Date.parse(config.sessionBaseline?.until ?? '') || 0;
       if (known.length && end >= counted) {
@@ -761,7 +846,7 @@ async function updateSessions(data) {
         for (const c of chars) {
           if (last.players.includes(c.key) || !(c.lastLogin > last.end && c.lastLogin - last.end <= SESSION_WINDOW)) continue;
           if (Date.now() - c.lastLogin < QUIET) continue;
-          const p = before(c, last.start);
+          const p = before(c, last.start, state.list.at(-2)?.end ?? 0);
           if (p.level == null) continue;
           last.players.push(c.key);
           last.stats[c.key] = sessionStats(p.base, base[c.key], p.level, c, p.since);
@@ -797,15 +882,21 @@ function sessionStats(before, now, levelBefore, c, since = null) {
 
 // Stand eines Charakters für die Aktivität. Squad und Gilde vergleichen ihn bei jedem Abruf mit dem letzten Stand.
 // Fehlt die Liste der Erfolge (Abruf fehlgeschlagen), bleibt die alte. So meldet der nächste Lauf nicht alle Erfolge neu.
+// Eine Angel ersetzt die Waffe nur zum Angeln. Ihr Platz behält darum das Item davor, sonst wäre die Waffe danach ein „Upgrade“ von iLvl 1.
+// seen: alle je getragenen Items. Wer eine Waffe hin und her wechselt, bekommt sie so nur einmal in den Feed.
 function activitySnapshot(c, old) {
-  const items = (c.items ?? []).filter((i) => i.id);
+  const all = (c.items ?? []).filter((i) => i.id);
+  const items = all.filter((i) => !i.pole);
+  const carry = (key) => Object.fromEntries(all.filter((i) => i.pole && old?.[key]?.[i.slot] != null).map((i) => [i.slot, old[key][i.slot]]));
+  const seen = new Set([...(old?.seen ?? Object.values(old?.items ?? {})), ...all.map((i) => i.id)]);
   return {
     level: c.level,
     lastLogin: c.lastLogin ?? null,
-    items: Object.fromEntries(items.map((i) => [i.slot, i.id])),
-    ilvls: Object.fromEntries(items.map((i) => [i.slot, i.ilvl ?? null])),
+    items: { ...Object.fromEntries(items.map((i) => [i.slot, i.id])), ...carry('items') },
+    ilvls: { ...Object.fromEntries(items.map((i) => [i.slot, i.ilvl ?? null])), ...carry('ilvls') },
     // Namen der angelegten Items. Ein neues Item merkt sich so den Namen des alten (prevName im Ereignis), die Seite zeigt ihn derzeit nicht.
-    names: Object.fromEntries(items.map((i) => [i.slot, i.name ?? null])),
+    names: { ...Object.fromEntries(items.map((i) => [i.slot, i.name ?? null])), ...carry('names') },
+    seen: [...seen],
     profs: Object.fromEntries((c.professions ?? []).map((p) => [p.name, p.skill ?? 0])),
     achs: c.achievements ? c.achievements.map(([id]) => id) : old?.achs ?? null,
   };
@@ -821,9 +912,9 @@ async function activityEvents(c, old, now, qualities) {
   if (old.level != null && c.level > old.level) out.push({ ...base, type: 'level', from: old.level, to: c.level, max: c.level >= config.maxLevel });
   if (old.items) {
     for (const it of c.items ?? []) {
-      if (!it.id || old.items[it.slot] === it.id || !qualities.includes(it.quality)) continue;
-      // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz.
-      if (Object.values(old.items).includes(it.id)) continue;
+      if (!it.id || it.pole || old.items[it.slot] === it.id || !qualities.includes(it.quality)) continue;
+      // Ringe und Schmuckstücke tauschen beim Umsortieren nur den Platz. Schon einmal getragene Items kommen nicht erneut.
+      if (Object.values(old.items).includes(it.id) || old.seen?.includes(it.id)) continue;
       out.push({ ...base, type: 'item', id: it.id, name: it.name, quality: it.quality, icon: it.icon, slot: it.slotName ?? it.slot, ilvl: it.ilvl ?? null, prev: old.ilvls?.[it.slot] ?? null, prevName: old.names?.[it.slot] ?? null });
     }
   }
@@ -836,12 +927,15 @@ async function activityEvents(c, old, now, qualities) {
       else if (Math.floor(skill / 75) > Math.floor(before / 75) || (p.max && skill >= p.max && before < p.max)) out.push({ ...base, type: 'prof', name: p.name, skill });
     }
   }
-  // Neue Erfolge mit ihrem genauen Zeitpunkt.
+  // Neue Erfolge mit ihrem genauen Zeitpunkt. Fehlen die Spieldaten eines Erfolgs (Abruf fehlgeschlagen),
+  // bleibt er aus dem Stand (retry). Der nächste Lauf versucht ihn erneut, statt ihn für immer zu verlieren.
+  out.retry = [];
   if (old.achs && c.achievements) {
     for (const [id, at] of c.achievements) {
       if (old.achs.includes(id)) continue;
-      const e = await achievementEvent(c.key, id, at);
-      if (e) out.push(e);
+      const info = await achievementInfo(id);
+      if (!info.name) out.retry.push(id);
+      else if (achievementFits(info, c)) out.push({ t: at, key: c.key, type: 'achievement', id, name: info.name, desc: info.desc, icon: info.icon });
     }
   }
   return out;
@@ -864,7 +958,9 @@ async function updateFeed(data, sessions) {
     feed.snapshot[c.key] = { ...activitySnapshot(c, old), guild: c.guild ?? null };
     if (!old) continue;
 
-    for (const e of await activityEvents(c, old, now, FEED_QUALITIES)) add(e);
+    const events = await activityEvents(c, old, now, FEED_QUALITIES);
+    events.forEach(add);
+    retryAchievements(feed.snapshot[c.key], events.retry);
     // Steht derselbe Wechsel schon als letztes Gilden-Ereignis im Feed (Gildengründung von Hand eingetragen), kommt kein zweites.
     const lastGuild = feed.events.filter((e) => e.key === c.key && e.type === 'guild').at(-1);
     if ((c.guild ?? null) !== (old.guild ?? null) && (lastGuild?.guild ?? null) !== (c.guild ?? null)) {
@@ -883,6 +979,10 @@ async function updateFeed(data, sessions) {
   feed.events = feed.events.slice(-FEED_LIMIT);
   await saveState('feed', feed);
   return feed;
+}
+
+function retryAchievements(snap, ids) {
+  if (ids?.length && snap.achs) snap.achs = snap.achs.filter((id) => !ids.includes(id));
 }
 
 // ---------------------------------------------------------------------------
@@ -1098,7 +1198,9 @@ async function updateGuildFeed(guild) {
     if (fresh) Object.assign(snap, activitySnapshot(m, old));
     feed.snapshot[m.key] = snap;
     if (!old || !fresh) continue;
-    for (const e of await activityEvents(m, old, now, FEED_QUALITIES)) add(e);
+    const events = await activityEvents(m, old, now, FEED_QUALITIES);
+    events.forEach(add);
+    retryAchievements(snap, events.retry);
   }
 
   feed.events.sort((a, b) => a.t - b.t);

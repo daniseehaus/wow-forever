@@ -40,6 +40,10 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-26: Forever liefert seit dem 25.11. kein Itemlevel mehr an der Ausrüstung. Es kommt aus den Spieldaten von Blizzard, sonst aus dem Tooltip von Wowhead für Forever (Classic-Daten weichen ab), gemerkt in `data/item-levels.json`. Das angelegte Itemlevel rechnet der Abruf selbst: 16 Plätze ohne Hemd, Wappenrock, Munition und Fernkampf, Zweihand doppelt, abgerundet.
+- 2026-11-26: Account-Erfolge zählen nur, wenn Klasse oder Beruf zum Charakter passen. Andere Account-Erfolge (zum Beispiel Dungeonerforscher) fallen weg. Schon getragene Items kommen nicht erneut in den Feed, eine Angel zählt nie als altes Item eines Upgrades. Feed und Gilden-Feed sind entsprechend bereinigt.
+- 2026-11-26: Zwei Sessions am selben Abend: Die zweite zählt ab dem Ende der ersten (20.11., 20:14 korrigiert auf +0 Level). Fällt ein Teil des Abrufs aus (Talente, Quests, Werte, Bilder), gilt der alte Stand.
+- 2026-11-26: Crafting rechnet die Verzauberung des alten Items mit. Tanks zählen Rüstung und Verteidigung stärker, Krit und Treffer zählen als Wertung (etwa 0,7 je Punkt), Verstärker und Vergelter zählen etwas Intelligenz. Der Kopf zählt nur Item-Upgrades, Rüstungssets haben keinen Rang.
 - 2026-11-26: Gildentabelle: Jeder Hauptberuf hat eine feste Spalte, Sammelberufe links (dazu Verzauberkunst, damit kein Mitglied zwei Berufe in einer Spalte hat). Die Seite wählt die Aufteilung aus den Daten. Fällt der Abruf der Berufe aus, gelten die alten Berufe (Pawris stand am 24.11. fälschlich mit „lernt Kürschnerei“ im Feed). Pawris ist zu Recht inaktiv, die API nennt als letzten Login den 08.11.
 - 2026-11-14: Loadout und Gilden-Detail zeigen den Levelfortschritt (XP im Level aus dem Profil). Forever nutzt die Classic-Kurve, alle XP-Werte lagen darunter.
 - 2026-11-14: Die Gilde kommt aus der Mitgliederliste der API (Roster, in Forever neu), `config.json` nennt nur den Namen. Fällt die Liste aus, gilt die letzte `guild.json`. Jäger zeigen ihre Begleiter im Loadout und im Gilden-Detail.
