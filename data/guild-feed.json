@@ -133,7 +133,7 @@
    "classId": 7,
    "rank": 1,
    "level": 27,
-   "lastLogin": 1795640521000,
+   "lastLogin": 1795701352000,
    "items": {
     "HEAD": 7048,
     "SHOULDER": 15127,
@@ -307,9 +307,9 @@
    "classId": 4,
    "rank": 1,
    "level": 34,
-   "lastLogin": 1795610337000,
+   "lastLogin": 1795701609000,
    "items": {
-    "HEAD": 3732,
+    "HEAD": 8747,
     "SHOULDER": 5964,
     "SHIRT": 2105,
     "CHEST": 271212,
@@ -317,7 +317,7 @@
     "LEGS": 5961,
     "FEET": 6668,
     "WRIST": 279875,
-    "HANDS": 5299,
+    "HANDS": 6784,
     "FINGER_1": 7686,
     "FINGER_2": 6414,
     "BACK": 16990,
@@ -327,7 +327,7 @@
     "AMMO": 2519
    },
    "ilvls": {
-    "HEAD": 30,
+    "HEAD": 35,
     "SHOULDER": 35,
     "SHIRT": 1,
     "CHEST": 22,
@@ -335,7 +335,7 @@
     "LEGS": 23,
     "FEET": 27,
     "WRIST": 24,
-    "HANDS": 20,
+    "HANDS": 36,
     "FINGER_1": 35,
     "FINGER_2": 29,
     "BACK": 27,
@@ -346,7 +346,7 @@
    },
    "profs": {
     "Leatherworking": 152,
-    "Skinning": 225,
+    "Skinning": 227,
     "Cooking": 60,
     "First Aid": 185
    },
@@ -356,7 +356,7 @@
     62024
    ],
    "names": {
-    "HEAD": "Kapuzenkutte",
+    "HEAD": "Gehärteter Lederhelm",
     "SHOULDER": "Barbarische Schultern",
     "SHIRT": "Rohlingshemd",
     "CHEST": "Blutige Brustwickel",
@@ -364,7 +364,7 @@
     "LEGS": "Dunkle Lederhose",
     "FEET": "Zeichner-Stiefel",
     "WRIST": "Ersatzteilbindungen",
-    "HANDS": "Handschuhe des Mondes",
+    "HANDS": "Geschiente Handschützer",
     "FINGER_1": "Eisenrückenauge",
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Grimmlingumhang",
@@ -391,7 +391,9 @@
     279875,
     5299,
     16990,
-    2519
+    2519,
+    8747,
+    6784
    ]
   },
   "hammer-hanno": {
