@@ -34,7 +34,19 @@
     "Enchanting": 10,
     "Cooking": 34,
     "Fishing": 1
-   }
+   },
+   "seen": [
+    53,
+    6240,
+    7026,
+    4309,
+    3274,
+    4308,
+    12299,
+    3322,
+    766,
+    286743
+   ]
   },
   "orkward-orkbert": {
    "level": 27,
@@ -102,7 +114,46 @@
     855,
     61989
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "seen": [
+    15010,
+    4237,
+    2303,
+    2309,
+    7281,
+    4239,
+    2310,
+    286730,
+    4243,
+    4242,
+    252425,
+    8180,
+    4246,
+    7282,
+    5961,
+    2316,
+    2632,
+    4576,
+    15443,
+    15453,
+    4249,
+    271202,
+    279867,
+    9770,
+    6448,
+    5404,
+    6473,
+    10411,
+    10413,
+    252504,
+    872,
+    273647,
+    6414,
+    17694,
+    3742,
+    127,
+    3030
+   ]
   },
   "wladimir-klatschko": {
    "level": 27,
@@ -168,7 +219,42 @@
     728,
     61499
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "seen": [
+    3489,
+    15014,
+    2857,
+    3282,
+    250621,
+    2854,
+    3472,
+    14123,
+    15451,
+    14145,
+    3480,
+    2866,
+    2865,
+    14742,
+    3582,
+    6460,
+    271208,
+    279867,
+    251533,
+    6627,
+    250494,
+    6414,
+    6323,
+    13245,
+    6906,
+    17694,
+    16886,
+    7002,
+    217314,
+    7048,
+    273841,
+    6125,
+    2516
+   ]
   },
   "heili-kabel": {
    "level": 27,
@@ -252,7 +338,52 @@
     62028,
     62356
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "seen": [
+    253887,
+    4309,
+    2569,
+    4308,
+    4307,
+    2580,
+    11287,
+    4312,
+    4771,
+    284287,
+    14129,
+    14122,
+    4575,
+    14150,
+    15449,
+    4310,
+    272996,
+    3451,
+    273088,
+    286978,
+    271214,
+    251486,
+    4318,
+    279867,
+    9770,
+    251534,
+    10657,
+    15114,
+    8071,
+    1156,
+    6505,
+    5198,
+    273457,
+    3324,
+    6392,
+    270030,
+    6414,
+    7048,
+    6903,
+    16887,
+    7001,
+    4311,
+    4036
+   ]
   },
   "zukk-sturmzüngler": {
    "level": 27,
@@ -320,7 +451,54 @@
     62031,
     62006
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "seen": [
+    263412,
+    15010,
+    14113,
+    10047,
+    4312,
+    281270,
+    5111,
+    6214,
+    4246,
+    7282,
+    7281,
+    4239,
+    4243,
+    14560,
+    15016,
+    273007,
+    15424,
+    6473,
+    14565,
+    279875,
+    279867,
+    251533,
+    14567,
+    10410,
+    270008,
+    15508,
+    10403,
+    270023,
+    3230,
+    6414,
+    9812,
+    3191,
+    270043,
+    7048,
+    15127,
+    5766,
+    9799,
+    9767,
+    14197,
+    9832,
+    11995,
+    9831,
+    6263,
+    3750,
+    9803
+   ]
   },
   "pavel-plattenpapst": {
    "level": 27,
@@ -380,7 +558,40 @@
    "achs": [
     61997
    ],
-   "guild": "Geilbleiber"
+   "guild": "Geilbleiber",
+   "seen": [
+    286731,
+    281285,
+    286744,
+    2857,
+    9789,
+    6350,
+    2854,
+    9787,
+    4368,
+    3480,
+    2866,
+    12994,
+    286977,
+    15309,
+    279867,
+    5343,
+    251533,
+    14745,
+    10658,
+    4697,
+    4710,
+    6414,
+    267369,
+    6907,
+    4534,
+    270043,
+    270031,
+    17694,
+    7048,
+    4712,
+    6125
+   ]
   }
  },
  "events": [
@@ -582,15 +793,6 @@
    "name": "Erforscht den Silberwald",
    "desc": "Erforscht den Silberwald und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236830.jpg"
-  },
-  {
-   "t": 1794227640000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62031,
-   "name": "Novize: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
   },
   {
    "t": 1794253290000,
@@ -1282,15 +1484,6 @@
    "prevName": "Verhüllter Handschutz"
   },
   {
-   "t": 1794516900000,
-   "key": "zukk-sturmzüngler",
-   "type": "achievement",
-   "id": 61997,
-   "name": "Novize: Paladin",
-   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Paladin.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
-  },
-  {
    "t": 1794574740000,
    "key": "orkward-orkbert",
    "type": "prof",
@@ -1594,77 +1787,12 @@
    "t": 1794702008000,
    "key": "pavel-plattenpapst",
    "type": "item",
-   "id": 2857,
-   "name": "Runenverzierter Kupfergürtel",
-   "quality": "UNCOMMON",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132492.jpg",
-   "slot": "Taille",
-   "ilvl": 18,
-   "prev": null,
-   "prevName": null
-  },
-  {
-   "t": 1794702008000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 9789,
-   "name": "Räuber-Beinschützer der Macht",
-   "quality": "UNCOMMON",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134583.jpg",
-   "slot": "Beine",
-   "ilvl": 19,
-   "prev": null,
-   "prevName": null
-  },
-  {
-   "t": 1794702008000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 6350,
-   "name": "Raue bronzene Stiefel",
-   "quality": "UNCOMMON",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132535.jpg",
-   "slot": "Füße",
-   "ilvl": 18,
-   "prev": null,
-   "prevName": null
-  },
-  {
-   "t": 1794702008000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 2854,
-   "name": "Runenverzierte Kupferarmschienen",
-   "quality": "UNCOMMON",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132602.jpg",
-   "slot": "Handgelenke",
-   "ilvl": 19,
-   "prev": null,
-   "prevName": null
-  },
-  {
-   "t": 1794702008000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
    "id": 12994,
    "name": "Thorbias' Stulpen",
    "quality": "RARE",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132945.jpg",
    "slot": "Hände",
    "ilvl": 23,
-   "prev": null,
-   "prevName": null
-  },
-  {
-   "t": 1794702008000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286744,
-   "name": "Dreifach genähtes Fleisch",
-   "quality": "UNCOMMON",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133759.jpg",
-   "slot": "Rücken",
-   "ilvl": 13,
    "prev": null,
    "prevName": null
   },
@@ -1698,15 +1826,6 @@
    "name": "Erforscht Tausend Nadeln",
    "desc": "Erforscht Tausend Nadeln und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236848.jpg"
-  },
-  {
-   "t": 1794768180000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 61998,
-   "name": "Erfahren: Paladin",
-   "desc": "Erreicht zum ersten Mal Stufe 45 mit einem Paladin.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
   },
   {
    "t": 1794776568000,
@@ -1912,24 +2031,6 @@
    "name": "Erkundet die Flusslande",
    "desc": "Erkundet die Flusslande und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/1032150.jpg"
-  },
-  {
-   "t": 1794833820000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62032,
-   "name": "Erfahren: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
-  },
-  {
-   "t": 1794837660000,
-   "key": "zukk-sturmzüngler",
-   "type": "achievement",
-   "id": 62015,
-   "name": "Schmiedekunstgeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schmiedekunst.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
   },
   {
    "t": 1794859627000,
@@ -2422,8 +2523,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
    "slot": "Waffenhand",
    "ilvl": 24,
-   "prev": 1,
-   "prevName": "Angel"
+   "prev": null,
+   "prevName": null
   },
   {
    "t": 1795047070000,
@@ -2465,28 +2566,6 @@
    "skill": 225
   },
   {
-   "t": 1795091449000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286977,
-   "name": "Schwert der Gefallenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 23,
-   "prev": 24,
-   "prevName": "Großaxt des Verlassenen"
-  },
-  {
-   "t": 1795165740000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62015,
-   "name": "Schmiedekunstgeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schmiedekunst.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
-  },
-  {
    "t": 1795168680000,
    "key": "heili-kabel",
    "type": "achievement",
@@ -2494,15 +2573,6 @@
    "name": "Erforscht den Gebirgspass der Totenwinde",
    "desc": "Erforscht den Gebirgspass der Totenwinde und enthüllt die verdeckten Gebiete auf der Weltkarte.",
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236741.jpg"
-  },
-  {
-   "t": 1795191240000,
-   "key": "zukk-sturmzüngler",
-   "type": "achievement",
-   "id": 62031,
-   "name": "Novize: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
   },
   {
    "t": 1795192802000,
@@ -2524,19 +2594,6 @@
    "ilvl": 20,
    "prev": 18,
    "prevName": "Barkeeper-Umhang"
-  },
-  {
-   "t": 1795192802000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286977,
-   "name": "Schwert der Gefallenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 23,
-   "prev": 1,
-   "prevName": "Angel"
   },
   {
    "t": 1795193160000,
@@ -2659,19 +2716,6 @@
    "prevName": "Geprägte Lederhandschuhe"
   },
   {
-   "t": 1795193387000,
-   "key": "orkward-orkbert",
-   "type": "item",
-   "id": 2316,
-   "name": "Dunkler Lederumhang",
-   "quality": "UNCOMMON",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133762.jpg",
-   "slot": "Rücken",
-   "ilvl": 22,
-   "prev": 20,
-   "prevName": "Grünzwirnumhang der Beweglichkeit"
-  },
-  {
    "t": 1795193495000,
    "key": "heili-kabel",
    "type": "level",
@@ -2756,7 +2800,7 @@
    "t": 1795202393000,
    "type": "session",
    "start": 1795202047000,
-   "gain": 1.2,
+   "gain": 0,
    "players": [
     "wladimir-klatschko",
     "heili-kabel",
@@ -2885,19 +2929,6 @@
    "ilvl": 22,
    "prev": 20,
    "prevName": "Titanischer Umhang"
-  },
-  {
-   "t": 1795261933000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286977,
-   "name": "Schwert der Gefallenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 23,
-   "prev": 1,
-   "prevName": "Angel"
   },
   {
    "t": 1795261933000,
@@ -3247,19 +3278,6 @@
    ]
   },
   {
-   "t": 1795290250000,
-   "key": "wladimir-klatschko",
-   "type": "item",
-   "id": 251533,
-   "name": "Großaxt des Verlassenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 24,
-   "prev": 26,
-   "prevName": "Szepter des Barons"
-  },
-  {
    "t": 1795301580000,
    "key": "wladimir-klatschko",
    "type": "achievement",
@@ -3293,19 +3311,6 @@
    "ilvl": 28,
    "prev": 19,
    "prevName": "Runenverzierte Kupferarmschienen"
-  },
-  {
-   "t": 1795302803000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 267369,
-   "name": "Wolfsbann",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 31,
-   "prev": 1,
-   "prevName": "Angel"
   },
   {
    "t": 1795303680000,
@@ -3512,19 +3517,6 @@
    "t": 1795309081000,
    "key": "heili-kabel",
    "type": "item",
-   "id": 272996,
-   "name": "Troggzepter",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133727.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 18,
-   "prev": 24,
-   "prevName": "Mondsichelstab"
-  },
-  {
-   "t": 1795309081000,
-   "key": "heili-kabel",
-   "type": "item",
    "id": 16887,
    "name": "Hexenfinger",
    "quality": "RARE",
@@ -3712,15 +3704,6 @@
    "prevName": "Befestigter Umhang des Gorillas"
   },
   {
-   "t": 1795560300000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 61999,
-   "name": "Meisterpaladin",
-   "desc": "Erreicht zum ersten Mal Stufe 60 mit einem Paladin.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
-  },
-  {
    "t": 1795624680000,
    "key": "heili-kabel",
    "type": "achievement",
@@ -3770,32 +3753,6 @@
    "ilvl": null,
    "prev": 27,
    "prevName": "Geringe Hexerrobe"
-  },
-  {
-   "t": 1795634187000,
-   "key": "zukk-sturmzüngler",
-   "type": "item",
-   "id": 10403,
-   "name": "Geschwärzter Gürtel der Defias",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132515.jpg",
-   "slot": "Taille",
-   "ilvl": null,
-   "prev": 26,
-   "prevName": "Efeustoffschärpe des Zauberers"
-  },
-  {
-   "t": 1795634187000,
-   "key": "zukk-sturmzüngler",
-   "type": "item",
-   "id": 273007,
-   "name": "Abgrundläufer",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132540.jpg",
-   "slot": "Füße",
-   "ilvl": null,
-   "prev": 23,
-   "prevName": "Grünzwirnsandalen des Adlers"
   },
   {
    "t": 1795640397000,

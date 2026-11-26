@@ -101,7 +101,30 @@
     "MAIN_HAND": "Troggzepter",
     "OFF_HAND": "Hexenfinger",
     "RANGED": "Grabsteinszepter"
-   }
+   },
+   "seen": [
+    253887,
+    14150,
+    272996,
+    273088,
+    286978,
+    271214,
+    251534,
+    1156,
+    6505,
+    5198,
+    273457,
+    6392,
+    6414,
+    6903,
+    16887,
+    7001,
+    7048,
+    3324,
+    4036,
+    270030,
+    4311
+   ]
   },
   "zukk-sturmzüngler": {
    "id": 9512891,
@@ -173,7 +196,27 @@
     "BACK": "Schuppenumhang des Gorillas",
     "MAIN_HAND": "Gekrümmte Kriegsaxt",
     "RANGED": "Totem der Geladenen Flammen"
-   }
+   },
+   "seen": [
+    273007,
+    15424,
+    6473,
+    251533,
+    10410,
+    10403,
+    3230,
+    6414,
+    3191,
+    270043,
+    7048,
+    15127,
+    3750,
+    9803,
+    9832,
+    11995,
+    9831,
+    263412
+   ]
   },
   "pavel-plattenpapst": {
    "id": 11114997,
@@ -237,7 +280,25 @@
     "FINGER_2": "Siegel von Sylvanas",
     "BACK": "Waldumhang",
     "MAIN_HAND": "Wolfsbann"
-   }
+   },
+   "seen": [
+    12994,
+    286977,
+    251533,
+    6414,
+    267369,
+    6907,
+    270043,
+    270031,
+    7048,
+    3480,
+    6125,
+    4712,
+    10658,
+    4534,
+    17694,
+    4710
+   ]
   },
   "bernhard-backstab": {
    "id": 11267857,
@@ -311,7 +372,27 @@
     "OFF_HAND": "Blutiger Messingschlagring",
     "RANGED": "Stacheleber-Blaster",
     "AMMO": "Schweres Geschoss"
-   }
+   },
+   "seen": [
+    285329,
+    271212,
+    6414,
+    6220,
+    7686,
+    7682,
+    7683,
+    274084,
+    252520,
+    3732,
+    5964,
+    2105,
+    5961,
+    6668,
+    279875,
+    5299,
+    16990,
+    2519
+   ]
   },
   "hammer-hanno": {
    "id": 8777565,
@@ -403,7 +484,44 @@
     "TRINKET_2": "Rune des Wachbefehlshabers",
     "BACK": "Abgestoßene Haut des Leichenfressers",
     "MAIN_HAND": "Willensbrecher von Alcaz"
-   }
+   },
+   "seen": [
+    273028,
+    273035,
+    16978,
+    271766,
+    279842,
+    273048,
+    274291,
+    9625,
+    279885,
+    10763,
+    10824,
+    10768,
+    271810,
+    19509,
+    275045,
+    9588,
+    6802,
+    274608,
+    279480,
+    9476,
+    9533,
+    9413,
+    17711,
+    17714,
+    276732,
+    19159,
+    272187,
+    276737,
+    279831,
+    6125,
+    11195,
+    276341,
+    279824,
+    270225,
+    19120
+   ]
   },
   "lokk-eidlöter": {
    "id": 9959502,
@@ -485,7 +603,38 @@
     "TRINKET_2": "Tränketasche",
     "BACK": "Zauberhexerumhang des Tigers",
     "MAIN_HAND": "Zeremonieller Schlaghammer"
-   }
+   },
+   "seen": [
+    271201,
+    271209,
+    271208,
+    286977,
+    251533,
+    6414,
+    267369,
+    273840,
+    16978,
+    273028,
+    271766,
+    6688,
+    273042,
+    286658,
+    274605,
+    274607,
+    279885,
+    2870,
+    10329,
+    275044,
+    8142,
+    281265,
+    6125,
+    14829,
+    282716,
+    8139,
+    281673,
+    280766,
+    9877
+   ]
   },
   "wladimir-klatschko": {
    "id": 1582342,
@@ -555,7 +704,32 @@
     "MAIN_HAND": "Twilighthammer",
     "RANGED": "Mondsichtgewehr",
     "AMMO": "Leichtes Geschoss"
-   }
+   },
+   "seen": [
+    250621,
+    14145,
+    6460,
+    271208,
+    251533,
+    6627,
+    250494,
+    6414,
+    6323,
+    13245,
+    6906,
+    16886,
+    7002,
+    273841,
+    7048,
+    3480,
+    6125,
+    14742,
+    2854,
+    17694,
+    3582,
+    217314,
+    2516
+   ]
   },
   "dennis-dotalot": {
    "id": 14098039,
@@ -632,7 +806,39 @@
     "BACK": "Dornenwirkertuch",
     "MAIN_HAND": "Stab von Dar'Orahil",
     "RANGED": "Grabsteinszepter"
-   }
+   },
+   "seen": [
+    271206,
+    286980,
+    271214,
+    286979,
+    251534,
+    3748,
+    6414,
+    6324,
+    6910,
+    4320,
+    15109,
+    7001,
+    253955,
+    16975,
+    273049,
+    273039,
+    279843,
+    4197,
+    274149,
+    7684,
+    7722,
+    2579,
+    7058,
+    7062,
+    14187,
+    9795,
+    11971,
+    6750,
+    276895,
+    15106
+   ]
   },
   "pawris-hilton": {
    "id": 7346576,
@@ -680,7 +886,18 @@
     "HANDS": "Wickel des Reisenden",
     "BACK": "Einfacher Umhang des Jägers",
     "MAIN_HAND": "Ausbalancierter Bauernstecken"
-   }
+   },
+   "seen": [
+    271668,
+    5957,
+    263335,
+    2303,
+    1367,
+    263338,
+    263414,
+    257943,
+    257343
+   ]
   },
   "orkward-orkbert": {
    "id": 12680483,
@@ -752,6 +969,26 @@
     728,
     855,
     61989
+   ],
+   "seen": [
+    252425,
+    15443,
+    271202,
+    6448,
+    5404,
+    6473,
+    10411,
+    10413,
+    252504,
+    872,
+    273647,
+    6414,
+    127,
+    4249,
+    17694,
+    2316,
+    3742,
+    3030
    ]
   },
   "freddie-muhrcury": {
@@ -803,6 +1040,16 @@
     728,
     855,
     61989
+   ],
+   "seen": [
+    14149,
+    5341,
+    16608,
+    5327,
+    15012,
+    7281,
+    3314,
+    4566
    ]
   },
   "erwin-elemental": {
@@ -866,6 +1113,21 @@
     846,
     728,
     62028
+   ],
+   "seen": [
+    15445,
+    272996,
+    6134,
+    6240,
+    6539,
+    4309,
+    15012,
+    15452,
+    15016,
+    281268,
+    286744,
+    15478,
+    263412
    ]
   }
  },
@@ -1019,24 +1281,6 @@
    "from": 18,
    "to": 19,
    "max": false
-  },
-  {
-   "t": 1794227640000,
-   "key": "hammer-hanno",
-   "type": "achievement",
-   "id": 62031,
-   "name": "Novize: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
-  },
-  {
-   "t": 1794227640000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62031,
-   "name": "Novize: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
   },
   {
    "t": 1794235467000,
@@ -1517,15 +1761,6 @@
   {
    "t": 1794516900000,
    "key": "lokk-eidlöter",
-   "type": "achievement",
-   "id": 61997,
-   "name": "Novize: Paladin",
-   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Paladin.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
-  },
-  {
-   "t": 1794516900000,
-   "key": "zukk-sturmzüngler",
    "type": "achievement",
    "id": 61997,
    "name": "Novize: Paladin",
@@ -2057,15 +2292,6 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
   },
   {
-   "t": 1794768180000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 61998,
-   "name": "Erfahren: Paladin",
-   "desc": "Erreicht zum ersten Mal Stufe 45 mit einem Paladin.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
-  },
-  {
    "t": 1794770421000,
    "key": "hammer-hanno",
    "type": "level",
@@ -2364,24 +2590,6 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/1032150.jpg"
   },
   {
-   "t": 1794833820000,
-   "key": "hammer-hanno",
-   "type": "achievement",
-   "id": 62032,
-   "name": "Erfahren: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
-  },
-  {
-   "t": 1794833820000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62032,
-   "name": "Erfahren: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236695.jpg"
-  },
-  {
    "t": 1794834753000,
    "key": "hammer-hanno",
    "type": "level",
@@ -2457,15 +2665,6 @@
   {
    "t": 1794837660000,
    "key": "lokk-eidlöter",
-   "type": "achievement",
-   "id": 62015,
-   "name": "Schmiedekunstgeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schmiedekunst.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
-  },
-  {
-   "t": 1794837660000,
-   "key": "zukk-sturmzüngler",
    "type": "achievement",
    "id": 62015,
    "name": "Schmiedekunstgeselle",
@@ -2964,8 +3163,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
    "slot": "Waffenhand",
    "ilvl": 24,
-   "prev": 1,
-   "prevName": "Angel"
+   "prev": null,
+   "prevName": null
   },
   {
    "t": 1795047070000,
@@ -2977,15 +3176,6 @@
   {
    "t": 1795080060000,
    "key": "zukk-sturmzüngler",
-   "type": "achievement",
-   "id": 62012,
-   "name": "Alchimiegeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Alchimie.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
-  },
-  {
-   "t": 1795080060000,
-   "key": "lokk-eidlöter",
    "type": "achievement",
    "id": 62012,
    "name": "Alchimiegeselle",
@@ -3009,33 +3199,11 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
   },
   {
-   "t": 1795081080000,
-   "key": "lokk-eidlöter",
-   "type": "achievement",
-   "id": 62013,
-   "name": "Alchimieexperte",
-   "desc": "Erzielt zum ersten Mal 225 Fertigkeitspunkte in Alchimie.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
-  },
-  {
    "t": 1795086445000,
    "key": "zukk-sturmzüngler",
    "type": "prof",
    "name": "Alchemy",
    "skill": 225
-  },
-  {
-   "t": 1795091449000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286977,
-   "name": "Schwert der Gefallenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 23,
-   "prev": 24,
-   "prevName": "Großaxt des Verlassenen"
   },
   {
    "t": 1795117594000,
@@ -3131,15 +3299,6 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
   },
   {
-   "t": 1795165740000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62015,
-   "name": "Schmiedekunstgeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schmiedekunst.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136241.jpg"
-  },
-  {
    "t": 1795165987000,
    "key": "hammer-hanno",
    "type": "prof",
@@ -3173,43 +3332,12 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/236741.jpg"
   },
   {
-   "t": 1795191240000,
-   "key": "zukk-sturmzüngler",
-   "type": "achievement",
-   "id": 62031,
-   "name": "Novize: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
-  },
-  {
-   "t": 1795191240000,
-   "key": "lokk-eidlöter",
-   "type": "achievement",
-   "id": 62031,
-   "name": "Novize: Dungeonerforscher",
-   "desc": "Schließt die folgenden Dungeons ab.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/4504543.jpg"
-  },
-  {
    "t": 1795192802000,
    "key": "pavel-plattenpapst",
    "type": "level",
    "from": 23,
    "to": 24,
    "max": false
-  },
-  {
-   "t": 1795192802000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286977,
-   "name": "Schwert der Gefallenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 23,
-   "prev": 1,
-   "prevName": "Angel"
   },
   {
    "t": 1795193160000,
@@ -3583,19 +3711,6 @@
   {
    "t": 1795261933000,
    "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 286977,
-   "name": "Schwert der Gefallenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135312.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 23,
-   "prev": 1,
-   "prevName": "Angel"
-  },
-  {
-   "t": 1795261933000,
-   "key": "pavel-plattenpapst",
    "type": "prof",
    "name": "First Aid",
    "skill": 95
@@ -3643,15 +3758,6 @@
   {
    "t": 1795273620000,
    "key": "zukk-sturmzüngler",
-   "type": "achievement",
-   "id": 62006,
-   "name": "Novize: Schamane",
-   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Schamanen.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626006.jpg"
-  },
-  {
-   "t": 1795273620000,
-   "key": "lokk-eidlöter",
    "type": "achievement",
    "id": 62006,
    "name": "Novize: Schamane",
@@ -3902,19 +4008,6 @@
    "prevName": "Schwert der Gefallenen"
   },
   {
-   "t": 1795290250000,
-   "key": "wladimir-klatschko",
-   "type": "item",
-   "id": 251533,
-   "name": "Großaxt des Verlassenen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132409.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 24,
-   "prev": 26,
-   "prevName": "Szepter des Barons"
-  },
-  {
    "t": 1795295332000,
    "key": "freddie-muhrcury",
    "type": "level",
@@ -3945,19 +4038,6 @@
    "prevName": "Rauer bronzener Kürass"
   },
   {
-   "t": 1795302803000,
-   "key": "pavel-plattenpapst",
-   "type": "item",
-   "id": 267369,
-   "name": "Wolfsbann",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 31,
-   "prev": 1,
-   "prevName": "Angel"
-  },
-  {
    "t": 1795303680000,
    "key": "heili-kabel",
    "type": "achievement",
@@ -3967,26 +4047,8 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626004.jpg"
   },
   {
-   "t": 1795303680000,
-   "key": "hammer-hanno",
-   "type": "achievement",
-   "id": 62000,
-   "name": "Novize: Priester",
-   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Priester.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626004.jpg"
-  },
-  {
    "t": 1795304760000,
    "key": "orkward-orkbert",
-   "type": "achievement",
-   "id": 61989,
-   "name": "Novize: Jäger",
-   "desc": "Erreicht zum ersten Mal Stufe 25 mit einem Jäger.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626000.jpg"
-  },
-  {
-   "t": 1795304760000,
-   "key": "freddie-muhrcury",
    "type": "achievement",
    "id": 61989,
    "name": "Novize: Jäger",
@@ -4169,19 +4231,6 @@
    "t": 1795309081000,
    "key": "heili-kabel",
    "type": "item",
-   "id": 272996,
-   "name": "Troggzepter",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133727.jpg",
-   "slot": "Waffenhand",
-   "ilvl": 18,
-   "prev": 24,
-   "prevName": "Mondsichelstab"
-  },
-  {
-   "t": 1795309081000,
-   "key": "heili-kabel",
-   "type": "item",
    "id": 16887,
    "name": "Hexenfinger",
    "quality": "RARE",
@@ -4215,15 +4264,6 @@
   {
    "t": 1795339440000,
    "key": "dennis-dotalot",
-   "type": "achievement",
-   "id": 62028,
-   "name": "Schneidergeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schneiderei.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136249.jpg"
-  },
-  {
-   "t": 1795339440000,
-   "key": "erwin-elemental",
    "type": "achievement",
    "id": 62028,
    "name": "Schneidergeselle",
@@ -4352,19 +4392,6 @@
    "t": 1795388372000,
    "key": "hammer-hanno",
    "type": "item",
-   "id": 9588,
-   "name": "Noggs Goldring",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
-   "slot": "Ring 2",
-   "ilvl": 37,
-   "prev": 49,
-   "prevName": "Masons Bruderschaftsring"
-  },
-  {
-   "t": 1795388372000,
-   "key": "hammer-hanno",
-   "type": "item",
    "id": 276732,
    "name": "Willensbrecher von Alcaz",
    "quality": "RARE",
@@ -4468,32 +4495,6 @@
    "t": 1795468665000,
    "key": "lokk-eidlöter",
    "type": "item",
-   "id": 286658,
-   "name": "Umbralschuppengürtel",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132519.jpg",
-   "slot": "Taille",
-   "ilvl": 40,
-   "prev": 40,
-   "prevName": "Salzige Schärpe"
-  },
-  {
-   "t": 1795468665000,
-   "key": "lokk-eidlöter",
-   "type": "item",
-   "id": 16978,
-   "name": "Warsongstulpen",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132949.jpg",
-   "slot": "Hände",
-   "ilvl": 27,
-   "prev": 31,
-   "prevName": "Ölige Handlappen"
-  },
-  {
-   "t": 1795468665000,
-   "key": "lokk-eidlöter",
-   "type": "item",
    "id": 279885,
    "name": "Zeremonieller Schlaghammer",
    "quality": "RARE",
@@ -4523,19 +4524,6 @@
    "ilvl": 51,
    "prev": 42,
    "prevName": "Clobroks Brockenfels"
-  },
-  {
-   "t": 1795470869000,
-   "key": "hammer-hanno",
-   "type": "item",
-   "id": 9533,
-   "name": "Masons Bruderschaftsring",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
-   "slot": "Ring 2",
-   "ilvl": 49,
-   "prev": 37,
-   "prevName": "Noggs Goldring"
   },
   {
    "t": 1795479867000,
@@ -4617,15 +4605,6 @@
    "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
   },
   {
-   "t": 1795560300000,
-   "key": "heili-kabel",
-   "type": "achievement",
-   "id": 61999,
-   "name": "Meisterpaladin",
-   "desc": "Erreicht zum ersten Mal Stufe 60 mit einem Paladin.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/626003.jpg"
-  },
-  {
    "t": 1795560672000,
    "key": "hammer-hanno",
    "type": "level",
@@ -4640,19 +4619,6 @@
    "from": 40,
    "to": 41,
    "max": false
-  },
-  {
-   "t": 1795608743000,
-   "key": "erwin-elemental",
-   "type": "item",
-   "id": 15445,
-   "name": "Hammer von Orgrimmar",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133060.jpg",
-   "slot": "Waffenhand",
-   "ilvl": null,
-   "prev": 18,
-   "prevName": "Troggzepter"
   },
   {
    "t": 1795610337000,
@@ -4686,15 +4652,6 @@
   {
    "t": 1795624680000,
    "key": "heili-kabel",
-   "type": "achievement",
-   "id": 62028,
-   "name": "Schneidergeselle",
-   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Schneiderei.",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136249.jpg"
-  },
-  {
-   "t": 1795624680000,
-   "key": "hammer-hanno",
    "type": "achievement",
    "id": 62028,
    "name": "Schneidergeselle",
@@ -4756,19 +4713,6 @@
    "t": 1795633301000,
    "key": "hammer-hanno",
    "type": "item",
-   "id": 6802,
-   "name": "Schwert des Omens",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135317.jpg",
-   "slot": "Waffenhand",
-   "ilvl": null,
-   "prev": 52,
-   "prevName": "Willensbrecher von Alcaz"
-  },
-  {
-   "t": 1795633301000,
-   "key": "hammer-hanno",
-   "type": "item",
    "id": 279831,
    "name": "Schicksalsgebundener Rundschild",
    "quality": "RARE",
@@ -4777,32 +4721,6 @@
    "ilvl": null,
    "prev": null,
    "prevName": null
-  },
-  {
-   "t": 1795634187000,
-   "key": "zukk-sturmzüngler",
-   "type": "item",
-   "id": 10403,
-   "name": "Geschwärzter Gürtel der Defias",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132515.jpg",
-   "slot": "Taille",
-   "ilvl": null,
-   "prev": 26,
-   "prevName": "Efeustoffschärpe des Zauberers"
-  },
-  {
-   "t": 1795634187000,
-   "key": "zukk-sturmzüngler",
-   "type": "item",
-   "id": 273007,
-   "name": "Abgrundläufer",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132540.jpg",
-   "slot": "Füße",
-   "ilvl": null,
-   "prev": 23,
-   "prevName": "Grünzwirnsandalen des Adlers"
   },
   {
    "t": 1795640397000,
@@ -4848,71 +4766,6 @@
    "from": 26,
    "to": 27,
    "max": false
-  },
-  {
-   "t": 1795647097000,
-   "key": "hammer-hanno",
-   "type": "item",
-   "id": 10763,
-   "name": "Eismetallbarbute",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133111.jpg",
-   "slot": "Kopf",
-   "ilvl": null,
-   "prev": null,
-   "prevName": "Südmeertopfhelm"
-  },
-  {
-   "t": 1795647097000,
-   "key": "hammer-hanno",
-   "type": "item",
-   "id": 10768,
-   "name": "Eberheldengürtel",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132500.jpg",
-   "slot": "Taille",
-   "ilvl": null,
-   "prev": null,
-   "prevName": "Dornenbeschlagene Kordel"
-  },
-  {
-   "t": 1795647097000,
-   "key": "hammer-hanno",
-   "type": "item",
-   "id": 9533,
-   "name": "Masons Bruderschaftsring",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133345.jpg",
-   "slot": "Ring 2",
-   "ilvl": null,
-   "prev": null,
-   "prevName": "Siegel der Familie Sawyer"
-  },
-  {
-   "t": 1795647097000,
-   "key": "hammer-hanno",
-   "type": "item",
-   "id": 271810,
-   "name": "Abgestoßene Haut des Leichenfressers",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133763.jpg",
-   "slot": "Rücken",
-   "ilvl": null,
-   "prev": null,
-   "prevName": "Umhang der Gezeitenherrin"
-  },
-  {
-   "t": 1795647097000,
-   "key": "hammer-hanno",
-   "type": "item",
-   "id": 276732,
-   "name": "Willensbrecher von Alcaz",
-   "quality": "RARE",
-   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133479.jpg",
-   "slot": "Waffenhand",
-   "ilvl": null,
-   "prev": null,
-   "prevName": "Schwert des Omens"
   },
   {
    "t": 1795648075000,
