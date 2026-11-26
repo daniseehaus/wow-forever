@@ -25,8 +25,8 @@ const COLUMNS = [
   ['race', 'Volk'],
   ['level', 'Level'],
   ['ilvl', 'iLvl'],
-  ['prof1', 'Beruf 1'],
-  ['prof2', 'Beruf 2'],
+  ['prof1', '<span class="lbl">Beruf 1</span><span class="lbl-s">B1</span>'],
+  ['prof2', '<span class="lbl">Beruf 2</span><span class="lbl-s">B2</span>'],
   ['last', '<span class="lg">Zuletzt online</span><span class="sm">Online</span>'],
 ];
 
@@ -202,6 +202,11 @@ function compare(a, b) {
   if (g) return g;
   const va = sortValue(a);
   const vb = sortValue(b);
+  // Berufe: ohne Beruf immer unten, im selben Beruf immer der höchste Skill zuerst. Die Richtung dreht nur die Reihenfolge der Berufe.
+  if (va?.prof !== undefined) {
+    if (!va.prof || !vb.prof) return !va.prof - !vb.prof || fullName(a).localeCompare(fullName(b), 'de');
+    return va.prof.localeCompare(vb.prof, 'de') * G.sort.dir || vb.skill - va.skill || fullName(a).localeCompare(fullName(b), 'de');
+  }
   const r = typeof va === 'string' ? va.localeCompare(vb, 'de') : (va ?? -1) - (vb ?? -1);
   return r * G.sort.dir || fullName(a).localeCompare(fullName(b), 'de');
 }
@@ -213,11 +218,11 @@ function sortValue(m) {
     case 'race': return m.race ?? '';
     case 'level': return m.level ?? null;
     case 'ilvl': return m.equippedIlvl ?? null;
-    // Gruppiert nach Beruf (alphabetisch), im selben Beruf der höchste Skill zuerst. Ohne Beruf ganz unten.
+    // Gruppiert nach Beruf (alphabetisch), im selben Beruf der höchste Skill zuerst. Ohne Beruf ganz unten (siehe compare).
     case 'prof1':
     case 'prof2': {
       const p = profColumns(m)[G.sort.key === 'prof1' ? 0 : 1];
-      return p ? `${profName(p.name)} ${String(999 - (p.skill ?? 0)).padStart(3, '0')}` : '\uffff';
+      return { prof: p ? profName(p.name) : null, skill: p?.skill ?? 0 };
     }
     case 'last': return m.lastLogin ?? null;
     default: return 0;

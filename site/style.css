@@ -124,7 +124,7 @@ main, footer, nav { position: relative; z-index: 1; }
 .tile .top { position: absolute; top: 14px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 3; }
 .role { font: 700 11px var(--mono); letter-spacing: .12em; padding: 4px 9px; border-radius: 8px; color: var(--bg); background: var(--text); }
 .chip.role-chip { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
-.tile .ago { font: 500 11px var(--mono); color: var(--muted); }
+.tile .ago { font: 500 11px var(--mono); color: var(--muted); white-space: nowrap; }
 .tile .stage { position: absolute; left: 0; right: 0; top: 40px; bottom: 112px; z-index: 2; }
 .tile .stage img.render { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transform: scale(1.7); filter: drop-shadow(0 12px 24px rgba(0,0,0,.9)); }
 .tile .stage.loading-3d img.render { visibility: hidden; }
@@ -311,8 +311,8 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 }
 .card:hover { background: rgba(255,255,255,.05); border-color: var(--q); }
 .card .txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-/* Lange Item-Namen brechen in eine zweite Zeile um und werden erst danach gekürzt. */
-.card .nm { font-size: 13px; font-weight: 700; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; }
+/* Lange Item-Namen brechen in eine zweite Zeile um und werden erst danach gekürzt. Lange Wörter trennt die Silbentrennung (lang="de"). */
+.card .nm { font-size: 13px; font-weight: 700; line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow-wrap: anywhere; hyphens: auto; }
 .card .meta { font: 500 10px var(--mono); color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .en { font: 500 10px var(--mono); color: #7be07b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card .bar { display: block; height: 3px; margin-top: 6px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
@@ -354,6 +354,8 @@ body:has(.loadout.swapping) .wowhead-tooltip { visibility: hidden !important; }
 .place { display: flex; align-items: baseline; gap: 8px; min-width: 0; padding: 3px 0; font-size: 13px; font-weight: 600; color: var(--text); border-bottom: 1px dotted transparent; transition: .15s; }
 a.place:hover { color: var(--accent-text); }
 .place .nm { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Der Tipp trägt ein Badge und bricht darum lieber um, statt den Namen zu kürzen. */
+.place.next .nm { white-space: normal; line-height: 1.25; }
 .place .rg { font: 500 11px var(--mono); color: var(--dim); }
 .place .fd { width: 6px; height: 6px; flex: none; align-self: center; border-radius: 50%; background: var(--dim); }
 .place .fd.a { background: #4d8bff; }
@@ -447,7 +449,7 @@ a.place:hover { color: var(--accent-text); }
 .recap-row { display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.02); font: inherit; color: inherit; cursor: pointer; text-align: left; transition: border-color .2s, box-shadow .2s; }
 .recap-row-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 8px; }
 .recap-row-top > * { white-space: nowrap; }
-.recap-row .recap-sum { color: var(--dim); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.recap-row .recap-sum { color: var(--dim); font-size: 11px; line-height: 1.4; }
 
 /* Vor dem nächsten Abend: eine Spalte je Charakter in der Reihenfolge der Kacheln */
 .prep { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 10px; }
@@ -484,10 +486,11 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
 .q-row > a { flex: 1 1 150px; min-width: 0; line-height: 1.3; overflow-wrap: anywhere; color: var(--text); transition: color .15s; }
 .q-row > a:hover { color: var(--accent-text); }
 .q-row .tags { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px; }
-.q-x { display: grid; place-items: center; width: 22px; height: 22px; margin-left: 2px; padding: 0; border: 1px solid transparent; border-radius: 6px; background: none; color: var(--dim); font-size: 15px; line-height: 1; cursor: pointer; opacity: .5; transition: .15s; }
+.q-x { display: grid; place-items: center; width: 22px; height: 22px; flex: none; margin-left: 2px; padding: 0; border: 1px solid transparent; border-radius: 6px; background: none; color: var(--dim); font-size: 15px; line-height: 1; cursor: pointer; opacity: .5; transition: .15s; }
 .q-row:hover .q-x, .q-x:focus-visible { opacity: 1; }
 .q-x:hover, .q-x:focus-visible { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 40%, transparent); outline: none; }
-@media (hover: none) { .q-x { opacity: .8; } }
+/* Auf Touch-Geräten ist die Trefferfläche mindestens 32 px groß. */
+@media (hover: none) { .q-x { opacity: .8; width: 32px; height: 32px; margin: -5px -5px -5px 0; } }
 .q-restore { margin-top: 10px; padding: 0; border: 0; background: none; cursor: pointer; font: 500 11px var(--mono); color: var(--dim); text-decoration: underline dotted; }
 .q-restore:hover { color: var(--text); }
 .q-more summary { padding: 6px 0; cursor: pointer; font: 500 11px var(--mono); color: var(--dim); }
@@ -703,7 +706,9 @@ a.task.hot:hover { background: color-mix(in srgb, var(--accent) 25%, transparent
   .recap-card { padding: 16px; }
   .rstat b { font-size: 32px; }
   .recap-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px; }
-  .recap-players { grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 6px 8px; }
+  /* Auf dem Handy steht der Name über seinen Werten, sonst bleiben nur Namensreste wie „Ork…“. */
+  .recap-players { grid-template-columns: repeat(3, auto); justify-content: start; gap: 2px 14px; }
+  .rp-name { grid-column: 1 / -1; margin-top: 6px; }
   .rp .mono { font-size: 11px; }
   .recap-older { grid-template-columns: minmax(0, 1fr); }
   .recap-row { padding: 10px 12px; }
@@ -839,9 +844,9 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 /* Feste Spalten in Prozent: Die Tabelle passt bei jeder Breite, das Detail macht sie nie breiter. Inhalte brechen in der Zelle um. */
 .gtable { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
 /* Die Breiten sind gemessen: Bei jeder Breite passen Klassenname, Spaltenköpfe samt Pfeil und zwei Berufe in eine Zeile. */
-.gtable th.c-name { width: 15%; } .gtable th.c-class { width: 13%; } .gtable th.c-race { width: 12%; }
+.gtable th.c-name { width: 14%; } .gtable th.c-class { width: 13%; } .gtable th.c-race { width: 11%; }
 .gtable th.c-level { width: 7%; } .gtable th.c-ilvl { width: 5%; }
-.gtable th.c-prof1, .gtable th.c-prof2 { width: 18%; } .gtable th.c-last { width: 12%; }
+.gtable th.c-prof1, .gtable th.c-prof2 { width: 19%; } .gtable th.c-last { width: 12%; }
 .gtable th { padding: 0; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .gtable th button {
   display: inline-flex; align-items: center; gap: 4px; width: 100%; padding: 0 8px 8px; overflow: hidden; border: 0; background: none; cursor: pointer;
@@ -849,7 +854,7 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 }
 .gtable th button:hover, .gtable th[aria-sort="ascending"] button, .gtable th[aria-sort="descending"] button { color: var(--text); }
 .gtable th button i { font-style: normal; font-size: 8px; color: var(--accent-text); }
-.gtable th .sm { display: none; }
+.gtable th .sm, .gtable th .lbl-s { display: none; }
 .gtable td { padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: middle; overflow: hidden; text-overflow: ellipsis; }
 .grow-m { cursor: pointer; transition: background .15s; }
 .grow-m td:first-child { box-shadow: inset 3px 0 0 transparent; transition: box-shadow .15s; }
@@ -871,7 +876,7 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
 .c-ilvl { font: 800 18px/1 var(--display); color: var(--accent-text); }
 .c-last { white-space: nowrap; }
 /* Beruf je Zelle: Icon, Name und Skill in einer Zeile, darunter der Balken über die ganze Zelle. */
-.gprof { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: center; gap: 5px 6px; margin-right: 12px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.gprof { display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: center; gap: 5px 6px; margin-right: 4px; color: var(--muted); font-size: 12px; white-space: nowrap; }
 .gprof img { width: 16px; height: 16px; border-radius: 4px; }
 .gprof .pn { overflow: hidden; text-overflow: ellipsis; }
 .gprof b { color: var(--text); font: 500 11px var(--mono); }
@@ -941,8 +946,19 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
   .gd-stats { grid-template-columns: minmax(0, 1fr); }
   .gd .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-/* Ab 900 px zeigen die Berufe nur Icon, Skill und Balken. Den Namen nennt der Tooltip. */
+/* Ab 900 px zeigen die Berufe nur Icon, Skill und Balken. Den Namen nennt der Tooltip.
+   Das Detail steht ab hier in einer Spalte: Porträt, Name, Kennzahlen, Werte, Berufe, Ausrüstung. Die beiden Spalten lösen sich dafür auf.
+   Mit Seitenspalte waren bei 768 px Kennzahlen und Itemnamen abgeschnitten. */
 @media (max-width: 900px) {
+  .gd-top { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
+  .gd-side, .gd-main { display: contents; }
+  .gd-stage { order: 1; height: 260px; }
+  .gd-main > .lo-head { order: 2; margin-bottom: 0; }
+  .gd-main > .board-kpis { order: 3; margin-bottom: 0; }
+  .gd-side > .gd-sec { order: 4; }
+  .gd-main > .board { order: 5; }
+  .gd-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gd .board-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gprof { grid-template-columns: 16px auto; justify-content: start; }
   .gprof .pn, .gprof b small { display: none; }
   .gtable th.c-name { width: 24%; } .gtable th.c-class { width: 10%; } .gtable th.c-level { width: 10%; }
@@ -953,17 +969,7 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
   .gtable th.c-name { width: 26%; } .gtable th.c-class { width: 13%; } .gtable th.c-level { width: 13%; }
   .gtable th.c-prof1, .gtable th.c-prof2 { width: 13%; } .gtable th.c-last { width: 22%; }
   .gtable td.c-last { white-space: normal; }
-  /* Eine Spalte: Porträt, Name, Kennzahlen, Werte, Berufe, Ausrüstung. Die beiden Spalten lösen sich dafür auf. */
-  .gd-top { display: flex; flex-direction: column; align-items: stretch; gap: 14px; }
-  .gd-side, .gd-main { display: contents; }
-  .gd-stage { order: 1; height: 260px; }
-  .gd-main > .lo-head { order: 2; margin-bottom: 0; }
-  .gd-main > .board-kpis { order: 3; margin-bottom: 0; }
-  .gd-side > .gd-sec { order: 4; }
-  .gd-main > .board { order: 5; }
-  .gd-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gd { padding: 14px 12px 4px; }
-  .gd .board-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .gf-search, .gf-search input { width: 100%; }
 }
 @media (max-width: 600px) {
@@ -972,10 +978,15 @@ body.lust .brand-logo { filter: drop-shadow(0 0 14px #ff2a3d); animation: lust-l
   /* Alle neun Klassen-Icons passen in eine Zeile. */
   .gf-classes { gap: 4px; }
   .gf-cls { width: 31px; height: 31px; }
-  .c-prof1, .c-prof2 { display: none; }
+  /* Berufe nur als Icon, ohne Skill. So lässt sich auch auf dem Handy nach Beruf sortieren. */
+  .gprof { grid-template-columns: 16px; }
+  .gprof b, .gprof .bar { display: none; }
+  .gtable th .lbl { display: none; }
+  .gtable th .lbl-s { display: inline; }
   .gtable td { padding: 9px 6px; }
-  .gtable th button { padding: 0 6px 8px; }
-  .gtable th.c-name { width: 36%; } .gtable th.c-class { width: 18%; } .gtable th.c-level { width: 19%; } .gtable th.c-last { width: 27%; }
+  .gtable th button { min-height: 32px; padding: 0 6px 8px; align-items: flex-end; }
+  .gtable th.c-name { width: 28%; } .gtable th.c-class { width: 16%; } .gtable th.c-level { width: 14%; }
+  .gtable th.c-prof1, .gtable th.c-prof2 { width: 10%; } .gtable th.c-last { width: 22%; }
 }
 @media (max-width: 400px) {
   .gtable th button { letter-spacing: .04em; }

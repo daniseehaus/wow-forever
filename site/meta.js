@@ -43,6 +43,7 @@ window.META = (() => {
     { name: 'Silberwald', id: 130, min: 10, max: 20, f: 'H' },
     { name: 'Steinkrallengebirge', id: 406, min: 15, max: 27, f: 'N' }, { name: 'Ashenvale', id: 331, min: 18, max: 30, f: 'N' },
     { name: 'Vorgebirge von Hillsbrad', id: 267, min: 20, max: 30, f: 'N' }, { name: 'Tausend Nadeln', id: 400, min: 25, max: 35, f: 'N' },
+    { name: 'Alteracgebirge', id: 36, min: 30, max: 40, f: 'N' },
     { name: 'Arathihochland', id: 45, min: 30, max: 40, f: 'N' }, { name: 'Desolace', id: 405, min: 30, max: 40, f: 'N' },
     // Forever: Flusslande laut Blizzard Mitte 30 bis Mitte 40. Shen'dralas zwischen Mulgore und Desolace, Stufe aus der Beta (unbestätigt).
     { name: 'Flusslande', id: 16591, min: 36, max: 44, f: 'N' }, { name: "Shen'dralas", id: 16651, min: 38, max: 43, f: 'N' },

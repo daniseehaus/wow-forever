@@ -125,6 +125,8 @@ function setupNav() {
   const onScroll = () => {
     let idx = 0;
     tops.forEach((top, i) => { if (top < scrollY + 140) idx = i; });
+    // Am Seitenende ist der letzte sichtbare Abschnitt aktiv, auch wenn er zu kurz ist, um bis oben zu scrollen.
+    if (scrollY + innerHeight >= document.documentElement.scrollHeight - 2) idx = Math.max(idx, tops.findLastIndex((t) => t !== Infinity));
     if (links[idx].classList.contains('active')) return;
     links.forEach((a, i) => a.classList.toggle('active', i === idx));
     // Auf schmalen Bildschirmen scrollt die Navigation seitlich. Der aktive Punkt bleibt sichtbar.
@@ -599,25 +601,48 @@ const WEAPON_SKILLS = {
 // angelehnt an die Classic-Umrechnung (Krieger: 1 Stärke = 2 AP, Jäger und Schurke: 1 Beweglichkeit = 2 AP plus Krit).
 // Rüstung zählt wenig. Waffenschaden pro Sekunde: dps für Nahkampfwaffen, rdps für den Fernkampf-Slot (Bogen, Gewehr, Zauberstab).
 // Krieger, Paladine und Schurken ziehen mit der Fernkampfwaffe nur, Jäger machen damit ihren Schaden, Stoffträger nutzen den Zauberstab.
-// Unbekannte Werte und Effekte (Krit, Trefferchance, „Bei Treffer“) zählen nicht.
+// Forever nennt Krit, Treffer und Ausweichen als Wertung („+14 Kritischer Trefferwert“, laut Wowhead 1 % Krit). 1 Punkt zählt darum etwa 0,7.
+// Schaden einer Schule (Frost, Feuer, Schatten) zählt für Zauberer etwas weniger als Zauberschaden. Tanks zählen Rüstung und Verteidigung.
+// Unbekannte Werte und Effekte („Bei Treffer“, Widerstände) zählen nicht.
+const SCHOOL = (w) => Object.fromEntries(['FROST', 'FIRE', 'SHADOW', 'NATURE', 'ARCANE', 'HOLY'].map((x) => [`BONUS_STAT_${x}_DAMAGE_DONE`, w]));
 const STAT_WEIGHTS = {
-  str: { STRENGTH: 1, AGILITY: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.05, SPIRIT: 0.05, armor: 0.01, dps: 3, rdps: 0.2 },
-  tank: { STRENGTH: 0.7, AGILITY: 0.6, STAMINA: 1, ATTACK_POWER: 0.3, INTELLECT: 0.05, SPIRIT: 0.05, EXTRA_ARMOR: 0.05, armor: 0.04, dps: 2, rdps: 0.2 },
-  agi: { AGILITY: 1, STRENGTH: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.1, SPIRIT: 0.05, armor: 0.01, dps: 3, rdps: 0.3 },
-  hunter: { AGILITY: 1, INTELLECT: 0.4, STAMINA: 0.5, ATTACK_POWER: 0.45, STRENGTH: 0.1, SPIRIT: 0.1, armor: 0.01, dps: 0.7, rdps: 3 },
-  caster: { INTELLECT: 1, SPIRIT: 0.6, STAMINA: 0.5, SPELL_POWER: 1.2, SPELL_DAMAGE_DONE: 1.2, SPELL_HEALING_DONE: 0.3, armor: 0.005, dps: 0.2, rdps: 1 },
+  str: { STRENGTH: 1, AGILITY: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.05, SPIRIT: 0.05, CRIT_RATING: 0.7, HIT_RATING: 0.7, armor: 0.01, dps: 3, rdps: 0.2 },
+  tank: { STRENGTH: 0.7, AGILITY: 0.6, STAMINA: 1, ATTACK_POWER: 0.3, INTELLECT: 0.05, SPIRIT: 0.05, DEFENSE_SKILL_RATING: 1, DODGE_RATING: 0.8, HIT_RATING: 0.35, CRIT_RATING: 0.2, EXTRA_ARMOR: 0.1, armor: 0.1, dps: 2, rdps: 0.2 },
+  agi: { AGILITY: 1, STRENGTH: 0.5, STAMINA: 0.5, ATTACK_POWER: 0.5, INTELLECT: 0.1, SPIRIT: 0.05, CRIT_RATING: 0.7, HIT_RATING: 0.7, armor: 0.01, dps: 3, rdps: 0.3 },
+  hunter: { AGILITY: 1, INTELLECT: 0.4, STAMINA: 0.5, ATTACK_POWER: 0.45, STRENGTH: 0.1, SPIRIT: 0.1, CRIT_RATING: 0.7, HIT_RATING: 0.7, armor: 0.01, dps: 0.7, rdps: 3 },
+  caster: { INTELLECT: 1, SPIRIT: 0.6, STAMINA: 0.5, SPELL_POWER: 1.2, SPELL_DAMAGE_DONE: 1.2, SPELL_HEALING_DONE: 0.3, ...SCHOOL(0.8), armor: 0.005, dps: 0.2, rdps: 1 },
   healer: { INTELLECT: 1, SPIRIT: 0.8, STAMINA: 0.4, SPELL_HEALING_DONE: 1, SPELL_POWER: 1, SPELL_DAMAGE_DONE: 0.3, armor: 0.005, dps: 0.2, rdps: 0.5 },
 };
+// Hybride im Nahkampf (Verstärker, Vergelter) brauchen Mana für Totems, Siegel und Heilung: Intelligenz zählt etwas.
+const HYBRID = { INTELLECT: 0.3, SPELL_POWER: 0.2, SPELL_DAMAGE_DONE: 0.2 };
 // Fernkampf-Slot: angelegt (slot) oder herstellbar (inv).
 const isRanged = (it) => it?.slot === 'RANGED' || ['RANGED', 'RANGEDRIGHT', 'THROWN'].includes(it?.inv);
 // Gewichte für ein Item: dps je nach Slot aus dps oder rdps.
 function weightsFor(c, it) {
-  const w = STAT_WEIGHTS[playstyle(c)];
+  const style = playstyle(c);
+  const w = style === 'str' && [2, 7].includes(c.classId) ? { ...STAT_WEIGHTS.str, ...HYBRID } : STAT_WEIGHTS[style];
   return isRanged(it) ? { ...w, dps: w.rdps } : w;
+}
+
+// Werte einer Verzauberung auf einem angelegten Item, z. B. „Verzaubert: Ausdauer +1 und Rüstung +8“.
+// Das neue Item hat sie nicht. Sie zählt darum beim alten Item mit, sonst sieht das Upgrade größer aus, als es ist.
+const ENCHANT_STATS = { Ausdauer: 'STAMINA', Stärke: 'STRENGTH', Beweglichkeit: 'AGILITY', Intelligenz: 'INTELLECT', Willenskraft: 'SPIRIT', Angriffskraft: 'ATTACK_POWER', Rüstung: 'armor' };
+function withEnchants(it) {
+  if (!it?.enchants?.length) return it;
+  const stats = { ...it.stats };
+  let armor = it.armor ?? 0;
+  for (const e of it.enchants) {
+    for (const [, name, v] of e.matchAll(/(\p{L}+) \+(\d+)/gu)) {
+      const k = ENCHANT_STATS[name];
+      if (k === 'armor') armor += Number(v);
+      else if (k) stats[k] = (stats[k] ?? 0) + Number(v);
+    }
+  }
+  return { ...it, stats, armor };
 }
 const SLOT_LABELS = Object.fromEntries([...SLOTS_LEFT, ...SLOTS_RIGHT]);
 // Diese Werte zeigt die Seite als Unterschied. Rüstung nur, wenn sie für die Spielweise zählt.
-const STAT_SHORT = { STRENGTH: 'Stä', AGILITY: 'Bew', STAMINA: 'Aus', INTELLECT: 'Int', SPIRIT: 'Wil', ATTACK_POWER: 'AP', SPELL_POWER: 'ZM', SPELL_DAMAGE_DONE: 'ZS', SPELL_HEALING_DONE: 'Heil', armor: 'Rüst', dps: 'DPS' };
+const STAT_SHORT = { CRIT_RATING: 'Krit', HIT_RATING: 'Treffer', DODGE_RATING: 'Ausw', DEFENSE_SKILL_RATING: 'Vert', STRENGTH: 'Stä', AGILITY: 'Bew', STAMINA: 'Aus', INTELLECT: 'Int', SPIRIT: 'Wil', ATTACK_POWER: 'AP', SPELL_POWER: 'ZM', SPELL_DAMAGE_DONE: 'ZS', SPELL_HEALING_DONE: 'Heil', armor: 'Rüst', dps: 'DPS' };
 
 function playstyle(c) {
   if (c.role === 'HEALER') return 'healer';
@@ -635,6 +660,7 @@ function playstyle(c) {
 function itemScore(c, it) {
   if (!it) return 0;
   if (!it.stats) return it.ilvl ?? 0;
+  it = withEnchants(it);
   const w = weightsFor(c, it);
   let score = (it.armor ?? 0) * (w.armor ?? 0) + (it.dps ?? 0) * (w.dps ?? 0);
   for (const [k, v] of Object.entries(it.stats)) score += v * (w[k] ?? 0);
@@ -644,6 +670,7 @@ function itemScore(c, it) {
 // Unterschied neu minus alt je Wert, nur Werte, die für die Spielweise zählen. Größter Gewinn zuerst.
 function statDiff(c, neu, alt) {
   const w = weightsFor(c, neu);
+  alt = withEnchants(alt);
   const keys = new Set([...Object.keys(neu.stats ?? {}), ...Object.keys(alt?.stats ?? {}), 'armor', 'dps']);
   const out = [];
   for (const k of keys) {
@@ -770,13 +797,14 @@ function renderCrafts() {
   // Im Blick „stellt her“ steht der gewählte Spieler als Hersteller vorne. Im Blick „bekommt“ nennt ein Rüstungsset nur ihn als Empfänger.
   if (f.who && f.dir === 'by') rows = rows.map((r) => ({ ...r, lead: f.who }));
   if (f.who && f.dir === 'to') rows = rows.map((r) => (r.kind === 'enhance' ? { ...r, to: [f.who] } : r));
-  const now = rows.filter((r) => !r.soon).length;
+  // Der Kopf zählt Item-Upgrades, je Zeile ein Empfänger. So passt er zur Summe der Zahlen an den Spielern.
+  const now = rows.filter((r) => r.kind === 'item' && !r.soon).length;
   document.getElementById('craft-count').textContent = now ? plural(now, 'Upgrade', 'Upgrades') : 'nichts offen';
   const hidden = !f.who && !f.all ? Math.max(0, rows.length - CRAFT_TOP) : 0;
   const shown = hidden ? rows.slice(0, CRAFT_TOP) : rows;
 
   const squadChars = state.chars.filter((c) => c.level);
-  const nTo = (key) => all.filter((r) => !r.soon && r.to.includes(key)).length;
+  const nTo = (key) => all.filter((r) => r.kind === 'item' && !r.soon && r.to.includes(key)).length;
   const filter = `<div class="craft-filter">
     <div class="craft-players" role="group" aria-label="Spieler">
       <button type="button" class="chip-btn" data-who="" aria-pressed="${!f.who}">Alle</button>
@@ -792,8 +820,11 @@ function renderCrafts() {
   // Die Icons verlinken auf Wowhead, der Wowhead-Tooltip ist hier aus. Den Vergleich zeigt der eigene Tooltip der Zeile.
   const icon = (it) => link(it, `<img class="ico sm b-${(it.quality || 'COMMON').toLowerCase()}" src="${esc(it.icon || FALLBACK_ICON)}" alt="" loading="lazy">`)
     .replace('<a ', '<a data-disable-wowhead-tooltip="true" ');
-  // Rang links wie die Uhrzeit in der Aktivität: 1 ist das größte Upgrade. Verbesserungen (Rüstungsset) haben keinen Rang.
-  const val = (r, i) => `<span class="craft-val">${r.kind === 'item' ? `${i + 1}.` : ''}</span>`;
+  // Rang links wie die Uhrzeit in der Aktivität: 1 ist das größte Upgrade. Verbesserungen (Rüstungsset) haben keinen Rang
+  // und zählen beim Rang nicht mit.
+  const ranks = new Map();
+  rows.filter((r) => r.kind === 'item').forEach((r, i) => ranks.set(r, i + 1));
+  const val = (r) => `<span class="craft-val">${ranks.has(r) ? `${ranks.get(r)}.` : ''}</span>`;
   const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
   // Hersteller links, Empfänger rechts vom Pfeil: „Bernhard → Lokk“, „Lokk → selbst“, „Bernhard → alle“ (alle im Squad).
   const squad = state.chars.filter((c) => c.level).length;
@@ -811,7 +842,7 @@ function renderCrafts() {
     const chips = r.diff.slice(0, 2).map(([k, d]) => `<span class="${d > 0 ? 'up' : 'down'}">${fmt(d)} ${STAT_SHORT[k] ?? statName(k)}</span>`).join('');
     const old = r.cur ? `<span class="craft-old">${icon(r.cur)}</span>` : '<span class="craft-old empty" aria-label="leer"></span>';
     return `<div class="craft${r.soon ? ' soon' : ''}" tabindex="0" data-tip="${key}">
-      ${val(r, i)}${who(r)}
+      ${val(r)}${who(r)}
       <span class="craft-item">${old}<span class="craft-arrow">→</span>${icon(it)}<span class="craft-txt"><span class="q-${q}">${esc(it.name)}</span>
         <small>${esc(SLOT_LABELS[r.slot] ?? r.slot)}${r.soon ? ` · ab Level ${it.req}` : ''}</small></span><span class="craft-diff">${chips}</span></span></div>`;
   };
@@ -822,7 +853,7 @@ function renderCrafts() {
       ...r.opts.slice(0, 6).map((o) => `${o.name}${o.desc ? `: ${o.desc.replace(/^Benutzen: /, '').replace(/ \(.*?Abklingzeit\)/, '')}` : ''}`)].join('\n');
     const ico = best.icon ? icon(best) : `<span class="ench-ico">${feedIcon(FEED_ICONS.prof.Verzauberkunst)}</span>`;
     return `<div class="craft ench" tabindex="0" data-tip="${esc(tip)}">
-      ${val(r, 0)}${who(r)}
+      ${val(r)}${who(r)}
       <span class="craft-item"><span class="craft-old"></span><span></span>${ico}<span class="craft-txt"><span>${esc(best.name)}</span>
         <small>${esc(slots.join(', '))}${r.opts.length > 1 ? ` · ${plural(r.opts.length - 1, 'weitere Möglichkeit', 'weitere Möglichkeiten')}` : ''}</small></span></span></div>`;
   };
@@ -1198,15 +1229,17 @@ function boardKpis(c, items, sets) {
   // Leere Schildhand zählt nicht: Zweihandwaffen und Jäger lassen sie frei.
   const empties = all.filter(([s]) => s !== 'OFF_HAND' && !items.has(s));
   const empty = empties[0];
-  const weakest = [...items.values()].filter((i) => i.ilvl != null && i.slot !== 'RANGED').sort((a, b) => a.ilvl - b.ilvl)[0];
+  // Nur Slots des Boards zählen: Hemd, Wappenrock und Munition (iLvl 1) sind nie der schwächste Slot.
+  const counted = [...items.values()].filter((i) => i.ilvl != null && all.some(([s]) => s === i.slot));
+  const weakest = [...counted].sort((a, b) => a.ilvl - b.ilvl)[0];
   // Haben alle Items dasselbe iLvl, gibt es keinen schwächsten Slot.
-  const even = weakest && [...items.values()].every((i) => i.slot === 'RANGED' || i.ilvl === weakest.ilvl);
+  const even = weakest && counted.every((i) => i.ilvl === weakest.ilvl);
   const weakLabel = empties.length > 1 ? `${empties.length} Slots` : empty ? empty[1] : even ? 'keiner' : weakest ? all.find(([s]) => s === weakest.slot)?.[1] ?? weakest.slot : '?';
   const kpis = [
     [c.equippedIlvl ?? '?', 'Itemlevel'],
     [sets ? `${sets.count} Teile` : 'keins', 'Set'],
     [`${enchanted} / ${enchantable.length}`, 'Verzaubert'],
-    [weakLabel, empties.length > 1 ? 'Leere Slots' : empty ? 'Leerer Slot' : even ? 'Schwächster Slot' : `Schwächster · iLvl ${weakest?.ilvl ?? '?'}`],
+    [weakLabel, empties.length > 1 ? 'Leere Slots' : empty ? 'Leerer Slot' : even || weakest?.ilvl == null ? 'Schwächster Slot' : `Schwächster · iLvl ${weakest.ilvl}`],
   ];
   const tip = empties.length > 1 ? ` title="${esc(empties.map(([, l]) => l).join(', '))}"` : '';
   return `<div class="board-kpis">${kpis.map(([v, l], i) => `<div class="bk${i === 3 && (empty || !even) ? ' weak' : ''}"${i === 3 ? tip : ''}><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>`;
@@ -1348,7 +1381,7 @@ function renderRecap() {
     const aw = awards(x, list)[0];
     return `<button type="button" class="recap-row" data-idx="${x.idx}">
       <span class="recap-row-top"><b>Session ${x.nr}</b><span class="mono">${fmtDay(x.end)}</span></span>
-      <span class="mono recap-sum">${x.items.length} Items${aw ? ` · ${aw.title} ${esc(aw.who.map(charName).join(', '))}` : ''}</span>
+      <span class="mono recap-sum">${plural(x.items.length, 'Item', 'Items')}${aw ? ` · ${aw.title} ${esc(aw.who.map(charName).join(', '))}` : ''}</span>
     </button>`;
   }).join('')}</div>` : '');
 
@@ -1429,6 +1462,8 @@ function recapPlayersHtml(s) {
   const rows = Object.entries(s.stats ?? {}).sort(([, a], [, b]) => (b.level[1] - b.level[0]) - (a.level[1] - a.level[0]) || b.level[1] - a.level[1]);
   if (!rows.length) return '';
   const span = ([a, b]) => (a === b ? `${b}` : `${a} → <b>${b}</b>`);
+  // Fehlt ein Itemlevel (die API lieferte am 25.11.2026 keins), steht nur der bekannte Wert da, kein „→ 0“.
+  const ilvlSpan = ([a, b]) => (a == null || b == null ? `${Math.round(b ?? a ?? 0) || '?'}` : span([Math.round(a), Math.round(b)]));
   // Die Quests zeigen im Tooltip die Aufteilung nach Zone.
   const questCell = (k) => {
     const mine = s.quests.filter((e) => e.key === k);
@@ -1441,7 +1476,7 @@ function recapPlayersHtml(s) {
     <span class="rp-name" style="color:${classColor(charByKey(k))}">${esc(charName(k))}</span>
     <span class="mono">Lv ${span(x.level)}</span>
     ${questCell(k)}
-    <span class="mono">iLvl ${span(x.ilvl.map((v) => Math.round(v ?? 0)))}</span></div>`).join('')}</div>`;
+    <span class="mono">iLvl ${ilvlSpan(x.ilvl)}</span></div>`).join('')}</div>`;
 }
 
 // Neu in Reichweite: Dungeons, deren Mindestlevel die Gruppe in dieser Session erreicht hat. Dazu Meilensteine.
@@ -1579,7 +1614,7 @@ function renderRoute() {
     const next = mark && tips.has(x);
     const inner = `<i class="fd ${x.f === 'A' ? 'a' : x.f === 'H' ? 'h' : ''}"></i><span class="nm">${esc(x.name)}</span>${next ? `<em>${x === inZone ? 'Aktuell' : 'Als Nächstes'}</em>` : ''}<span class="rg">${range}</span>`;
     return x.id
-      ? `<a class="place${next ? ' next' : ''}" href="${wh(state.data.wowhead || 'classic', `zone=${x.id}`)}" target="_blank" rel="noopener">${inner}</a>`
+      ? `<a class="place${next ? ' next' : ''}" title="${esc(x.name)}" href="${wh(state.data.wowhead || 'classic', `zone=${x.id}`)}" target="_blank" rel="noopener">${inner}</a>`
       : `<span class="place">${inner}</span>`;
   };
 
@@ -1688,7 +1723,9 @@ function feedItemHtml(e) {
   const name = (key) => esc(charName(key));
   const who = c ? `<b class="who" style="--cls:${classColor(c)}">${esc(fullName(c))}</b>` : e.key ? `<b class="who">${name(e.key)}</b>` : '';
   // Jeder Eintrag ist eine Zeile. Was nicht passt, kürzt die Seite ab, Details zeigt der Tooltip.
-  const row = (cls, icon, text, tip = '') => `<li class="ev ${cls}"${c ? ` style="--cls:${classColor(c)}"` : ''}${tip ? ` data-tip="${esc(tip)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt">${who} ${text}</span></li>`;
+  // Ohne eigenen Tooltip zeigt title den ganzen Text, falls die Zeile gekürzt ist.
+  const plain = (html) => html.replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  const row = (cls, icon, text, tip = '') => `<li class="ev ${cls}"${c ? ` style="--cls:${classColor(c)}"` : ''}${tip ? ` data-tip="${esc(tip)}"` : ''}><time>${time}</time><span class="ev-ico">${icon}</span><span class="ev-txt"${tip ? '' : ` title="${esc(plain(`${who} ${text}`))}"`}>${who} ${text}</span></li>`;
 
   switch (e.type) {
     case 'level':
