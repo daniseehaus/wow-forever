@@ -532,7 +532,7 @@
    "classId": 2,
    "rank": 1,
    "level": 42,
-   "lastLogin": 1795701158000,
+   "lastLogin": 1795702062000,
    "items": {
     "HEAD": 8142,
     "NECK": 281265,
@@ -549,7 +549,8 @@
     "TRINKET_1": 273840,
     "TRINKET_2": 280766,
     "BACK": 9877,
-    "MAIN_HAND": 279885
+    "MAIN_HAND": 6804,
+    "OFF_HAND": 275051
    },
    "ilvls": {
     "HEAD": 44,
@@ -567,7 +568,8 @@
     "TRINKET_1": 29,
     "TRINKET_2": 33,
     "BACK": 38,
-    "MAIN_HAND": 42
+    "MAIN_HAND": 38,
+    "OFF_HAND": 46
    },
    "profs": {
     "Mining": 195,
@@ -604,7 +606,8 @@
     "TRINKET_1": "Verfluchtes Murlocauge",
     "TRINKET_2": "Tränketasche",
     "BACK": "Zauberhexerumhang des Tigers",
-    "MAIN_HAND": "Zeremonieller Schlaghammer"
+    "MAIN_HAND": "Windsturmhammer",
+    "OFF_HAND": "Twilightbarriere"
    },
    "seen": [
     271201,
@@ -635,7 +638,9 @@
     8139,
     281673,
     280766,
-    9877
+    9877,
+    6804,
+    275051
    ]
   },
   "wladimir-klatschko": {
