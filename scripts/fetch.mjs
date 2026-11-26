@@ -151,7 +151,7 @@ async function buildLive() {
       continue;
     }
     try {
-      characters.push(await fetchCharacter(api, entry, caches));
+      characters.push(await fetchCharacter(api, entry, caches, previous.get(key)));
       console.log(`ok      ${key}`);
     } catch (err) {
       console.warn(`fehler  ${key}: ${err.message}`);
@@ -172,7 +172,8 @@ async function buildLive() {
   };
 }
 
-async function fetchCharacter(api, entry, caches) {
+// old: letzter veröffentlichter Stand des Charakters. Fällt ein Teilabruf aus, bleibt dessen alter Wert.
+async function fetchCharacter(api, entry, caches, old = null) {
   const base = `/profile/wow/character/${charPath(entry)}`;
   const ns = config.namespaces.profile;
   const optional = (path) => api(`${base}${path}`, ns).catch(() => null);
@@ -239,9 +240,13 @@ async function fetchCharacter(api, entry, caches) {
     avatar: asset('avatar'),
     render: asset('main-raw') ?? asset('main') ?? asset('inset'),
     stats: pickStats(stats),
-    professions: pickProfessions(profs),
+    // Fällt der Abruf der Berufe aus, gelten die alten Berufe und Rezepte. Sonst meldet der nächste Lauf alle Berufe als neu gelernt
+    // (am 24.11.2026 bei Pawris: ein Lauf ohne Berufe, danach „lernt Kürschnerei“ im Feed).
+    professions: profs || !old ? pickProfessions(profs) : old.professions ?? [],
     // Gelernte Rezepte aller Berufe (IDs), auch Kochen und Erste Hilfe. Was sie herstellen, klärt buildCrafts.
-    recipes: [...(profs?.primaries ?? []), ...(profs?.secondaries ?? [])].flatMap((e) => (e.tiers ?? []).flatMap((t) => (t.known_recipes ?? []).map((r) => r.id))),
+    recipes: profs || !old
+      ? [...(profs?.primaries ?? []), ...(profs?.secondaries ?? [])].flatMap((e) => (e.tiers ?? []).flatMap((t) => (t.known_recipes ?? []).map((r) => r.id)))
+      : old.recipes ?? [],
     talents: pickTalents(specs, summary),
     model: await modelData(api, appearance, caches.displays),
     // Abgeschlossene Erfolge als [ID, Zeitpunkt], älteste zuerst. Namen und Icons holt erst der Feed, nur für neue Erfolge.
@@ -928,7 +933,7 @@ async function buildGuild(data) {
       // Hat data.json einen alten Stand (stale), gilt dieser auch hier. Sonst greift der letzte Stand der Gilde.
       const squad = group.get(key);
       if (squad?.error && !squad.level) throw new Error(squad.error);
-      const c = squad ?? (await fetchCharacter(ctx.api, entry, ctx.caches));
+      const c = squad ?? (await fetchCharacter(ctx.api, entry, ctx.caches, previous.get(key)));
       members.push({ ...c, rank: entry.rank });
       if (!group.has(key)) console.log(`gilde   ${key}`);
     } catch (err) {

@@ -4600,30 +4600,6 @@
    "prevName": "Hammer von Orgrimmar"
   },
   {
-   "t": 1795548735466,
-   "key": "pawris-hilton",
-   "type": "prof",
-   "name": "Leatherworking",
-   "skill": 33,
-   "learned": true
-  },
-  {
-   "t": 1795548735466,
-   "key": "pawris-hilton",
-   "type": "prof",
-   "name": "Skinning",
-   "skill": 68,
-   "learned": true
-  },
-  {
-   "t": 1795548735466,
-   "key": "pawris-hilton",
-   "type": "prof",
-   "name": "Cooking",
-   "skill": 1,
-   "learned": true
-  },
-  {
    "t": 1795555051000,
    "key": "lokk-eidlöter",
    "type": "level",

@@ -14,6 +14,8 @@ const G = {
   open: null,
   viewer: null,
   feedDays: 3,
+  // Spalte je Hauptberuf (0 links, 1 rechts), siehe profSides.
+  sides: new Map(),
 };
 // Wer länger offline ist, steht blass am Ende der Liste.
 const INACTIVE_MS = 14 * 864e5;
@@ -50,6 +52,7 @@ async function initGuild() {
   const g = G.guild;
   state.data = { ...g, characters: g.members };
   state.chars = g.members;
+  G.sides = profSides(g.members);
   document.title = `${g.name} · Gilde · WoW Forever`;
   document.querySelectorAll('.title-text').forEach((el) => { el.textContent = g.name; });
   document.getElementById('brand').textContent = g.name.toUpperCase();
@@ -213,7 +216,7 @@ function sortValue(m) {
     // Gruppiert nach Beruf (alphabetisch), im selben Beruf der höchste Skill zuerst. Ohne Beruf ganz unten.
     case 'prof1':
     case 'prof2': {
-      const p = primaries(m)[G.sort.key === 'prof1' ? 0 : 1];
+      const p = profColumns(m)[G.sort.key === 'prof1' ? 0 : 1];
       return p ? `${profName(p.name)} ${String(999 - (p.skill ?? 0)).padStart(3, '0')}` : '\uffff';
     }
     case 'last': return m.lastLogin ?? null;
@@ -229,14 +232,15 @@ function rowHtml(m) {
       <td colspan="${COLUMNS.length - 1}" class="c-missing"><span data-tip="${esc(fullName(m))}\n${esc(m.error ?? 'Keine Daten')}" data-tip-plain tabindex="0">Profil noch nicht sichtbar</span></td></tr>`;
   }
   const active = isActive(m);
-  const profs = primaries(m);
+  const profs = profColumns(m);
+  const none = !profs[0] && !profs[1];
   return `<tr class="grow-m${active ? '' : ' inactive'}" data-key="${esc(m.key)}" tabindex="0" aria-expanded="false" aria-label="${esc(fullName(m))}, Details aufklappen" style="--cls:${color}">
     <td class="c-name"><span class="gname">${nameHtml(m)}</span>${m.stale ? '<small class="gstale">alter Stand</small>' : ''}</td>
     <td class="c-class"><span class="gclass"><img src="${classIcon(m.classId)}" alt="" loading="lazy"><span>${esc(m.className ?? '')}</span></span></td>
     <td class="c-race">${esc(m.race ?? '')}</td>
     <td class="c-level"><b>${m.level}</b></td>
     <td class="c-ilvl">${m.equippedIlvl ?? '?'}</td>
-    <td class="c-prof c-prof1">${profs[0] ? profCell(profs[0]) : '<span class="gnone">keiner</span>'}</td>
+    <td class="c-prof c-prof1">${profs[0] ? profCell(profs[0]) : none ? '<span class="gnone">keiner</span>' : ''}</td>
     <td class="c-prof c-prof2">${profs[1] ? profCell(profs[1]) : ''}</td>
     <td class="c-last"${m.lastLogin ? ` title="${esc(`${fmtDay(m.lastLogin)}, ${fmtTime(m.lastLogin)}`)}"` : ''}>${m.lastLogin ? ago(m.lastLogin) : '?'}</td>
   </tr>`;
@@ -252,8 +256,43 @@ function profCell(p) {
     <i class="bar"><i style="width:${pct}%"></i></i></span>`;
 }
 
-// Hauptberufe, der höhere Skill zuerst (Beruf 1).
+// Hauptberufe, der höhere Skill zuerst.
 function primaries(m) { return (m.professions ?? []).filter((p) => p.kind === 'primary').sort((a, b) => (b.skill ?? 0) - (a.skill ?? 0)); }
+
+const GATHERING = new Set(['Mining', 'Herbalism', 'Skinning']);
+
+// Jeder Hauptberuf bekommt eine feste Spalte, damit er in der Tabelle möglichst nur in einer Spalte steht.
+// Die Seite probiert alle Aufteilungen der vorhandenen Berufe aus (9 Berufe, höchstens 512) und wählt die beste:
+// 1. möglichst kein Mitglied mit beiden Berufen in derselben Spalte,
+// 2. Sammelberufe links,
+// 3. möglichst wenige Herstellungsberufe links.
+function profSides(members) {
+  const lists = members.map((m) => primaries(m).map((p) => p.name));
+  const names = [...new Set(lists.flat())].sort();
+  const count = (n) => lists.filter((l) => l.includes(n)).length;
+  let best = 0;
+  let bestScore = Infinity;
+  for (let mask = 0; mask < 1 << names.length; mask++) {
+    const side = (n) => (mask >> names.indexOf(n)) & 1;
+    let score = 0;
+    for (const l of lists) if (l.length === 2 && side(l[0]) === side(l[1])) score += 1000;
+    for (const n of names) score += GATHERING.has(n) ? side(n) * 100 * count(n) : (1 - side(n)) * count(n);
+    if (score < bestScore) { bestScore = score; best = mask; }
+  }
+  return new Map(names.map((n, i) => [n, (best >> i) & 1]));
+}
+
+// Die beiden Tabellenspalten eines Mitglieds: [links, rechts], leere Spalte als null.
+// Gehören beide Berufe in dieselbe Spalte, steht der Sammelberuf links, sonst der höhere Skill.
+function profColumns(m) {
+  const ps = primaries(m);
+  const side = (p) => G.sides.get(p.name) ?? 1;
+  if (ps.length === 1) return side(ps[0]) ? [null, ps[0]] : [ps[0], null];
+  const [a, b] = ps;
+  if (!a) return [null, null];
+  if (side(a) !== side(b)) return side(a) ? [b, a] : [a, b];
+  return GATHERING.has(b.name) && !GATHERING.has(a.name) ? [b, a] : [a, b];
+}
 
 // ---------------------------------------------------------------------------
 // Detail: Klick auf eine Zeile klappt darunter Modell, Ausrüstung, Berufe und Talentbäume auf.

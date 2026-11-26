@@ -40,6 +40,7 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-26: Gildentabelle: Jeder Hauptberuf hat eine feste Spalte, Sammelberufe links (dazu Verzauberkunst, damit kein Mitglied zwei Berufe in einer Spalte hat). Die Seite wählt die Aufteilung aus den Daten. Fällt der Abruf der Berufe aus, gelten die alten Berufe (Pawris stand am 24.11. fälschlich mit „lernt Kürschnerei“ im Feed). Pawris ist zu Recht inaktiv, die API nennt als letzten Login den 08.11.
 - 2026-11-14: Loadout und Gilden-Detail zeigen den Levelfortschritt (XP im Level aus dem Profil). Forever nutzt die Classic-Kurve, alle XP-Werte lagen darunter.
 - 2026-11-14: Die Gilde kommt aus der Mitgliederliste der API (Roster, in Forever neu), `config.json` nennt nur den Namen. Fällt die Liste aus, gilt die letzte `guild.json`. Jäger zeigen ihre Begleiter im Loadout und im Gilden-Detail.
 - 2026-11-14: Prep zeigt „Lehrer“ nur, bis sich der Spieler nach der Session neu eingeloggt hat. Die API kennt keine gelernten Zauber, ein erneuter Login gilt als Besuch beim Lehrer.
