@@ -411,8 +411,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 41,
-   "lastLogin": 1795643589000,
+   "level": 42,
+   "lastLogin": 1795671851000,
    "items": {
     "HEAD": 8142,
     "NECK": 281265,
@@ -425,7 +425,7 @@
     "WRIST": 282716,
     "HANDS": 8139,
     "FINGER_1": 281673,
-    "FINGER_2": 11994,
+    "FINGER_2": 275044,
     "TRINKET_1": 273840,
     "TRINKET_2": 280766,
     "BACK": 9877,
@@ -480,7 +480,7 @@
     "WRIST": "Machterfüllte Schuppenmanschetten",
     "HANDS": "Chromitstulpen",
     "FINGER_1": "Schleife der Aufopferung",
-    "FINGER_2": "Korallenband des Gorillas",
+    "FINGER_2": "Blutsportring",
     "TRINKET_1": "Verfluchtes Murlocauge",
     "TRINKET_2": "Tränketasche",
     "BACK": "Zauberhexerumhang des Tigers",
@@ -4966,6 +4966,27 @@
    "ilvl": null,
    "prev": 35,
    "prevName": "Facettierter Anhänger des Erzmagisters"
+  },
+  {
+   "t": 1795671851000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 41,
+   "to": 42,
+   "max": false
+  },
+  {
+   "t": 1795671851000,
+   "key": "lokk-eidlöter",
+   "type": "item",
+   "id": 275044,
+   "name": "Blutsportring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133346.jpg",
+   "slot": "Ring 2",
+   "ilvl": null,
+   "prev": null,
+   "prevName": "Korallenband des Gorillas"
   }
  ]
 }
