@@ -403,46 +403,48 @@
    "classId": 2,
    "rank": 1,
    "level": 60,
-   "lastLogin": 1795647097000,
+   "lastLogin": 1795733378000,
    "items": {
-    "HEAD": 10763,
+    "HEAD": 10749,
     "NECK": 19159,
     "SHOULDER": 9476,
     "SHIRT": 6125,
     "CHEST": 11195,
-    "WAIST": 10768,
+    "WAIST": 10798,
     "LEGS": 17711,
-    "FEET": 276341,
+    "FEET": 11919,
     "WRIST": 17714,
     "HANDS": 279824,
-    "FINGER_1": 275045,
-    "FINGER_2": 9533,
+    "FINGER_1": 276333,
+    "FINGER_2": 9588,
     "TRINKET_1": 270225,
     "TRINKET_2": 19120,
-    "BACK": 271810,
-    "MAIN_HAND": 276732
+    "BACK": 276737,
+    "MAIN_HAND": 281586,
+    "OFF_HAND": 279831
    },
    "ilvls": {
-    "HEAD": 43,
+    "HEAD": 54,
     "NECK": 51,
     "SHOULDER": 50,
     "SHIRT": 1,
     "CHEST": 57,
-    "WAIST": 42,
+    "WAIST": 51,
     "LEGS": 54,
-    "FEET": 58,
+    "FEET": 55,
     "WRIST": 54,
     "HANDS": 55,
-    "FINGER_1": 45,
-    "FINGER_2": 49,
+    "FINGER_1": 57,
+    "FINGER_2": 37,
     "TRINKET_1": 51,
     "TRINKET_2": 51,
-    "BACK": 43,
-    "MAIN_HAND": 52
+    "BACK": 52,
+    "MAIN_HAND": 60,
+    "OFF_HAND": 55
    },
    "profs": {
-    "Mining": 251,
-    "Blacksmithing": 150,
+    "Mining": 256,
+    "Blacksmithing": 165,
     "Cooking": 223,
     "Fishing": 1,
     "First Aid": 129
@@ -470,22 +472,23 @@
     62356
    ],
    "names": {
-    "HEAD": "Eismetallbarbute",
+    "HEAD": "Avenwachthelm",
     "NECK": "Gewobene Efeuhalskette",
     "SHOULDER": "Große böse Schulterstücke",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Kriegsgeschmiedete Brustplatte",
-    "WAIST": "Eberheldengürtel",
+    "WAIST": "Atal'alarions Hauerring",
     "LEGS": "Elementarfelsgamaschen",
-    "FEET": "Beinschützer des Seuchenbezwingers",
+    "FEET": "Cragplate-Schienbeinschützer",
     "WRIST": "Armschienen der Steinprinzessin",
     "HANDS": "Kampfstulpen der Kor'kron",
-    "FINGER_1": "Ogerhornring",
-    "FINGER_2": "Masons Bruderschaftsring",
+    "FINGER_1": "Siegel der Familie Sawyer",
+    "FINGER_2": "Noggs Goldring",
     "TRINKET_1": "Juwel des Wachbefehlshabers",
     "TRINKET_2": "Rune des Wachbefehlshabers",
-    "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Willensbrecher von Alcaz"
+    "BACK": "Umhang der Gezeitenherrin",
+    "MAIN_HAND": "Konstruktionshammer von Holderwild",
+    "OFF_HAND": "Schicksalsgebundener Rundschild"
    },
    "seen": [
     273028,
@@ -522,7 +525,12 @@
     276341,
     279824,
     270225,
-    19120
+    19120,
+    10749,
+    10798,
+    11919,
+    276333,
+    281586
    ]
   },
   "lokk-eidlöter": {
@@ -4826,6 +4834,45 @@
    "ilvl": null,
    "prev": null,
    "prevName": "Korallenband des Gorillas"
+  },
+  {
+   "t": 1795733378000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10749,
+   "name": "Avenwachthelm",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133124.jpg",
+   "slot": "Kopf",
+   "ilvl": 54,
+   "prev": 43,
+   "prevName": "Eismetallbarbute"
+  },
+  {
+   "t": 1795733378000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10798,
+   "name": "Atal'alarions Hauerring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132504.jpg",
+   "slot": "Taille",
+   "ilvl": 51,
+   "prev": 42,
+   "prevName": "Eberheldengürtel"
+  },
+  {
+   "t": 1795733378000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 281586,
+   "name": "Konstruktionshammer von Holderwild",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133045.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 60,
+   "prev": 52,
+   "prevName": "Willensbrecher von Alcaz"
   }
  ]
 }
