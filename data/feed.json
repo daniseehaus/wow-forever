@@ -69,21 +69,21 @@
     "AMMO": 3030
    },
    "ilvls": {
-    "HEAD": null,
-    "SHOULDER": null,
-    "SHIRT": null,
-    "CHEST": null,
-    "WAIST": null,
-    "LEGS": null,
-    "FEET": null,
-    "WRIST": null,
-    "HANDS": null,
-    "FINGER_1": null,
-    "FINGER_2": null,
-    "BACK": null,
-    "MAIN_HAND": null,
-    "RANGED": null,
-    "AMMO": null
+    "HEAD": 25,
+    "SHOULDER": 23,
+    "SHIRT": 1,
+    "CHEST": 23,
+    "WAIST": 25,
+    "LEGS": 26,
+    "FEET": 22,
+    "WRIST": 20,
+    "HANDS": 19,
+    "FINGER_1": 29,
+    "FINGER_2": 28,
+    "BACK": 22,
+    "MAIN_HAND": 23,
+    "RANGED": 28,
+    "AMMO": 30
    },
    "names": {
     "HEAD": "Lederkapuze des Grubenkämpfers",
@@ -102,19 +102,6 @@
     "RANGED": "Plünderbogen",
     "AMMO": "Schneidenpfeil"
    },
-   "profs": {
-    "Leatherworking": 115,
-    "Skinning": 188,
-    "Cooking": 121,
-    "Fishing": 1,
-    "First Aid": 15
-   },
-   "achs": [
-    728,
-    855,
-    61989
-   ],
-   "guild": "Geilbleiber",
    "seen": [
     15010,
     4237,
@@ -153,7 +140,20 @@
     3742,
     127,
     3030
-   ]
+   ],
+   "profs": {
+    "Leatherworking": 115,
+    "Skinning": 188,
+    "Cooking": 121,
+    "Fishing": 1,
+    "First Aid": 15
+   },
+   "achs": [
+    728,
+    855,
+    61989
+   ],
+   "guild": "Geilbleiber"
   },
   "wladimir-klatschko": {
    "level": 27,
@@ -176,21 +176,21 @@
     "AMMO": 2516
    },
    "ilvls": {
-    "HEAD": null,
-    "SHOULDER": null,
-    "SHIRT": null,
-    "CHEST": null,
-    "WAIST": null,
-    "LEGS": null,
-    "FEET": null,
-    "WRIST": null,
-    "HANDS": null,
-    "FINGER_1": null,
-    "FINGER_2": null,
-    "BACK": null,
-    "MAIN_HAND": null,
-    "RANGED": null,
-    "AMMO": null
+    "HEAD": 29,
+    "SHOULDER": 22,
+    "SHIRT": 1,
+    "CHEST": 23,
+    "WAIST": 22,
+    "LEGS": 25,
+    "FEET": 24,
+    "WRIST": 19,
+    "HANDS": 28,
+    "FINGER_1": 29,
+    "FINGER_2": 28,
+    "BACK": 18,
+    "MAIN_HAND": 28,
+    "RANGED": 27,
+    "AMMO": 5
    },
    "names": {
     "HEAD": "Azurblaue Seidenkapuze",
@@ -209,17 +209,6 @@
     "RANGED": "Mondsichtgewehr",
     "AMMO": "Leichtes Geschoss"
    },
-   "profs": {
-    "Mining": 121,
-    "Blacksmithing": 97,
-    "Cooking": 2,
-    "First Aid": 1
-   },
-   "achs": [
-    728,
-    61499
-   ],
-   "guild": "Geilbleiber",
    "seen": [
     3489,
     15014,
@@ -254,7 +243,18 @@
     273841,
     6125,
     2516
-   ]
+   ],
+   "profs": {
+    "Mining": 121,
+    "Blacksmithing": 97,
+    "Cooking": 2,
+    "First Aid": 1
+   },
+   "achs": [
+    728,
+    61499
+   ],
+   "guild": "Geilbleiber"
   },
   "heili-kabel": {
    "level": 27,
@@ -277,21 +277,21 @@
     "RANGED": 7001
    },
    "ilvls": {
-    "HEAD": null,
-    "NECK": null,
-    "SHOULDER": null,
-    "CHEST": null,
-    "WAIST": null,
-    "LEGS": null,
-    "FEET": null,
-    "WRIST": null,
-    "HANDS": null,
-    "FINGER_1": null,
-    "FINGER_2": null,
-    "BACK": null,
-    "MAIN_HAND": null,
-    "OFF_HAND": null,
-    "RANGED": null
+    "HEAD": 29,
+    "NECK": 22,
+    "SHOULDER": 27,
+    "CHEST": 23,
+    "WAIST": 28,
+    "LEGS": 28,
+    "FEET": 24,
+    "WRIST": 27,
+    "HANDS": 28,
+    "FINGER_1": 22,
+    "FINGER_2": 29,
+    "BACK": 21,
+    "MAIN_HAND": 18,
+    "OFF_HAND": 32,
+    "RANGED": 29
    },
    "names": {
     "HEAD": "Azurblaue Seidenkapuze",
@@ -310,35 +310,6 @@
     "OFF_HAND": "Hexenfinger",
     "RANGED": "Grabsteinszepter"
    },
-   "profs": {
-    "Tailoring": 150,
-    "Enchanting": 71,
-    "Cooking": 4,
-    "First Aid": 20
-   },
-   "achs": [
-    61997,
-    769,
-    750,
-    62031,
-    728,
-    761,
-    846,
-    63684,
-    61998,
-    62354,
-    62032,
-    62015,
-    777,
-    854,
-    768,
-    62000,
-    855,
-    61999,
-    62028,
-    62356
-   ],
-   "guild": "Geilbleiber",
    "seen": [
     253887,
     4309,
@@ -383,7 +354,36 @@
     7001,
     4311,
     4036
-   ]
+   ],
+   "profs": {
+    "Tailoring": 150,
+    "Enchanting": 71,
+    "Cooking": 4,
+    "First Aid": 20
+   },
+   "achs": [
+    61997,
+    769,
+    750,
+    62031,
+    728,
+    761,
+    846,
+    63684,
+    61998,
+    62354,
+    62032,
+    62015,
+    777,
+    854,
+    768,
+    62000,
+    855,
+    61999,
+    62028,
+    62356
+   ],
+   "guild": "Geilbleiber"
   },
   "zukk-sturmzüngler": {
    "level": 27,
@@ -404,19 +404,19 @@
     "RANGED": 263412
    },
    "ilvls": {
-    "HEAD": null,
-    "SHOULDER": null,
-    "CHEST": null,
-    "WAIST": null,
-    "LEGS": null,
-    "FEET": null,
-    "WRIST": null,
-    "HANDS": null,
-    "FINGER_1": null,
-    "FINGER_2": null,
-    "BACK": null,
-    "MAIN_HAND": null,
-    "RANGED": null
+    "HEAD": 29,
+    "SHOULDER": 30,
+    "CHEST": 30,
+    "WAIST": 22,
+    "LEGS": 22,
+    "FEET": 18,
+    "WRIST": 26,
+    "HANDS": 31,
+    "FINGER_1": 29,
+    "FINGER_2": 28,
+    "BACK": 29,
+    "MAIN_HAND": 26,
+    "RANGED": 10
    },
    "names": {
     "HEAD": "Azurblaue Seidenkapuze",
@@ -433,25 +433,6 @@
     "MAIN_HAND": "Gekrümmte Kriegsaxt",
     "RANGED": "Totem der Geladenen Flammen"
    },
-   "profs": {
-    "Alchemy": 225,
-    "Herbalism": 147,
-    "Cooking": 21
-   },
-   "achs": [
-    769,
-    728,
-    61997,
-    772,
-    846,
-    62015,
-    760,
-    62012,
-    62013,
-    62031,
-    62006
-   ],
-   "guild": "Geilbleiber",
    "seen": [
     263412,
     15010,
@@ -498,7 +479,26 @@
     6263,
     3750,
     9803
-   ]
+   ],
+   "profs": {
+    "Alchemy": 225,
+    "Herbalism": 147,
+    "Cooking": 21
+   },
+   "achs": [
+    769,
+    728,
+    61997,
+    772,
+    846,
+    62015,
+    760,
+    62012,
+    62013,
+    62031,
+    62006
+   ],
+   "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
    "level": 27,
@@ -519,19 +519,19 @@
     "MAIN_HAND": 267369
    },
    "ilvls": {
-    "HEAD": null,
-    "SHOULDER": null,
-    "SHIRT": null,
-    "CHEST": null,
-    "WAIST": null,
-    "LEGS": null,
-    "FEET": null,
-    "WRIST": null,
-    "HANDS": null,
-    "FINGER_1": null,
-    "FINGER_2": null,
-    "BACK": null,
-    "MAIN_HAND": null
+    "HEAD": 29,
+    "SHOULDER": 22,
+    "SHIRT": 1,
+    "CHEST": 32,
+    "WAIST": 29,
+    "LEGS": 29,
+    "FEET": 25,
+    "WRIST": 28,
+    "HANDS": 23,
+    "FINGER_1": 28,
+    "FINGER_2": 29,
+    "BACK": 22,
+    "MAIN_HAND": 31
    },
    "names": {
     "HEAD": "Azurblaue Seidenkapuze",
@@ -548,17 +548,6 @@
     "BACK": "Waldumhang",
     "MAIN_HAND": "Wolfsbann"
    },
-   "profs": {
-    "Mining": 140,
-    "Engineering": 146,
-    "Cooking": 140,
-    "Fishing": 142,
-    "First Aid": 99
-   },
-   "achs": [
-    61997
-   ],
-   "guild": "Geilbleiber",
    "seen": [
     286731,
     281285,
@@ -591,7 +580,18 @@
     7048,
     4712,
     6125
-   ]
+   ],
+   "profs": {
+    "Mining": 140,
+    "Engineering": 146,
+    "Cooking": 140,
+    "Fishing": 142,
+    "First Aid": 99
+   },
+   "achs": [
+    61997
+   ],
+   "guild": "Geilbleiber"
   }
  },
  "events": [
