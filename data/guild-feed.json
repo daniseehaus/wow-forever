@@ -307,8 +307,8 @@
    "surname": "Backstab",
    "classId": 4,
    "rank": 1,
-   "level": 35,
-   "lastLogin": 1795781603000,
+   "level": 36,
+   "lastLogin": 1795822100000,
    "items": {
     "HEAD": 8747,
     "SHOULDER": 5964,
@@ -346,8 +346,8 @@
     "AMMO": 15
    },
    "profs": {
-    "Leatherworking": 152,
-    "Skinning": 230,
+    "Leatherworking": 167,
+    "Skinning": 235,
     "Cooking": 60,
     "First Aid": 185
    },
@@ -5030,6 +5030,14 @@
    "ilvl": 58,
    "prev": 60,
    "prevName": "Konstruktionshammer von Holderwild"
+  },
+  {
+   "t": 1795822100000,
+   "key": "bernhard-backstab",
+   "type": "level",
+   "from": 35,
+   "to": 36,
+   "max": false
   }
  ]
 }
