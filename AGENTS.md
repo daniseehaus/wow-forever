@@ -40,6 +40,7 @@ Noch keine.
 
 Datum und Entscheidung, je eine Zeile. Neueste oben.
 
+- 2026-11-27: Crafting schlägt Rüstung nur in der höchsten Rüstungsart der Klasse vor (Krieger und Paladin Kette, ab 40 Platte; Jäger und Schamane Leder, ab 40 Kette; Schurke und Druide Leder; Stoffträger Stoff). Umhänge, Ringe, Hals, Schmuck und Nebenhand zählen für alle. Daten von sixtyupgrades.com übernehmen wir nicht: Die Nutzungsbedingungen verbieten Kopie und öffentliche Anzeige, die Daten kommen aus einer nicht öffentlichen API.
 - 2026-11-26: Forever liefert seit dem 25.11. kein Itemlevel mehr an der Ausrüstung. Es kommt aus den Spieldaten von Blizzard, sonst aus dem Tooltip von Wowhead für Forever (Classic-Daten weichen ab), gemerkt in `data/item-levels.json`. Das angelegte Itemlevel rechnet der Abruf selbst: 16 Plätze ohne Hemd, Wappenrock, Munition und Fernkampf, Zweihand doppelt, abgerundet.
 - 2026-11-26: Account-Erfolge zählen nur, wenn Klasse oder Beruf zum Charakter passen. Andere Account-Erfolge (zum Beispiel Dungeonerforscher) fallen weg. Schon getragene Items kommen nicht erneut in den Feed, eine Angel zählt nie als altes Item eines Upgrades. Feed und Gilden-Feed sind entsprechend bereinigt.
 - 2026-11-26: Zwei Sessions am selben Abend: Die zweite zählt ab dem Ende der ersten (20.11., 20:14 korrigiert auf +0 Level). Fällt ein Teil des Abrufs aus (Talente, Quests, Werte, Bilder), gilt der alte Stand.

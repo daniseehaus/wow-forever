@@ -684,18 +684,25 @@ function statDiff(c, neu, alt) {
 }
 function statName(k) { return k === 'armor' ? 'Rüstung' : k === 'dps' ? 'Schaden pro Sekunde' : state.data.statNames?.[k] ?? k; }
 
-// Rüstungsarten: Stoff alle, Leder alle außer Stoffträgern, Kette und Platte je nach Klasse, Kette für Jäger und Schamanen und Platte erst ab 40.
+// Rüstungsart je Klasse (Unterklassen der Rüstung: 1 Stoff, 2 Leder, 3 Kette, 4 Platte): Crafting schlägt nur die höchste Art vor, die der
+// Charakter tragen kann. Krieger und Paladine Kette, ab 40 Platte. Jäger und Schamanen Leder, ab 40 Kette. Schurken und Druiden Leder, Stoffträger Stoff.
+// Das gilt für die Slots mit Rüstungsart. Umhänge (immer Stoff), Ringe, Hals, Schmuck und Nebenhand (0 Verschiedenes) zählen für alle.
+const ARMOR_SLOTS = new Set(['HEAD', 'SHOULDER', 'CHEST', 'ROBE', 'WRIST', 'HAND', 'WAIST', 'LEGS', 'FEET']);
+function armorType(c) {
+  const at40 = c.level >= 40;
+  if ([1, 2].includes(c.classId)) return at40 ? 4 : 3;
+  if ([3, 7].includes(c.classId)) return at40 ? 3 : 2;
+  if ([4, 11].includes(c.classId)) return 2;
+  return 1;
+}
 // Verlangt das Item einen Beruf (Fliegerbrille: Ingenieurskunst 100), braucht der Träger diesen Beruf mit mindestens dieser Stufe.
 function canWear(c, it) {
   if (it.skill && !(c.professions ?? []).some((p) => p.id === it.skill.id && (p.skill ?? 0) >= it.skill.level)) return false;
   if (it.cls === 2) return (WEAPON_SKILLS[c.classId] ?? []).includes(it.sub);
-  const id = c.classId;
   switch (it.sub) {
-    case 0: case 1: return true;
-    case 2: return ![5, 8, 9].includes(id);
-    case 3: return [1, 2].includes(id) || ([3, 7].includes(id) && c.level >= 40);
-    case 4: return [1, 2].includes(id) && c.level >= 40;
-    case 6: return [1, 2, 7].includes(id);
+    case 0: return true;
+    case 1: case 2: case 3: case 4: return ARMOR_SLOTS.has(it.inv) ? it.sub === armorType(c) : it.sub === 1 && it.inv === 'CLOAK';
+    case 6: return [1, 2, 7].includes(c.classId);
     default: return false;
   }
 }
