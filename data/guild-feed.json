@@ -308,7 +308,7 @@
    "classId": 4,
    "rank": 1,
    "level": 35,
-   "lastLogin": 1795735590000,
+   "lastLogin": 1795781603000,
    "items": {
     "HEAD": 8747,
     "SHOULDER": 5964,
@@ -347,7 +347,7 @@
    },
    "profs": {
     "Leatherworking": 152,
-    "Skinning": 228,
+    "Skinning": 230,
     "Cooking": 60,
     "First Aid": 185
    },
@@ -759,8 +759,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 41,
-   "lastLogin": 1795733922000,
+   "level": 42,
+   "lastLogin": 1795781573000,
    "items": {
     "HEAD": 10289,
     "NECK": 7722,
@@ -776,8 +776,9 @@
     "FINGER_2": 270081,
     "TRINKET_1": 276895,
     "BACK": 274149,
-    "MAIN_HAND": 15106,
-    "RANGED": 7001
+    "MAIN_HAND": 279886,
+    "OFF_HAND": 16887,
+    "RANGED": 270084
    },
    "ilvls": {
     "HEAD": 32,
@@ -794,8 +795,9 @@
     "FINGER_2": 44,
     "TRINKET_1": 30,
     "BACK": 30,
-    "MAIN_HAND": 40,
-    "RANGED": 29
+    "MAIN_HAND": 42,
+    "OFF_HAND": 32,
+    "RANGED": 43
    },
    "profs": {
     "Tailoring": 185,
@@ -826,8 +828,9 @@
     "FINGER_2": "Geläuterter Ring",
     "TRINKET_1": "Transformativer Kokon",
     "BACK": "Dornenwirkertuch",
-    "MAIN_HAND": "Stab von Dar'Orahil",
-    "RANGED": "Grabsteinszepter"
+    "MAIN_HAND": "Opferschwert",
+    "OFF_HAND": "Hexenfinger",
+    "RANGED": "Zauberstab des Meisterjägers"
    },
    "seen": [
     271206,
@@ -862,7 +865,10 @@
     15106,
     10289,
     10003,
-    270081
+    270081,
+    279886,
+    16887,
+    270084
    ]
   },
   "pawris-hilton": {
@@ -4951,6 +4957,40 @@
    "ilvl": 40,
    "prev": 34,
    "prevName": "Blutiger Messingschlagring"
+  },
+  {
+   "t": 1795781573000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 41,
+   "to": 42,
+   "max": false
+  },
+  {
+   "t": 1795781573000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 279886,
+   "name": "Opferschwert",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135350.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 42,
+   "prev": 40,
+   "prevName": "Stab von Dar'Orahil"
+  },
+  {
+   "t": 1795781573000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 16887,
+   "name": "Hexenfinger",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135474.jpg",
+   "slot": "Schildhand",
+   "ilvl": 32,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
