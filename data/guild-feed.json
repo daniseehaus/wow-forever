@@ -407,48 +407,46 @@
    "classId": 2,
    "rank": 1,
    "level": 60,
-   "lastLogin": 1795733378000,
+   "lastLogin": 1795819716000,
    "items": {
-    "HEAD": 10749,
+    "HEAD": 10763,
     "NECK": 19159,
-    "SHOULDER": 9476,
+    "SHOULDER": 280075,
     "SHIRT": 6125,
     "CHEST": 11195,
     "WAIST": 10798,
     "LEGS": 17711,
-    "FEET": 11919,
-    "WRIST": 17714,
+    "FEET": 276341,
+    "WRIST": 280061,
     "HANDS": 279824,
-    "FINGER_1": 276333,
-    "FINGER_2": 9588,
+    "FINGER_1": 275045,
+    "FINGER_2": 9533,
     "TRINKET_1": 270225,
     "TRINKET_2": 19120,
-    "BACK": 276737,
-    "MAIN_HAND": 281586,
-    "OFF_HAND": 279831
+    "BACK": 271810,
+    "MAIN_HAND": 286408
    },
    "ilvls": {
-    "HEAD": 54,
+    "HEAD": 43,
     "NECK": 51,
-    "SHOULDER": 50,
+    "SHOULDER": 62,
     "SHIRT": 1,
     "CHEST": 57,
     "WAIST": 51,
     "LEGS": 54,
-    "FEET": 55,
-    "WRIST": 54,
+    "FEET": 58,
+    "WRIST": 60,
     "HANDS": 55,
-    "FINGER_1": 57,
-    "FINGER_2": 37,
+    "FINGER_1": 45,
+    "FINGER_2": 49,
     "TRINKET_1": 51,
     "TRINKET_2": 51,
-    "BACK": 52,
-    "MAIN_HAND": 60,
-    "OFF_HAND": 55
+    "BACK": 43,
+    "MAIN_HAND": 58
    },
    "profs": {
-    "Mining": 256,
-    "Blacksmithing": 165,
+    "Mining": 262,
+    "Blacksmithing": 185,
     "Cooking": 223,
     "Fishing": 1,
     "First Aid": 129
@@ -476,23 +474,22 @@
     62356
    ],
    "names": {
-    "HEAD": "Avenwachthelm",
+    "HEAD": "Eismetallbarbute",
     "NECK": "Gewobene Efeuhalskette",
-    "SHOULDER": "Große böse Schulterstücke",
+    "SHOULDER": "Schulterplatten des freudlosen Auges",
     "SHIRT": "Muskelprotzharnisch",
     "CHEST": "Kriegsgeschmiedete Brustplatte",
     "WAIST": "Atal'alarions Hauerring",
     "LEGS": "Elementarfelsgamaschen",
-    "FEET": "Cragplate-Schienbeinschützer",
-    "WRIST": "Armschienen der Steinprinzessin",
+    "FEET": "Beinschützer des Seuchenbezwingers",
+    "WRIST": "Stachelverzierte Armschienen",
     "HANDS": "Kampfstulpen der Kor'kron",
-    "FINGER_1": "Siegel der Familie Sawyer",
-    "FINGER_2": "Noggs Goldring",
+    "FINGER_1": "Ogerhornring",
+    "FINGER_2": "Masons Bruderschaftsring",
     "TRINKET_1": "Juwel des Wachbefehlshabers",
     "TRINKET_2": "Rune des Wachbefehlshabers",
-    "BACK": "Umhang der Gezeitenherrin",
-    "MAIN_HAND": "Konstruktionshammer von Holderwild",
-    "OFF_HAND": "Schicksalsgebundener Rundschild"
+    "BACK": "Abgestoßene Haut des Leichenfressers",
+    "MAIN_HAND": "Schwert der Trauer"
    },
    "seen": [
     273028,
@@ -534,7 +531,10 @@
     10798,
     11919,
     276333,
-    281586
+    281586,
+    280075,
+    280061,
+    286408
    ]
   },
   "lokk-eidlöter": {
@@ -4991,6 +4991,45 @@
    "ilvl": 32,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795819716000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 280075,
+   "name": "Schulterplatten des freudlosen Auges",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135049.jpg",
+   "slot": "Schultern",
+   "ilvl": 62,
+   "prev": 50,
+   "prevName": "Große böse Schulterstücke"
+  },
+  {
+   "t": 1795819716000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 280061,
+   "name": "Stachelverzierte Armschienen",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132607.jpg",
+   "slot": "Handgelenke",
+   "ilvl": 60,
+   "prev": 54,
+   "prevName": "Armschienen der Steinprinzessin"
+  },
+  {
+   "t": 1795819716000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 286408,
+   "name": "Schwert der Trauer",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135326.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 58,
+   "prev": 60,
+   "prevName": "Konstruktionshammer von Holderwild"
   }
  ]
 }
