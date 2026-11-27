@@ -471,15 +471,18 @@ async function achievementEvent(key, id, t) {
 // Account-Erfolge (is_account_wide) nennt die API bei jedem Charakter des Accounts, auch wenn ein anderer sie erreicht hat
 // („Meisterpaladin“ beim Priester Heili). Sie zählen nur, wenn sie sicher zum Charakter passen:
 // Klassen-Erfolge zur eigenen Klasse, Berufs-Erfolge zu einem eigenen Beruf. Alle übrigen Account-Erfolge fallen weg.
-const ACHIEVEMENT_PROFESSIONS = {
-  Alchemie: 'Alchemy', Schmiedekunst: 'Blacksmithing', Verzauberkunst: 'Enchanting', Ingenieurskunst: 'Engineering',
-  Kräuterkunde: 'Herbalism', Lederverarbeitung: 'Leatherworking', Bergbau: 'Mining', Kürschnerei: 'Skinning',
-  Schneiderei: 'Tailoring', Kochkunst: 'Cooking', Angeln: 'Fishing', 'Erste Hilfe': 'First Aid',
-};
+// Eine Funktion statt Konstante: Der Abruf läuft schon oben im Modul, bevor Konstanten weiter unten gesetzt sind.
+function achievementProfessions() {
+  return {
+    Alchemie: 'Alchemy', Schmiedekunst: 'Blacksmithing', Verzauberkunst: 'Enchanting', Ingenieurskunst: 'Engineering',
+    Kräuterkunde: 'Herbalism', Lederverarbeitung: 'Leatherworking', Bergbau: 'Mining', Kürschnerei: 'Skinning',
+    Schneiderei: 'Tailoring', Kochkunst: 'Cooking', Angeln: 'Fishing', 'Erste Hilfe': 'First Aid',
+  };
+}
 function achievementFits(info, c) {
   if (!info.account) return true;
   if (info.category && info.category === c.className) return true;
-  const prof = ACHIEVEMENT_PROFESSIONS[info.category];
+  const prof = achievementProfessions()[info.category];
   return !!prof && (c.professions ?? []).some((p) => p.name === prof);
 }
 
