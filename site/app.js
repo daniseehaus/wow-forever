@@ -579,7 +579,7 @@ function calm(v) {
 // ---------------------------------------------------------------------------
 // Herstellen: Was kann der Squad füreinander herstellen? Grundlage sind nur die gelernten Rezepte (state.data.crafts, buildCrafts in fetch.mjs).
 // 1. Ausrüstung: Ein Item zählt, wenn der Charakter es tragen kann und seine Werte für Klasse und Rolle besser sind als im Slot.
-//    Liegt das Mindestlevel bis zu 3 Level über dem Charakter, steht es als „bald“ in der Liste.
+//    Das Mindestlevel muss erreicht sein. Items für spätere Level zeigt die Liste nicht.
 //    Items, die beim Aufheben binden (bind „ON_ACQUIRE“), zählen nur für den Hersteller selbst.
 // 2. Verbesserungen: Rüstungssets und Zielfernrohre für angelegte Items ohne Verzauberung.
 //    Verzauberungen (enhance.kind „enchant“, etwa Ausdauer auf Brust) zeigt die Liste vorerst nicht.
@@ -713,11 +713,11 @@ function craftUpgrades() {
   const ok = state.chars.filter((c) => c.level);
   return ok.map((c) => {
     const items = new Map((c.items ?? []).map((i) => [i.slot, i]));
-    // Kandidaten je Slot. Jetzt tragbar vor „bald“, dann größter Gewinn. Dasselbe Item von mehreren Herstellern zählt einmal.
+    // Kandidaten je Slot, größter Gewinn zuerst. Dasselbe Item von mehreren Herstellern zählt einmal.
     const bySlot = new Map();
     for (const cr of crafts.filter((x) => x.item)) {
       const it = cr.item;
-      if (!canWear(c, it) || it.req > c.level + 3) continue;
+      if (!canWear(c, it) || it.req > c.level) continue;
       // Beim Aufheben gebunden: Nur der Hersteller selbst kann das Item tragen.
       if (it.bind === 'ON_ACQUIRE' && cr.by !== c.key) continue;
       if (it.inv === 'TWOHWEAPON' && items.has('OFF_HAND')) continue;
@@ -733,10 +733,10 @@ function craftUpgrades() {
       if (!bySlot.has(slot)) bySlot.set(slot, new Map());
       const same = bySlot.get(slot).get(it.id);
       if (same) { same.by.push(cr.by); continue; }
-      bySlot.get(slot).set(it.id, { slot, craft: cr, by: [cr.by], gain, diff: statDiff(c, it, cur), soon: it.req > c.level, cur });
+      bySlot.get(slot).set(it.id, { slot, craft: cr, by: [cr.by], gain, diff: statDiff(c, it, cur), cur });
     }
     const best = [...bySlot.values()].map((m) => {
-      const [top, ...rest] = [...m.values()].sort((x, y) => x.soon - y.soon || y.gain - x.gain);
+      const [top, ...rest] = [...m.values()].sort((x, y) => y.gain - x.gain);
       return { ...top, others: rest };
     });
     // Verbesserungen nur für angelegte Items ohne Verzauberung, je Slot mit allen Möglichkeiten. Ein Item mit Mindestlevel zählt erst ab diesem Level.
@@ -759,12 +759,12 @@ function craftUpgrades() {
       const key = opts.map((o) => o.id ?? o.name).join('|');
       if (rows.has(key)) rows.get(key)[0].push(slot); else rows.set(key, [[slot], opts]);
     }
-    return { c, items: best.sort((a, b) => a.soon - b.soon || b.gain - a.gain), enhance: [...rows.values()] };
+    return { c, items: best.sort((a, b) => b.gain - a.gain), enhance: [...rows.values()] };
   });
 }
 
 // Crafting als eine Liste gleich großer Zeilen. Jede Zeile beginnt mit dem Hersteller, dann der Empfänger: „Bernhard → Lokk“.
-// Sortiert nach Gewinn (größtes Upgrade zuerst), „bald“ und Verbesserungen am Ende.
+// Sortiert nach Gewinn (größtes Upgrade zuerst), Verbesserungen am Ende.
 // Verbesserungen, die mehrere bekommen können (Rüstungsset), stehen einmal mit allen Empfängern.
 function craftRows() {
   const order = new Map(state.chars.map((c, i) => [c.key, i]));
@@ -774,7 +774,7 @@ function craftRows() {
     for (const x of items) rows.push({ kind: 'item', ...x, by: [...new Set(x.by)], to: [c.key] });
     for (const [slots, opts] of enhance) {
       const key = opts.map((o) => o.id ?? o.name).join('|');
-      if (!enh.has(key)) enh.set(key, { kind: 'enhance', by: [...new Set(opts.flatMap((o) => o.by))], to: [], slotsOf: {}, opts, gain: 0, soon: false });
+      if (!enh.has(key)) enh.set(key, { kind: 'enhance', by: [...new Set(opts.flatMap((o) => o.by))], to: [], slotsOf: {}, opts, gain: 0 });
       const r = enh.get(key);
       r.to.push(c.key);
       r.slotsOf[c.key] = slots;
@@ -784,7 +784,7 @@ function craftRows() {
   // Wer selbst herstellen kann, steht als Hersteller vorne. So gruppiert die Liste nach dem, der die Arbeit macht.
   const lead = (r) => (r.kind === 'item' && r.by.includes(r.to[0]) ? r.to[0] : [...r.by].sort((x, y) => order.get(x) - order.get(y))[0]);
   return rows.map((r) => ({ ...r, lead: lead(r) }))
-    .sort((a, b) => a.soon - b.soon || (a.kind === 'enhance') - (b.kind === 'enhance') || b.gain - a.gain || order.get(a.lead) - order.get(b.lead));
+    .sort((a, b) => (a.kind === 'enhance') - (b.kind === 'enhance') || b.gain - a.gain || order.get(a.lead) - order.get(b.lead));
 }
 
 // Filter: ein Spieler, dann „bekommt“ (Empfänger) oder „stellt her“ (Hersteller). Ohne Filter nur die größten Upgrades, der Rest auf Klick.
@@ -805,13 +805,13 @@ function renderCrafts() {
   if (f.who && f.dir === 'by') rows = rows.map((r) => ({ ...r, lead: f.who }));
   if (f.who && f.dir === 'to') rows = rows.map((r) => (r.kind === 'enhance' ? { ...r, to: [f.who] } : r));
   // Der Kopf zählt Item-Upgrades, je Zeile ein Empfänger. So passt er zur Summe der Zahlen an den Spielern.
-  const now = rows.filter((r) => r.kind === 'item' && !r.soon).length;
+  const now = rows.filter((r) => r.kind === 'item').length;
   document.getElementById('craft-count').textContent = now ? plural(now, 'Upgrade', 'Upgrades') : 'nichts offen';
   const hidden = !f.who && !f.all ? Math.max(0, rows.length - CRAFT_TOP) : 0;
   const shown = hidden ? rows.slice(0, CRAFT_TOP) : rows;
 
   const squadChars = state.chars.filter((c) => c.level);
-  const nTo = (key) => all.filter((r) => r.kind === 'item' && !r.soon && r.to.includes(key)).length;
+  const nTo = (key) => all.filter((r) => r.kind === 'item' && r.to.includes(key)).length;
   const filter = `<div class="craft-filter">
     <div class="craft-players" role="group" aria-label="Spieler">
       <button type="button" class="chip-btn" data-who="" aria-pressed="${!f.who}">Alle</button>
@@ -848,10 +848,10 @@ function renderCrafts() {
     tipHtml.set(key, `${tipItem(r.cur, 'Jetzt', r.cur ? SLOT_LABELS[r.slot] ?? r.slot : '')}<span class="tc-arrow">→</span>${tipItem(it, 'Neu', it.subName)}`);
     const chips = r.diff.slice(0, 2).map(([k, d]) => `<span class="${d > 0 ? 'up' : 'down'}">${fmt(d)} ${STAT_SHORT[k] ?? statName(k)}</span>`).join('');
     const old = r.cur ? `<span class="craft-old">${icon(r.cur)}</span>` : '<span class="craft-old empty" aria-label="leer"></span>';
-    return `<div class="craft${r.soon ? ' soon' : ''}" tabindex="0" data-tip="${key}">
+    return `<div class="craft" tabindex="0" data-tip="${key}">
       ${val(r)}${who(r)}
       <span class="craft-item">${old}<span class="craft-arrow">→</span>${icon(it)}<span class="craft-txt"><span class="q-${q}">${esc(it.name)}</span>
-        <small>${esc(SLOT_LABELS[r.slot] ?? r.slot)}${r.soon ? ` · ab Level ${it.req}` : ''}</small></span><span class="craft-diff">${chips}</span></span></div>`;
+        <small>${esc(SLOT_LABELS[r.slot] ?? r.slot)}</small></span><span class="craft-diff">${chips}</span></span></div>`;
   };
   const enhanceRow = (r) => {
     const best = r.opts[0];
@@ -898,7 +898,7 @@ function tipItem(it, label, kind) {
 function craftHints(c) {
   const mine = craftUpgrades().find((x) => x.c.key === c.key);
   const fmt = (n) => `${n > 0 ? '+' : '−'}${Math.abs(n).toLocaleString('de-DE')}`;
-  return new Map((mine?.items ?? []).filter((x) => !x.soon).map((x) => {
+  return new Map((mine?.items ?? []).map((x) => {
     const who = x.by.includes(c.key) ? 'Selbst herstellen' : `${charByKey(x.by[0]).name} stellt her`;
     const d = x.diff[0];
     return [x.slot, `${who}${d ? `: ${fmt(d[1])} ${statName(d[0])}` : ''}`];
