@@ -258,9 +258,9 @@
   },
   "heili-kabel": {
    "level": 27,
-   "lastLogin": 1795641816000,
+   "lastLogin": 1795858546000,
    "items": {
-    "HEAD": 7048,
+    "HEAD": 7050,
     "NECK": 273457,
     "SHOULDER": 3324,
     "CHEST": 286978,
@@ -277,7 +277,7 @@
     "RANGED": 7001
    },
    "ilvls": {
-    "HEAD": 29,
+    "HEAD": 32,
     "NECK": 22,
     "SHOULDER": 27,
     "CHEST": 23,
@@ -294,7 +294,7 @@
     "RANGED": 29
    },
    "names": {
-    "HEAD": "Azurblaue Seidenkapuze",
+    "HEAD": "Seidenes Stirnband",
     "NECK": "Zaubererhalsband",
     "SHOULDER": "Geisterhafter Mantel",
     "CHEST": "Gewand des Fäulnisheilers",
@@ -353,7 +353,8 @@
     16887,
     7001,
     4311,
-    4036
+    4036,
+    7050
    ],
    "profs": {
     "Tailoring": 150,
@@ -3927,6 +3928,19 @@
    "type": "prof",
    "name": "Engineering",
    "skill": 172
+  },
+  {
+   "t": 1795858546000,
+   "key": "heili-kabel",
+   "type": "item",
+   "id": 7050,
+   "name": "Seidenes Stirnband",
+   "quality": "UNCOMMON",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133693.jpg",
+   "slot": "Kopf",
+   "ilvl": 32,
+   "prev": 29,
+   "prevName": "Azurblaue Seidenkapuze"
   }
  ]
 }

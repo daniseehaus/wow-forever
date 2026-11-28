@@ -22,9 +22,9 @@
    "classId": 5,
    "rank": 0,
    "level": 27,
-   "lastLogin": 1795641816000,
+   "lastLogin": 1795858546000,
    "items": {
-    "HEAD": 7048,
+    "HEAD": 7050,
     "NECK": 273457,
     "SHOULDER": 3324,
     "CHEST": 286978,
@@ -41,7 +41,7 @@
     "RANGED": 7001
    },
    "ilvls": {
-    "HEAD": 29,
+    "HEAD": 32,
     "NECK": 22,
     "SHOULDER": 27,
     "CHEST": 23,
@@ -86,7 +86,7 @@
     62356
    ],
    "names": {
-    "HEAD": "Azurblaue Seidenkapuze",
+    "HEAD": "Seidenes Stirnband",
     "NECK": "Zaubererhalsband",
     "SHOULDER": "Geisterhafter Mantel",
     "CHEST": "Gewand des Fäulnisheilers",
@@ -123,7 +123,8 @@
     3324,
     4036,
     270030,
-    4311
+    4311,
+    7050
    ]
   },
   "zukk-sturmzüngler": {
