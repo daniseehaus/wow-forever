@@ -502,8 +502,8 @@
    "guild": "Geilbleiber"
   },
   "pavel-plattenpapst": {
-   "level": 27,
-   "lastLogin": 1795791393000,
+   "level": 28,
+   "lastLogin": 1795894542000,
    "items": {
     "HEAD": 7048,
     "SHOULDER": 3480,
@@ -583,7 +583,7 @@
     6125
    ],
    "profs": {
-    "Mining": 143,
+    "Mining": 145,
     "Engineering": 172,
     "Cooking": 140,
     "Fishing": 142,
@@ -3941,6 +3941,14 @@
    "ilvl": 32,
    "prev": 29,
    "prevName": "Azurblaue Seidenkapuze"
+  },
+  {
+   "t": 1795894542000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 27,
+   "to": 28,
+   "max": false
   }
  ]
 }

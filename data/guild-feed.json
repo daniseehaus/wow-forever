@@ -225,8 +225,8 @@
    "surname": "Plattenpapst",
    "classId": 2,
    "rank": 1,
-   "level": 27,
-   "lastLogin": 1795791393000,
+   "level": 28,
+   "lastLogin": 1795894542000,
    "items": {
     "HEAD": 7048,
     "SHOULDER": 3480,
@@ -258,7 +258,7 @@
     "MAIN_HAND": 31
    },
    "profs": {
-    "Mining": 143,
+    "Mining": 145,
     "Engineering": 172,
     "Cooking": 140,
     "Fishing": 142,
@@ -5161,6 +5161,14 @@
    "ilvl": 45,
    "prev": 32,
    "prevName": "Natternreifen"
+  },
+  {
+   "t": 1795894542000,
+   "key": "pavel-plattenpapst",
+   "type": "level",
+   "from": 27,
+   "to": 28,
+   "max": false
   }
  ]
 }
