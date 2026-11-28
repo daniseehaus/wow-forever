@@ -764,19 +764,19 @@
    "classId": 9,
    "rank": 1,
    "level": 44,
-   "lastLogin": 1795823575000,
+   "lastLogin": 1795885108000,
    "items": {
     "HEAD": 10289,
     "NECK": 7722,
     "SHOULDER": 7684,
-    "SHIRT": 2579,
-    "CHEST": 7058,
+    "SHIRT": 270334,
+    "CHEST": 9884,
     "WAIST": 273039,
     "LEGS": 7062,
     "FEET": 279843,
     "WRIST": 14187,
     "HANDS": 10018,
-    "FINGER_1": 6750,
+    "FINGER_1": 275043,
     "FINGER_2": 270081,
     "TRINKET_1": 276895,
     "BACK": 274149,
@@ -788,14 +788,14 @@
     "HEAD": 32,
     "NECK": 44,
     "SHOULDER": 35,
-    "SHIRT": 14,
-    "CHEST": 37,
+    "SHIRT": 1,
+    "CHEST": 43,
     "WAIST": 34,
     "LEGS": 39,
     "FEET": 36,
     "WRIST": 28,
     "HANDS": 45,
-    "FINGER_1": 32,
+    "FINGER_1": 45,
     "FINGER_2": 44,
     "TRINKET_1": 30,
     "BACK": 30,
@@ -806,8 +806,8 @@
    "profs": {
     "Tailoring": 191,
     "Herbalism": 223,
-    "Cooking": 230,
-    "Fishing": 178,
+    "Cooking": 235,
+    "Fishing": 179,
     "First Aid": 136
    },
    "achs": [
@@ -815,20 +815,21 @@
     769,
     846,
     728,
-    62028
+    62028,
+    62012
    ],
    "names": {
     "HEAD": "Haltbarer Hut des Schattenzorns",
     "NECK": "Triunen-Amulett",
     "SHOULDER": "Blutmagier-Mantel",
-    "SHIRT": "Grünes Leinenhemd",
-    "CHEST": "Purpurrote Seidenweste",
+    "SHIRT": "Schweißbeflecktes Hemd",
+    "CHEST": "Zauberhexerrobe des Schattenzorns",
     "WAIST": "Seuchenblattseil",
     "LEGS": "Purpurrote Seidenpantalons",
     "FEET": "Verzauberte Sandalen",
     "WRIST": "Regenmachermanschetten des Schattenzorns",
     "HANDS": "Rote Magiestoffhandschuhe",
-    "FINGER_1": "Natternreifen",
+    "FINGER_1": "Blutmeisterring",
     "FINGER_2": "Geläuterter Ring",
     "TRINKET_1": "Transformativer Kokon",
     "BACK": "Dornenwirkertuch",
@@ -874,7 +875,10 @@
     16887,
     270084,
     10018,
-    7610
+    7610,
+    270334,
+    9884,
+    275043
    ]
   },
   "pawris-hilton": {
@@ -5144,6 +5148,19 @@
    "ilvl": 56,
    "prev": null,
    "prevName": null
+  },
+  {
+   "t": 1795885108000,
+   "key": "dennis-dotalot",
+   "type": "item",
+   "id": 275043,
+   "name": "Blutmeisterring",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/133367.jpg",
+   "slot": "Ring 1",
+   "ilvl": 45,
+   "prev": 32,
+   "prevName": "Natternreifen"
   }
  ]
 }
