@@ -544,8 +544,8 @@
    "surname": "Eidlöter",
    "classId": 2,
    "rank": 1,
-   "level": 42,
-   "lastLogin": 1795706229000,
+   "level": 43,
+   "lastLogin": 1795869451000,
    "items": {
     "HEAD": 8142,
     "NECK": 12043,
@@ -562,8 +562,7 @@
     "TRINKET_1": 273840,
     "TRINKET_2": 280766,
     "BACK": 9877,
-    "MAIN_HAND": 6804,
-    "OFF_HAND": 275051
+    "MAIN_HAND": 279885
    },
    "ilvls": {
     "HEAD": 44,
@@ -581,8 +580,7 @@
     "TRINKET_1": 29,
     "TRINKET_2": 33,
     "BACK": 38,
-    "MAIN_HAND": 38,
-    "OFF_HAND": 46
+    "MAIN_HAND": 42
    },
    "profs": {
     "Mining": 195,
@@ -619,8 +617,7 @@
     "TRINKET_1": "Verfluchtes Murlocauge",
     "TRINKET_2": "Tränketasche",
     "BACK": "Zauberhexerumhang des heiligen Zorns",
-    "MAIN_HAND": "Windsturmhammer",
-    "OFF_HAND": "Twilightbarriere"
+    "MAIN_HAND": "Zeremonieller Schlaghammer"
    },
    "seen": [
     271201,
@@ -5093,6 +5090,14 @@
    "type": "level",
    "from": 17,
    "to": 18,
+   "max": false
+  },
+  {
+   "t": 1795869451000,
+   "key": "lokk-eidlöter",
+   "type": "level",
+   "from": 42,
+   "to": 43,
    "max": false
   }
  ]
