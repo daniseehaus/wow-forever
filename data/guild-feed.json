@@ -1092,8 +1092,9 @@
    "classId": 7,
    "rank": 1,
    "level": 17,
-   "lastLogin": 1795623495000,
+   "lastLogin": 1795834090000,
    "items": {
+    "SHOULDER": 4314,
     "SHIRT": 6134,
     "CHEST": 6240,
     "WAIST": 6539,
@@ -1108,6 +1109,7 @@
     "RANGED": 263412
    },
    "ilvls": {
+    "SHOULDER": 22,
     "SHIRT": 1,
     "CHEST": 12,
     "WAIST": 16,
@@ -1122,6 +1124,7 @@
     "RANGED": 10
    },
    "names": {
+    "SHOULDER": "Doppelt genähte Wollschultern",
     "SHIRT": "Primitiver Mantel",
     "CHEST": "Blaue Leinenweste",
     "WAIST": "Weidengürtel des Wals",
@@ -1137,7 +1140,7 @@
    },
    "profs": {
     "Enchanting": 90,
-    "Alchemy": 136,
+    "Alchemy": 150,
     "Cooking": 4
    },
    "achs": [
@@ -1145,7 +1148,8 @@
     769,
     846,
     728,
-    62028
+    62028,
+    62012
    ],
    "seen": [
     15445,
@@ -1160,7 +1164,8 @@
     281268,
     286744,
     15478,
-    263412
+    263412,
+    4314
    ]
   }
  },
@@ -5048,6 +5053,22 @@
    "from": 42,
    "to": 44,
    "max": false
+  },
+  {
+   "t": 1795832220000,
+   "key": "erwin-elemental",
+   "type": "achievement",
+   "id": 62012,
+   "name": "Alchimiegeselle",
+   "desc": "Erzielt zum ersten Mal 150 Fertigkeitspunkte in Alchimie.",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/136240.jpg"
+  },
+  {
+   "t": 1795834090000,
+   "key": "erwin-elemental",
+   "type": "prof",
+   "name": "Alchemy",
+   "skill": 150
   }
  ]
 }
