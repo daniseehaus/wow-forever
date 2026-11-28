@@ -759,8 +759,8 @@
    "surname": "Dotalot",
    "classId": 9,
    "rank": 1,
-   "level": 42,
-   "lastLogin": 1795797366000,
+   "level": 44,
+   "lastLogin": 1795823575000,
    "items": {
     "HEAD": 10289,
     "NECK": 7722,
@@ -771,13 +771,13 @@
     "LEGS": 7062,
     "FEET": 279843,
     "WRIST": 14187,
-    "HANDS": 10003,
+    "HANDS": 10018,
     "FINGER_1": 6750,
     "FINGER_2": 270081,
     "TRINKET_1": 276895,
     "BACK": 274149,
     "MAIN_HAND": 279886,
-    "OFF_HAND": 16887,
+    "OFF_HAND": 7610,
     "RANGED": 270084
    },
    "ilvls": {
@@ -790,20 +790,20 @@
     "LEGS": 39,
     "FEET": 36,
     "WRIST": 28,
-    "HANDS": 43,
+    "HANDS": 45,
     "FINGER_1": 32,
     "FINGER_2": 44,
     "TRINKET_1": 30,
     "BACK": 30,
     "MAIN_HAND": 42,
-    "OFF_HAND": 32,
+    "OFF_HAND": 41,
     "RANGED": 43
    },
    "profs": {
-    "Tailoring": 185,
-    "Herbalism": 218,
-    "Cooking": 225,
-    "Fishing": 174,
+    "Tailoring": 191,
+    "Herbalism": 223,
+    "Cooking": 230,
+    "Fishing": 178,
     "First Aid": 136
    },
    "achs": [
@@ -823,13 +823,13 @@
     "LEGS": "Purpurrote Seidenpantalons",
     "FEET": "Verzauberte Sandalen",
     "WRIST": "Regenmachermanschetten des Schattenzorns",
-    "HANDS": "Schwarze Magiestoffhandschuhe",
+    "HANDS": "Rote Magiestoffhandschuhe",
     "FINGER_1": "Natternreifen",
     "FINGER_2": "Geläuterter Ring",
     "TRINKET_1": "Transformativer Kokon",
     "BACK": "Dornenwirkertuch",
     "MAIN_HAND": "Opferschwert",
-    "OFF_HAND": "Hexenfinger",
+    "OFF_HAND": "Aurorasphäre",
     "RANGED": "Zauberstab des Meisterjägers"
    },
    "seen": [
@@ -868,7 +868,9 @@
     270081,
     279886,
     16887,
-    270084
+    270084,
+    10018,
+    7610
    ]
   },
   "pawris-hilton": {
@@ -5037,6 +5039,14 @@
    "type": "level",
    "from": 35,
    "to": 36,
+   "max": false
+  },
+  {
+   "t": 1795823575000,
+   "key": "dennis-dotalot",
+   "type": "level",
+   "from": 42,
+   "to": 44,
    "max": false
   }
  ]
