@@ -1032,7 +1032,7 @@
    "classId": 11,
    "rank": 1,
    "level": 17,
-   "lastLogin": 1795347872000,
+   "lastLogin": 1795861166000,
    "items": {
     "CHEST": 5341,
     "WAIST": 16608,
@@ -1041,7 +1041,7 @@
     "WRIST": 7281,
     "HANDS": 3314,
     "BACK": 14149,
-    "MAIN_HAND": 4566
+    "MAIN_HAND": 15444
    },
    "ilvls": {
     "CHEST": 15,
@@ -1051,7 +1051,7 @@
     "WRIST": 14,
     "HANDS": 15,
     "BACK": 18,
-    "MAIN_HAND": 13
+    "MAIN_HAND": 18
    },
    "names": {
     "CHEST": "Sporenbedeckte Tunika",
@@ -1061,7 +1061,7 @@
     "WRIST": "Leichte Lederarmschienen",
     "HANDS": "Zeremonielle Lederhandschuhe",
     "BACK": "Unterirdisches Cape",
-    "MAIN_HAND": "Stabiler Bauernstecken des Gorillas"
+    "MAIN_HAND": "Stab von Orgrimmar"
    },
    "profs": {
     "Alchemy": 78,
@@ -1083,7 +1083,8 @@
     15012,
     7281,
     3314,
-    4566
+    4566,
+    15444
    ]
   },
   "erwin-elemental": {
@@ -5070,6 +5071,19 @@
    "type": "prof",
    "name": "Alchemy",
    "skill": 150
+  },
+  {
+   "t": 1795861166000,
+   "key": "freddie-muhrcury",
+   "type": "item",
+   "id": 15444,
+   "name": "Stab von Orgrimmar",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/135225.jpg",
+   "slot": "Waffenhand",
+   "ilvl": 18,
+   "prev": 13,
+   "prevName": "Stabiler Bauernstecken des Gorillas"
   }
  ]
 }
