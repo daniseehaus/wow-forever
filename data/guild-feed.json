@@ -22,7 +22,7 @@
    "classId": 5,
    "rank": 0,
    "level": 27,
-   "lastLogin": 1795858546000,
+   "lastLogin": 1795882799000,
    "items": {
     "HEAD": 7050,
     "NECK": 273457,
@@ -408,47 +408,49 @@
    "classId": 2,
    "rank": 1,
    "level": 60,
-   "lastLogin": 1795871007000,
+   "lastLogin": 1795882753000,
    "items": {
-    "HEAD": 10763,
+    "HEAD": 10749,
     "NECK": 19159,
     "SHOULDER": 280075,
     "SHIRT": 6125,
-    "CHEST": 11195,
+    "CHEST": 10845,
     "WAIST": 10798,
     "LEGS": 17711,
-    "FEET": 276341,
+    "FEET": 11919,
     "WRIST": 280061,
-    "HANDS": 279824,
-    "FINGER_1": 9533,
-    "FINGER_2": 275045,
+    "HANDS": 9410,
+    "FINGER_1": 275045,
+    "FINGER_2": 276333,
     "TRINKET_1": 270225,
     "TRINKET_2": 19120,
-    "BACK": 271810,
-    "MAIN_HAND": 286408
+    "BACK": 276737,
+    "MAIN_HAND": 281586,
+    "OFF_HAND": 10835
    },
    "ilvls": {
-    "HEAD": 43,
+    "HEAD": 54,
     "NECK": 51,
     "SHOULDER": 62,
     "SHIRT": 1,
-    "CHEST": 57,
+    "CHEST": 54,
     "WAIST": 51,
     "LEGS": 54,
-    "FEET": 58,
+    "FEET": 55,
     "WRIST": 60,
-    "HANDS": 55,
-    "FINGER_1": 49,
-    "FINGER_2": 45,
+    "HANDS": 46,
+    "FINGER_1": 45,
+    "FINGER_2": 57,
     "TRINKET_1": 51,
     "TRINKET_2": 51,
-    "BACK": 43,
-    "MAIN_HAND": 58
+    "BACK": 52,
+    "MAIN_HAND": 60,
+    "OFF_HAND": 56
    },
    "profs": {
     "Mining": 275,
-    "Blacksmithing": 185,
-    "Cooking": 223,
+    "Blacksmithing": 200,
+    "Cooking": 224,
     "Fishing": 1,
     "First Aid": 129
    },
@@ -475,22 +477,23 @@
     62356
    ],
    "names": {
-    "HEAD": "Eismetallbarbute",
+    "HEAD": "Avenwachthelm",
     "NECK": "Gewobene Efeuhalskette",
     "SHOULDER": "Schulterplatten des freudlosen Auges",
     "SHIRT": "Muskelprotzharnisch",
-    "CHEST": "Kriegsgeschmiedete Brustplatte",
+    "CHEST": "Kriegerumarmung",
     "WAIST": "Atal'alarions Hauerring",
     "LEGS": "Elementarfelsgamaschen",
-    "FEET": "Beinschützer des Seuchenbezwingers",
+    "FEET": "Cragplate-Schienbeinschützer",
     "WRIST": "Stachelverzierte Armschienen",
-    "HANDS": "Kampfstulpen der Kor'kron",
-    "FINGER_1": "Masons Bruderschaftsring",
-    "FINGER_2": "Ogerhornring",
+    "HANDS": "Klippenfäuste des Verteidigers",
+    "FINGER_1": "Ogerhornring",
+    "FINGER_2": "Siegel der Familie Sawyer",
     "TRINKET_1": "Juwel des Wachbefehlshabers",
     "TRINKET_2": "Rune des Wachbefehlshabers",
-    "BACK": "Abgestoßene Haut des Leichenfressers",
-    "MAIN_HAND": "Schwert der Trauer"
+    "BACK": "Umhang der Gezeitenherrin",
+    "MAIN_HAND": "Konstruktionshammer von Holderwild",
+    "OFF_HAND": "Wappen der Vorherrschaft"
    },
    "seen": [
     273028,
@@ -535,7 +538,10 @@
     281586,
     280075,
     280061,
-    286408
+    286408,
+    10845,
+    9410,
+    10835
    ]
   },
   "lokk-eidlöter": {
@@ -5099,6 +5105,45 @@
    "from": 42,
    "to": 43,
    "max": false
+  },
+  {
+   "t": 1795882753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10845,
+   "name": "Kriegerumarmung",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132743.jpg",
+   "slot": "Brust",
+   "ilvl": 54,
+   "prev": 57,
+   "prevName": "Kriegsgeschmiedete Brustplatte"
+  },
+  {
+   "t": 1795882753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 9410,
+   "name": "Klippenfäuste des Verteidigers",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/132946.jpg",
+   "slot": "Hände",
+   "ilvl": 46,
+   "prev": 55,
+   "prevName": "Kampfstulpen der Kor'kron"
+  },
+  {
+   "t": 1795882753000,
+   "key": "hammer-hanno",
+   "type": "item",
+   "id": 10835,
+   "name": "Wappen der Vorherrschaft",
+   "quality": "RARE",
+   "icon": "https://render.worldofwarcraft.com/forever-eu/icons/56/134950.jpg",
+   "slot": "Schildhand",
+   "ilvl": 56,
+   "prev": null,
+   "prevName": null
   }
  ]
 }
